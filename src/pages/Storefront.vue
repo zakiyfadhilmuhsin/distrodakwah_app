@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="mobile-layout-on-desktop">
       <q-toolbar class="bg-orange-8 text-white">
         <!-- <q-toolbar-title>
           Distrodakwah
@@ -39,7 +39,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-footer>
+    <q-footer class="mobile-layout-on-desktop">
       <center>
         <q-tabs
           dense
@@ -51,7 +51,7 @@
         >
           <q-route-tab
             icon="home"
-            to="/storefront"
+            to="/"
             style="text-transform: capitalize; font-family: 'Open Sans'"
           ><span style="font-size: 10px;">Home</span></q-route-tab>
           <q-route-tab
@@ -110,19 +110,9 @@
             </div>
           </div>
           <div class="row" style="padding: 0px 10px 15px 10px">
-            <div class="col-4">
+            <div class="col-4" v-for="(category, index) in dataCategory" :key="index">
               <div style="background-color: white; border: 2px solid #e0e0e0; border-radius: 10px; margin: 5px">
-                <h4 class="category-title">Lengan<br/>Pendek</h4>
-              </div>
-            </div>
-            <div class="col-4">
-              <div style="background-color: white; border: 2px solid #e0e0e0; border-radius: 10px; margin: 5px">
-                <h4 class="category-title">Lengan<br/>Panjang</h4>
-              </div>
-            </div>
-            <div class="col-4">
-              <div style="background-color: white; border: 2px solid #e0e0e0; border-radius: 10px; margin: 5px">
-                <h4 class="category-title">Sweater<br/>Hoodie</h4>
+                <h4 class="category-title">{{category.category_name}}</h4>
               </div>
             </div>
           </div>
@@ -138,38 +128,41 @@
           </div>
           <div class="row q-px-md" style="padding: 5px 10px 10px 10px">
             <div class="col">
-              <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
-                <img src="~/assets/images/product/242navy.jpg" style="width: 100%">
+              <swiper :options="swiperProductListOption">
+                <swiper-slide v-for="(product, index) in dataProduct" :key="index">
+                  <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
+                    <transition
+                      appear
+                      enter-active-class="animated fadeIn"
+                      leave-active-class="animated fadeOut"
+                    >
+                      <img :src="product.featured_image" style="width: 100%" v-show="featuredImageShow == true">
+                    </transition>
 
-                <q-card-section style="padding: 10px 16px 16px 16px">
-                  <center>
-                    <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold">Kaos Dakwah AM242</div>
-                    <div class="text-subtitle2 text-red" style="font-weight: bolder">UNTUNG Rp50.000</div>
-                  </center>
-                </q-card-section>
+                    <center>
+                      <q-spinner
+                        color="dark"
+                        size="2em"
+                        v-show="innerLoading == true"
+                        style="margin: 10px 0"
+                      />
+                    </center>
 
-                <q-card-section>
-                  <q-btn to="/detail" flat class="bg-orange-8 text-white full-width"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
-                </q-card-section>
+                    <q-card-section style="padding: 10px 16px 16px 16px">
+                      <center>
+                        <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold">{{product.product_name}}</div>
+                        <div class="text-subtitle2 text-red" style="font-weight: bolder">{{'Rp'+product.price}}</div>
+                      </center>
+                    </q-card-section>
 
-              </q-card>
-            </div>
-            <div class="col">
-              <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
-                <img src="~/assets/images/product/243putih.jpg" style="width: 100%">
+                    <q-card-section>
+                      <q-btn :to="'/detail/' + product.id" flat class="bg-orange-8 text-white" style="padding-top: 0px; padding-bottom: 0px"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
+                    </q-card-section>
 
-                <q-card-section style="padding: 10px 16px 16px 16px">
-                  <center>
-                    <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold">Kaos Dakwah AM243</div>
-                    <div class="text-subtitle2 text-red" style="font-weight: bolder">UNTUNG Rp50.000</div>
-                  </center>
-                </q-card-section>
-
-                <q-card-section>
-                  <q-btn to="/storefront" flat class="bg-orange-8 text-white full-width"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
-                </q-card-section>
-
-              </q-card>
+                  </q-card>
+                </swiper-slide>
+                <div class="swiper-product-pagination" slot="pagination"></div>
+              </swiper>
             </div>
           </div>
         </div>
@@ -184,38 +177,41 @@
           </div>
           <div class="row q-px-md" style="padding: 5px 10px 15px 10px">
             <div class="col">
-              <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
-                <img src="~/assets/images/product/242navy.jpg" style="width: 100%">
+              <swiper :options="swiperProductListOption">
+                <swiper-slide v-for="(product, index) in dataProduct" :key="index">
+                  <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
+                    <transition
+                      appear
+                      enter-active-class="animated fadeIn"
+                      leave-active-class="animated fadeOut"
+                    >
+                      <img :src="product.featured_image" style="width: 100%" v-show="featuredImageShow == true">
+                    </transition>
 
-                <q-card-section style="padding: 10px 16px 16px 16px">
-                  <center>
-                    <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold">Kaos Dakwah AM242</div>
-                    <div class="text-subtitle2 text-red" style="font-weight: bolder">UNTUNG Rp50.000</div>
-                  </center>
-                </q-card-section>
+                    <center>
+                      <q-spinner
+                        color="dark"
+                        size="2em"
+                        v-show="innerLoading == true"
+                        style="margin: 10px 0"
+                      />
+                    </center>
 
-                <q-card-section>
-                  <q-btn to="/storefront" flat class="bg-orange-8 text-white full-width"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
-                </q-card-section>
+                    <q-card-section style="padding: 10px 16px 16px 16px">
+                      <center>
+                        <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold">{{product.product_name}}</div>
+                        <div class="text-subtitle2 text-red" style="font-weight: bolder">{{'Rp'+product.price}}</div>
+                      </center>
+                    </q-card-section>
 
-              </q-card>
-            </div>
-            <div class="col">
-              <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
-                <img src="~/assets/images/product/243putih.jpg" style="width: 100%">
+                    <q-card-section>
+                      <q-btn :to="'/detail/' + product.id" flat class="bg-orange-8 text-white" style="padding-top: 0px; padding-bottom: 0px"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
+                    </q-card-section>
 
-                <q-card-section style="padding: 10px 16px 16px 16px">
-                  <center>
-                    <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold">Kaos Dakwah AM243</div>
-                    <div class="text-subtitle2 text-red" style="font-weight: bolder">UNTUNG Rp50.000</div>
-                  </center>
-                </q-card-section>
-
-                <q-card-section>
-                  <q-btn to="/storefront" flat class="bg-orange-8 text-white full-width"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
-                </q-card-section>
-
-              </q-card>
+                  </q-card>
+                </swiper-slide>
+                <div class="swiper-product-pagination" slot="pagination"></div>
+              </swiper>
             </div>
           </div>
         </div>
@@ -225,12 +221,19 @@
 </template>
 
 <script>
-import "swiper/dist/css/swiper.css"
-import { swiper, swiperSlide } from "vue-awesome-swiper"
+import "swiper/dist/css/swiper.css";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+import axios from 'axios';
+import {apiDomain, catalogCategoryUrl, catalogProductUrl, getHeader} from 'src/config';
 
 export default {
   data () {
     return {
+      // Category Section
+      dataCategory: [],
+      // Product Section
+      dataProduct: [],
+      // Slider Section
       swiperOption: {
         slidesPerView: 'auto',
         centeredSlides: false,
@@ -239,7 +242,68 @@ export default {
           el: '.swiper-pagination',
           clickable: true
         }
-      }
+      },
+      swiperProductListOption: {
+        slidesPerView: 2,
+        centeredSlides: false,
+        spaceBetween: 10,
+        pagination: {
+          el: '.swiper-product-pagination',
+          clickable: true
+        }
+      },
+      // Loading
+      innerLoading: false,
+      featuredImageShow: true,
+    }
+  },
+  mounted () {
+    this.getCategory();
+    this.getProduct();
+  },
+  methods: {
+    getCategory () {
+
+      axios.get( catalogCategoryUrl, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+            this.dataCategory = response.data.data;
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+
+    },
+    getProduct () {
+      
+      this.innerLoading = true;
+      this.featuredImageShow = false;
+
+      axios.get( catalogProductUrl, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+            this.dataProduct = response.data.data;
+            setTimeout(() => {
+              this.innerLoading = false;
+              this.featuredImageShow = true;
+            }, 2000);
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+
     }
   },
   components: { swiper, swiperSlide }

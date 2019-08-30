@@ -66,7 +66,11 @@ module.exports = function (ctx) {
         'QRadio',
         'QPopupProxy',
         'QDate',
-        'QBtnDropdown'
+        'QBtnDropdown',
+        'QBtnToggle',
+        'QInnerLoading',
+        'QSpinner',
+        'QSpinnerIos',
       ],
 
       directives: [
@@ -76,7 +80,8 @@ module.exports = function (ctx) {
 
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'LocalStorage'
       ]
     },
 

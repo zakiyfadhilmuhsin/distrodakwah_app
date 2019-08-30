@@ -1,86 +1,221 @@
 <template>
-  <q-page>
-  	<swiper :options="swiperOptionDetail">
-      <swiper-slide>
-        <img src="~/assets/images/product/247merah-square.png" width="100%" />
-      </swiper-slide>
-      <swiper-slide>
-        <img src="~/assets/images/product/247merah-square.png" width="100%" />
-      </swiper-slide>
-      <swiper-slide>
-        <img src="~/assets/images/product/247merah-square.png" width="100%" />
-      </swiper-slide>
-      <div class="swiper-pagination-detail" slot="pagination"></div>
-    </swiper>
-    <div class="row q-px-md">
-      <div class="col">
-        <h5 class="category-text">Kategori : <span class="text-red">Lengan Pendek</span></h5>
-        <h4 class="product-title-text">Kaos Dakwah AM250</h4>
-        <!-- Pilih Warna & Ukuran -->
-        <div class="row" style="margin-bottom: 7px">
-          <div class="col-xs-4">
-            <h5 class="options-title">Pilih Warna</h5>
-          </div>
-          <div class="col-xs-8">
-            <q-select dense outlined color="orange-8" options-dense v-model="colorSelected" :options="colorOptions" />
-          </div>
-        </div>
-        <div class="row" style="margin-bottom: 7px">
-          <div class="col-xs-4">
-            <h5 class="options-title">Pilih Ukuran</h5>
-          </div>
-          <div class="col-xs-8">
-            <q-select dense outlined color="orange-8" options-dense v-model="sizeSelected" :options="sizeOptions" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-4">
-            <h5 class="options-title">Qty</h5>
-          </div>
-          <div class="col-xs-8">
-            <q-input type="number" dense outlined color="orange-8" options-dense v-model="qty" />
-          </div>
-        </div>
-        <br/>
-        <!-- Informasi Harga -->
-        <div class="row">
-          <div class="col-xs-6">
-            <h5 class="price-title-small-text">Harga Konsumen</h5>
-          </div>
-          <div class="col-xs-6">
-            <h5 class="price-title-small-text">Harga Reseller Pro</h5>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-6">
-            <h5 class="price-detail-text">Rp100.000</h5>
-          </div>
-          <div class="col-xs-6">
-            <h5 class="price-detail-text text-green">Rp80.000</h5>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp65.000</b></h4>
-          </div>
-        </div>
-        <hr style="margin: 15px 0" />
-        <div class="row">
-          <div class="col">
-            <div class="row" style="margin-bottom: 5px">
-              <div class="col">
-                <h4 class="price-title-small-text">Rincian Produk</h4>
+  <q-layout view="hHh lpR fFf">
+
+    <q-header elevated class="mobile-layout-on-desktop">
+      <q-toolbar class="bg-orange-8 text-white">
+        <q-btn
+          flat
+          round
+          dense
+          to="/"
+        >
+          <q-icon name="arrow_back" color="white" /> 
+        </q-btn>
+        <q-space />
+        <q-btn
+          flat
+          dense
+          round
+          icon="shopping_cart"
+        >
+          <q-badge color="amber-5" class="text-black" floating>3</q-badge>
+        </q-btn>
+        <q-btn
+          flat
+          dense
+          round
+        >
+          <q-icon name="share" color="white" />
+        </q-btn>
+      </q-toolbar>
+    </q-header>
+
+    <q-footer class="bg-white text-black mobile-layout-on-desktop" style="border-top: 2px solid #eee">
+      <q-toolbar class="bg-white text-black">
+        <span>
+          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold">KAMU UNTUNG 20.000</h4>
+        </span>
+        <q-space />
+        <q-btn
+          flat
+          class="bg-orange-8 text-white"
+          @click="addToCart"
+        >
+          Beli Sekarang
+        </q-btn>
+      </q-toolbar>
+    </q-footer>
+
+    <q-page-container class="mobile-layout-on-desktop bg-white">
+    	<!-- <swiper :options="swiperOptionDetail">
+        <swiper-slide>
+          <img src="~/assets/images/product/247merah-square.png" width="100%" />
+        </swiper-slide>
+        <swiper-slide>
+          <img src="~/assets/images/product/247merah-square.png" width="100%" />
+        </swiper-slide>
+        <swiper-slide>
+          <img src="~/assets/images/product/247merah-square.png" width="100%" />
+        </swiper-slide>
+        <div class="swiper-pagination-detail" slot="pagination"></div>
+      </swiper> -->
+      <img :src="dataProduct.featured_image" width="100%" />
+      <div class="row q-px-md">
+        <div class="col">
+          <h5 class="category-text">Kategori : <span class="text-red">{{dataCategory.category_name}}</span></h5>
+          <h5 class="category-text">Brand : <span class="text-red">{{dataBrand.brand_name}}</span></h5>
+          <h4 class="product-title-text">{{dataProduct.product_name}}</h4>
+
+          <hr style="margin: 15px 0" />
+          
+          <template v-if="dataProduct.product_type === 'Variant Product'">
+            <!-- Pilih Warna & Ukuran -->
+            <div class="row" style="margin-bottom: 7px" v-for="(opt, index) in inputOptions" :key="index">
+              <div class="col-xs-4">
+                <h5 class="options-title">Pilih {{opt.optionTitle}}</h5>
               </div>
-              <div class="col text-right" style="padding-top: 5px">
-                <q-btn flat class="bg-red text-white" size="sm" label="Salin" />
+              <div class="col-xs-8">
+                <!-- <q-select 
+                  dense
+                  outlined 
+                  color="orange-8" 
+                  options-dense
+                  v-model="opt.optionModel"
+                  :options="opt.optionValue"
+                /> -->
+                <q-btn-toggle
+                  v-model="opt.optionModel"
+                  unelevated
+                  toggle-color="orange-8"
+                  color="white"
+                  text-color="orange-8"
+                  :options="opt.optionValue"
+                  style="border: 1px solid #f57c00"
+                  @input="getProductVariant"
+                />
               </div>
             </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <!-- <div class="row" style="margin-bottom: 7px">
+              <div class="col-xs-4">
+                <h5 class="options-title">Pilih Ukuran</h5>
+              </div>
+              <div class="col-xs-8">
+                <q-select dense outlined color="orange-8" options-dense v-model="sizeSelected" :options="sizeOptions" />
+              </div>
+            </div> -->
+          </template>
+          <div class="row">
+            <div class="col-xs-4">
+              <h5 class="options-title">Qty</h5>
+            </div>
+            <div class="col-xs-8">
+              <q-input type="number" dense outlined color="orange-8" options-dense v-model="qty" style="width: 50px" />
+            </div>
+          </div>
+          <br/>
+
+          <!-- Informasi Harga -->
+          <template v-if="this.dataProduct.product_type === 'Simple Product' || this.productVariant.length > 0">
+            <div class="row">
+              <div class="col-xs-6">
+                <h5 class="price-title-small-text">Harga Konsumen</h5>
+              </div>
+              <div class="col-xs-6">
+                <h5 class="price-title-small-text">Harga Reseller Pro</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6">
+                <h5 class="price-detail-text" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price)}}</h5>
+                <h5 class="price-detail-text" v-else>Rp{{formatPrice(dataProduct.price)}}</h5>
+              </div>
+              <div class="col-xs-6">
+                <h5 class="price-detail-text text-green">Rp80.000</h5>
+              </div>
+            </div>
+          </template>
+          <div class="row">
+            <div class="col">
+              <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp65.000</b></h4>
+            </div>
+          </div>
+
+          <hr style="margin: 15px 0" />
+
+          <div class="row">
+            <div class="col">
+              <div class="row" style="margin-bottom: 5px">
+                <div class="col">
+                  <h4 class="price-title-small-text">Rincian Produk</h4>
+                </div>
+                <div class="col text-right" style="padding-top: 5px">
+                  <q-btn flat class="bg-red text-white" size="sm" label="Salin" />
+                </div>
+              </div>
+              <p v-html="dataProduct.product_description"></p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </q-page>
+
+      <q-dialog v-model="confirmOrder">
+        <q-card style="width: 800px; max-width: 90vw;">
+          <q-card-section class="row items-center">
+            <h6 style="margin: 0; font-size: 16px">Berhasil Masuk Keranjang</h6>
+            <q-space />
+            <q-btn icon="close" size="sm" flat round dense v-close-popup />
+          </q-card-section>
+
+          <q-card-section>
+            <!-- <div class="row">
+              <div class="col-4">
+                <img src="~/assets/images/product/247merah-square.png" width="80" />
+              </div>
+              <div class="col-6">
+                <h5 style="margin: -10px 0px 10px 0px; font-size: 14px; font-weight: bold">Kaos Dakwah AM250</h5>
+                <h6 style="margin: -15px 0; font-size: 14px;">Warna : Merah</h6>
+                <h6 style="margin: -15px 0; font-size: 14px;">Ukuran : Merah</h6>
+                <h6 style="margin: -15px 0; font-size: 14px;">Qty : 3</h6>
+              </div>
+              <div class="col-2 text-right self-center">
+                <q-icon name="delete" style="font-size: 20px" />
+              </div>
+            </div> -->
+            <div class="row">
+              <div class="col-4">
+                <img src="~/assets/images/product/247merah-square.png" width="80" />
+              </div>
+              <div class="col-8">
+                <h5 style="margin: -10px 0px 10px 0px; font-size: 14px; font-weight: bold">Kaos Dakwah AM250</h5>
+                <h6 style="margin: -15px 0; font-size: 14px;">Warna : Merah</h6>
+                <h6 style="margin: -15px 0; font-size: 14px;">Ukuran : Merah</h6>
+                <h6 style="margin: -15px 0; font-size: 14px;">Qty : 3</h6>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col">
+                <h5 style="font-size: 21px; margin: 0; font-weight: bold">Subtotal</h5>
+              </div>
+              <div class="col text-right">
+                <h5 style="font-size: 21px; margin: 0;">Rp200.000</h5>
+                <h5 style="font-size: 10px; margin: -12px 0;">Harga belum termasuk ongkir</h5>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col">
+                <q-btn to="/cart" flat class="bg-orange-8 text-white full-width"><b>Checkout</b></q-btn>
+                <h5 style="font-size: 10px; margin: 0; text-align: center;">Atau</h5>
+                <q-btn to="/storefront" outline color="black" class="full-width"><b>Lanjut Belanja</b></q-btn>
+              </div>
+            </div>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+    </q-page-container>
+
+  </q-layout>
 </template>
 
 <style>
@@ -89,6 +224,7 @@
     font-family: 'Open Sans';
     color: black;
     margin: 0;
+    line-height: 15px;
   }
   .product-title-text {
     font-size: 21px;
@@ -134,27 +270,200 @@
 <script>
 import "swiper/dist/css/swiper.css"
 import { swiper, swiperSlide } from "vue-awesome-swiper"
+import axios from 'axios';
+import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, addToCartUrl, getHeader} from 'src/config';
 
 export default {
   name: 'DetailProduct',
   data () { 
     return {
-      swiperOptionDetail: {
-        pagination: {
-          // slidesPerView: 'auto',
-          centeredSlides: false,
-          spaceBetween: 10,
-          pagination: {
-            el: '.swiper-pagination-detail',
-            clickable: true
-          }
-        }
-      },
-      colorSelected: '',
-      colorOptions: ['Merah', 'Hitam', 'Putih', 'Navy'],
-      sizeSelected: '',
-      sizeOptions: ['M','L','XL']
+      // Image Gallery
+      // swiperOptionDetail: {
+      //   pagination: {
+      //     // slidesPerView: 'auto',
+      //     centeredSlides: false,
+      //     spaceBetween: 10,
+      //     pagination: {
+      //       el: '.swiper-pagination-detail',
+      //       clickable: true
+      //     }
+      //   }
+      // },
+      // Product
+      dataProduct: [],
+      dataCategory: [],
+      dataBrand: [],
+      // Product Option
+      inputOptions: [],
+      optionValueSelected: [],
+      qty: 1,
+      // Product Variant
+      productVariant: [],
+      // Extra
+      confirmOrder: false,
+      user: null,
     } 
+  },
+  mounted () {
+    this.getProductDetail();
+  },
+  methods: {
+    getProductDetail () {
+
+        axios.get( catalogProductUrl + '/' + this.$route.params.id, { headers: getHeader() } )
+          .then(response => {
+            console.log(response)
+
+            if (response.status === 200) {
+              this.dataProduct = response.data.data;
+
+              this.category_name = this.categoryProduct(this.dataProduct.category_id);
+              this.brand_name = this.brandProduct(this.dataProduct.brand_id);
+
+              if(this.dataProduct.product_type === 'Variant Product'){
+                this.getInputOptions();
+              }
+            }
+
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response)
+            }
+          })
+
+    },
+    categoryProduct(id){
+
+        axios.get( catalogCategoryUrl + '/' + id, { headers: getHeader() } )
+          .then(response => {
+            console.log(response)
+
+            if (response.status === 200) {
+              this.dataCategory = response.data.data;
+            }
+
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response)
+            }
+          })
+
+    },
+    brandProduct(id){
+
+        axios.get( catalogBrandUrl + '/' + id, { headers: getHeader() } )
+          .then(response => {
+            console.log(response)
+
+            if (response.status === 200) {
+              this.dataBrand = response.data.data;
+            }
+
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response)
+            }
+          })
+
+    },
+    getInputOptions() {
+
+        let productOptions = this.dataProduct.product_options;
+
+        for(var i=0; i<productOptions.length; i++){
+
+          //alert(productOptions[i].option_name);
+          this.inputOptions.push({
+            optionTitle: productOptions[i].option_name,
+            optionModel: '',
+            optionValue: [],
+          });
+
+          for(var val=0; val<productOptions[i].values.length; val++){
+
+            this.inputOptions[i].optionValue.push({label: productOptions[i].values[val].value_name, value: productOptions[i].values[val].value_name});
+
+          }
+
+        }
+
+    },
+    getProductVariant () {
+      // Get option value
+      let val = [];
+      let productOptionSelected = [];
+
+      for(var key in this.inputOptions){
+
+        productOptionSelected.push({
+          option: this.inputOptions[key].optionTitle,
+          value: this.inputOptions[key].optionModel,
+        });
+        val.push(this.inputOptions[key].optionModel);
+
+      }
+
+      let optionSelected = val.join('');
+
+      this.optionValueSelected = JSON.stringify(productOptionSelected);
+
+      // Check product sku with option value     
+      let varPro = JSON.parse(JSON.stringify(this.dataProduct.product_variants));
+
+      this.productVariant = [];
+      //let storeVar = [];
+      for (var i = 0, l = varPro.length; i < l; i++) {
+          
+          if(optionSelected.toUpperCase() === varPro[i].sku.replace(this.dataProduct.sku,'')){
+
+            // store product variant
+            this.productVariant.push({
+              id: varPro[i].id,
+              product_id: varPro[i].product_id,
+              sku: varPro[i].sku,
+              price: varPro[i].price,
+              stock: varPro[i].stock,
+            })
+
+          }
+
+      }
+    },
+    addToCart () {
+
+        // let postData = new FormData();
+        // postData.set('product_id', this.dataProduct.id);
+        // postData.set('product_name', this.dataProduct.product_name);
+        // postData.set('product_sku_id', this.productVariant[0].id);
+        // postData.set('product_sku', this.productVariant[0].sku);
+        // postData.set('options', this.optionValueSelected);
+        // postData.set('qty', this.qty);
+
+        // axios.post(addToCartUrl, postData, {headers: getHeader()}).then(response => {
+
+        //   if(response.status === 200){
+        //     this.$q.notify({position: 'top', color: 'dark', message: 'Produk Ditambahkan ke Keranjang'});
+        //   }
+
+        // }).catch(error => {
+          
+        //   if (error.response) {
+        //     console.log(error.response)
+        //   }
+        
+        // })
+        this.user = JSON.parse(JSON.stringify(window.localStorage.getItem('profileUser'))); 
+
+        alert(this.user[0].name);
+
+    },
+    formatPrice(value) {
+        let val = (value/1).toFixed(0).replace('.', ',')
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
   },
   components: { swiper, swiperSlide }
 }

@@ -1,32 +1,30 @@
+import DetailProductPage from 'pages/DetailProduct';
+
 
 const routes = [
   {
-    path: '/wakwaw',
-    component: () => import('layouts/MyLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/Index.vue') }
-    ]
-  },
-  {
     path: '/',
-    component: () => import('layouts/Login.vue'),
-    children: [
-      { path: '', component: () => import('pages/Auth/Login.vue') }
-    ]
-  },
-  {
-    path: '/storefront',
+    meta: {
+      requiresAuth: true,
+    },
     component: () => import('layouts/Storefront.vue'),
     children: [
       { path: '', component: () => import('pages/Storefront.vue') }
     ]
   },
   {
-    path: '/detail',
-    component: () => import('layouts/DetailProduct.vue'),
+    path: '/login',
+    component: () => import('layouts/Login.vue'),
     children: [
-      { path: '', component: () => import('pages/DetailProduct.vue') }
+      { path: '', component: () => import('pages/Auth/Login.vue') }
     ]
+  },
+  {
+    path: '/detail/:id',
+    component: DetailProductPage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/cart',

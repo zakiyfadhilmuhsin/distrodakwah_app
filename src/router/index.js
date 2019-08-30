@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { LocalStorage } from 'quasar'
 
 import routes from './routes'
 
@@ -22,5 +23,38 @@ export default function (/* { store, ssrContext } */) {
     base: process.env.VUE_ROUTER_BASE
   })
 
+
+  Router.beforeEach((to, from, next) => {
+    console.log(to)
+
+    if (to.matched.some(item => item.meta.requiresAuth)) {
+
+      // const authUser = JSON.parse(window.localStorage.getItem('authUser'))
+
+      if (LocalStorage.has('authUser')) {
+
+        if (LocalStorage.getItem('authUser') && LocalStorage.getItem('authUser').access_token !== 'undefined') {
+          
+          //console.log(authUser.access_token)
+          next()
+        
+        }
+
+      } else {
+
+        next({
+          path: '/login',
+          query: { redirect: to.fullPath }
+        })
+        
+      }
+
+    } else {
+
+      next()
+    
+    }
+  })
+  
   return Router
 }

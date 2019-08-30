@@ -11,7 +11,7 @@
         >
           <q-icon name="arrow_back" color="white" /> 
         </q-btn>
-        <q-title><span style="font-size: 16px; font-weight: bold">Pesanan Saya</span></q-title>
+        <q-toolbar-title><span style="font-size: 16px; font-weight: bold">Pesanan Saya</span></q-toolbar-title>
       </q-toolbar>
     </q-header>
 
@@ -27,7 +27,7 @@
         >
           <q-route-tab
             icon="home"
-            to="/storefront"
+            to="/"
             style="text-transform: capitalize; font-family: 'Open Sans'"
           ><span style="font-size: 10px;">Home</span></q-route-tab>
           <q-route-tab

@@ -1,13 +1,13 @@
 <template>
   <q-layout view="hHh lpR fFf">
 
-    <q-header elevated>
+    <q-header elevated class="mobile-layout-on-desktop">
       <q-toolbar class="bg-orange-8 text-white">
         <q-btn
           flat
           round
           dense
-          to="/storefront"
+          to="/"
         >
           <q-icon name="arrow_back" color="white" /> 
         </q-btn>
@@ -30,11 +30,11 @@
       </q-toolbar>
     </q-header>
 
-    <q-footer class="bg-white text-black" style="border-top: 2px solid #eee">
+    <q-footer class="bg-white text-black mobile-layout-on-desktop" style="border-top: 2px solid #eee">
       <q-toolbar class="bg-white text-black">
-        <q-title>
+        <span>
           <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold">KAMU UNTUNG 20.000</h4>
-        </q-title>
+        </span>
         <q-space />
         <q-btn
           flat
@@ -46,7 +46,7 @@
       </q-toolbar>
     </q-footer>
 
-    <q-page-container>
+    <q-page-container class="mobile-layout-on-desktop">
       <router-view />
       <q-dialog v-model="confirmOrder">
         <q-card style="width: 800px; max-width: 90vw;">
