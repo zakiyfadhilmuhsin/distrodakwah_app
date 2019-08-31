@@ -306,6 +306,7 @@ export default {
   },
   mounted () {
     this.getProductDetail();
+    this.user = JSON.parse(window.localStorage.getItem('profileUser'));
   },
   methods: {
     getProductDetail () {
@@ -434,30 +435,30 @@ export default {
     },
     addToCart () {
 
-        // let postData = new FormData();
-        // postData.set('product_id', this.dataProduct.id);
-        // postData.set('product_name', this.dataProduct.product_name);
-        // postData.set('product_sku_id', this.productVariant[0].id);
-        // postData.set('product_sku', this.productVariant[0].sku);
-        // postData.set('options', this.optionValueSelected);
-        // postData.set('qty', this.qty);
+        let postData = new FormData();
+        postData.set('product_id', this.dataProduct.id);
+        postData.set('product_name', this.dataProduct.product_name);
+        postData.set('customer_id', this.user[0].id);
+        postData.set('customer_name', this.user[0].customer_name);
+        postData.set('customer_email', this.user[0].email);
+        postData.set('product_sku_id', this.productVariant[0].id);
+        postData.set('product_sku', this.productVariant[0].sku);
+        postData.set('options', this.optionValueSelected);
+        postData.set('qty', this.qty);
 
-        // axios.post(addToCartUrl, postData, {headers: getHeader()}).then(response => {
+        axios.post(addToCartUrl, postData, {headers: getHeader()}).then(response => {
 
-        //   if(response.status === 200){
-        //     this.$q.notify({position: 'top', color: 'dark', message: 'Produk Ditambahkan ke Keranjang'});
-        //   }
+          if(response.status === 200){
+            this.$q.notify({position: 'top', color: 'dark', message: 'Produk Ditambahkan ke Keranjang'});
+          }
 
-        // }).catch(error => {
+        }).catch(error => {
           
-        //   if (error.response) {
-        //     console.log(error.response)
-        //   }
+          if (error.response) {
+            console.log(error.response)
+          }
         
-        // })
-        this.user = JSON.parse(JSON.stringify(window.localStorage.getItem('profileUser'))); 
-
-        alert(this.user[0].name);
+        })
 
     },
     formatPrice(value) {
