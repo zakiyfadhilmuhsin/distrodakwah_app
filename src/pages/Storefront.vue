@@ -294,7 +294,7 @@ export default {
             setTimeout(() => {
               this.innerLoading = false;
               this.featuredImageShow = true;
-            }, 2000);
+            }, 1000);
           }
 
         })

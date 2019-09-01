@@ -39,6 +39,7 @@ module.exports = function (ctx) {
         'QDrawer',
         'QPageContainer',
         'QPage',
+        'QPageSticky',
         'QToolbar',
         'QToolbarTitle',
         'QBtn',
@@ -71,6 +72,8 @@ module.exports = function (ctx) {
         'QInnerLoading',
         'QSpinner',
         'QSpinnerIos',
+        'QFab',
+        'QFabAction',
       ],
 
       directives: [

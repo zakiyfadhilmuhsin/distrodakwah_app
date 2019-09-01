@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hHh lpR fFf">
 
-    <q-header elevated>
+    <q-header elevated class="mobile-layout-on-desktop">
       <q-toolbar class="bg-orange-8 text-white">
         <q-btn
           flat
@@ -15,7 +15,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-footer>
+    <q-footer class="mobile-layout-on-desktop">
       <center>
         <q-tabs
           dense
@@ -54,7 +54,7 @@
       </center>
     </q-footer>
 
-    <q-page-container>
+    <q-page-container class="mobile-layout-on-desktop">
       <router-view />
     </q-page-container>
 

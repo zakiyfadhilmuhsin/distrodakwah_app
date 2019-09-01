@@ -1,21 +1,21 @@
 <template>
   <q-layout view="hHh lpR fFf">
 
-    <q-header elevated>
+    <q-header elevated class="mobile-layout-on-desktop">
       <q-toolbar class="bg-orange-8 text-white">
         <q-btn
           flat
           round
           dense
-          to="/detail"
+          to="/"
         >
           <q-icon name="arrow_back" color="white" /> 
         </q-btn>
-        <q-title><span style="font-size: 16px; font-weight: bold">Keranjang Belanja</span></q-title>
+        <q-toolbar-title><span style="font-size: 16px; font-weight: bold">Keranjang Belanja</span></q-toolbar-title>
       </q-toolbar>
     </q-header>
 
-    <q-footer>
+    <q-footer class="mobile-layout-on-desktop">
       <center>
         <q-tabs
           dense
@@ -27,7 +27,7 @@
         >
           <q-route-tab
             icon="home"
-            to="/storefront"
+            to="/"
             style="text-transform: capitalize; font-family: 'Open Sans'"
           ><span style="font-size: 10px;">Home</span></q-route-tab>
           <q-route-tab
@@ -67,7 +67,7 @@
       </q-toolbar>
     </q-footer> -->
 
-    <q-page-container>
+    <q-page-container class="mobile-layout-on-desktop">
       <router-view />
     </q-page-container>
 

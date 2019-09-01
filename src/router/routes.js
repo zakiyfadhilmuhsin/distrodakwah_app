@@ -1,4 +1,5 @@
 import DetailProductPage from 'pages/DetailProduct';
+import ListCustomer from 'pages/ResellerArea/ListCustomer';
 
 
 const routes = [
@@ -74,7 +75,11 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/ResellerArea/DetailOrder.vue') }
     ]
-  }
+  },
+  {
+    path: '/listCustomer',
+    component: ListCustomer,
+  },
 ]
 
 // Always leave this as last one

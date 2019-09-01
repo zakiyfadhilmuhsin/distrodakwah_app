@@ -42,7 +42,7 @@
             <h5 style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold">Rp296.000</h5>
           </div>
         </div>
-        <div class="row q-px-lg items-center"">
+        <div class="row q-px-lg items-center">
           <div class="col-xs-8">
             <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Kode Unik</h6>
           </div>

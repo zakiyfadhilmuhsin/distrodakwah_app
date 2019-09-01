@@ -13,11 +13,22 @@ export const routerUrl = apiDomain + 'v1/routerformat'
 export const forgotPassword = apiDomain + 'api/forgot-password'
 export const resetPassword = apiDomain + 'api/reset-password'
 
+// From Catalog Service
 export const catalogProductUrl = apiDomain + '/catalog/products'
 export const catalogBrandUrl = apiDomain + '/catalog/brands'
 export const catalogCategoryUrl = apiDomain + '/catalog/categories'
 
+// From Cart Service
+export const getCartUrl = apiDomain + '/cart/get-cart'
 export const addToCartUrl = apiDomain + '/cart/add-to-cart'
+export const removeProductCartUrl = apiDomain + '/cart/remove-product'
+
+// From Shipping Service
+export const getCustomerUrl = apiDomain + '/shipping/get-customer'
+export const addNewCustomerUrl = apiDomain + '/shipping/add-new-customer'
+export const getProvinceUrl = apiDomain + '/shipping/province'
+export const getCityUrl = apiDomain + '/shipping/city'
+export const getSubdistrictUrl = apiDomain + '/shipping/subdistrict'
 
 export const getHeader = function () {
   // debugger

@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-  	<q-footer>
+  	<q-footer class="mobile-layout-on-desktop">
 	    <center>
 	      <q-tabs
 	        dense
@@ -17,12 +17,12 @@
 	        ><span style="font-size: 10px;">Home</span></q-route-tab>
 	        <q-route-tab
 	          icon="receipt"
-	          to="/storefront"
+	          to="/"
 	          style="text-transform: capitalize; font-family: 'Open Sans'"
 	        ><span style="font-size: 10px;">Order</span></q-route-tab>
 	        <q-route-tab
 	          icon="local_mall"
-	          to="/storefront"
+	          to="/cart"
 	          style="text-transform: capitalize; font-family: 'Open Sans'"
 	        ><span style="font-size: 10px;">Cart</span></q-route-tab>
 	        <q-route-tab
@@ -32,14 +32,14 @@
 	        ><span style="font-size: 10px;">Profile</span></q-route-tab>
 	        <q-route-tab
 	          icon="verified_user"
-	          to="/storefront"
+	          to="/"
 	          style="text-transform: capitalize; font-family: 'Open Sans'"
 	        ><span style="font-size: 10px;">Support</span></q-route-tab>
 	      </q-tabs>
 	    </center>
 	</q-footer>
 
-    <q-page-container>
+    <q-page-container class="mobile-layout-on-desktop">
       <router-view />
     </q-page-container>
   </q-layout>

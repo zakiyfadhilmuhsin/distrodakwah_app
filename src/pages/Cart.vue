@@ -1,35 +1,33 @@
 <template>
-  <q-page>
+  <q-page class="bg-white">
     <div class="bg-grey-3" style="height: 100%">
       <div style="background-color: white; margin-bottom: 5px; padding: 18px 0 15px 0">
-        <div class="row q-px-lg">
-          <div class="col-3">
-            <img src="~/assets/images/product/247merah-square.png" width="100%" />
+        <template v-if="totalItem > 0">
+          <div class="row q-px-lg" v-for="(item, index) in items" :key="index">
+            <div class="col-3">
+              <img :src="item.product_image" width="100%" style="border: 1px solid whitesmoke" />
+            </div>
+            <div class="col-7" style="padding: 0 15px">
+              <h5 style="margin: 0; font-size: 14px; font-weight: bold">{{ item.product_name }}</h5>
+              <h6 style="margin: -15px 0; font-size: 12px;"><span v-for="(opt, i) in item.options" :key="i">{{opt.option + ': ' + opt.value}} </span></h6>
+              <h6 style="margin: -15px 0; font-size: 12px;">Qty {{ item.qty }} x Rp{{ formatPrice(item.price) }}</h6>
+              <h6 style="margin: -15px 0; font-size: 12px;" class="text-orange-8">Rp{{ formatPrice(item.qty * item.price) }}</h6>
+            </div>
+            <div class="col-2 text-right self-center">
+              <q-btn flat round icon="delete_forever" style="font-size: 10px" @click="removeProduct(item.product_id, item.qty, item.price)" />
+            </div>
           </div>
-          <div class="col-7" style="padding: 0 15px">
-            <h5 style="margin: 0; font-size: 14px; font-weight: bold">Kaos Dakwah AM250</h5>
-            <h6 style="margin: -15px 0; font-size: 12px;">Varian : Merah, L</h6>
-            <h6 style="margin: -15px 0; font-size: 12px;">Qty 3 x Rp80.000</h6>
-            <h6 style="margin: -15px 0; font-size: 12px;" class="text-orange-8">Rp240.000</h6>
+        </template>
+        <template v-else>
+          <div class="row q-pa-lg">
+            <div class="col">
+              <center>
+                <img src="http://balitakita.com/packages/yusidabcs/checkout/img/empty-cart-vector.png" width="85" />
+                <div>Yah, Keranjang Masih Kosong.. Belanja Yuk!</div>
+              </center>
+            </div>
           </div>
-          <div class="col-2 text-right self-center">
-            <q-icon name="delete_forever" style="font-size: 20px" />
-          </div>
-        </div>
-        <div class="row q-px-lg">
-          <div class="col-3">
-            <img src="~/assets/images/product/247merah-square.png" width="100%" />
-          </div>
-          <div class="col-7" style="padding: 0 15px">
-            <h5 style="margin: 0; font-size: 14px; font-weight: bold">Kaos Dakwah AM250</h5>
-            <h6 style="margin: -15px 0; font-size: 12px;">Varian : Merah, L</h6>
-            <h6 style="margin: -15px 0; font-size: 12px;">Qty 3 x Rp80.000</h6>
-            <h6 style="margin: -15px 0; font-size: 12px;" class="text-orange-8">Rp240.000</h6>
-          </div>
-          <div class="col-2 text-right self-center">
-            <q-icon name="delete_forever" style="font-size: 20px" />
-          </div>
-        </div>
+        </template>
       </div>
       <div style="background-color: white; margin-bottom: 5px">
         <div class="row q-pa-xs items-center">
@@ -50,11 +48,11 @@
         <div class="row q-px-lg items-center" style="padding-top: 15px; padding-bottom: 15px">
           <div class="col">
             <h6 style="font-size: 16px; margin: 0; font-family: 'Open Sans'">Total Item</h6>
-            <h6 style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold">3</h6>
+            <h6 style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold">{{ totalItem }}</h6>
           </div>
           <div class="col">
             <h6 style="font-size: 16px; margin: 0; font-family: 'Open Sans'">Subtotal</h6>
-            <h6 style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold">Rp480.000</h6>
+            <h6 style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold">Rp{{ formatPrice(subTotal) }}</h6>
           </div>
         </div>
       </div>
@@ -94,11 +92,132 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { getCartUrl, catalogProductUrl, removeProductCartUrl, getHeader } from 'src/config';
+
 export default {
   data () {
     return {
+      // Data Keranjang/Cart
+      cartData: [],
+      items: [],
+      totalItem: 0,
+      subTotal: null,
+      // Donasi
       donasi_act: false,
       donasi_rq: false,
+      // User
+      user: null,
+    }
+  },
+  created () {
+    this.user = JSON.parse(window.localStorage.getItem('profileUser'));
+  },
+  mounted () {
+    this.getCartData();
+  },
+  methods: {
+    getCartData () {
+      this.cartData = [];
+      this.items = [];
+
+      axios.get( getCartUrl + '/' + this.user[0].id, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+
+            this.cartData = response.data.data;
+
+            for(let i=0; i<this.cartData.cart_detail.length; i++){
+              // alert(this.cartData.cart_detail[i].product_id);
+              axios.get(catalogProductUrl + '/' + this.cartData.cart_detail[i].product_id, { headers: getHeader() } )
+                .then(response => {
+
+                  let product_name = response.data.data.product_name;
+                  let product_image = response.data.data.featured_image;
+                  let qty = this.cartData.cart_detail[i].qty;
+                  let product_id = this.cartData.cart_detail[i].product_id;
+
+                  if(this.cartData.cart_detail[i].product_sku_id !== null){
+
+                    axios.get(catalogProductUrl + '/' + this.cartData.cart_detail[i].product_id + '/' + this.cartData.cart_detail[i].product_sku_id, { headers: getHeader() } )
+                      .then(response => {
+
+                        // let options = JSON.parse(this.cartData.cart_detail[i].options);
+                        // for(var opt=0; opt<options.length; opt++){
+                        //   console.log(options[opt].option + 'adalah' + options[opt].value);
+                        // }
+                        
+                        this.items.push({
+                            product_id: product_id,
+                            product_name: product_name,
+                            product_image: product_image,
+                            price: response.data.data.price,
+                            options: JSON.parse(this.cartData.cart_detail[i].options),
+                            qty: qty,
+                        });
+
+                      }).catch(error => {
+
+                        if (error.response) {
+                          console.log(error.response)
+                        }
+
+                      })
+
+                  }else{
+
+                    this.items.push({
+                        product_id: product_id,
+                        product_name: product_name,
+                        product_image: product_image,
+                        price: response.data.data.price,
+                        qty: qty,
+                    });
+
+                  }
+
+                }).catch(error => {
+
+                  if (error.response) {
+                    console.log(error.response)
+                  }
+
+                })
+
+            }
+
+          }
+
+          this.totalItem = this.cartData.cart_detail.length;
+          this.subTotal = this.cartData.total_amount;
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+    },
+    formatPrice(value) {
+        let val = (value/1).toFixed(0).replace('.', ',')
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
+    removeProduct(id, qty, price) {
+
+        axios.delete( removeProductCartUrl + '/' + this.user[0].id + '/' + id + '/' + qty + '/' + price, { headers: getHeader() } )
+          .then(response => {
+            console.log(response)
+            if (response.status === 200) {
+              this.getCartData();
+            }
+          }).catch(error => {
+            if (error.response) {
+              console.log(error.response)
+            }
+          })
+
     }
   }
 }

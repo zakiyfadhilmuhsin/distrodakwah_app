@@ -149,7 +149,7 @@
                   <h4 class="price-title-small-text">Rincian Produk</h4>
                 </div>
                 <div class="col text-right" style="padding-top: 5px">
-                  <q-btn flat class="bg-red text-white" size="sm" label="Salin" />
+                  <q-btn flat class="bg-red text-white" size="sm" label="Salin" @click="doCopy" />
                 </div>
               </div>
               <p v-html="dataProduct.product_description"></p>
@@ -268,10 +268,14 @@
 </style>
 
 <script>
+import Vue from 'vue'
 import "swiper/dist/css/swiper.css"
 import { swiper, swiperSlide } from "vue-awesome-swiper"
 import axios from 'axios';
 import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, addToCartUrl, getHeader} from 'src/config';
+import VueClipboard from 'vue-clipboard2'
+
+Vue.use(VueClipboard);
 
 export default {
   name: 'DetailProduct',
@@ -293,6 +297,7 @@ export default {
       dataProduct: [],
       dataCategory: [],
       dataBrand: [],
+      productDesc: null,
       // Product Option
       inputOptions: [],
       optionValueSelected: [],
@@ -304,9 +309,11 @@ export default {
       user: null,
     } 
   },
+  created () {
+    this.user = JSON.parse(window.localStorage.getItem('profileUser'));
+  },
   mounted () {
     this.getProductDetail();
-    this.user = JSON.parse(window.localStorage.getItem('profileUser'));
   },
   methods: {
     getProductDetail () {
@@ -320,6 +327,8 @@ export default {
 
               this.category_name = this.categoryProduct(this.dataProduct.category_id);
               this.brand_name = this.brandProduct(this.dataProduct.brand_id);
+
+              this.productDesc = this.dataProduct.product_description;
 
               if(this.dataProduct.product_type === 'Variant Product'){
                 this.getInputOptions();
@@ -434,17 +443,28 @@ export default {
       }
     },
     addToCart () {
-
+        
         let postData = new FormData();
-        postData.set('product_id', this.dataProduct.id);
-        postData.set('product_name', this.dataProduct.product_name);
-        postData.set('customer_id', this.user[0].id);
-        postData.set('customer_name', this.user[0].customer_name);
-        postData.set('customer_email', this.user[0].email);
-        postData.set('product_sku_id', this.productVariant[0].id);
-        postData.set('product_sku', this.productVariant[0].sku);
-        postData.set('options', this.optionValueSelected);
-        postData.set('qty', this.qty);
+
+        if(this.dataProduct.product_type === 'Variant Product'){
+          postData.set('product_id', this.dataProduct.id);
+          // Post Data Product Variant
+          postData.set('product_sku_id', this.productVariant[0].id);
+          postData.set('product_sku', this.productVariant[0].sku);
+          postData.set('product_sku_price', this.productVariant[0].price);
+          postData.set('options', this.optionValueSelected);
+          postData.set('qty', this.qty);
+          postData.set('customer_id', this.user[0].id);
+          postData.set('customer_name', this.user[0].name);
+          postData.set('customer_email', this.user[0].email);
+        }else{
+          postData.set('product_id', this.dataProduct.id);
+          postData.set('product_sku_id', 0);
+          postData.set('qty', this.qty);
+          postData.set('customer_id', this.user[0].id);
+          postData.set('customer_name', this.user[0].name);
+          postData.set('customer_email', this.user[0].email);
+        }
 
         axios.post(addToCartUrl, postData, {headers: getHeader()}).then(response => {
 
@@ -465,6 +485,17 @@ export default {
         let val = (value/1).toFixed(0).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
+    doCopy: function () {
+      var h2p = require('html2plaintext');
+
+      this.$copyText(h2p(this.productDesc)).then(function (e) {
+        alert('Copied')
+        console.log(e)
+      }, function (e) {
+        alert('Can not copy')
+        console.log(e)
+      })
+    }
   },
   components: { swiper, swiperSlide }
 }

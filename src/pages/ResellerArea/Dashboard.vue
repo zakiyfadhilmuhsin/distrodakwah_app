@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="bg-white">
   	<div class="row dashboard-section">
   		<div class="col">
         <center>
@@ -105,7 +105,7 @@
 
                 <q-separator />
 
-                <q-item dense clickable v-ripple>
+                <q-item dense clickable v-ripple to="/listCustomer">
                   <q-item-section avatar>
                     <q-icon name="supervised_user_circle" />
                   </q-item-section>
@@ -173,10 +173,9 @@
                   </q-item-section>
                 </q-item>
               </q-list>
-            </div>
           </div>
         </div>
-    	</div>
+      </div>
     </div>
   </q-page>
 </template>

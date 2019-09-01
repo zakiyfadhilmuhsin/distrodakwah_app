@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="bg-white">
     <div class="bg-grey-3" style="height: 100%">
       <div style="background-color: white; margin-bottom: 5px; padding: 18px 0 15px 0">
         <div class="rpw q-px-lg">
@@ -9,7 +9,7 @@
               <q-checkbox keep-color dense color="orange-8" v-model="addressSelect" style="margin-bottom: 10px"><h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px; font-weight: bold">Abdullah - 0821233344455</h6><h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Perumahan Taman Adhidarma No B3, Jl Serbaguna, Kelurahan Klayan, Kecamatan Gunungjati, Kabupaten Cirebon</h6></q-checkbox>
               <h6 style="font-size: 12px; margin: 0 0 8px 0; font-family: 'Open Sans'; line-height: 18px" class="text-red">Lihat semua daftar pelanggan</h6> -->
               <center>
-              <q-btn flat size="sm" class="bg-orange-8 text-white">Pilih Pelanggan</q-btn><span style="font-size: 10px; margin: 0; padding: 0 10px">atau</span><q-btn outline size="sm" color="black">Tambah Pelanggan</q-btn>
+              <q-btn flat size="sm" class="bg-orange-8 text-white" @click="selectCustomer = true">Pilih Pelanggan</q-btn><span style="font-size: 10px; margin: 0; padding: 0 10px">atau</span><q-btn outline size="sm" color="black">Tambah Pelanggan</q-btn>
               </center>
             </div>
           </div>
@@ -78,6 +78,22 @@
         </div>
       </div>
     </div>
+
+    <q-dialog v-model="selectCustomer">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Pilih Pelanggan</div>
+        </q-card-section>
+
+        <q-card-section>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -86,7 +102,8 @@ export default {
   data () {
     return {
       addressSelect: true,
-      ekspedisiSelected: ''
+      ekspedisiSelected: '',
+      selectCustomer: false,
     }
   }
 }
