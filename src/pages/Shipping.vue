@@ -21,7 +21,7 @@
         <q-btn
           flat
           class="bg-orange-8 text-white full-width"
-          to="orderSummary"
+          @click="reviewOrder"
         >
           Lihat Ringkasan Pesanan
         </q-btn>
@@ -98,7 +98,7 @@
                 <q-list dense>
                   <q-item v-for="(cost, index) in dataCost" :key="index">
                     <q-item-section side>
-                      <q-radio keep-color color="orange-8" dense v-model="serviceSelected" :val="cost.service" />
+                      <q-radio keep-color color="orange-8" dense v-model="costShipping" :val="cost.cost[0].value" @input="serviceSelected = cost.service" />
                     </q-item-section>
                     <!-- {{ dataCost.results.name }} -->
                     <q-item-section>{{ courierName }} {{ cost.service }}<br/><span style="font-size: 10px">Rp{{ formatPrice(cost.cost[0].value) }} <span v-if="cost.cost[0].etd !== ''">{{ '(Estimasi ' + cost.cost[0].etd + ' Hari)' }}</span></span></q-item-section>
@@ -225,7 +225,7 @@
 
 <script>
 import axios from 'axios';
-import { getCustomerUrl, showCustomerUrl, addNewCustomerUrl, getProvinceUrl, getCityUrl, getSubdistrictUrl, getCostShippingUrl, getHeader } from 'src/config';
+import { getCustomerUrl, showCustomerUrl, addNewCustomerUrl, addShippingToCart, getProvinceUrl, getCityUrl, getSubdistrictUrl, getCostShippingUrl, getHeader } from 'src/config';
 
 export default {
   data () {
@@ -254,6 +254,7 @@ export default {
       selectCustomerDialog: false,
       courierSelected: '',
       serviceSelected: '',
+      costShipping: '',
     }
   },
   created () {
@@ -439,6 +440,30 @@ export default {
         let val = (value/1).toFixed(0).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
+    reviewOrder () {
+
+        let post = new FormData();
+        post.set('shipment_fee', this.costShipping);
+        post.set('courier_name', this.courierName);
+        post.set('service_name', this.serviceSelected);
+        post.set('customer_address_id', this.dataCustomerSelected.id);
+
+        axios.post( addShippingToCart + '/' + this.user[0].id, post, { headers: getHeader() } )
+          .then(response => {
+            console.log(response)
+
+            if (response.status === 200) {
+              this.$router.push('/orderSummary');
+            }
+
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response)
+            }
+          })
+
+    }
   }
 }
 </script>

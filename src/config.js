@@ -22,6 +22,7 @@ export const catalogCategoryUrl = apiDomain + '/catalog/categories'
 export const getCartUrl = apiDomain + '/cart/get-cart'
 export const addToCartUrl = apiDomain + '/cart/add-to-cart'
 export const removeProductCartUrl = apiDomain + '/cart/remove-product'
+export const addShippingToCart = apiDomain + '/cart/add-shipping-to-cart'
 
 // From Shipping Service
 export const getCustomerUrl = apiDomain + '/shipping/get-customer'

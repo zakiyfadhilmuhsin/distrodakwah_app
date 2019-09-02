@@ -32,6 +32,7 @@
       <q-page class="bg-white">
         <div class="bg-grey-3" style="height: 100%">
           <div style="background-color: white; margin-bottom: 5px; padding: 13px 0 10px 0">
+            {{cartData}}
             <div class="row q-px-md">
               <div class="col">
                 <h5 class="title-text">Rincian Pesanan</h5>
@@ -143,12 +144,112 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { getCartUrl, catalogProductUrl, getHeader } from 'src/config';
+
 export default {
   data () {
     return {
+      cartData: [],
+      items: [],
       addressSelect: true,
       ekspedisiSelected: ''
     }
+  },
+  created () {
+    this.user = JSON.parse(window.localStorage.getItem('profileUser'));
+  },
+  mounted () {
+    this.getCartData();
+  },
+  methods: {
+    getCartData () {
+      this.cartData = [];
+      this.items = [];
+
+      axios.get( getCartUrl + '/' + this.user[0].id, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+
+            this.cartData = response.data.data;
+
+            for(let i=0; i<this.cartData.cart_detail.length; i++){
+              // alert(this.cartData.cart_detail[i].product_id);
+              axios.get(catalogProductUrl + '/' + this.cartData.cart_detail[i].product_id, { headers: getHeader() } )
+                .then(response => {
+
+                  let product_name = response.data.data.product_name;
+                  let product_image = response.data.data.featured_image;
+                  let qty = this.cartData.cart_detail[i].qty;
+                  let product_id = this.cartData.cart_detail[i].product_id;
+
+                  if(this.cartData.cart_detail[i].product_sku_id !== null){
+
+                    axios.get(catalogProductUrl + '/' + this.cartData.cart_detail[i].product_id + '/' + this.cartData.cart_detail[i].product_sku_id, { headers: getHeader() } )
+                      .then(response => {
+
+                        // let options = JSON.parse(this.cartData.cart_detail[i].options);
+                        // for(var opt=0; opt<options.length; opt++){
+                        //   console.log(options[opt].option + 'adalah' + options[opt].value);
+                        // }
+                        
+                        this.items.push({
+                            product_id: product_id,
+                            product_name: product_name,
+                            product_image: product_image,
+                            price: response.data.data.price,
+                            options: JSON.parse(this.cartData.cart_detail[i].options),
+                            qty: qty,
+                        });
+
+                      }).catch(error => {
+
+                        if (error.response) {
+                          console.log(error.response)
+                        }
+
+                      })
+
+                  }else{
+
+                    this.items.push({
+                        product_id: product_id,
+                        product_name: product_name,
+                        product_image: product_image,
+                        price: response.data.data.price,
+                        qty: qty,
+                    });
+
+                  }
+
+                }).catch(error => {
+
+                  if (error.response) {
+                    console.log(error.response)
+                  }
+
+                })
+
+            }
+
+          }
+
+          this.totalItem = this.cartData.cart_detail.length;
+          this.subTotal = this.cartData.total_amount;
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+    },
+    formatPrice(value) {
+        let val = (value/1).toFixed(0).replace('.', ',')
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
   }
 }
 </script>
