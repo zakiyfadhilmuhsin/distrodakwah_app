@@ -138,7 +138,7 @@
             <q-btn
               flat
               class="bg-orange-8 text-white full-width"
-              to="/shipping"
+              @click="setShippingAddress"
             >
               Atur Alamat Pengiriman
             </q-btn>
@@ -276,6 +276,13 @@ export default {
             }
           })
 
+    },
+    setShippingAddress () {
+      if(this.totalItem > 0){
+        this.$router.push('/shipping');
+      }else{
+        alert('Keranjang Belanja Masih Kosong!');
+      }
     }
   }
 }
