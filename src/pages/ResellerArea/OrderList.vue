@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="bg-white">
     <div class="row order-list-section">
       <div class="col">
         <q-tabs

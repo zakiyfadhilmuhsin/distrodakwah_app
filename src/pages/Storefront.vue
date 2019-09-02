@@ -81,16 +81,8 @@
     <q-page-container>
       <div class="bg-grey-3" style="height: 100%">
         <div style="background-color: white; margin-bottom: 10px" class="q-pb-md">
-          <div class="row q-pa-xs">
-            <div class="col">
-              <h5 class="promo-text">Promo</h5>
-            </div>
-            <div class="col text-right">
-              <h5 class="link-text text-orange-9">Lihat Semua</h5>
-            </div>
-          </div>
           <!-- swiper -->
-          <div class="q-pl-md">
+          <div class="q-pa-md">
             <swiper :options="swiperOption">
               <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
               <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
@@ -98,6 +90,14 @@
               <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
             </swiper>
+            <div class="row">
+              <div class="col">
+                <!-- <h5 class="promo-text">Promo</h5> -->
+              </div>
+              <div class="col text-right">
+                <h5 class="link-text text-orange-9" style="margin-bottom: 0">Lihat Semua</h5>
+              </div>
+            </div>
           </div>
         </div>
         <div style="background-color: white; margin-bottom: 10px">

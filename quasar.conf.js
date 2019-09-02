@@ -74,6 +74,7 @@ module.exports = function (ctx) {
         'QSpinnerIos',
         'QFab',
         'QFabAction',
+        'QScrollArea',
       ],
 
       directives: [

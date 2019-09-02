@@ -25,10 +25,13 @@ export const removeProductCartUrl = apiDomain + '/cart/remove-product'
 
 // From Shipping Service
 export const getCustomerUrl = apiDomain + '/shipping/get-customer'
+export const showCustomerUrl = apiDomain + '/shipping/show-customer'
+export const updateCustomerUrl = apiDomain + '/shipping/update-customer'
 export const addNewCustomerUrl = apiDomain + '/shipping/add-new-customer'
 export const getProvinceUrl = apiDomain + '/shipping/province'
 export const getCityUrl = apiDomain + '/shipping/city'
 export const getSubdistrictUrl = apiDomain + '/shipping/subdistrict'
+export const getCostShippingUrl = apiDomain + '/shipping/cost'
 
 export const getHeader = function () {
   // debugger

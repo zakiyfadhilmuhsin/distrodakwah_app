@@ -1,5 +1,8 @@
 import DetailProductPage from 'pages/DetailProduct';
-import ListCustomer from 'pages/ResellerArea/ListCustomer';
+import ListCustomerPage from 'pages/ResellerArea/ListCustomer';
+import ShippingPage from 'pages/Shipping';
+import OrderSummaryPage from 'pages/OrderSummary';
+import CartPage from 'pages/Cart';
 
 
 const routes = [
@@ -29,24 +32,15 @@ const routes = [
   },
   {
     path: '/cart',
-    component: () => import('layouts/Cart.vue'),
-    children: [
-      { path: '', component: () => import('pages/Cart.vue') }
-    ]
+    component: CartPage,
   },
   {
     path: '/shipping',
-    component: () => import('layouts/Shipping.vue'),
-    children: [
-      { path: '', component: () => import('pages/Shipping.vue') }
-    ]
+    component: ShippingPage,
   },
   {
     path: '/orderSummary',
-    component: () => import('layouts/OrderSummary.vue'),
-    children: [
-      { path: '', component: () => import('pages/OrderSummary.vue') }
-    ]
+    component: OrderSummaryPage,
   },
   {
     path: '/invoice',
@@ -78,7 +72,7 @@ const routes = [
   },
   {
     path: '/listCustomer',
-    component: ListCustomer,
+    component: ListCustomerPage,
   },
 ]
 

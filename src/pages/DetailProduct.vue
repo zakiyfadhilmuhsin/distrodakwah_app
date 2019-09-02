@@ -47,117 +47,118 @@
     </q-footer>
 
     <q-page-container class="mobile-layout-on-desktop bg-white">
-    	<!-- <swiper :options="swiperOptionDetail">
-        <swiper-slide>
-          <img src="~/assets/images/product/247merah-square.png" width="100%" />
-        </swiper-slide>
-        <swiper-slide>
-          <img src="~/assets/images/product/247merah-square.png" width="100%" />
-        </swiper-slide>
-        <swiper-slide>
-          <img src="~/assets/images/product/247merah-square.png" width="100%" />
-        </swiper-slide>
-        <div class="swiper-pagination-detail" slot="pagination"></div>
-      </swiper> -->
-      <img :src="dataProduct.featured_image" width="100%" />
-      <div class="row q-px-md">
-        <div class="col">
-          <h5 class="category-text">Kategori : <span class="text-red">{{dataCategory.category_name}}</span></h5>
-          <h5 class="category-text">Brand : <span class="text-red">{{dataBrand.brand_name}}</span></h5>
-          <h4 class="product-title-text">{{dataProduct.product_name}}</h4>
+      <q-page>
+        <!-- <swiper :options="swiperOptionDetail">
+          <swiper-slide>
+            <img src="~/assets/images/product/247merah-square.png" width="100%" />
+          </swiper-slide>
+          <swiper-slide>
+            <img src="~/assets/images/product/247merah-square.png" width="100%" />
+          </swiper-slide>
+          <swiper-slide>
+            <img src="~/assets/images/product/247merah-square.png" width="100%" />
+          </swiper-slide>
+          <div class="swiper-pagination-detail" slot="pagination"></div>
+        </swiper> -->
+        <img :src="dataProduct.featured_image" width="100%" />
+        <div class="row q-px-md">
+          <div class="col">
+            <h5 class="category-text">Kategori : <span class="text-red">{{dataCategory.category_name}}</span></h5>
+            <h5 class="category-text">Brand : <span class="text-red">{{dataBrand.brand_name}}</span></h5>
+            <h4 class="product-title-text">{{dataProduct.product_name}}</h4>
 
-          <hr style="margin: 15px 0" />
-          
-          <template v-if="dataProduct.product_type === 'Variant Product'">
-            <!-- Pilih Warna & Ukuran -->
-            <div class="row" style="margin-bottom: 7px" v-for="(opt, index) in inputOptions" :key="index">
-              <div class="col-xs-4">
-                <h5 class="options-title">Pilih {{opt.optionTitle}}</h5>
-              </div>
-              <div class="col-xs-8">
-                <!-- <q-select 
-                  dense
-                  outlined 
-                  color="orange-8" 
-                  options-dense
-                  v-model="opt.optionModel"
-                  :options="opt.optionValue"
-                /> -->
-                <q-btn-toggle
-                  v-model="opt.optionModel"
-                  unelevated
-                  toggle-color="orange-8"
-                  color="white"
-                  text-color="orange-8"
-                  :options="opt.optionValue"
-                  style="border: 1px solid #f57c00"
-                  @input="getProductVariant"
-                />
-              </div>
-            </div>
-            <!-- <div class="row" style="margin-bottom: 7px">
-              <div class="col-xs-4">
-                <h5 class="options-title">Pilih Ukuran</h5>
-              </div>
-              <div class="col-xs-8">
-                <q-select dense outlined color="orange-8" options-dense v-model="sizeSelected" :options="sizeOptions" />
-              </div>
-            </div> -->
-          </template>
-          <div class="row">
-            <div class="col-xs-4">
-              <h5 class="options-title">Qty</h5>
-            </div>
-            <div class="col-xs-8">
-              <q-input type="number" dense outlined color="orange-8" options-dense v-model="qty" style="width: 50px" />
-            </div>
-          </div>
-          <br/>
-
-          <!-- Informasi Harga -->
-          <template v-if="this.dataProduct.product_type === 'Simple Product' || this.productVariant.length > 0">
-            <div class="row">
-              <div class="col-xs-6">
-                <h5 class="price-title-small-text">Harga Konsumen</h5>
-              </div>
-              <div class="col-xs-6">
-                <h5 class="price-title-small-text">Harga Reseller Pro</h5>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-6">
-                <h5 class="price-detail-text" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price)}}</h5>
-                <h5 class="price-detail-text" v-else>Rp{{formatPrice(dataProduct.price)}}</h5>
-              </div>
-              <div class="col-xs-6">
-                <h5 class="price-detail-text text-green">Rp80.000</h5>
-              </div>
-            </div>
-          </template>
-          <div class="row">
-            <div class="col">
-              <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp65.000</b></h4>
-            </div>
-          </div>
-
-          <hr style="margin: 15px 0" />
-
-          <div class="row">
-            <div class="col">
-              <div class="row" style="margin-bottom: 5px">
-                <div class="col">
-                  <h4 class="price-title-small-text">Rincian Produk</h4>
+            <hr style="margin: 15px 0" />
+            
+            <template v-if="dataProduct.product_type === 'Variant Product'">
+              <!-- Pilih Warna & Ukuran -->
+              <div class="row" style="margin-bottom: 7px" v-for="(opt, index) in inputOptions" :key="index">
+                <div class="col-xs-4">
+                  <h5 class="options-title">Pilih {{opt.optionTitle}}</h5>
                 </div>
-                <div class="col text-right" style="padding-top: 5px">
-                  <q-btn flat class="bg-red text-white" size="sm" label="Salin" @click="doCopy" />
+                <div class="col-xs-8">
+                  <!-- <q-select 
+                    dense
+                    outlined 
+                    color="orange-8" 
+                    options-dense
+                    v-model="opt.optionModel"
+                    :options="opt.optionValue"
+                  /> -->
+                  <q-btn-toggle
+                    v-model="opt.optionModel"
+                    unelevated
+                    toggle-color="orange-8"
+                    color="white"
+                    text-color="orange-8"
+                    :options="opt.optionValue"
+                    style="border: 1px solid #f57c00"
+                    @input="getProductVariant"
+                  />
                 </div>
               </div>
-              <p v-html="dataProduct.product_description"></p>
+              <!-- <div class="row" style="margin-bottom: 7px">
+                <div class="col-xs-4">
+                  <h5 class="options-title">Pilih Ukuran</h5>
+                </div>
+                <div class="col-xs-8">
+                  <q-select dense outlined color="orange-8" options-dense v-model="sizeSelected" :options="sizeOptions" />
+                </div>
+              </div> -->
+            </template>
+            <div class="row">
+              <div class="col-xs-4">
+                <h5 class="options-title">Qty</h5>
+              </div>
+              <div class="col-xs-8">
+                <q-input type="number" dense outlined color="orange-8" options-dense v-model="qty" style="width: 50px" />
+              </div>
+            </div>
+            <br/>
+
+            <!-- Informasi Harga -->
+            <template v-if="this.dataProduct.product_type === 'Simple Product' || this.productVariant.length > 0">
+              <div class="row">
+                <div class="col-xs-6">
+                  <h5 class="price-title-small-text">Harga Konsumen</h5>
+                </div>
+                <div class="col-xs-6">
+                  <h5 class="price-title-small-text">Harga Reseller Pro</h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6">
+                  <h5 class="price-detail-text" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price)}}</h5>
+                  <h5 class="price-detail-text" v-else>Rp{{formatPrice(dataProduct.price)}}</h5>
+                </div>
+                <div class="col-xs-6">
+                  <h5 class="price-detail-text text-green">Rp80.000</h5>
+                </div>
+              </div>
+            </template>
+            <div class="row">
+              <div class="col">
+                <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp65.000</b></h4>
+              </div>
+            </div>
+
+            <hr style="margin: 15px 0" />
+
+            <div class="row">
+              <div class="col">
+                <div class="row" style="margin-bottom: 5px">
+                  <div class="col">
+                    <h4 class="price-title-small-text">Rincian Produk</h4>
+                  </div>
+                  <div class="col text-right" style="padding-top: 5px">
+                    <q-btn flat class="bg-red text-white" size="sm" label="Salin" @click="doCopy" />
+                  </div>
+                </div>
+                <p v-html="dataProduct.product_description"></p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
+      </q-page>
       <q-dialog v-model="confirmOrder">
         <q-card style="width: 800px; max-width: 90vw;">
           <q-card-section class="row items-center">
