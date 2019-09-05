@@ -1,8 +1,13 @@
+import StorefrontPage from 'pages/Storefront';
 import DetailProductPage from 'pages/DetailProduct';
+import DashboardPage from 'pages/ResellerArea/Dashboard';
 import ListCustomerPage from 'pages/ResellerArea/ListCustomer';
 import ShippingPage from 'pages/Shipping';
 import OrderSummaryPage from 'pages/OrderSummary';
 import CartPage from 'pages/Cart';
+import InvoicePage from 'pages/Invoice';
+import OrderListPage from 'pages/ResellerArea/OrderList';
+import DetailOrderPage from 'pages/ResellerArea/DetailOrder';
 
 
 const routes = [
@@ -11,10 +16,7 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
-    component: () => import('layouts/Storefront.vue'),
-    children: [
-      { path: '', component: () => import('pages/Storefront.vue') }
-    ]
+    component: StorefrontPage,
   },
   {
     path: '/login',
@@ -33,46 +35,58 @@ const routes = [
   {
     path: '/cart',
     component: CartPage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/shipping',
     component: ShippingPage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/orderSummary',
     component: OrderSummaryPage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/invoice',
-    component: () => import('layouts/Invoice.vue'),
-    children: [
-      { path: '', component: () => import('pages/Invoice.vue') }
-    ]
+    component: InvoicePage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/dashboard',
-    component: () => import('layouts/Dashboard.vue'),
-    children: [
-      { path: '', component: () => import('pages/ResellerArea/Dashboard.vue') }
-    ]
+    component: DashboardPage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/orderList',
-    component: () => import('layouts/OrderList.vue'),
-    children: [
-      { path: '', component: () => import('pages/ResellerArea/OrderList.vue') }
-    ]
+    component: OrderListPage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
-    path: '/detailOrder',
-    component: () => import('layouts/DetailOrder.vue'),
-    children: [
-      { path: '', component: () => import('pages/ResellerArea/DetailOrder.vue') }
-    ]
+    path: '/detailOrder/:id',
+    component: DetailOrderPage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/listCustomer',
     component: ListCustomerPage,
+    meta: {
+      requiresAuth: true,
+    },
   },
 ]
 

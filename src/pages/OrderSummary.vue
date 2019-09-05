@@ -21,7 +21,7 @@
         <q-btn
           flat
           class="bg-orange-8 text-white full-width"
-          to="invoice"
+          @click="checkout"
         >
           Lakukan Pembayaran
         </q-btn>
@@ -71,7 +71,9 @@
               <div class="col">
                 <q-list dense>
                   <q-item>
-                    <q-item-section side><img src="~/assets/images/components/ekspedisi/jne.png" width="65" /></q-item-section>
+                    <q-item-section side v-if="cartData.courier_name === 'Jalur Nugraha Ekakurir (JNE)'"><img src="~/assets/images/components/ekspedisi/jne.png" width="65" /></q-item-section>
+                    <q-item-section side v-else-if="cartData.courier_name === 'J&T Express'"><img src="~/assets/images/components/ekspedisi/jnt.png" width="65" /></q-item-section>
+                    <q-item-section side v-else-if="cartData.courier_name === 'POS Indonesia (POS)'"><img src="~/assets/images/components/ekspedisi/pos.png" width="65" /></q-item-section>
 
                     <q-item-section>{{ cartData.courier_name + ' ' + cartData.service_name }}</q-item-section>
                     <q-item-section side><h6 style="margin: 0; font-size: 12px;" class="text-black text-right">Rp{{ formatPrice(cartData.shipment_fee) }}</h6></q-item-section>
@@ -133,7 +135,7 @@
 
 <script>
 import axios from 'axios';
-import { getCartUrl, catalogProductUrl, getHeader } from 'src/config';
+import { getCartUrl, catalogProductUrl, postToOrderUrl, getHeader } from 'src/config';
 
 export default {
   data () {
@@ -235,6 +237,37 @@ export default {
             console.log(error.response)
           }
         })
+    },
+    checkout () {
+
+        let postOrder = new FormData();
+        postOrder.set('total_amount', this.cartData.total_amount);
+        postOrder.set('total_weight', this.cartData.total_weight);
+        postOrder.set('grand_total', this.cartData.grand_total);
+        postOrder.set('shipment_fee', this.cartData.shipment_fee);
+        postOrder.set('courier_name', this.cartData.courier_name);
+        postOrder.set('service_name', this.cartData.service_name);
+        postOrder.set('customer_address_id', this.cartData.customer_address_id);
+        postOrder.set('customer_id', this.cartData.customer_id);
+        postOrder.set('customer_name', this.cartData.customer_name);
+        postOrder.set('customer_email', this.cartData.customer_email);
+        postOrder.set('cart_details', JSON.stringify(this.cartData.cart_detail, 2, null));
+
+        axios.post( postToOrderUrl, postOrder, { headers: getHeader() } )
+          .then(response => {
+            console.log(response)
+
+            if (response.status === 200) {
+              this.$router.push('/invoice');
+            }
+
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response)
+            }
+          })
+
     },
     formatPrice(value) {
         let val = (value/1).toFixed(0).replace('.', ',')

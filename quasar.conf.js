@@ -56,6 +56,8 @@ module.exports = function (ctx) {
         'QCardActions',
         'QTabs',
         'QTab',
+        'QTabPanels',
+        'QTabPanel',
         'QRouteTab',
         'QAvatar',
         'QBadge',

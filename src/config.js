@@ -34,6 +34,13 @@ export const getCityUrl = apiDomain + '/shipping/city'
 export const getSubdistrictUrl = apiDomain + '/shipping/subdistrict'
 export const getCostShippingUrl = apiDomain + '/shipping/cost'
 
+// From Identity Service
+export const identityBankUrl = apiDomain + '/identity/banks'
+
+// From Order Service
+export const postToOrderUrl = apiDomain + '/order/orders'
+export const getOrderUrl = apiDomain + '/order/orders-for-reseller'
+
 export const getHeader = function () {
   // debugger
   if (window.localStorage.getItem('authUser') === null) { return }

@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated class="mobile-layout-on-desktop">
-      <q-toolbar class="bg-orange-8 text-white">
+      <q-toolbar class="bg-distrodakwah text-white">
         <!-- <q-toolbar-title>
           Distrodakwah
         </q-toolbar-title> -->
@@ -15,15 +15,17 @@
 
         <q-space />
 
-        <div class="row no-wrap">
+        <img src="~/assets/images/components/logo-distrodakwah.png" width="50%" />
+        <!-- <div class="row no-wrap">
           <center>
+            
             <q-input type="text" dense outlined color="amber-8" bg-color="white" placeholder="Mau Belanja Apa Hari Ini?" style=" margin: 8px 0px">
               <template v-slot:prepend>
                 <q-icon name="search" />
               </template>
             </q-input>
           </center>
-        </div>
+        </div> -->
 
         <q-space />
 
@@ -34,7 +36,7 @@
           dropdown
           to="/"
         >
-          <q-icon name="more_vert" />     
+          <q-icon name="search" />     
         </q-btn>
       </q-toolbar>
     </q-header>
@@ -78,19 +80,21 @@
       </center>
     </q-footer>
 
-    <q-page-container>
-      <div class="bg-grey-3" style="height: 100%">
-        <div style="background-color: white; margin-bottom: 10px" class="q-pb-md">
-          <!-- swiper -->
-          <div class="q-pa-md">
-            <swiper :options="swiperOption">
-              <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
-              <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
-              <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
-              <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
-              <div class="swiper-pagination" slot="pagination"></div>
-            </swiper>
-            <div class="row">
+    <q-page-container class="mobile-layout-on-desktop">
+      <q-page>
+        <div class="bg-grey-3" style="height: 100%">
+          <div style="background-color: white; margin-bottom: 10px">
+            <!-- swiper -->
+            <div style="padding: 20px 0 0 15px">
+              <swiper :options="swiperOption">
+                <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
+                <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
+                <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
+                <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
+                <div class="swiper-pagination" slot="pagination"></div>
+              </swiper>
+            </div>
+            <div class="row q-pa-xs">
               <div class="col">
                 <!-- <h5 class="promo-text">Promo</h5> -->
               </div>
@@ -99,123 +103,123 @@
               </div>
             </div>
           </div>
-        </div>
-        <div style="background-color: white; margin-bottom: 10px">
-          <div class="row q-pa-xs">
-            <div class="col">
-              <h5 class="promo-text">Kategori</h5>
+          <div style="background-color: white; margin-bottom: 10px">
+            <div class="row q-pa-xs">
+              <div class="col">
+                <h5 class="promo-text">Kategori</h5>
+              </div>
+              <div class="col text-right">
+                <h5 class="link-text text-orange-8">Lihat Semua</h5>
+              </div>
             </div>
-            <div class="col text-right">
-              <h5 class="link-text text-orange-8">Lihat Semua</h5>
+            <div class="row" style="padding: 0px 10px 15px 10px">
+              <div class="col-4" v-for="(category, index) in dataCategory" :key="index">
+                <div style="background-color: white; border: 2px solid #e0e0e0; border-radius: 10px; margin: 5px">
+                  <h4 class="category-title">{{category.category_name}}</h4>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="row" style="padding: 0px 10px 15px 10px">
-            <div class="col-4" v-for="(category, index) in dataCategory" :key="index">
-              <div style="background-color: white; border: 2px solid #e0e0e0; border-radius: 10px; margin: 5px">
-                <h4 class="category-title">{{category.category_name}}</h4>
+          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
+            <div class="row q-pa-xs">
+              <div class="col">
+                <h5 class="promo-text">Produk Baru</h5>
+              </div>
+              <div class="col text-right">
+                <h5 class="link-text text-orange-8">Lihat Semua</h5>
+              </div>
+            </div>
+            <div class="row q-px-md" style="padding: 5px 10px 10px 10px">
+              <div class="col">
+                <swiper :options="swiperProductListOption">
+                  <swiper-slide v-for="(product, index) in dataProduct" :key="index">
+                    <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
+                      <transition
+                        appear
+                        enter-active-class="animated fadeIn"
+                        leave-active-class="animated fadeOut"
+                      >
+                        <img :src="product.featured_image" style="width: 100%" v-show="featuredImageShow == true">
+                      </transition>
+
+                      <center>
+                        <q-spinner
+                          color="dark"
+                          size="2em"
+                          v-show="innerLoading == true"
+                          style="margin: 10px 0"
+                        />
+                      </center>
+
+                      <q-card-section style="padding: 10px 16px 16px 16px">
+                        <center>
+                          <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold">{{product.product_name}}</div>
+                          <div class="text-subtitle2 text-red" style="font-weight: bolder">{{'Rp'+product.price}}</div>
+                        </center>
+                      </q-card-section>
+
+                      <q-card-section>
+                        <q-btn :to="'/detail/' + product.id" flat class="bg-orange-8 text-white" style="padding-top: 0px; padding-bottom: 0px"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
+                      </q-card-section>
+
+                    </q-card>
+                  </swiper-slide>
+                  <div class="swiper-product-pagination" slot="pagination"></div>
+                </swiper>
+              </div>
+            </div>
+          </div>
+          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
+            <div class="row q-pa-xs">
+              <div class="col">
+                <h5 class="promo-text">Produk Laris</h5>
+              </div>
+              <div class="col text-right">
+                <h5 class="link-text text-orange-8">Lihat Semua</h5>
+              </div>
+            </div>
+            <div class="row q-px-md" style="padding: 5px 10px 15px 10px">
+              <div class="col">
+                <swiper :options="swiperProductListOption">
+                  <swiper-slide v-for="(product, index) in dataProduct" :key="index">
+                    <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
+                      <transition
+                        appear
+                        enter-active-class="animated fadeIn"
+                        leave-active-class="animated fadeOut"
+                      >
+                        <img :src="product.featured_image" style="width: 100%" v-show="featuredImageShow == true">
+                      </transition>
+
+                      <center>
+                        <q-spinner
+                          color="dark"
+                          size="2em"
+                          v-show="innerLoading == true"
+                          style="margin: 10px 0"
+                        />
+                      </center>
+
+                      <q-card-section style="padding: 10px 16px 16px 16px">
+                        <center>
+                          <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold">{{product.product_name}}</div>
+                          <div class="text-subtitle2 text-red" style="font-weight: bolder">{{'Rp'+product.price}}</div>
+                        </center>
+                      </q-card-section>
+
+                      <q-card-section>
+                        <q-btn :to="'/detail/' + product.id" flat class="bg-orange-8 text-white" style="padding-top: 0px; padding-bottom: 0px"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
+                      </q-card-section>
+
+                    </q-card>
+                  </swiper-slide>
+                  <div class="swiper-product-pagination" slot="pagination"></div>
+                </swiper>
               </div>
             </div>
           </div>
         </div>
-        <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
-          <div class="row q-pa-xs">
-            <div class="col">
-              <h5 class="promo-text">Produk Baru</h5>
-            </div>
-            <div class="col text-right">
-              <h5 class="link-text text-orange-8">Lihat Semua</h5>
-            </div>
-          </div>
-          <div class="row q-px-md" style="padding: 5px 10px 10px 10px">
-            <div class="col">
-              <swiper :options="swiperProductListOption">
-                <swiper-slide v-for="(product, index) in dataProduct" :key="index">
-                  <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
-                    <transition
-                      appear
-                      enter-active-class="animated fadeIn"
-                      leave-active-class="animated fadeOut"
-                    >
-                      <img :src="product.featured_image" style="width: 100%" v-show="featuredImageShow == true">
-                    </transition>
-
-                    <center>
-                      <q-spinner
-                        color="dark"
-                        size="2em"
-                        v-show="innerLoading == true"
-                        style="margin: 10px 0"
-                      />
-                    </center>
-
-                    <q-card-section style="padding: 10px 16px 16px 16px">
-                      <center>
-                        <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold">{{product.product_name}}</div>
-                        <div class="text-subtitle2 text-red" style="font-weight: bolder">{{'Rp'+product.price}}</div>
-                      </center>
-                    </q-card-section>
-
-                    <q-card-section>
-                      <q-btn :to="'/detail/' + product.id" flat class="bg-orange-8 text-white" style="padding-top: 0px; padding-bottom: 0px"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
-                    </q-card-section>
-
-                  </q-card>
-                </swiper-slide>
-                <div class="swiper-product-pagination" slot="pagination"></div>
-              </swiper>
-            </div>
-          </div>
-        </div>
-        <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
-          <div class="row q-pa-xs">
-            <div class="col">
-              <h5 class="promo-text">Produk Laris</h5>
-            </div>
-            <div class="col text-right">
-              <h5 class="link-text text-orange-8">Lihat Semua</h5>
-            </div>
-          </div>
-          <div class="row q-px-md" style="padding: 5px 10px 15px 10px">
-            <div class="col">
-              <swiper :options="swiperProductListOption">
-                <swiper-slide v-for="(product, index) in dataProduct" :key="index">
-                  <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
-                    <transition
-                      appear
-                      enter-active-class="animated fadeIn"
-                      leave-active-class="animated fadeOut"
-                    >
-                      <img :src="product.featured_image" style="width: 100%" v-show="featuredImageShow == true">
-                    </transition>
-
-                    <center>
-                      <q-spinner
-                        color="dark"
-                        size="2em"
-                        v-show="innerLoading == true"
-                        style="margin: 10px 0"
-                      />
-                    </center>
-
-                    <q-card-section style="padding: 10px 16px 16px 16px">
-                      <center>
-                        <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold">{{product.product_name}}</div>
-                        <div class="text-subtitle2 text-red" style="font-weight: bolder">{{'Rp'+product.price}}</div>
-                      </center>
-                    </q-card-section>
-
-                    <q-card-section>
-                      <q-btn :to="'/detail/' + product.id" flat class="bg-orange-8 text-white" style="padding-top: 0px; padding-bottom: 0px"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
-                    </q-card-section>
-
-                  </q-card>
-                </swiper-slide>
-                <div class="swiper-product-pagination" slot="pagination"></div>
-              </swiper>
-            </div>
-          </div>
-        </div>
-      </div>
+      </q-page>
     </q-page-container>
   </q-layout>
 </template>

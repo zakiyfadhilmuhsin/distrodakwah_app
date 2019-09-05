@@ -2,7 +2,7 @@
   <q-layout view="hHh lpR fFf">
 
     <q-header elevated class="mobile-layout-on-desktop">
-      <q-toolbar class="bg-orange-8 text-white">
+      <q-toolbar class="bg-distrodakwah text-white">
         <q-btn
           flat
           round
@@ -84,6 +84,7 @@
                 </div>
               </div>
             </template>
+            <!-- {{items}} -->
           </div>
           <!-- <div style="background-color: white; margin-bottom: 5px">
             <div class="row q-pa-xs items-center">
