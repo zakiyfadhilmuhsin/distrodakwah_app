@@ -44,7 +44,7 @@
       <div class="row dashboard-section">
         <div class="col">
           <center>
-            <img src="~/assets/images/components/silver_badge.png" width="75" />
+            <img src="~/assets/images/components/silver_badge.png" width="50" />
             <h6 style="font-size: 16px; font-family: 'Open Sans'; font-weight: bold; margin: 0">Malik Saefurrizqi</h6>
             <h6 class="dashboard-small-text">Reseller Pro</h6>
             <br/>
@@ -52,7 +52,7 @@
             <h6 class="dashboard-small-text" style="font-size: 10px; line-height: 11px; margin-top: 8px">Untuk dapatkan keuntungan<br/>yang lebih besar</h6>
           </center>
           <br/>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col">
               <q-list dense>
                 <q-item dense clickable v-ripple>
@@ -76,7 +76,7 @@
               </q-list>
             </div> 
           </div>
-          <br/>
+          <br/> -->
           <div class="row">
             <div class="col">
               <h4 style="font-weight: bold; font-size: 21px; font-family: 'Open Sans'; margin: 0;">Alhamdulillah!</h4>
@@ -89,20 +89,28 @@
               <center>
                 <div class="row">
                   <div class="col">
-                    <q-icon name="fas fa-wallet" style="font-size: 30px; margin: 0 0 5px 0" />
-                    <p style="font-size: 10px; margin: 0">Belum Bayar</p>
+                    <router-link to="/orderList" style="text-decoration: none; color: black">
+                      <q-icon name="fas fa-wallet" style="font-size: 30px; margin: 0 0 5px 0" />
+                      <p style="font-size: 10px; margin: 0">Belum Bayar</p>
+                    </router-link>
                   </div>
                   <div class="col">
-                    <q-icon name="fas fa-box-open" style="font-size: 30px; margin: 0 0 5px 0" />
-                    <p style="font-size: 10px; margin: 0">Dikemas</p>
+                    <router-link to="/orderList" style="text-decoration: none; color: black">
+                      <q-icon name="fas fa-box-open" style="font-size: 30px; margin: 0 0 5px 0" />
+                      <p style="font-size: 10px; margin: 0">Dikemas</p>
+                    </router-link>
                   </div>
                   <div class="col">
-                    <q-icon name="fas fa-shipping-fast" style="font-size: 30px; margin: 0 0 5px 0" />
-                    <p style="font-size: 10px; margin: 0">Dikirim</p>
+                    <router-link to="/orderList" style="text-decoration: none; color: black">
+                      <q-icon name="fas fa-shipping-fast" style="font-size: 30px; margin: 0 0 5px 0" />
+                      <p style="font-size: 10px; margin: 0">Dikirim</p>
+                    </router-link>
                   </div>
                   <div class="col">
-                    <q-icon name="fas fa-clipboard-check" style="font-size: 30px; margin: 0 0 5px 0" />
-                    <p style="font-size: 10px; margin: 0">Selesai</p>
+                    <router-link to="/orderList" style="text-decoration: none; color: black">
+                      <q-icon name="fas fa-clipboard-check" style="font-size: 30px; margin: 0 0 5px 0" />
+                      <p style="font-size: 10px; margin: 0">Selesai</p>
+                    </router-link>
                   </div>
                   <div class="col">
                     <router-link to="/orderList" style="text-decoration: none; color: black">
@@ -123,7 +131,7 @@
                       <q-icon name="local_activity" />
                     </q-item-section>
 
-                    <q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Promo & Voucher Saya</span></q-item-section>
+                    <q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Promo & Voucher Saya <span class="bg-yellow-8 text-black" style="padding: 3px 5px; border-radius: 5px; font-size: 10px">soon</span></span></q-item-section>
 
                     <q-item-section side>
                       <q-icon name="keyboard_arrow_right" />
@@ -132,7 +140,7 @@
 
                   <q-separator />
 
-                  <q-item dense clickable v-ripple>
+                  <!-- <q-item dense clickable v-ripple>
                     <q-item-section avatar>
                       <q-icon name="o_favorite" />
                     </q-item-section>
@@ -144,7 +152,7 @@
                     </q-item-section>
                   </q-item>
 
-                  <q-separator />
+                  <q-separator /> -->
 
                   <q-item dense clickable v-ripple to="/listCustomer">
                     <q-item-section avatar>
@@ -160,7 +168,7 @@
 
                   <q-separator />
 
-                  <q-item dense clickable v-ripple>
+                  <q-item dense clickable v-ripple to="settingStore">
                     <q-item-section avatar>
                       <q-icon name="store_mall_directory" />
                     </q-item-section>
@@ -172,7 +180,7 @@
                     </q-item-section>
                   </q-item>
 
-                  <q-separator />
+                  <!-- <q-separator />
 
                   <q-item dense clickable v-ripple>
                     <q-item-section avatar>
@@ -212,7 +220,7 @@
                     <q-item-section side>
                       <q-icon name="keyboard_arrow_right" />
                     </q-item-section>
-                  </q-item>
+                  </q-item> -->
                 </q-list>
               </div>
             </div>

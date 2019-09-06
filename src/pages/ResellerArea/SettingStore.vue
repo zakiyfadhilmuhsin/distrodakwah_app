@@ -1,0 +1,150 @@
+<template>
+  <q-layout view="hHh lpR fFf">
+
+    <q-header elevated class="mobile-layout-on-desktop">
+      <q-toolbar class="bg-distrodakwah text-white">
+        <q-btn
+          flat
+          round
+          dense
+          to="/dashboard"
+        >
+          <q-icon name="arrow_back" color="white" /> 
+        </q-btn>
+        <q-toolbar-title><span style="font-size: 16px; font-weight: bold">Web Replika Saya</span></q-toolbar-title>
+      </q-toolbar>
+    </q-header>
+
+    <q-page-container class="mobile-layout-on-desktop">
+      <q-page class="bg-grey-2">
+        <div class="row">
+          <div class="col q-pa-lg">
+            <q-card bordered class="shadow-1">
+              <q-card-section>
+                <div class="q-pa-xs">
+                    <center>
+                        <q-btn flat dense style="font-size: 12px" class="q-py-sm bg-white text-primary text-capitalize">Kunjungi Web Replika <q-icon name="launch" color="primary" style="font-size: 16px" /></q-btn>
+                        <div class="q-py-sm">
+                            Share Web Replika :
+                            <br/>
+                            <facebook url="https://distrodakwah.id" scale="2" class="q-pa-sm"></facebook>
+                            <telegram url="https://distrodakwah.id" scale="2" class="q-pa-sm"></telegram>
+                            <twitter url="https://distrodakwah.id" scale="2" class="q-pa-sm"></twitter>
+                            <whats-app url="https://distrodakwah.id" scale="2" class="q-pa-sm"></whats-app>
+                            <email url="https://distrodakwah.id" scale="2" class="q-pa-sm"></email>
+                        </div>
+                    </center>
+                </div>
+              </q-card-section>
+            </q-card>
+            <br/>
+            <q-card bordered class="shadow-1">
+              <q-card-section>
+                <div class="q-pa-xs">
+                    <q-input outlined dense color="orange-8" type="text" v-model="storeName" label="Nama Toko" placeholder="Masukkan Nama Toko" />
+                </div>
+                <div class="q-pa-xs">
+                    <q-input outlined dense color="orange-8" type="text" v-model="storeUrl" label="Slug/URL Toko" placeholder="Masukkan URL Toko" />
+                </div>
+                <div class="q-pa-xs">
+                    <q-input outlined dense color="green-6" type="text" v-model="whatsappNumber" label="Nomor Whatsapp" placeholder="Masukkan Nomor Whatsapp" />
+                </div>
+              </q-card-section>
+            </q-card>
+            <br/>
+            <q-card bordered class="shadow-1">
+              <q-card-section>
+                <div class="q-pa-xs">
+                    <q-btn flat class="bg-orange-8 text-white text-capitalize full-width" @click="createStore">Simpan</q-btn>
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
+        </div>
+      </q-page>
+    </q-page-container>
+  </q-layout>
+</template>
+
+<style>
+  .order-list-section{
+    padding: 20px 0;
+  }
+</style>
+
+<script>
+import axios from 'axios';
+import { getStoreUrl, createStoreUrl, getHeader } from 'src/config';
+import { openURL } from 'quasar'
+// Sharing Social Media
+import { Facebook, Telegram, Twitter, WhatsApp, Email } from 'vue-socialmedia-share';
+
+export default {
+  components: {
+    Facebook, Telegram, Twitter, WhatsApp, Email
+  },
+  name: 'OrderList',
+  data () {
+    return {
+        storeName: '',
+        storeUrl: '',
+        whatsappNumber: '',
+        dataStore: [],
+    }
+  },
+  created () {
+    this.user = JSON.parse(window.localStorage.getItem('profileUser'));
+  },
+  mounted () {
+    this.getStore();
+  },
+  methods: {
+    getStore() {
+      
+      axios.get( getStoreUrl + '/' + this.user[0].id, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+            this.dataStore = response.data.data;
+
+            this.storeName = this.dataStore.store_name;
+            this.storeUrl = this.dataStore.store_slug;
+            this.whatsappNumber = this.dataStore.whatsapp_number;
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+        
+    },
+    createStore() {
+      
+      let formData = new FormData();
+      formData.set('store_name', this.storeName);
+      formData.set('store_slug', this.storeUrl);
+      formData.set('whatsapp_number', this.whatsappNumber);
+      formData.set('user_id', this.user[0].id);
+
+      axios.post( createStoreUrl + '/' + this.user[0].id, formData, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+            this.$q.notify({position: 'top', color: 'light-green-6', message: 'Berhasil Disimpan!'});
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+
+    }
+  }
+}
+</script>

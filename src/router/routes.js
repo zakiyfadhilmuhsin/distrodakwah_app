@@ -8,6 +8,7 @@ import CartPage from 'pages/Cart';
 import InvoicePage from 'pages/Invoice';
 import OrderListPage from 'pages/ResellerArea/OrderList';
 import DetailOrderPage from 'pages/ResellerArea/DetailOrder';
+import SettingStorePage from 'pages/ResellerArea/SettingStore';
 
 
 const routes = [
@@ -84,6 +85,13 @@ const routes = [
   {
     path: '/listCustomer',
     component: ListCustomerPage,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/settingStore',
+    component: SettingStorePage,
     meta: {
       requiresAuth: true,
     },

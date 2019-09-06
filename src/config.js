@@ -41,6 +41,10 @@ export const identityBankUrl = apiDomain + '/identity/banks'
 export const postToOrderUrl = apiDomain + '/order/orders'
 export const getOrderUrl = apiDomain + '/order/orders-for-reseller'
 
+// From Store Service
+export const getStoreUrl = apiDomain + '/store/get-store'
+export const createStoreUrl = apiDomain + '/store/create-store'
+
 export const getHeader = function () {
   // debugger
   if (window.localStorage.getItem('authUser') === null) { return }
