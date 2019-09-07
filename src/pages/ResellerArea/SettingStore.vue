@@ -23,15 +23,15 @@
               <q-card-section>
                 <div class="q-pa-xs">
                     <center>
-                        <q-btn flat dense style="font-size: 12px" class="q-py-sm bg-white text-primary text-capitalize">Kunjungi Web Replika <q-icon name="launch" color="primary" style="font-size: 16px" /></q-btn>
+                        <q-btn @click="toStore" flat dense style="font-size: 12px" class="q-py-sm bg-white text-primary text-capitalize">Kunjungi Web Replika <q-icon name="launch" color="primary" style="font-size: 16px" /></q-btn>
                         <div class="q-py-sm">
                             Share Web Replika :
                             <br/>
-                            <facebook url="https://distrodakwah.id" scale="2" class="q-pa-sm"></facebook>
-                            <telegram url="https://distrodakwah.id" scale="2" class="q-pa-sm"></telegram>
-                            <twitter url="https://distrodakwah.id" scale="2" class="q-pa-sm"></twitter>
-                            <whats-app url="https://distrodakwah.id" scale="2" class="q-pa-sm"></whats-app>
-                            <email url="https://distrodakwah.id" scale="2" class="q-pa-sm"></email>
+                            <facebook :url="url + storeUrl" scale="2" class="q-pa-sm"></facebook>
+                            <telegram :url="url + storeUrl" scale="2" class="q-pa-sm"></telegram>
+                            <twitter :url="url + storeUrl" scale="2" class="q-pa-sm"></twitter>
+                            <whats-app :url="url + storeUrl" scale="2" class="q-pa-sm"></whats-app>
+                            <email :url="url + storeUrl" scale="2" class="q-pa-sm"></email>
                         </div>
                     </center>
                 </div>
@@ -90,6 +90,7 @@ export default {
         storeUrl: '',
         whatsappNumber: '',
         dataStore: [],
+        url: 'http://localhost:8082/#/',
     }
   },
   created () {
@@ -144,6 +145,9 @@ export default {
           }
         })
 
+    },
+    toStore() {
+      openURL('http://localhost:8082/#/' + this.storeUrl);
     }
   }
 }
