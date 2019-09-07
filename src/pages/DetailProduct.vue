@@ -455,16 +455,16 @@ export default {
           postData.set('product_sku_price', this.productVariant[0].price);
           postData.set('options', this.optionValueSelected);
           postData.set('qty', this.qty);
-          postData.set('customer_id', this.user[0].id);
-          postData.set('customer_name', this.user[0].name);
-          postData.set('customer_email', this.user[0].email);
+          postData.set('customer_id', this.user.id);
+          postData.set('customer_name', this.user.name);
+          postData.set('customer_email', this.user.email);
         }else{
           postData.set('product_id', this.dataProduct.id);
           postData.set('product_sku_id', 0);
           postData.set('qty', this.qty);
-          postData.set('customer_id', this.user[0].id);
-          postData.set('customer_name', this.user[0].name);
-          postData.set('customer_email', this.user[0].email);
+          postData.set('customer_id', this.user.id);
+          postData.set('customer_name', this.user.name);
+          postData.set('customer_email', this.user.email);
         }
 
         axios.post(addToCartUrl, postData, {headers: getHeader()}).then(response => {

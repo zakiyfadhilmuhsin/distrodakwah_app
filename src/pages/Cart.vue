@@ -180,7 +180,7 @@ export default {
       this.cartData = [];
       this.items = [];
 
-      axios.get( getCartUrl + '/' + this.user[0].id, { headers: getHeader() } )
+      axios.get( getCartUrl + '/' + this.user.id, { headers: getHeader() } )
         .then(response => {
           console.log(response)
 
@@ -265,7 +265,7 @@ export default {
     },
     removeProduct(id, qty, price) {
 
-        axios.delete( removeProductCartUrl + '/' + this.user[0].id + '/' + id + '/' + qty + '/' + price, { headers: getHeader() } )
+        axios.delete( removeProductCartUrl + '/' + this.user.id + '/' + id + '/' + qty + '/' + price, { headers: getHeader() } )
           .then(response => {
             console.log(response)
             if (response.status === 200) {

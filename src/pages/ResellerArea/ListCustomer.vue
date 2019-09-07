@@ -246,7 +246,7 @@ export default {
   methods: {
     getCustomers () {
       
-      axios.get( getCustomerUrl + '/' + this.user[0].id, { headers: getHeader() } )
+      axios.get( getCustomerUrl + '/' + this.user.id, { headers: getHeader() } )
         .then(response => {
           console.log(response)
 
@@ -308,7 +308,7 @@ export default {
       customerData.set('city_id', this.cityID);
       customerData.set('subdistrict_id', this.subdistrictID);
       customerData.set('postal_code', this.postalCode);
-      customerData.set('user_id', this.user[0].id);
+      customerData.set('user_id', this.user.id);
 
       axios.post( updateCustomerUrl + '/' + this.idSelected, customerData, { headers: getHeader() } )
         .then(response => {
@@ -406,7 +406,7 @@ export default {
       customerData.set('city_id', this.cityID);
       customerData.set('subdistrict_id', this.subdistrictID);
       customerData.set('postal_code', this.postalCode);
-      customerData.set('user_id', this.user[0].id);
+      customerData.set('user_id', this.user.id);
 
       axios.post( addNewCustomerUrl, customerData, { headers: getHeader() } )
         .then(response => {

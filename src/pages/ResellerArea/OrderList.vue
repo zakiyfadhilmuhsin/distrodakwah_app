@@ -173,11 +173,11 @@ export default {
       let formatUrl = null;
 
       if(this.searchInvoice !== ''){
-        formatUrl = getOrderUrl + '/' + this.user[0].id + '?status=' + this.orderTab + '&search=' + this.searchInvoice;
+        formatUrl = getOrderUrl + '/' + this.user.id + '?status=' + this.orderTab + '&search=' + this.searchInvoice;
       }else if(this.dateFilter !== ''){
-        formatUrl = getOrderUrl + '/' + this.user[0].id + '?status=' + this.orderTab + '&date=' + this.dateFilter;
+        formatUrl = getOrderUrl + '/' + this.user.id + '?status=' + this.orderTab + '&date=' + this.dateFilter;
       }else{
-        formatUrl = getOrderUrl + '/' + this.user[0].id + '?status=' + this.orderTab;
+        formatUrl = getOrderUrl + '/' + this.user.id + '?status=' + this.orderTab;
       }
 
       axios.get( formatUrl, { headers: getHeader() } )

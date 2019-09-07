@@ -159,7 +159,7 @@ export default {
       this.cartData = [];
       this.items = [];
 
-      axios.get( getCartUrl + '/' + this.user[0].id, { headers: getHeader() } )
+      axios.get( getCartUrl + '/' + this.user.id, { headers: getHeader() } )
         .then(response => {
           console.log(response)
 

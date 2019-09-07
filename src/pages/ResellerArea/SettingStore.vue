@@ -102,7 +102,7 @@ export default {
   methods: {
     getStore() {
       
-      axios.get( getStoreUrl + '/' + this.user[0].id, { headers: getHeader() } )
+      axios.get( getStoreUrl + '/' + this.user.id, { headers: getHeader() } )
         .then(response => {
           console.log(response)
 
@@ -128,9 +128,9 @@ export default {
       formData.set('store_name', this.storeName);
       formData.set('store_slug', this.storeUrl);
       formData.set('whatsapp_number', this.whatsappNumber);
-      formData.set('user_id', this.user[0].id);
+      formData.set('user_id', this.user.id);
 
-      axios.post( createStoreUrl + '/' + this.user[0].id, formData, { headers: getHeader() } )
+      axios.post( createStoreUrl + '/' + this.user.id, formData, { headers: getHeader() } )
         .then(response => {
           console.log(response)
 
