@@ -77,6 +77,9 @@ module.exports = function (ctx) {
         'QFab',
         'QFabAction',
         'QScrollArea',
+        'QStepper',
+        'QStep',
+        'QStepperNavigation'
       ],
 
       directives: [

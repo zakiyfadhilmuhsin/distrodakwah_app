@@ -11,7 +11,7 @@
         >
           <q-icon name="arrow_back" color="white" /> 
         </q-btn>
-        <q-title><span style="font-size: 16px; font-weight: bold">Invoice</span></q-title>
+        <q-toolbar-title><span style="font-size: 16px; font-weight: bold">Invoice</span></q-toolbar-title>
       </q-toolbar>
     </q-header>
 

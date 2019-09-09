@@ -1,3 +1,5 @@
+import LoginPage from 'pages/Auth/Login';
+import CreateAccountPage from 'pages/Auth/CreateAccount';
 import StorefrontPage from 'pages/Storefront';
 import DetailProductPage from 'pages/DetailProduct';
 import DashboardPage from 'pages/ResellerArea/Dashboard';
@@ -20,11 +22,12 @@ const routes = [
     component: StorefrontPage,
   },
   {
-    path: '/login',
-    component: () => import('layouts/Login.vue'),
-    children: [
-      { path: '', component: () => import('pages/Auth/Login.vue') }
-    ]
+    path: '/login/:message?',
+    component: LoginPage,
+  },
+  {
+    path: '/createAccount',
+    component: CreateAccountPage,
   },
   {
     path: '/detail/:id',

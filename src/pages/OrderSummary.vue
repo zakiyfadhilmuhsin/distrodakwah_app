@@ -176,6 +176,12 @@ export default {
                   let product_image = response.data.data.featured_image;
                   let qty = this.cartData.cart_detail[i].qty;
                   let product_id = this.cartData.cart_detail[i].product_id;
+                  let reseller_discount = null;
+                  if(this.user.role.id === 9){
+                    reseller_discount = response.data.data.category_detail.tier_1_discount;
+                  }else if(this.user.role.id === 8){
+                    reseller_discount = response.data.data.category_detail.tier_2_discount;
+                  }
 
                   if(this.cartData.cart_detail[i].product_sku_id !== null){
 
@@ -191,7 +197,7 @@ export default {
                             product_id: product_id,
                             product_name: product_name,
                             product_image: product_image,
-                            price: response.data.data.price,
+                            price: response.data.data.price - reseller_discount,
                             options: JSON.parse(this.cartData.cart_detail[i].options),
                             qty: qty,
                         });
@@ -210,7 +216,7 @@ export default {
                         product_id: product_id,
                         product_name: product_name,
                         product_image: product_image,
-                        price: response.data.data.price,
+                        price: response.data.data.price - reseller_discount,
                         qty: qty,
                     });
 

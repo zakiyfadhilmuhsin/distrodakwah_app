@@ -120,7 +120,7 @@
               </div>
               <div class="col">
                 <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Alhamdulillah potensi keuntungan kamu adalah</h6>
-                <h6 style="font-size: 28px; margin: 8px 0; font-family: 'Open Sans'; font-weight: bold" class="text-red">Rp120.000</h6>
+                <h6 style="font-size: 28px; margin: 8px 0; font-family: 'Open Sans'; font-weight: bold" class="text-red">Rp{{formatPrice(totalProfit)}}</h6>
                 <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Jangan lupa sedekah ya :)</h6>
               </div>
             </div>
@@ -162,6 +162,7 @@ export default {
       items: [],
       totalItem: 0,
       subTotal: null,
+      totalProfit: 0,
       // Donasi
       donasi_act: false,
       donasi_rq: false,
@@ -179,6 +180,7 @@ export default {
     getCartData () {
       this.cartData = [];
       this.items = [];
+      this.totalProfit = 0;
 
       axios.get( getCartUrl + '/' + this.user.id, { headers: getHeader() } )
         .then(response => {
@@ -197,6 +199,12 @@ export default {
                   let product_image = response.data.data.featured_image;
                   let qty = this.cartData.cart_detail[i].qty;
                   let product_id = this.cartData.cart_detail[i].product_id;
+                  let reseller_discount = null;
+                  if(this.user.role.id === 9){
+                    reseller_discount = response.data.data.category_detail.tier_1_discount;
+                  }else if(this.user.role.id === 8){
+                    reseller_discount = response.data.data.category_detail.tier_2_discount;
+                  }
 
                   if(this.cartData.cart_detail[i].product_sku_id !== null){
 
@@ -212,10 +220,12 @@ export default {
                             product_id: product_id,
                             product_name: product_name,
                             product_image: product_image,
-                            price: response.data.data.price,
+                            price: response.data.data.price - reseller_discount,
                             options: JSON.parse(this.cartData.cart_detail[i].options),
                             qty: qty,
                         });
+
+                        this.totalProfit += reseller_discount * qty;
 
                       }).catch(error => {
 
@@ -231,9 +241,11 @@ export default {
                         product_id: product_id,
                         product_name: product_name,
                         product_image: product_image,
-                        price: response.data.data.price,
+                        price: response.data.data.price - reseller_discount,
                         qty: qty,
                     });
+
+                    this.totalProfit += reseller_discount * qty;
 
                   }
 

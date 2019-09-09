@@ -2,7 +2,7 @@
   <q-layout view="hHh lpR fFf">
 
     <q-header elevated class="mobile-layout-on-desktop">
-      <q-toolbar class="bg-orange-8 text-white">
+      <q-toolbar class="bg-distrodakwah text-white">
         <q-btn
           flat
           round
@@ -12,7 +12,7 @@
           <q-icon name="arrow_back" color="white" /> 
         </q-btn>
         <q-space />
-        <q-btn
+        <!-- <q-btn
           flat
           dense
           round
@@ -26,14 +26,15 @@
           round
         >
           <q-icon name="share" color="white" />
-        </q-btn>
+        </q-btn> -->
       </q-toolbar>
     </q-header>
 
     <q-footer class="bg-white text-black mobile-layout-on-desktop" style="border-top: 2px solid #eee">
       <q-toolbar class="bg-white text-black">
-        <span>
-          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold">KAMU UNTUNG 20.000</h4>
+        <span v-if="dataProduct.length !== 0">
+          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-if="user.role.id === 9">KAMU UNTUNG {{'Rp' + formatPrice( Number(this.dataProduct.category_detail.tier_1_discount) * Number(this.qty) )}}</h4>
+          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-else-if="user.role.id === 8">KAMU UNTUNG {{'Rp' + formatPrice( Number(this.dataProduct.category_detail.tier_2_discount) * Number(this.qty) )}}</h4>
         </span>
         <q-space />
         <q-btn
@@ -110,7 +111,7 @@
                 <h5 class="options-title">Qty</h5>
               </div>
               <div class="col-xs-8">
-                <q-input type="number" dense outlined color="orange-8" options-dense v-model="qty" style="width: 50px" />
+                <q-input type="number" dense outlined color="orange-8" options-dense v-model="qty" style="width: 75px" />
               </div>
             </div>
             <br/>
@@ -130,12 +131,17 @@
                   <h5 class="price-detail-text" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price)}}</h5>
                   <h5 class="price-detail-text" v-else>Rp{{formatPrice(dataProduct.price)}}</h5>
                 </div>
-                <div class="col-xs-6">
-                  <h5 class="price-detail-text text-green">Rp80.000</h5>
+                <div class="col-xs-6" v-if="user.role.id === 9">
+                  <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - dataProduct.category_detail.tier_1_discount)}}</h5>
+                  <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - dataProduct.category_detail.tier_1_discount)}}</h5>
+                </div>
+                <div class="col-xs-6" v-else-if="user.role.id === 8">
+                  <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - dataProduct.category_detail.tier_2_discount)}}</h5>
+                  <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - dataProduct.category_detail.tier_2_discount)}}</h5>
                 </div>
               </div>
             </template>
-            <div class="row">
+            <div class="row" v-if="user.role.id === 8">
               <div class="col">
                 <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp65.000</b></h4>
               </div>
@@ -458,6 +464,11 @@ export default {
           postData.set('customer_id', this.user.id);
           postData.set('customer_name', this.user.name);
           postData.set('customer_email', this.user.email);
+          if(this.user.role.id === 9){
+            postData.set('reseller_discount', this.dataProduct.category_detail.tier_1_discount);
+          }else if(this.user.role.id === 8){
+            postData.set('reseller_discount', this.dataProduct.category_detail.tier_2_discount);
+          }
         }else{
           postData.set('product_id', this.dataProduct.id);
           postData.set('product_sku_id', 0);
@@ -465,6 +476,11 @@ export default {
           postData.set('customer_id', this.user.id);
           postData.set('customer_name', this.user.name);
           postData.set('customer_email', this.user.email);
+          if(this.user.role.id === 9){
+            postData.set('reseller_discount', this.dataProduct.category_detail.tier_1_discount);
+          }else if(this.user.role.id === 8){
+            postData.set('reseller_discount', this.dataProduct.category_detail.tier_2_discount);
+          }
         }
 
         axios.post(addToCartUrl, postData, {headers: getHeader()}).then(response => {

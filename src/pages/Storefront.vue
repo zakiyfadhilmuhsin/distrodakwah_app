@@ -153,8 +153,12 @@
 
                       <q-card-section style="padding: 10px 16px 16px 16px">
                         <center>
-                          <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold">{{product.product_name}}</div>
-                          <div class="text-subtitle2 text-red" style="font-weight: bolder">{{'Rp'+product.price}}</div>
+                          <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px">{{product.product_name}}</div>
+                          <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
+                          <div class="q-px-sm q-py-xs bg-green">
+                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-if="user.role.id === 9">{{'Rp' + formatPrice(product.category_detail.tier_1_discount)}}</div>
+                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-else-if="user.role.id === 8">{{'Rp' + formatPrice(product.category_detail.tier_2_discount)}}</div>
+                          </div>
                         </center>
                       </q-card-section>
 
@@ -202,8 +206,12 @@
 
                       <q-card-section style="padding: 10px 16px 16px 16px">
                         <center>
-                          <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold">{{product.product_name}}</div>
-                          <div class="text-subtitle2 text-red" style="font-weight: bolder">{{'Rp'+product.price}}</div>
+                          <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px">{{product.product_name}}</div>
+                          <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
+                          <div class="q-px-sm q-py-xs bg-green">
+                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-if="user.role.id === 9">{{'Rp' + formatPrice(product.category_detail.tier_1_discount)}}</div>
+                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-else-if="user.role.id === 8">{{'Rp' + formatPrice(product.category_detail.tier_2_discount)}}</div>
+                          </div>
                         </center>
                       </q-card-section>
 
@@ -259,7 +267,12 @@ export default {
       // Loading
       innerLoading: false,
       featuredImageShow: true,
+      // user
+      user: [],
     }
+  },
+  created () {
+    this.user = JSON.parse(window.localStorage.getItem('profileUser'));
   },
   mounted () {
     this.getCategory();
@@ -308,7 +321,11 @@ export default {
           }
         })
 
-    }
+    },
+    formatPrice(value) {
+        let val = (value/1).toFixed(0).replace('.', ',')
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
   },
   components: { swiper, swiperSlide }
 }

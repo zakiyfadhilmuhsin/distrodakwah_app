@@ -5,6 +5,8 @@ export const hostDomain = 'http://apigateway.test'
 export const apiDomain = hostDomain
 
 export const loginUrl = apiDomain + '/auth/login'
+export const createAccountUrl = apiDomain + '/auth/signup'
+
 export const signGoogleUrl = apiDomain + 'googlesign'
 export const signFacebookUrl = apiDomain + 'facebooksign'
 export const userUrl = apiDomain + 'api/user'

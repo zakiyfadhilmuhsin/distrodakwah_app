@@ -44,12 +44,12 @@
       <div class="row dashboard-section">
         <div class="col">
           <center>
-            <img src="~/assets/images/components/silver_badge.png" width="50" v-if="user.role.id === 5" />
-            <img src="~/assets/images/components/gold_badge.png" width="50" v-else-if="user.role.id === 6" />
+            <img src="~/assets/images/components/silver_badge.png" width="50" v-if="user.role.id === 8" />
+            <img src="~/assets/images/components/gold_badge.png" width="50" v-else-if="user.role.id === 9" />
             <h6 style="font-size: 16px; font-family: 'Open Sans'; font-weight: bold; margin: 0">{{ user.name }}</h6>
             <h6 class="dashboard-small-text">{{ user.role.role_name }}</h6>
             <br/>
-            <template v-if="user.role.id === 5">
+            <template v-if="user.role.id === 8">
               <q-btn flat rounded size="sm" class="bg-orange text-white">Upgrade Member</q-btn>
               <h6 class="dashboard-small-text" style="font-size: 10px; line-height: 11px; margin-top: 8px">Untuk dapatkan keuntungan<br/>yang lebih besar</h6>
             </template>
