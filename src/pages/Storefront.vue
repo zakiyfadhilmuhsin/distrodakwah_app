@@ -83,7 +83,7 @@
     <q-page-container class="mobile-layout-on-desktop">
       <q-page>
         <div class="bg-grey-3" style="height: 100%">
-          <div style="background-color: white; margin-bottom: 10px">
+          <div style="background-color: white; margin-bottom: 10px" v-if="dataSlider.length !== 0">
             <!-- swiper -->
             <div style="padding: 20px 0 0 15px">
               <swiper :options="swiperOption">
@@ -100,7 +100,7 @@
               </div>
             </div>
           </div>
-          <div style="background-color: white; margin-bottom: 10px">
+          <!-- <div style="background-color: white; margin-bottom: 10px">
             <div class="row q-pa-xs">
               <div class="col">
                 <h5 class="promo-text">Kategori</h5>
@@ -116,7 +116,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
             <div class="row q-pa-xs">
               <div class="col">

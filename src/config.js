@@ -50,6 +50,9 @@ export const getOrderUrl = apiDomain + '/order/orders-for-reseller'
 export const getStoreUrl = apiDomain + '/store/get-store'
 export const createStoreUrl = apiDomain + '/store/create-store'
 
+// From Inventory Service
+export const inventoryStockUrl = apiDomain + '/inventory/stocks'
+
 export const getHeader = function () {
   // debugger
   if (window.localStorage.getItem('authUser') === null) { return }

@@ -141,6 +141,7 @@
                 </div>
               </div>
             </template>
+            {{stockReady}}
             <div class="row" v-if="user.role.id === 8">
               <div class="col">
                 <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp65.000</b></h4>
@@ -279,7 +280,7 @@ import Vue from 'vue'
 import "swiper/dist/css/swiper.css"
 import { swiper, swiperSlide } from "vue-awesome-swiper"
 import axios from 'axios';
-import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, addToCartUrl, getHeader} from 'src/config';
+import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, addToCartUrl, inventoryStockUrl, getHeader} from 'src/config';
 import VueClipboard from 'vue-clipboard2'
 
 Vue.use(VueClipboard);
@@ -314,6 +315,7 @@ export default {
       // Extra
       confirmOrder: false,
       user: null,
+      stockReady: null,
     } 
   },
   created () {
@@ -339,6 +341,22 @@ export default {
 
               if(this.dataProduct.product_type === 'Variant Product'){
                 this.getInputOptions();
+              }else{
+
+                  axios.get(inventoryStockUrl + '/' + this.dataProduct.sku, {headers: getHeader()}).then(response => {
+
+                      if(response.status === 200){
+                        this.stockReady = response.data.data.stock_qty;
+                      }
+
+                    }).catch(error => {
+                      
+                      if (error.response) {
+                        console.log(error.response)
+                      }
+                    
+                    })
+
               }
             }
 
@@ -409,6 +427,7 @@ export default {
 
     },
     getProductVariant () {
+
       // Get option value
       let val = [];
       let productOptionSelected = [];
@@ -435,7 +454,7 @@ export default {
       for (var i = 0, l = varPro.length; i < l; i++) {
           
           if(optionSelected.toUpperCase() === varPro[i].sku.replace(this.dataProduct.sku,'')){
-
+            
             // store product variant
             this.productVariant.push({
               id: varPro[i].id,
@@ -445,59 +464,104 @@ export default {
               stock: varPro[i].stock,
             })
 
+            axios.get(inventoryStockUrl + '/' + varPro[i].sku, {headers: getHeader()}).then(response => {
+
+                if(response.status === 200){
+                  this.stockReady = response.data.data.stock_qty;
+                }
+
+              }).catch(error => {
+                
+                if (error.response) {
+                  console.log(error.response)
+                }
+              
+              })
+
           }
 
       }
     },
     addToCart () {
         
-        let postData = new FormData();
+        // Cek stok dulu
+        if(this.stockReady > 0){
 
-        if(this.dataProduct.product_type === 'Variant Product'){
-          postData.set('product_id', this.dataProduct.id);
-          // Post Data Product Variant
-          postData.set('product_sku_id', this.productVariant[0].id);
-          postData.set('product_sku', this.productVariant[0].sku);
-          postData.set('product_sku_price', this.productVariant[0].price);
-          postData.set('options', this.optionValueSelected);
-          postData.set('qty', this.qty);
-          postData.set('customer_id', this.user.id);
-          postData.set('customer_name', this.user.name);
-          postData.set('customer_email', this.user.email);
-          if(this.user.role.id === 9){
-            postData.set('reseller_discount', this.dataProduct.category_detail.tier_1_discount);
-          }else if(this.user.role.id === 8){
-            postData.set('reseller_discount', this.dataProduct.category_detail.tier_2_discount);
-          }
+            let postData = new FormData();
+
+            if(this.dataProduct.product_type === 'Variant Product'){
+              postData.set('product_id', this.dataProduct.id);
+              // Post Data Product Variant
+              postData.set('product_sku_id', this.productVariant[0].id);
+              postData.set('product_sku', this.productVariant[0].sku);
+              postData.set('product_sku_price', this.productVariant[0].price);
+              postData.set('options', this.optionValueSelected);
+              postData.set('qty', this.qty);
+              postData.set('customer_id', this.user.id);
+              postData.set('customer_name', this.user.name);
+              postData.set('customer_email', this.user.email);
+              if(this.user.role.id === 9){
+                postData.set('reseller_discount', this.dataProduct.category_detail.tier_1_discount);
+              }else if(this.user.role.id === 8){
+                postData.set('reseller_discount', this.dataProduct.category_detail.tier_2_discount);
+              }
+            }else{
+              postData.set('product_id', this.dataProduct.id);
+              postData.set('product_sku_id', 0);
+              postData.set('qty', this.qty);
+              postData.set('customer_id', this.user.id);
+              postData.set('customer_name', this.user.name);
+              postData.set('customer_email', this.user.email);
+              if(this.user.role.id === 9){
+                postData.set('reseller_discount', this.dataProduct.category_detail.tier_1_discount);
+              }else if(this.user.role.id === 8){
+                postData.set('reseller_discount', this.dataProduct.category_detail.tier_2_discount);
+              }
+            }
+
+            axios.post(addToCartUrl, postData, {headers: getHeader()}).then(response => {
+
+              if(response.status === 200){
+                this.$q.notify({position: 'top', color: 'dark', message: 'Produk Ditambahkan ke Keranjang'});
+              }
+
+            }).catch(error => {
+              
+              if (error.response) {
+                console.log(error.response)
+              }
+            
+            })
+        
         }else{
-          postData.set('product_id', this.dataProduct.id);
-          postData.set('product_sku_id', 0);
-          postData.set('qty', this.qty);
-          postData.set('customer_id', this.user.id);
-          postData.set('customer_name', this.user.name);
-          postData.set('customer_email', this.user.email);
-          if(this.user.role.id === 9){
-            postData.set('reseller_discount', this.dataProduct.category_detail.tier_1_discount);
-          }else if(this.user.role.id === 8){
-            postData.set('reseller_discount', this.dataProduct.category_detail.tier_2_discount);
-          }
+
+            this.$q.notify({position: 'top', color: 'red', message: 'Maaf, Stok Kosong!'});
+
         }
 
-        axios.post(addToCartUrl, postData, {headers: getHeader()}).then(response => {
-
-          if(response.status === 200){
-            this.$q.notify({position: 'top', color: 'dark', message: 'Produk Ditambahkan ke Keranjang'});
-          }
-
-        }).catch(error => {
-          
-          if (error.response) {
-            console.log(error.response)
-          }
-        
-        })
-
     },
+    // checkStock () {
+    //     //this.stockReady = null;
+        
+    //     if(this.productVariant.length > 0){
+
+    //         axios.get(inventoryStockUrl + '/' + this.productVariant[0].sku, {headers: getHeader()}).then(response => {
+
+    //             if(response.status === 200){
+    //               this.stockReady = response.data.data.stock_qty;
+    //             }
+
+    //           }).catch(error => {
+                
+    //             if (error.response) {
+    //               console.log(error.response)
+    //             }
+              
+    //           })
+
+    //     }
+        
+    // },
     formatPrice(value) {
         let val = (value/1).toFixed(0).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
