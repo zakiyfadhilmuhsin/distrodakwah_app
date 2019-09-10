@@ -45,6 +45,7 @@ export const identitySliderUrl = apiDomain + '/identity/sliders'
 export const postToOrderUrl = apiDomain + '/order/orders'
 export const showOrderUrl = apiDomain + '/order/orders'
 export const getOrderUrl = apiDomain + '/order/orders-for-reseller'
+export const paymentConfirmOrderUrl = apiDomain + '/order/orders/confirmPayment'
 
 // From Store Service
 export const getStoreUrl = apiDomain + '/store/get-store'
@@ -52,6 +53,10 @@ export const createStoreUrl = apiDomain + '/store/create-store'
 
 // From Inventory Service
 export const inventoryStockUrl = apiDomain + '/inventory/stocks'
+
+// From Payment Service
+export const paymentConfirmationUrl = apiDomain + '/payment/payment-confirmations'
+
 
 export const getHeader = function () {
   // debugger

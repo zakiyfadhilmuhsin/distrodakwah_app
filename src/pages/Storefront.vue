@@ -129,7 +129,7 @@
             <div class="row q-px-md" style="padding: 5px 10px 10px 10px">
               <div class="col">
                 <swiper :options="swiperProductListOption">
-                  <swiper-slide v-for="(product, index) in dataProduct" :key="index">
+                  <swiper-slide v-for="(product, index) in newProduct" :key="index">
                     <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
                       <transition
                         appear
@@ -160,7 +160,9 @@
                       </q-card-section>
 
                       <q-card-section>
-                        <q-btn :to="'/detail/' + product.id" flat class="bg-orange-8 text-white" style="padding-top: 0px; padding-bottom: 0px"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
+                        <center>
+                          <q-btn :to="'/detail/' + product.id" flat class="bg-orange-8 text-white" style="padding-top: 0px; padding-bottom: 0px"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
+                        </center>
                       </q-card-section>
 
                     </q-card>
@@ -213,7 +215,9 @@
                       </q-card-section>
 
                       <q-card-section>
-                        <q-btn :to="'/detail/' + product.id" flat class="bg-orange-8 text-white" style="padding-top: 0px; padding-bottom: 0px"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
+                        <center>
+                          <q-btn :to="'/detail/' + product.id" flat class="bg-orange-8 text-white" style="padding-top: 0px; padding-bottom: 0px"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
+                        </center>
                       </q-card-section>
 
                     </q-card>
@@ -268,6 +272,11 @@ export default {
       featuredImageShow: true,
       // user
       user: [],
+    }
+  },
+  computed: {
+    newProduct() {
+      return this.dataProduct.slice().reverse()
     }
   },
   created () {

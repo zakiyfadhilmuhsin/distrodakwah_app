@@ -2,7 +2,7 @@
   <q-layout view="hHh lpR fFf">
 
     <q-header elevated class="mobile-layout-on-desktop">
-      <q-toolbar class="bg-orange-8 text-white">
+      <q-toolbar class="bg-distrodakwah text-white">
         <q-btn
           flat
           round
@@ -135,7 +135,7 @@
 
 <script>
 import axios from 'axios';
-import { getCartUrl, catalogProductUrl, postToOrderUrl, destroyCart, getHeader } from 'src/config';
+import { getCartUrl, catalogProductUrl, postToOrderUrl, destroyCart, inventoryStockUrl, getHeader } from 'src/config';
 
 export default {
   data () {
@@ -145,7 +145,8 @@ export default {
       totalItem: 0,
       subTotal: null,
       addressSelect: true,
-      ekspedisiSelected: ''
+      ekspedisiSelected: '',
+      skuProduct: [],
     }
   },
   created () {
@@ -158,6 +159,7 @@ export default {
     getCartData () {
       this.cartData = [];
       this.items = [];
+      this.skuProduct = [];
 
       axios.get( getCartUrl + '/' + this.user.id, { headers: getHeader() } )
         .then(response => {
@@ -202,6 +204,11 @@ export default {
                             qty: qty,
                         });
 
+                        this.skuProduct.push({
+                          sku: response.data.data.sku,
+                          qty: qty,
+                        });
+
                       }).catch(error => {
 
                         if (error.response) {
@@ -218,6 +225,11 @@ export default {
                         product_image: product_image,
                         price: response.data.data.price - reseller_discount,
                         qty: qty,
+                    });
+
+                    this.skuProduct.push({
+                      sku: response.data.data.sku,
+                      qty: qty,
                     });
 
                   }
@@ -275,6 +287,21 @@ export default {
                     console.log(error.response)
                   }
                 })
+
+              let skuProductPost = new FormData();
+
+              skuProductPost.set('sku', JSON.stringify(this.skuProduct, 2, null));
+
+              axios.post( inventoryStockUrl + '/reduceStock', skuProductPost, { headers: getHeader() } )
+                .then(response => {
+                  console.log(response)
+                })
+                .catch(error => {
+                  if (error.response) {
+                    console.log(error.response)
+                  }
+                })
+
             }
 
           })

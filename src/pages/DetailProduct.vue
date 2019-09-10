@@ -34,7 +34,7 @@
       <q-toolbar class="bg-white text-black">
         <span v-if="dataProduct.length !== 0">
           <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-if="user.role.id === 9">KAMU UNTUNG {{'Rp' + formatPrice( Number(this.dataProduct.category_detail.tier_1_discount) * Number(this.qty) )}}</h4>
-          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-else-if="user.role.id === 8">KAMU UNTUNG {{'Rp' + formatPrice( Number(this.dataProduct.category_detail.tier_2_discount) * Number(this.qty) )}}</h4>
+          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-else-if="user.role.id === 8">KAMU UNTUNG <span class="text-green">{{'Rp' + formatPrice( Number(this.dataProduct.category_detail.tier_2_discount) * Number(this.qty) )}}</span></h4>
         </span>
         <q-space />
         <q-btn
@@ -141,10 +141,9 @@
                 </div>
               </div>
             </template>
-            {{stockReady}}
-            <div class="row" v-if="user.role.id === 8">
+            <div class="row" v-if="user.role.id === 8 && dataProduct.length !== 0">
               <div class="col">
-                <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp65.000</b></h4>
+                <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp{{formatPrice(dataProduct.price - dataProduct.category_detail.tier_1_discount)}}</b></h4>
               </div>
             </div>
 
@@ -485,7 +484,7 @@ export default {
     addToCart () {
         
         // Cek stok dulu
-        if(this.stockReady > 0){
+        if(this.stockReady > 0 && this.qty <= this.stockReady){
 
             let postData = new FormData();
 
@@ -535,7 +534,7 @@ export default {
         
         }else{
 
-            this.$q.notify({position: 'top', color: 'red', message: 'Maaf, Stok Kosong!'});
+            this.$q.notify({position: 'top', color: 'red', message: 'Maaf, Stok Belum Ada!'});
 
         }
 

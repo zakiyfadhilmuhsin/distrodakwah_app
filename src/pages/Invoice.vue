@@ -15,6 +15,19 @@
       </q-toolbar>
     </q-header>
 
+    <q-footer class="bg-white text-black mobile-layout-on-desktop" style="border-top: 2px solid #eee" v-if="this.dataOrder.status === 'waiting_payment'">
+      <q-toolbar class="bg-white text-black">
+        <q-space />
+        <q-btn
+          flat
+          class="bg-orange-8 text-white full-width"
+          @click="paymentConfirmation = true"
+        >
+          Konfirmasi Pembayaran
+        </q-btn>
+      </q-toolbar>
+    </q-footer>
+
     <q-page-container class="mobile-layout-on-desktop">
       <q-page class="bg-white">
         <div class="bg-grey-3" style="height: 100%">
@@ -87,6 +100,45 @@
           </div>
         </div>
       </q-page>
+      <q-dialog v-model="paymentConfirmation" position="bottom">
+        <q-card style="min-width: 360px">
+          <q-card-section>
+            <div class="text-h6">Konfirmasi Pembayaran</div>
+          </q-card-section>
+
+          <q-card-section>
+            <q-select 
+              color="orange-8"
+              dense
+              outlined
+              v-model="bankReceiver"
+              :options="dataBank"
+              option-value="bank_name"
+              option-label="bank_name"
+              label="Bank Tujuan"
+              emit-value
+              map-options
+              style="margin-bottom: 5px"
+            />
+            <q-input type="text" color="orange-8" v-model="bankSender" label="Transfer Dari Bank" dense outlined style="margin-bottom: 5px" />
+            <q-input type="text" color="orange-8" v-model="senderName" label="Nama Pengirim" dense outlined style="margin-bottom: 5px" />
+            <q-input type="number" color="orange-8" v-model="totalTransfer" label="Total Transfer" dense outlined style="margin-bottom: 5px" />
+            <q-input dense outlined v-model="transferDate" color="orange-8" placeholder="Tanggal Transfer">
+              <template v-slot:append>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                    <q-date v-model="transferDate" mask="YYYY-MM-DD" color="orange-8" />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </q-card-section>
+
+          <q-card-actions class="q-px-md">
+            <q-btn flat label="Konfirmasi Sekarang" color="white" class="bg-orange-8 text-capitalize full-width" @click="postPaymentConfirmation" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </q-page-container>
 
   </q-layout>
@@ -94,13 +146,21 @@
 
 <script>
 import axios from 'axios';
-import { showOrderUrl, identityBankUrl, getHeader } from 'src/config';
+import { showOrderUrl, identityBankUrl, paymentConfirmationUrl, paymentConfirmOrderUrl, getHeader } from 'src/config';
 
 export default {
   data () {
     return {
       dataBank: [],
       dataOrder: [],
+      // Payment Confirmation
+      bankReceiver: '',
+      bankSender: '',
+      senderName: '',
+      totalTransfer: 0,
+      transferDate: '',
+      // Toggle
+      paymentConfirmation: false,
     }
   },
   mounted () {
@@ -142,6 +202,54 @@ export default {
               console.log(error.response)
             }
           })
+
+    },
+    postPaymentConfirmation() {
+
+        let paymentConfirm = new FormData();
+
+        paymentConfirm.set('invoice', this.dataOrder.invoice);
+        paymentConfirm.set('bank_receiver', this.bankReceiver);
+        paymentConfirm.set('bank_sender', this.bankSender);
+        paymentConfirm.set('sender_name', this.senderName);
+        paymentConfirm.set('total_transfer', this.totalTransfer);
+        paymentConfirm.set('transfer_date', this.transferDate);
+
+        axios.post( paymentConfirmationUrl, paymentConfirm, { headers: getHeader() } )
+          .then(response => {
+            console.log(response)
+
+            if (response.status === 200) {
+              this.getDataBank();
+              this.getOrder();
+
+              this.bankReceiver = '';
+              this.bankSender = '';
+              this.senderName = '';
+              this.totalTransfer = '';
+              this.transferDate = '';
+            }
+
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response)
+            }
+          })
+
+        let changeStatus = new FormData();
+
+        changeStatus.set('id', this.dataOrder.id);
+
+        axios.post( paymentConfirmOrderUrl, changeStatus, { headers: getHeader() } )
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response)
+            }
+          })   
 
     },
     formatPrice(value) {
