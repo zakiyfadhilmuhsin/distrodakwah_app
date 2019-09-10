@@ -2,7 +2,7 @@
   <q-layout view="hHh lpR fFf">
 
     <q-header elevated class="mobile-layout-on-desktop">
-      <q-toolbar class="bg-orange-8 text-white">
+      <q-toolbar class="bg-distrodakwah text-white">
         <q-btn
           flat
           round
@@ -11,20 +11,40 @@
         >
           <q-icon name="arrow_back" color="white" /> 
         </q-btn>
-        <q-toolbar-title><span style="font-size: 16px; font-weight: bold">Invoice 990123</span></q-toolbar-title>
+        <q-toolbar-title><span style="font-size: 16px; font-weight: bold">Invoice {{ dataOrder.invoice }}</span></q-toolbar-title>
       </q-toolbar>
     </q-header>
 
+    <q-footer class="bg-white text-black mobile-layout-on-desktop" style="border-top: 2px solid #eee">
+      <q-toolbar class="bg-white text-black">
+        <q-space />
+        <q-btn
+          flat
+          class="bg-orange-8 text-white full-width"
+        >
+          Konfirmasi Pembayaran
+        </q-btn>
+      </q-toolbar>
+    </q-footer>
+
     <q-page-container class="mobile-layout-on-desktop">
-      <q-page>
+      <q-page class="bg-grey-3">
         <div class="bg-grey-3" style="height: 100%">
           <div style="background-color: white;; padding: 13px 0 10px 0">
             <div class="row q-px-lg">
               <div class="col">
-                <h5 class="title-text" style="font-weight: normal;">Tgl Order : 16 Juli 19</h5>
+                <h5 class="title-text" style="font-weight: normal;">Tgl Order : {{ dataOrder.created_at ? new Date(dataOrder.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'numeric', day: 'numeric' }) : '' }}</h5>
               </div>
               <div class="col text-right">
-                <q-btn flat disable size="sm" class="bg-red-7 text-white" style="text-transform: capitalize;">Belum Dibayar</q-btn>
+                <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-if="dataOrder.status === 'waiting_payment'">Menunggu Pembayaran</q-btn>
+                <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'waiting_fo_verification'">Menunggu Verifikasi</q-btn>
+                <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'payment_confirmed'">Sudah Dibayar</q-btn>
+                <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'processed'">Sedang Diproses</q-btn>
+                <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'packing'">Sedang Dikemas</q-btn>
+                <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'shipped'">Sedang Dikirim</q-btn>
+                <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'done'">Selesai</q-btn>
+                <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'pending'">Pending</q-btn>
+                <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'rejected'">Dibatalkan</q-btn>
               </div>
             </div>
             <br/>
@@ -40,12 +60,12 @@
               <div class="col-xs-8">
                 <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Total Harga Barang</h6>
                 <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Ongkos Kirim</h6>
-                <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Donasi</h6>
+                <!-- <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Donasi</h6> -->
               </div>
               <div class="col-xs-4 text-right">
-                <h6 style="margin: 0; font-size: 12px; line-height: 18px" class="text-black">Rp240.000</h6>
-                <h6 style="margin: 0; font-size: 12px; line-height: 18px" class="text-black">Rp19.500</h6>
-                <h6 style="margin: 0; font-size: 12px; line-height: 18px" class="text-black">Rp600</h6>
+                <h6 style="margin: 0; font-size: 12px; line-height: 18px" class="text-black">Rp{{ formatPrice(dataOrder.total_amount) }}</h6>
+                <h6 style="margin: 0; font-size: 12px; line-height: 18px" class="text-black">Rp{{ formatPrice(dataOrder.shipment_fee) }}</h6>
+                <!-- <h6 style="margin: 0; font-size: 12px; line-height: 18px" class="text-black">Rp600</h6> -->
               </div>
             </div>
             <center>
@@ -56,7 +76,7 @@
                 <h5 style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold">Total</h5>
               </div>
               <div class="col text-right">
-                <h5 style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold">Rp296.000</h5>
+                <h5 style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold">Rp{{ formatPrice(dataOrder.grand_total + dataOrder.code_unique) }}</h5>
               </div>
             </div>
             <div class="row q-px-lg items-center">
@@ -64,14 +84,14 @@
                 <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Kode Unik</h6>
               </div>
               <div class="col-xs-4 text-right">
-                <h6 style="margin: 0; font-size: 12px; line-height: 18px" class="text-black">Rp-138</h6>
+                <h6 style="margin: 0; font-size: 12px; line-height: 18px" class="text-black">Rp-{{ formatPrice(dataOrder.code_unique) }}</h6>
               </div>
             </div>
             <hr style="border: none; height: 30px" />
             <div class="row q-px-lg">
               <div class="col">
                 <h6 style="font-size: 14px; margin: 10px 0; font-family: 'Open Sans'; text-align: center;">Total Yang Harus Kamu Transfer</h6>
-                <h6 style="font-size: 36px; margin: 0 0 18px 0; font-family: 'Open Sans'; text-align: center; font-weight: bold">Rp2.095.432 <q-btn flat size="xs" class="bg-red text-white">Salin</q-btn></h6>
+                <h6 style="font-size: 36px; margin: 0 0 18px 0; font-family: 'Open Sans'; text-align: center; font-weight: bold">Rp{{ formatPrice(dataOrder.grand_total) }} <q-btn flat size="xs" class="bg-red text-white">Salin</q-btn></h6>
                 <h6 style="font-size: 14px; margin: 10px 0; font-family: 'Open Sans'; text-align: center; line-height: 16px">Silahkan melakukan pembayaran melalui transfer bank ke salah satu rekening berikut.</h6>
               </div>
             </div>
@@ -80,39 +100,12 @@
             <div class="row q-pa-lg">
               <div class="col">
                 <q-list>
-                  <q-item clickable v-ripple>
+                  <q-item v-for="(bank, index) in dataBank" :key="index">
                     <q-item-section side>
-                      <img src="~/assets/images/components/bank/bca.png" width="50" />
+                      <img :src="bank.bank_image" width="50" />
                     </q-item-section>
 
-                    <q-item-section side>08123456789<br/><span style="font-size: 10px">A.N CV. Distro Dakwah Indonesia</span></q-item-section>
-
-                    <q-item-section><q-btn flat size="xs" class="bg-red text-white">Salin</q-btn></q-item-section>
-                  </q-item>
-                  <q-item clickable v-ripple>
-                    <q-item-section side>
-                      <img src="~/assets/images/components/bank/bni.png" width="50" />
-                    </q-item-section>
-
-                    <q-item-section side>08123456789<br/><span style="font-size: 10px">A.N CV. Distro Dakwah Indonesia</span></q-item-section>
-
-                    <q-item-section><q-btn flat size="xs" class="bg-red text-white">Salin</q-btn></q-item-section>
-                  </q-item>
-                  <q-item clickable v-ripple>
-                    <q-item-section side>
-                      <img src="~/assets/images/components/bank/bri.png" width="50" />
-                    </q-item-section>
-
-                    <q-item-section side>08123456789<br/><span style="font-size: 10px">A.N CV. Distro Dakwah Indonesia</span></q-item-section>
-
-                    <q-item-section><q-btn flat size="xs" class="bg-red text-white">Salin</q-btn></q-item-section>
-                  </q-item>
-                  <q-item clickable v-ripple>
-                    <q-item-section side>
-                      <img src="~/assets/images/components/bank/mandiri.png" width="50" />
-                    </q-item-section>
-
-                    <q-item-section side>08123456789<br/><span style="font-size: 10px">A.N CV. Distro Dakwah Indonesia</span></q-item-section>
+                    <q-item-section side>{{ bank.account_number }}<br/><span style="font-size: 10px">A.N {{ bank.account_name }}</span></q-item-section>
 
                     <q-item-section><q-btn flat size="xs" class="bg-red text-white">Salin</q-btn></q-item-section>
                   </q-item>
@@ -128,10 +121,61 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { showOrderUrl, identityBankUrl, getHeader } from 'src/config';
+
 export default {
   data () {
     return {
+      dataBank: [],
+      dataOrder: [],
     }
+  },
+  mounted () {
+    this.getDataBank();
+    this.getOrder();
+  },
+  methods: {
+    getOrder() {
+
+        axios.get( showOrderUrl + '/' + this.$route.params.id, { headers: getHeader() } )
+          .then(response => {
+            console.log(response)
+
+            if (response.status === 200) {
+              this.dataOrder = response.data.data;
+            }
+
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response)
+            }
+          })
+
+    },
+    getDataBank() {
+
+        axios.get( identityBankUrl, { headers: getHeader() } )
+          .then(response => {
+            console.log(response)
+
+            if (response.status === 200) {
+              this.dataBank = response.data.data;
+            }
+
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response)
+            }
+          })
+
+    },
+    formatPrice(value) {
+        let val = (value/1).toFixed(0).replace('.', ',')
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
   }
 }
 </script>

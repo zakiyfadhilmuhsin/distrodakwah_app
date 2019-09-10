@@ -87,10 +87,7 @@
             <!-- swiper -->
             <div style="padding: 20px 0 0 15px">
               <swiper :options="swiperOption">
-                <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
-                <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
-                <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
-                <swiper-slide><img src="~/assets/images/components/slider-contoh.png" width="100%"></swiper-slide>
+                <swiper-slide v-for="(slider, index) in dataSlider" :key="index"><img :src="slider.slider_image" width="100%"></swiper-slide>
                 <div class="swiper-pagination" slot="pagination"></div>
               </swiper>
             </div>
@@ -236,11 +233,13 @@
 import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import axios from 'axios';
-import {apiDomain, catalogCategoryUrl, catalogProductUrl, getHeader} from 'src/config';
+import {apiDomain, catalogCategoryUrl, catalogProductUrl, identitySliderUrl, getHeader} from 'src/config';
 
 export default {
   data () {
     return {
+      // Slider Section
+      dataSlider: [],
       // Category Section
       dataCategory: [],
       // Product Section
@@ -277,6 +276,7 @@ export default {
   mounted () {
     this.getCategory();
     this.getProduct();
+    this.getSlider();
   },
   methods: {
     getCategory () {
@@ -312,6 +312,24 @@ export default {
               this.innerLoading = false;
               this.featuredImageShow = true;
             }, 1000);
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+
+    },
+    getSlider () {
+
+      axios.get( identitySliderUrl, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+            this.dataSlider = response.data.data;
           }
 
         })

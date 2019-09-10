@@ -25,6 +25,7 @@ export const getCartUrl = apiDomain + '/cart/get-cart'
 export const addToCartUrl = apiDomain + '/cart/add-to-cart'
 export const removeProductCartUrl = apiDomain + '/cart/remove-product'
 export const addShippingToCart = apiDomain + '/cart/add-shipping-to-cart'
+export const destroyCart = apiDomain + '/cart/destroy-cart'
 
 // From Shipping Service
 export const getCustomerUrl = apiDomain + '/shipping/get-customer'
@@ -38,9 +39,11 @@ export const getCostShippingUrl = apiDomain + '/shipping/cost'
 
 // From Identity Service
 export const identityBankUrl = apiDomain + '/identity/banks'
+export const identitySliderUrl = apiDomain + '/identity/sliders'
 
 // From Order Service
 export const postToOrderUrl = apiDomain + '/order/orders'
+export const showOrderUrl = apiDomain + '/order/orders'
 export const getOrderUrl = apiDomain + '/order/orders-for-reseller'
 
 // From Store Service

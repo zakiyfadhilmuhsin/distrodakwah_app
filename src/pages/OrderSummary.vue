@@ -135,7 +135,7 @@
 
 <script>
 import axios from 'axios';
-import { getCartUrl, catalogProductUrl, postToOrderUrl, getHeader } from 'src/config';
+import { getCartUrl, catalogProductUrl, postToOrderUrl, destroyCart, getHeader } from 'src/config';
 
 export default {
   data () {
@@ -264,7 +264,17 @@ export default {
             console.log(response)
 
             if (response.status === 200) {
-              this.$router.push('/invoice');
+              this.$router.push({ path:'/invoice', query: { orderID: response.data.data.id } });
+
+              axios.delete( destroyCart + '/' + this.cartData.id, { headers: getHeader() } )
+                .then(response => {
+                  console.log(response)
+                })
+                .catch(error => {
+                  if (error.response) {
+                    console.log(error.response)
+                  }
+                })
             }
 
           })
