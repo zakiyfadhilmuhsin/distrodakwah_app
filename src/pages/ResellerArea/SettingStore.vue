@@ -47,7 +47,7 @@
                     <q-input outlined dense color="orange-8" type="text" v-model="storeUrl" label="Slug/URL Toko" placeholder="Masukkan URL Toko" />
                 </div>
                 <div class="q-pa-xs">
-                    <q-input outlined dense color="green-6" type="text" v-model="whatsappNumber" label="Nomor Whatsapp" placeholder="Masukkan Nomor Whatsapp" />
+                    <q-input prefix="+62" outlined dense color="green-6" type="text" v-model="whatsappNumber" label="Nomor Whatsapp" placeholder="Masukkan Nomor Whatsapp" />
                 </div>
               </q-card-section>
             </q-card>
@@ -147,7 +147,7 @@ export default {
 
     },
     toStore() {
-      openURL('http://localhost:8082/#/' + this.storeUrl);
+      openURL('https://determined-yalow-31d518.netlify.com/#/' + this.storeUrl);
     }
   }
 }
