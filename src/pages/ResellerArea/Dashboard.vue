@@ -30,11 +30,11 @@
 	          to="/dashboard"
 	          style="text-transform: capitalize; font-family: 'Open Sans'"
 	        ><span style="font-size: 10px;">Profile</span></q-route-tab>
-	        <q-route-tab
+	        <!-- <q-route-tab
 	          icon="verified_user"
 	          to="/"
 	          style="text-transform: capitalize; font-family: 'Open Sans'"
-	        ><span style="font-size: 10px;">Support</span></q-route-tab>
+	        ><span style="font-size: 10px;">Support</span></q-route-tab> -->
 	      </q-tabs>
 	    </center>
 	</q-footer>
@@ -80,12 +80,12 @@
             </div> 
           </div>
           <br/> -->
-          <div class="row">
+          <!-- <div class="row">
             <div class="col">
               <h4 style="font-weight: bold; font-size: 21px; font-family: 'Open Sans'; margin: 0;">Alhamdulillah!</h4>
               <h5 style="font-size: 12px; line-height: 15px; margin: 0">Kamu telah mendapatkan untuk <b>Rp.1.450.000</b><br/>Sejak bergabung menjadi reseller distrodakwah</h5>
             </div>
-          </div>
+          </div> -->
           <div class="row" style="padding-top: 15px">
             <div class="col">
               <h5 style="font-size: 14px; font-weight: bold; margin: 10px 0">Pesanan Saya</h5>

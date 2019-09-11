@@ -90,7 +90,7 @@ export default {
         storeUrl: '',
         whatsappNumber: '',
         dataStore: [],
-        url: 'http://localhost:8082/#/',
+        url: 'https://determined-yalow-31d518.netlify.com/#/',
     }
   },
   created () {

@@ -1,6 +1,6 @@
 import router from 'src/router/routes'
 
-export const hostDomain = 'http://apigateway.test'
+export const hostDomain = 'https://api.needherbal.web.id'
 
 export const apiDomain = hostDomain
 

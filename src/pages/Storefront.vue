@@ -71,11 +71,11 @@
             to="/dashboard"
             style="text-transform: capitalize; font-family: 'Open Sans'"
           ><span style="font-size: 10px;">Profile</span></q-route-tab>
-          <q-route-tab
+          <!-- <q-route-tab
             icon="verified_user"
             to="/storefront"
             style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Support</span></q-route-tab>
+          ><span style="font-size: 10px;">Support</span></q-route-tab> -->
         </q-tabs>
       </center>
     </q-footer>

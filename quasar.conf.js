@@ -124,9 +124,9 @@ module.exports = function (ctx) {
       // workboxPluginMode: 'InjectManifest',
       // workboxOptions: {}, // only for NON InjectManifest
       manifest: {
-        // name: 'DistroDakwah App',
-        // short_name: 'DistroDakwah App',
-        // description: 'Platform Ecommerce Fashion Muslim',
+        name: 'DistroDakwah App',
+        short_name: 'DistroDakwah App',
+        description: 'Platform Ecommerce Fashion Muslim',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
