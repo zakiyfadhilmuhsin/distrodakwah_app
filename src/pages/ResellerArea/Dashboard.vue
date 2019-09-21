@@ -183,6 +183,20 @@
                     </q-item-section>
                   </q-item>
 
+                  <q-separator />
+
+                  <q-item dense clickable v-ripple @click="logout">
+                    <q-item-section avatar>
+                      <q-icon name="power_settings_new" />
+                    </q-item-section>
+
+                    <q-item-section><span style="font-size: 12px; color: black; line-height: 15px; font-weight: bold" class="text-red">Logout</span></q-item-section>
+
+                    <!-- <q-item-section side>
+                      <q-icon name="keyboard_arrow_right" />
+                    </q-item-section> -->
+                  </q-item>
+
                   <!-- <q-separator />
 
                   <q-item dense clickable v-ripple>
@@ -257,5 +271,12 @@ export default {
   created () {
     this.user = JSON.parse(window.localStorage.getItem('profileUser'));
   },
+  methods: {
+    logout () {
+      window.localStorage.removeItem('authUser');
+      window.localStorage.removeItem('profileUser');
+      this.$router.push('/');
+    }
+  }
 }
 </script>

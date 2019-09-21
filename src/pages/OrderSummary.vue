@@ -180,9 +180,9 @@ export default {
                   let product_id = this.cartData.cart_detail[i].product_id;
                   let reseller_discount = null;
                   if(this.user.role.id === 9){
-                    reseller_discount = response.data.data.category_detail.tier_1_discount;
+                    reseller_discount = response.data.data.reseller_exclusive_price;
                   }else if(this.user.role.id === 8){
-                    reseller_discount = response.data.data.category_detail.tier_2_discount;
+                    reseller_discount = response.data.data.reseller_pro_price;
                   }
 
                   if(this.cartData.cart_detail[i].product_sku_id !== null){
@@ -199,7 +199,7 @@ export default {
                             product_id: product_id,
                             product_name: product_name,
                             product_image: product_image,
-                            price: response.data.data.price - reseller_discount,
+                            price: response.data.data.price - (response.data.data.price * reseller_discount / 100),
                             options: JSON.parse(this.cartData.cart_detail[i].options),
                             qty: qty,
                         });
@@ -223,7 +223,7 @@ export default {
                         product_id: product_id,
                         product_name: product_name,
                         product_image: product_image,
-                        price: response.data.data.price - reseller_discount,
+                        price: response.data.data.price - (response.data.data.price * reseller_discount / 100),
                         qty: qty,
                     });
 
@@ -269,6 +269,7 @@ export default {
         postOrder.set('customer_id', this.cartData.customer_id);
         postOrder.set('customer_name', this.cartData.customer_name);
         postOrder.set('customer_email', this.cartData.customer_email);
+        postOrder.set('customer_phone', this.cartData.customer_phone);
         postOrder.set('cart_details', JSON.stringify(this.cartData.cart_detail, 2, null));
 
         axios.post( postToOrderUrl, postOrder, { headers: getHeader() } )

@@ -9,9 +9,23 @@
             <h1 class="login-text">LOGIN</h1>
             <p class="login-small-text">Untuk dapatkan berbagai macam<br/>keuntungan di Distrodakwah.id</p>
             <q-input v-model="email" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Email" />
-            <q-input v-model="password" color="orange-8" type="password" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Kata Sandi" />
-            <div class="text-right">
-              <p class="forgot-password-text text-amber-8" style="margin-bottom: 10px">Lupa Kata Sandi?</p>
+            <!-- <q-input v-model="password" color="orange-8" type="password" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Kata Sandi" /> -->
+            <q-input v-model="password" color="orange-8" class="bg-grey-2 q-mb-sm" outlined dense :type="isPwd ? 'password' : 'text'" placeholder="Kata Sandi">
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd = !isPwd"
+                />
+              </template>
+            </q-input>
+            <div class="row q-py-xs">
+              <div class="col">
+                <q-checkbox dense v-model="rememberMe" val="true" color="orange-8" /><span class="forgot-password-text" style="margin: 5px 0; font-weight: 500; margin-left: 5px">Ingat saya</span>
+              </div>
+              <div class="col text-right">
+                <div class="forgot-password-text text-amber-8" style="margin: 2px 0 10px 0; font-weight: 500">Lupa Kata Sandi?</div>
+              </div>
             </div>
             <q-btn @click="submitLogin" flat class="bg-amber-8 full-width"><span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">MASUK</span></q-btn>
             <br/>
@@ -43,7 +57,7 @@
 		padding-left: 2px;
 	}
 	.forgot-password-text{
-		font-size: 12px;
+		font-size: 16px;
 	}
 </style>
 
@@ -57,6 +71,8 @@ export default {
     return {
       email: null,
       password: null,
+      isPwd: true,
+      rememberMe: true,
     }
   },
   created () {

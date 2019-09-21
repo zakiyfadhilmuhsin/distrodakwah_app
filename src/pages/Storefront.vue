@@ -153,8 +153,8 @@
                           <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px">{{product.product_name}}</div>
                           <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
                           <div class="q-px-sm q-py-xs bg-green">
-                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-if="user.role.id === 9">{{'Rp' + formatPrice(product.category_detail.tier_1_discount)}}</div>
-                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-else-if="user.role.id === 8">{{'Rp' + formatPrice(product.category_detail.tier_2_discount)}}</div>
+                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-if="user.role.id === 9">{{'Rp' + formatPrice(product.price * product.reseller_exclusive_price / 100)}}</div>
+                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-else-if="user.role.id === 8">{{'Rp' + formatPrice(product.price * product.reseller_pro_price / 100)}}</div>
                           </div>
                         </center>
                       </q-card-section>
@@ -208,8 +208,8 @@
                           <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px">{{product.product_name}}</div>
                           <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
                           <div class="q-px-sm q-py-xs bg-green">
-                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-if="user.role.id === 9">{{'Rp' + formatPrice(product.category_detail.tier_1_discount)}}</div>
-                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-else-if="user.role.id === 8">{{'Rp' + formatPrice(product.category_detail.tier_2_discount)}}</div>
+                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-if="user.role.id === 9">{{'Rp' + formatPrice(product.price * product.reseller_exclusive_price / 100)}}</div>
+                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-else-if="user.role.id === 8">{{'Rp' + formatPrice(product.price * product.reseller_pro_price / 100)}}</div>
                           </div>
                         </center>
                       </q-card-section>

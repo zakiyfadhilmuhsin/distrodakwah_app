@@ -44,10 +44,11 @@
                     <q-input outlined dense color="orange-8" type="text" v-model="storeName" label="Nama Toko" placeholder="Masukkan Nama Toko" />
                 </div>
                 <div class="q-pa-xs">
-                    <q-input outlined dense color="orange-8" type="text" v-model="storeUrl" label="Slug/URL Toko" placeholder="Masukkan URL Toko" />
+                    <q-input prefix="order.com/" outlined dense color="orange-8" type="text" v-model="storeUrl" label="Slug/URL Toko" placeholder="Masukkan URL Toko" />
                 </div>
                 <div class="q-pa-xs">
-                    <q-input prefix="+62" outlined dense color="green-6" type="text" v-model="whatsappNumber" label="Nomor Whatsapp" placeholder="Masukkan Nomor Whatsapp" />
+                    <!-- <q-input prefix="+62" outlined dense color="green-6" type="text" v-model="whatsappNumber" label="Nomor Whatsapp" placeholder="Masukkan Nomor Whatsapp" /> -->
+                    <vue-tel-input v-model="whatsappNumber" enabledCountryCode mode="international" disabledFormatting="true" placeholder="Masukkan Nomor Whatsapp"></vue-tel-input>
                 </div>
               </q-card-section>
             </q-card>
@@ -78,6 +79,10 @@ import { getStoreUrl, createStoreUrl, getHeader } from 'src/config';
 import { openURL } from 'quasar'
 // Sharing Social Media
 import { Facebook, Telegram, Twitter, WhatsApp, Email } from 'vue-socialmedia-share';
+import Vue from 'vue'
+import VueTelInput from 'vue-tel-input'
+
+Vue.use(VueTelInput)
 
 export default {
   components: {
@@ -127,7 +132,7 @@ export default {
       let formData = new FormData();
       formData.set('store_name', this.storeName);
       formData.set('store_slug', this.storeUrl);
-      formData.set('whatsapp_number', this.whatsappNumber);
+      formData.set('whatsapp_number', this.whatsappNumber.replace(/\D/g, ''));
       formData.set('user_id', this.user.id);
 
       axios.post( createStoreUrl + '/' + this.user.id, formData, { headers: getHeader() } )

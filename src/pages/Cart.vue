@@ -70,7 +70,7 @@
                   <h6 style="margin: -15px 0; font-size: 12px;" class="text-orange-8">Rp{{ formatPrice(item.qty * item.price) }}</h6>
                 </div>
                 <div class="col-2 text-right self-center">
-                  <q-btn flat round icon="delete_forever" style="font-size: 10px" @click="removeProduct(item.product_id, item.qty, item.price)" />
+                  <q-btn flat round icon="delete_forever" style="font-size: 10px" @click="removeProduct(item.product_id, item.product_sku_id, item.qty, item.price)" />
                 </div>
               </div>
             </template>
@@ -201,9 +201,9 @@ export default {
                   let product_id = this.cartData.cart_detail[i].product_id;
                   let reseller_discount = null;
                   if(this.user.role.id === 9){
-                    reseller_discount = response.data.data.category_detail.tier_1_discount;
+                    reseller_discount = response.data.data.reseller_exclusive_price;
                   }else if(this.user.role.id === 8){
-                    reseller_discount = response.data.data.category_detail.tier_2_discount;
+                    reseller_discount = response.data.data.reseller_pro_price;
                   }
 
                   if(this.cartData.cart_detail[i].product_sku_id !== null){
@@ -220,12 +220,13 @@ export default {
                             product_id: product_id,
                             product_name: product_name,
                             product_image: product_image,
-                            price: response.data.data.price - reseller_discount,
+                            price: response.data.data.price - (response.data.data.price * reseller_discount / 100),
                             options: JSON.parse(this.cartData.cart_detail[i].options),
                             qty: qty,
+                            product_sku_id: this.cartData.cart_detail[i].product_sku_id,
                         });
 
-                        this.totalProfit += reseller_discount * qty;
+                        this.totalProfit += (response.data.data.price * reseller_discount / 100) * qty;
 
                       }).catch(error => {
 
@@ -241,11 +242,12 @@ export default {
                         product_id: product_id,
                         product_name: product_name,
                         product_image: product_image,
-                        price: response.data.data.price - reseller_discount,
+                        price: response.data.data.price - (response.data.data.price * reseller_discount / 100),
                         qty: qty,
+                        product_sku_id: this.cartData.cart_detail[i].product_sku_id,
                     });
 
-                    this.totalProfit += reseller_discount * qty;
+                    this.totalProfit += (response.data.data.price * reseller_discount / 100) * qty;
 
                   }
 
@@ -275,9 +277,16 @@ export default {
         let val = (value/1).toFixed(0).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
-    removeProduct(id, qty, price) {
+    removeProduct(id, product_sku_id, qty, price) {
+        let sku_id = null;
 
-        axios.delete( removeProductCartUrl + '/' + this.user.id + '/' + id + '/' + qty + '/' + price, { headers: getHeader() } )
+        if(product_sku_id !== null){
+          sku_id = product_sku_id;
+        }else{
+          sku_id = 0;
+        }
+          
+        axios.delete( removeProductCartUrl + '/' + this.user.id + '/' + id + '/' + sku_id + '/' + qty + '/' + price, { headers: getHeader() } )
           .then(response => {
             console.log(response)
             if (response.status === 200) {

@@ -3,7 +3,7 @@
   	<q-page-container>
 		<q-page class="bg-white flex flex-center">
 			<template v-if="dataUser.length === 0">
-				<div class="row">
+				<div class="row" style="width: 70%">
 					<div class="col">
 						<center>
 							<img src="~/assets/images/components/logo-distrodakwah-small.png" width="170px" />
@@ -84,9 +84,51 @@
 								icon="home"
 							>
 								<q-input v-model="address" color="orange-8" type="textarea" autogrow dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Alamat Lengkap" />
-								<q-input v-model="subdistrict" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Kecamatan" />
+								<!-- <q-input v-model="subdistrict" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Kecamatan" />
 								<q-input v-model="city" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Kabupaten/Kota" />
-								<q-input v-model="province" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Provinsi" />
+								<q-input v-model="province" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Provinsi" /> -->
+								<q-select 
+					              color="orange-8"
+					              dense
+					              outlined
+					              v-model="provinceSelected"
+					              :options="dataProvince"
+					              :option-value="opt => opt"
+					              option-label="province"
+					              label="Provinsi"
+					              emit-value
+					              map-options
+					              @input="getCity"
+					              style="margin-bottom: 5px"
+					            />
+					            <q-select 
+					              color="orange-8"
+					              dense
+					              outlined
+					              v-model="citySelected"
+					              :options="dataCity"
+					              :option-value="opt => opt"
+					              :option-label="opt => opt.type + ' ' + opt.city"
+					              label="Kota/Kabupaten"
+					              emit-value
+					              map-options
+					              @input="getSubdistrict"
+					              style="margin-bottom: 5px"
+					            />
+					            <q-select 
+					              color="orange-8"
+					              dense
+					              outlined
+					              v-model="subdistrictSelected"
+					              :options="dataSubdistrict"
+					              :option-value="opt => opt"
+					              option-label="subdistrict"
+					              label="Kecamatan"
+					              emit-value
+					              map-options
+					              @input="setAddress"
+					              style="margin-bottom: 5px"
+					            />
 
 
 								<q-stepper-navigation>
@@ -132,7 +174,7 @@
 
 <script>
 import axios from 'axios';
-import { createAccountUrl, getHeader } from 'src/config';
+import { createAccountUrl, getProvinceNoAuthUrl, getCityNoAuthUrl, getSubdistrictNoAuthUrl, getHeader } from 'src/config';
 
 export default {
   name: 'CreateAccount',
@@ -152,12 +194,90 @@ export default {
 	  gender: '',
 	  birthday: '',
 	  address: '',
-	  subdistrict: '',
-	  city: '',
 	  province: '',
+	  city: '',
+	  subdistrict: '',
+	  // Data Province, City, and Subdistrict
+	  subdistrictSelected: null,
+	  citySelected: null,
+	  provinceSelected: null,
+	  dataProvince: [],
+      dataCity: [],
+      dataSubdistrict: [],
     }
   },
+  mounted () {
+    this.getProvince();
+  },
   methods: {
+  	getProvince () {
+
+      axios.get( getProvinceNoAuthUrl )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+            this.dataProvince = response.data.data;
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+
+    },
+    getCity () {
+
+      this.citySelected = null;
+
+      axios.get( getCityNoAuthUrl + '/' + this.provinceSelected.id )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+            this.dataCity = response.data.data;
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+
+    },
+    getSubdistrict () {
+
+      this.subdistrictSelected = null;
+      
+      axios.get( getSubdistrictNoAuthUrl + '/' + this.citySelected.id )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+            this.dataSubdistrict = response.data.data;
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+
+    },
+    setAddress () {
+
+    	// Set Province
+      	this.province = this.provinceSelected.province;
+      	// Set City
+	    this.city = this.citySelected.type + ' ' + this.citySelected.city;
+	    // Set Subdistrict
+	    this.subdistrict = this.subdistrictSelected.subdistrict;
+
+    },
 	verifyEmail () {
 
 		if(this.emailVerify !== ''){

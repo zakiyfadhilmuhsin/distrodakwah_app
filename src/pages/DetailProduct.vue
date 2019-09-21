@@ -33,8 +33,14 @@
     <q-footer class="bg-white text-black mobile-layout-on-desktop" style="border-top: 2px solid #eee">
       <q-toolbar class="bg-white text-black">
         <span v-if="dataProduct.length !== 0">
-          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-if="user.role.id === 9">KAMU UNTUNG {{'Rp' + formatPrice( Number(this.dataProduct.category_detail.tier_1_discount) * Number(this.qty) )}}</h4>
-          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-else-if="user.role.id === 8">KAMU UNTUNG <span class="text-green">{{'Rp' + formatPrice( Number(this.dataProduct.category_detail.tier_2_discount) * Number(this.qty) )}}</span></h4>
+          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-if="user.role.id === 9">KAMU UNTUNG 
+            <span class="text-green" v-if="this.productVariant.length > 0">{{'Rp' + formatPrice( Number(productVariant[0].price * dataProduct.reseller_exclusive_price / 100) * Number(this.qty) )}}</span>
+            <span class="text-green" v-else>{{'Rp' + formatPrice( Number(dataProduct.price * dataProduct.reseller_exclusive_price / 100) * Number(this.qty) )}}</span>
+          </h4>
+          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-else-if="user.role.id === 8">KAMU UNTUNG 
+            <span class="text-green" v-if="this.productVariant.length > 0">{{'Rp' + formatPrice( Number(productVariant[0].price * dataProduct.reseller_pro_price / 100) * Number(this.qty) )}}</span>
+            <span class="text-green" v-else>{{'Rp' + formatPrice( Number(dataProduct.price * dataProduct.reseller_pro_price / 100) * Number(this.qty) )}}</span>
+          </h4>
         </span>
         <q-space />
         <q-btn
@@ -67,6 +73,7 @@
             <h5 class="category-text">Kategori : <span class="text-red">{{dataCategory.category_name}}</span></h5>
             <h5 class="category-text">Brand : <span class="text-red">{{dataBrand.brand_name}}</span></h5>
             <h4 class="product-title-text">{{dataProduct.product_name}}</h4>
+            <div style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold" v-if="stockReady !== null">Stok Tersedia : {{ stockReady }}</div>
 
             <hr style="margin: 15px 0" />
             
@@ -111,7 +118,7 @@
                 <h5 class="options-title">Qty</h5>
               </div>
               <div class="col-xs-8">
-                <q-input type="number" dense outlined color="orange-8" options-dense v-model="qty" style="width: 75px" />
+                <q-input type="number" dense outlined color="orange-8" options-dense v-model="qty" style="width: 85px" :rules="[ val => val > 0 || 'Minimum 1 pcs' ]" lazy-rules />
               </div>
             </div>
             <br/>
@@ -123,7 +130,7 @@
                   <h5 class="price-title-small-text">Harga Konsumen</h5>
                 </div>
                 <div class="col-xs-6">
-                  <h5 class="price-title-small-text">Harga Reseller Pro</h5>
+                  <h5 class="price-title-small-text">Harga Reseller</h5>
                 </div>
               </div>
               <div class="row">
@@ -132,18 +139,18 @@
                   <h5 class="price-detail-text" v-else>Rp{{formatPrice(dataProduct.price)}}</h5>
                 </div>
                 <div class="col-xs-6" v-if="user.role.id === 9">
-                  <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - dataProduct.category_detail.tier_1_discount)}}</h5>
-                  <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - dataProduct.category_detail.tier_1_discount)}}</h5>
+                  <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - (productVariant[0].price * dataProduct.reseller_exclusive_price / 100))}}</h5>
+                  <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_exclusive_price / 100) )}}</h5>
                 </div>
                 <div class="col-xs-6" v-else-if="user.role.id === 8">
-                  <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - dataProduct.category_detail.tier_2_discount)}}</h5>
-                  <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - dataProduct.category_detail.tier_2_discount)}}</h5>
+                  <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - (productVariant[0].price * dataProduct.reseller_pro_price / 100) )}}</h5>
+                  <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_pro_price / 100) )}}</h5>
                 </div>
               </div>
             </template>
             <div class="row" v-if="user.role.id === 8 && dataProduct.length !== 0">
               <div class="col">
-                <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp{{formatPrice(dataProduct.price - dataProduct.category_detail.tier_1_discount)}}</b></h4>
+                <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_exclusive_price / 100) )}}</b></h4>
               </div>
             </div>
 
@@ -499,10 +506,11 @@ export default {
               postData.set('customer_id', this.user.id);
               postData.set('customer_name', this.user.name);
               postData.set('customer_email', this.user.email);
+              postData.set('customer_phone', this.user.phone);
               if(this.user.role.id === 9){
-                postData.set('reseller_discount', this.dataProduct.category_detail.tier_1_discount);
+                postData.set('reseller_discount', this.productVariant[0].price * this.dataProduct.reseller_exclusive_price / 100);
               }else if(this.user.role.id === 8){
-                postData.set('reseller_discount', this.dataProduct.category_detail.tier_2_discount);
+                postData.set('reseller_discount', this.productVariant[0].price * this.dataProduct.reseller_pro_price / 100);
               }
             }else{
               postData.set('product_id', this.dataProduct.id);
@@ -511,10 +519,11 @@ export default {
               postData.set('customer_id', this.user.id);
               postData.set('customer_name', this.user.name);
               postData.set('customer_email', this.user.email);
+              postData.set('customer_phone', this.user.phone);
               if(this.user.role.id === 9){
-                postData.set('reseller_discount', this.dataProduct.category_detail.tier_1_discount);
+                postData.set('reseller_discount', this.dataProduct.price * this.dataProduct.reseller_exclusive_price / 100);
               }else if(this.user.role.id === 8){
-                postData.set('reseller_discount', this.dataProduct.category_detail.tier_2_discount);
+                postData.set('reseller_discount', this.dataProduct.price * this.dataProduct.reseller_pro_price / 100);
               }
             }
 

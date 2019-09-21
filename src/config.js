@@ -1,6 +1,7 @@
 import router from 'src/router/routes'
 
-export const hostDomain = 'https://api.needherbal.web.id'
+//export const hostDomain = 'https://api.needherbal.web.id'
+export const hostDomain = 'http://apigateway.test'
 
 export const apiDomain = hostDomain
 
@@ -36,6 +37,12 @@ export const getProvinceUrl = apiDomain + '/shipping/province'
 export const getCityUrl = apiDomain + '/shipping/city'
 export const getSubdistrictUrl = apiDomain + '/shipping/subdistrict'
 export const getCostShippingUrl = apiDomain + '/shipping/cost'
+
+// Shipping Non Auth
+export const getProvinceNoAuthUrl = hostDomain + '/for-store/province'
+export const getCityNoAuthUrl = hostDomain + '/for-store/city'
+export const getSubdistrictNoAuthUrl = hostDomain + '/for-store/subdistrict'
+export const getCostShippingNoAuthUrl = hostDomain + '/for-store/cost'
 
 // From Identity Service
 export const identityBankUrl = apiDomain + '/identity/banks'
