@@ -22,12 +22,12 @@ const routes = [
     component: StorefrontPage,
   },
   {
-    path: '/login/:message?',
-    component: LoginPage,
+    path: '/activation',
+    component: CreateAccountPage,
   },
   {
-    path: '/createAccount',
-    component: CreateAccountPage,
+    path: '/login/:message?',
+    component: LoginPage,
   },
   {
     path: '/detail/:id',
