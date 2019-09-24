@@ -95,7 +95,7 @@ export default {
         storeUrl: '',
         whatsappNumber: '',
         dataStore: [],
-        url: 'https://determined-yalow-31d518.netlify.com/#/',
+        url: 'https://orderdd.netlify.com/#/',
     }
   },
   created () {
@@ -152,7 +152,7 @@ export default {
 
     },
     toStore() {
-      openURL('https://determined-yalow-31d518.netlify.com/#/' + this.storeUrl);
+      openURL('https://orderdd.netlify.com/#/' + this.storeUrl);
     }
   }
 }
