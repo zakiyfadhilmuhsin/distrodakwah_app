@@ -36,8 +36,8 @@
               <div class="col">
                 <h5 class="title-text">Rincian Pesanan</h5>
               </div>
-              <div class="col text-right">
-                <h5 class="link-text text-red">Ubah Pesanan</h5>
+              <div class="col text-right self-center">
+                <q-btn to="/cart" flat dense color="white" class="text-red text-capitalize" style="font-size: 10px; font-weight: 400">Ubah Pesanan</q-btn>
               </div>
             </div>
             <br/>
@@ -47,23 +47,32 @@
                   <img :src="item.product_image" width="100%" style="border: 1px solid whitesmoke" />
                 </div>
                 <div class="col-6" style="padding: 0 15px">
-                  <h5 style="margin: 0; font-size: 14px; font-weight: bold">{{ item.product_name }}</h5>
-                  <h6 style="margin: -15px 0; font-size: 12px;"><span v-for="(opt, i) in item.options" :key="i">{{opt.option + ': ' + opt.value}} </span></h6>
-                  <h6 style="margin: -15px 0; font-size: 12px;">Qty {{ item.qty }} x Rp{{ formatPrice(item.price) }}</h6>
+                  <h5 style="margin: 0; font-size: 14px; font-weight: bold; line-height: 16px">{{ item.product_name }}</h5>
+                  <h6 style="margin: 5px 0 0 0; font-size: 12px; line-height: 14px"><span v-for="(opt, i) in item.options" :key="i">{{opt.option + ': ' + opt.value}} </span></h6>
+                  <h6 style="margin: -5px 0 0 0; font-size: 12px;">Qty {{ item.qty }} x Rp{{ formatPrice(item.price) }}</h6>
                 </div>
                 <div class="col-3 text-right">
                   <h6 style="margin: 0; font-size: 12px;" class="text-black">Rp{{ formatPrice(item.qty * item.price) }}</h6>
                 </div>
               </div>
             </template>
+            <!-- {{ skuProduct }} -->
+            <div class="row q-px-lg">
+              <div class="col">
+                <h5 class="title-text">Subtotal</h5>
+              </div>
+              <div class="col text-right">
+                <h6 style="margin: 0; font-size: 12px;" class="text-black">Rp{{ formatPrice(cartData.total_amount) }}</h6>
+              </div>
+            </div>
           </div>
           <div style="background-color: white; margin-bottom: 5px; padding: 13px 0 10px 0">
             <div class="row q-px-md">
               <div class="col">
                 <h5 class="title-text">Ongkos Kirim</h5>
               </div>
-              <div class="col text-right">
-                <h5 class="link-text text-red">Ubah Ekspedisi</h5>
+              <div class="col text-right self-center">
+                <q-btn to="/shipping" flat dense color="white" class="text-red text-capitalize" style="font-size: 10px; font-weight: 400">Ubah Ekspedisi</q-btn>
               </div>
             </div>
             <br/>
@@ -80,14 +89,6 @@
                   </q-item>
                 </q-list>
                 <!-- <hr style="border: 1px solid #eee" /> -->
-              </div>
-            </div>
-            <div class="row q-px-lg">
-              <div class="col">
-                <h5 class="title-text">Subtotal</h5>
-              </div>
-              <div class="col text-right">
-                <h6 style="margin: 0; font-size: 12px;" class="text-black">{{ formatPrice(cartData.shipment_fee + cartData.total_amount) }}</h6>
               </div>
             </div>
           </div>
@@ -279,6 +280,7 @@ export default {
             if (response.status === 200) {
               this.$router.push({ path:'/invoice', query: { orderID: response.data.data.id } });
 
+              // Empty Cart
               axios.delete( destroyCart + '/' + this.cartData.id, { headers: getHeader() } )
                 .then(response => {
                   console.log(response)
@@ -289,11 +291,13 @@ export default {
                   }
                 })
 
+
+              // Add Keep Stock
               let skuProductPost = new FormData();
 
               skuProductPost.set('sku', JSON.stringify(this.skuProduct, 2, null));
 
-              axios.post( inventoryStockUrl + '/reduceStock', skuProductPost, { headers: getHeader() } )
+              axios.post( inventoryStockUrl + '/addKeepStock', skuProductPost, { headers: getHeader() } )
                 .then(response => {
                   console.log(response)
                 })
@@ -302,6 +306,21 @@ export default {
                     console.log(error.response)
                   }
                 })
+
+
+              // Reduce Stock Product //
+
+              // axios.post( inventoryStockUrl + '/reduceStock', skuProductPost, { headers: getHeader() } )
+              //   .then(response => {
+              //     console.log(response)
+              //   })
+              //   .catch(error => {
+              //     if (error.response) {
+              //       console.log(error.response)
+              //     }
+              //   })
+
+              // End Reduce Stock Product //
 
             }
 

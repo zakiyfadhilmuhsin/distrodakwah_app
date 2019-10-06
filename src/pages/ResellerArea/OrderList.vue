@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hHh lpR fFf">
 
-    <q-header elevated class="mobile-layout-on-desktop">
+    <q-header class="mobile-layout-on-desktop">
       <q-toolbar class="bg-distrodakwah text-white">
         <q-btn
           flat
@@ -29,22 +29,22 @@
             icon="home"
             to="/"
             style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Home</span></q-route-tab>
+          ><span style="font-size: 10px;">Beranda</span></q-route-tab>
           <q-route-tab
             icon="receipt"
             to="/orderList"
             style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Order</span></q-route-tab>
+          ><span style="font-size: 10px;">Pesanan</span></q-route-tab>
           <q-route-tab
             icon="local_mall"
             to="/cart"
             style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Cart</span></q-route-tab>
+          ><span style="font-size: 10px;">Keranjang</span></q-route-tab>
           <q-route-tab
             icon="account_circle"
             to="/dashboard"
             style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Profile</span></q-route-tab>
+          ><span style="font-size: 10px;">Profil</span></q-route-tab>
           <!-- <q-route-tab
             icon="verified_user"
             to="/storefront"

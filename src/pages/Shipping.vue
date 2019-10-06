@@ -1,8 +1,8 @@
 <template>
   <q-layout view="hHh lpR fFf">
 
-    <q-header elevated class="mobile-layout-on-desktop">
-      <q-toolbar class="bg-orange-8 text-white">
+    <q-header class="mobile-layout-on-desktop">
+      <q-toolbar class="bg-distrodakwah text-white">
         <q-btn
           flat
           round
@@ -63,7 +63,26 @@
               <div class="col">
                 <h6 style="font-size: 14px; margin: 0; padding: 0 20px 10px 20px; font-family: 'Open Sans'; line-height: 18px; font-weight: bold">Pilih ekspedisi :</h6>
                 <center>
-                  <q-btn-toggle
+                  <div class="q-px-md">
+                    <q-select 
+                      dense
+                      outlined 
+                      color="orange-8" 
+                      options-dense
+                      v-model="courierSelected"
+                      :options='[
+                        {value: "jne", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">JNE</div> <img src=\"assets/images/components/ekspedisi/jne.png\" height=\"20\" /></div>"},
+                        {value: "jnt", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">J&T</div> <img src=\"assets/images/components/ekspedisi/jnt.png\" height=\"20\" /></div>"},
+                        {value: "pos", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">POS</div> <img src=\"assets/images/components/ekspedisi/pos.png\" height=\"20\" /></div>"}
+                      ]'
+                      option-value="value"
+                      option-label="label"
+                      emit-value
+                      map-options
+                      @input="getCostShipping"
+                    />
+                  </div>
+                  <!-- <q-btn-toggle
                     v-model="courierSelected"
                     unelevated
                     toggle-color="blue-grey-1"
@@ -91,10 +110,11 @@
                         <img src="~/assets/images/components/ekspedisi/pos.png" width="65" />
                       </div>
                     </template>
-                  </q-btn-toggle>
+                  </q-btn-toggle> -->
                 </center>
                 <!-- {{ dataCost.results[0].costs }} -->
                 <br/>
+                <h6 style="font-size: 14px; margin: 0; padding: 0 20px 10px 20px; font-family: 'Open Sans'; line-height: 18px; font-weight: bold" v-if="courierSelected !== '' && dataCustomerSelected !== null">Pilih tarif :</h6>
                 <q-list dense>
                   <q-item v-for="(cost, index) in dataCost" :key="index">
                     <q-item-section side>
@@ -165,10 +185,8 @@
           </q-card-section> -->
 
           <q-card-section>
-            <q-input type="text" color="orange-8" v-model="addressName" label="Nama Alamat" dense outlined style="margin-bottom: 5px" />
             <q-input type="text" color="orange-8" v-model="customerName" label="Nama Pelanggan" dense outlined style="margin-bottom: 5px" />
             <q-input type="text" color="orange-8" v-model="customerPhone" label="No Handphone" dense outlined style="margin-bottom: 5px" />
-            <q-input type="text" color="orange-8" v-model="recipientName" label="Nama Penerima" dense outlined style="margin-bottom: 5px" />
             <q-input type="textarea" color="orange-8" v-model="addressDetail" label="Detail Alamat" dense outlined style="margin-bottom: 5px" />
             <q-select 
               color="orange-8"
@@ -211,7 +229,7 @@
               map-options
               style="margin-bottom: 5px"
             />
-            <q-input type="text" color="orange-8" v-model="postalCode" label="Kode POS" dense outlined style="margin-bottom: 5px" />
+            <q-input type="text" color="orange-8" v-model="postalCode" label="Kode POS (Opsional)" dense outlined style="margin-bottom: 5px" />
           </q-card-section>
 
           <q-card-actions class="q-px-md">
@@ -233,10 +251,8 @@ export default {
       // Detail Address
       dataCustomerSelected: null,
       // Form Add New Customer
-      addressName: '',
       customerName: '',
       customerPhone: '',
-      recipientName: '',
       addressDetail: '',
       provinceID: null,
       cityID: null,
@@ -362,10 +378,8 @@ export default {
     addNewCustomer () {
 
       let customerData = new FormData();
-      customerData.set('address_name', this.addressName);
       customerData.set('customer_name', this.customerName);
       customerData.set('customer_phone', this.customerPhone);
-      customerData.set('recipient_name', this.recipientName);
       customerData.set('address_detail', this.addressDetail);
       customerData.set('province_id', this.provinceID);
       customerData.set('city_id', this.cityID);
@@ -380,10 +394,8 @@ export default {
           if (response.status === 200) {
             this.$q.notify({position: 'top', color: 'dark', message: 'Pelanggan Berhasil Ditambahkan'});
             this.getCustomers();
-            this.addressName = '';
             this.customerName = '';
             this.customerPhone = '';
-            this.recipientName = '';
             this.addressDetail = '';
             this.provinceID = null;
             this.cityID = null;

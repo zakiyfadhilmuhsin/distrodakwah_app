@@ -84,24 +84,33 @@
                   <h5 class="options-title">Pilih {{opt.optionTitle}}</h5>
                 </div>
                 <div class="col-xs-8">
-                  <!-- <q-select 
-                    dense
-                    outlined 
-                    color="orange-8" 
-                    options-dense
-                    v-model="opt.optionModel"
-                    :options="opt.optionValue"
-                  /> -->
-                  <q-btn-toggle
-                    v-model="opt.optionModel"
-                    unelevated
-                    toggle-color="orange-8"
-                    color="white"
-                    text-color="orange-8"
-                    :options="opt.optionValue"
-                    style="border: 1px solid #f57c00"
-                    @input="getProductVariant"
-                  />
+                  <template v-if="opt.optionValue.length > 3">
+                    <q-select 
+                      dense
+                      outlined 
+                      color="orange-8" 
+                      options-dense
+                      v-model="opt.optionModel"
+                      :options="opt.optionValue"
+                      option-value="value"
+                      option-label="label"
+                      emit-value
+                      map-options
+                      @input="getProductVariant"
+                    />
+                  </template>
+                  <template v-else-if="opt.optionValue.length <= 3">
+                    <q-btn-toggle
+                      v-model="opt.optionModel"
+                      unelevated
+                      toggle-color="orange-8"
+                      color="white"
+                      text-color="orange-8"
+                      :options="opt.optionValue"
+                      style="border: 1px solid #f57c00"
+                      @input="getProductVariant"
+                    />
+                  </template>
                 </div>
               </div>
               <!-- <div class="row" style="margin-bottom: 7px">
@@ -322,6 +331,7 @@ export default {
       confirmOrder: false,
       user: null,
       stockReady: null,
+      skuSelected: null,
     } 
   },
   created () {
@@ -352,7 +362,8 @@ export default {
                   axios.get(inventoryStockUrl + '/' + this.dataProduct.sku, {headers: getHeader()}).then(response => {
 
                       if(response.status === 200){
-                        this.stockReady = response.data.data.stock_qty;
+                        this.stockReady = response.data.data.stock_qty - response.data.data.keep_stock_qty;
+                        this.skuSelected = response.data.data.sku;
                       }
 
                     }).catch(error => {
@@ -473,7 +484,8 @@ export default {
             axios.get(inventoryStockUrl + '/' + varPro[i].sku, {headers: getHeader()}).then(response => {
 
                 if(response.status === 200){
-                  this.stockReady = response.data.data.stock_qty;
+                  this.stockReady = response.data.data.stock_qty - response.data.data.keep_stock_qty;
+                  this.skuSelected = response.data.data.sku;
                 }
 
               }).catch(error => {
@@ -499,7 +511,7 @@ export default {
               postData.set('product_id', this.dataProduct.id);
               // Post Data Product Variant
               postData.set('product_sku_id', this.productVariant[0].id);
-              postData.set('product_sku', this.productVariant[0].sku);
+              postData.set('product_sku', this.skuSelected);
               postData.set('product_sku_price', this.productVariant[0].price);
               postData.set('options', this.optionValueSelected);
               postData.set('qty', this.qty);
@@ -515,6 +527,7 @@ export default {
             }else{
               postData.set('product_id', this.dataProduct.id);
               postData.set('product_sku_id', 0);
+              postData.set('product_sku', this.skuSelected);
               postData.set('qty', this.qty);
               postData.set('customer_id', this.user.id);
               postData.set('customer_name', this.user.name);

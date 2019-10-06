@@ -2,7 +2,7 @@
 
   <q-layout view="hHh lpR fFf">
 
-    <q-header elevated class="mobile-layout-on-desktop">
+    <q-header class="mobile-layout-on-desktop">
       <q-toolbar class="bg-distrodakwah text-white">
         <q-btn
           flat
@@ -84,10 +84,8 @@
           </q-card-section> -->
 
           <q-card-section>
-            <q-input type="text" color="orange-8" v-model="addressName" label="Nama Alamat" dense outlined style="margin-bottom: 5px" />
             <q-input type="text" color="orange-8" v-model="customerName" label="Nama Pelanggan" dense outlined style="margin-bottom: 5px" />
             <q-input type="text" color="orange-8" v-model="customerPhone" label="No Handphone" dense outlined style="margin-bottom: 5px" />
-            <q-input type="text" color="orange-8" v-model="recipientName" label="Nama Penerima" dense outlined style="margin-bottom: 5px" />
             <q-input type="textarea" color="orange-8" v-model="addressDetail" label="Detail Alamat" dense outlined style="margin-bottom: 5px" />
             <q-select 
               color="orange-8"
@@ -130,7 +128,7 @@
               map-options
               style="margin-bottom: 5px"
             />
-            <q-input type="text" color="orange-8" v-model="postalCode" label="Kode POS" dense outlined style="margin-bottom: 5px" />
+            <q-input type="text" color="orange-8" v-model="postalCode" label="Kode POS (Opsional)" dense outlined style="margin-bottom: 5px" />
           </q-card-section>
 
           <q-card-actions class="q-px-md">
@@ -146,10 +144,8 @@
           </q-card-section> -->
 
           <q-card-section>
-            <q-input type="text" color="orange-8" v-model="addressName" label="Nama Alamat" dense outlined style="margin-bottom: 5px" />
             <q-input type="text" color="orange-8" v-model="customerName" label="Nama Pelanggan" dense outlined style="margin-bottom: 5px" />
             <q-input type="text" color="orange-8" v-model="customerPhone" label="No Handphone" dense outlined style="margin-bottom: 5px" />
-            <q-input type="text" color="orange-8" v-model="recipientName" label="Nama Penerima" dense outlined style="margin-bottom: 5px" />
             <q-input type="textarea" color="orange-8" v-model="addressDetail" label="Detail Alamat" dense outlined style="margin-bottom: 5px" />
             <q-select 
               color="orange-8"
@@ -192,7 +188,7 @@
               map-options
               style="margin-bottom: 5px"
             />
-            <q-input type="text" color="orange-8" v-model="postalCode" label="Kode POS" dense outlined style="margin-bottom: 5px" />
+            <q-input type="text" color="orange-8" v-model="postalCode" label="Kode POS (Opsional)" dense outlined style="margin-bottom: 5px" />
           </q-card-section>
 
           <q-card-actions class="q-px-md">
@@ -214,10 +210,8 @@ export default {
   data () {
     return {
       // Form Add New Customer
-      addressName: '',
       customerName: '',
       customerPhone: '',
-      recipientName: '',
       addressDetail: '',
       provinceID: null,
       cityID: null,
@@ -269,10 +263,8 @@ export default {
           console.log(response)
 
           if (response.status === 200) {
-            this.addressName = response.data.data.address_name;
             this.customerName = response.data.data.customer_name;
             this.customerPhone = response.data.data.customer_phone;
-            this.recipientName = response.data.data.recipient_name;
             this.addressDetail = response.data.data.address_detail;
             this.provinceID = response.data.data.province_id;
             this.postalCode = response.data.data.postal_code;
@@ -299,10 +291,8 @@ export default {
     updateCustomer () {
       
       let customerData = new FormData();
-      customerData.set('address_name', this.addressName);
       customerData.set('customer_name', this.customerName);
       customerData.set('customer_phone', this.customerPhone);
-      customerData.set('recipient_name', this.recipientName);
       customerData.set('address_detail', this.addressDetail);
       customerData.set('province_id', this.provinceID);
       customerData.set('city_id', this.cityID);
@@ -317,10 +307,8 @@ export default {
           if (response.status === 200) {
             this.$q.notify({position: 'top', color: 'dark', message: 'Pelanggan Berhasil Diupdate'});
             this.getCustomers();
-            this.addressName = '';
             this.customerName = '';
             this.customerPhone = '';
-            this.recipientName = '';
             this.addressDetail = '';
             this.provinceID = null;
             this.cityID = null;
@@ -397,10 +385,8 @@ export default {
     addNewCustomer () {
 
       let customerData = new FormData();
-      customerData.set('address_name', this.addressName);
       customerData.set('customer_name', this.customerName);
       customerData.set('customer_phone', this.customerPhone);
-      customerData.set('recipient_name', this.recipientName);
       customerData.set('address_detail', this.addressDetail);
       customerData.set('province_id', this.provinceID);
       customerData.set('city_id', this.cityID);
@@ -415,10 +401,8 @@ export default {
           if (response.status === 200) {
             this.$q.notify({position: 'top', color: 'dark', message: 'Pelanggan Berhasil Ditambahkan'});
             this.getCustomers();
-            this.addressName = '';
             this.customerName = '';
             this.customerPhone = '';
-            this.recipientName = '';
             this.addressDetail = '';
             this.provinceID = null;
             this.cityID = null;
