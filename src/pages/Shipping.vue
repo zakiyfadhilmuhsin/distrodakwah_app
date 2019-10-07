@@ -444,7 +444,7 @@ export default {
           postCost.set('originType', 'city');
           postCost.set('destination', this.dataCustomerSelected.subdistrict_id);
           postCost.set('destinationType', 'subdistrict');
-          postCost.set('weight', Number(this.cartData.total_weight) );
+          postCost.set('weight', 1000);
           postCost.set('courier', this.courierSelected);
 
           axios.post( getCostShippingUrl, postCost, { 
