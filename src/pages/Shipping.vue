@@ -281,6 +281,7 @@ export default {
   mounted () {
     this.getCustomers();
     this.getProvince();
+    this.getCart();
   },
   methods: {
     getCart () {
@@ -444,7 +445,7 @@ export default {
           postCost.set('originType', 'city');
           postCost.set('destination', this.dataCustomerSelected.subdistrict_id);
           postCost.set('destinationType', 'subdistrict');
-          postCost.set('weight', 1000);
+          postCost.set('weight', Number(this.cartData.total_weight));
           postCost.set('courier', this.courierSelected);
 
           axios.post( getCostShippingUrl, postCost, { 
