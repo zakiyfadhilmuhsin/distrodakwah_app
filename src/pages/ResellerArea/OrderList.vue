@@ -170,8 +170,6 @@ export default {
       
       this.orderData = [];
 
-      $refs.qDateProxy.hide();
-
       let formatUrl = null;
 
       if(this.searchInvoice !== ''){
