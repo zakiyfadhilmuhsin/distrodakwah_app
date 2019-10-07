@@ -90,9 +90,9 @@
               <div class="col">
                 <h5 class="title-text">Ringkasan Pembayaran</h5>
               </div>
-              <div class="col text-right">
+              <!-- <div class="col text-right">
                 <h5 class="link-text text-red">Lihat Detail</h5>
-              </div>
+              </div> -->
             </div>
             <div class="row q-px-lg items-center" style="padding-top: 15px; padding-bottom: 15px">
               <div class="col-xs-8">

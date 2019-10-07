@@ -243,7 +243,7 @@
 
 <script>
 import axios from 'axios';
-import { getCustomerUrl, showCustomerUrl, addNewCustomerUrl, addShippingToCart, getProvinceUrl, getCityUrl, getSubdistrictUrl, getCostShippingUrl, getHeader } from 'src/config';
+import { getCustomerUrl, showCustomerUrl, addNewCustomerUrl, addShippingToCart, getProvinceUrl, getCityUrl, getSubdistrictUrl, getCostShippingUrl, getCartUrl, getHeader } from 'src/config';
 
 export default {
   data () {
@@ -271,6 +271,8 @@ export default {
       courierSelected: '',
       serviceSelected: '',
       costShipping: '',
+
+      cartData: [],
     }
   },
   created () {
@@ -281,6 +283,24 @@ export default {
     this.getProvince();
   },
   methods: {
+    getCart () {
+       axios.get( getCartUrl + '/' + this.user.id, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+
+            this.cartData = response.data.data;
+
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+    },
     getCustomers () {
       
       axios.get( getCustomerUrl + '/' + this.user.id, { headers: getHeader() } )
@@ -424,7 +444,7 @@ export default {
           postCost.set('originType', 'city');
           postCost.set('destination', this.dataCustomerSelected.subdistrict_id);
           postCost.set('destinationType', 'subdistrict');
-          postCost.set('weight', 1700);
+          postCost.set('weight', this.cartData.total_weight);
           postCost.set('courier', this.courierSelected);
 
           axios.post( getCostShippingUrl, postCost, { 
