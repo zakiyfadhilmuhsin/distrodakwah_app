@@ -64,7 +64,7 @@
 									<template v-slot:append>
 										<q-icon name="event" class="cursor-pointer">
 										<q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-											<q-date color="orange-8" v-model="birthday" mask="YYYY-MM-DD" @input="() => $refs.qDateProxy.hide()" />
+											<q-date minimal color="orange-8" v-model="birthday" mask="YYYY-MM-DD" @input="() => $refs.qDateProxy.hide()" />
 										</q-popup-proxy>
 										</q-icon>
 									</template>

@@ -29,8 +29,8 @@
     </q-footer>
 
     <q-page-container class="mobile-layout-on-desktop">
-      <q-page class="bg-grey-3">
-        <div class="bg-grey-3" style="height: 100%">
+      <q-page class="bg-white">
+        <div class="bg-white" style="height: 100%">
           <div style="background-color: white;; padding: 13px 0 10px 0">
             <div class="row q-px-lg">
               <div class="col">
@@ -40,12 +40,49 @@
                 <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-if="dataOrder.status === 'waiting_payment'">Menunggu Pembayaran</q-btn>
                 <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'waiting_fo_verification'">Menunggu Verifikasi</q-btn>
                 <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'payment_confirmed'">Sudah Dibayar</q-btn>
-                <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'processed'">Sedang Diproses</q-btn>
+                <q-btn flat disable size="sm" class="bg-blue-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'processed'">Sedang Diproses</q-btn>
                 <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'packing'">Sedang Dikemas</q-btn>
-                <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'shipped'">Sedang Dikirim</q-btn>
+                <q-btn flat disable size="sm" class="bg-green-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'shipped'">Sedang Dikirim</q-btn>
                 <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'done'">Selesai</q-btn>
                 <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'pending'">Pending</q-btn>
                 <q-btn flat disable size="sm" class="bg-orange-8 text-white" style="text-transform: capitalize;" v-else-if="dataOrder.status === 'rejected'">Dibatalkan</q-btn>
+              </div>
+            </div>
+            <br/>
+            <div class="row q-px-lg q-py-sm" v-if="dataOrder.status === 'shipped'">
+              <div class="col">
+                <q-markup-table dense bordered flat v-if="dataTracking !== []">
+                  <tbody>
+                    <tr>
+                      <td class="text-left">No Resi</td>
+                      <td class="text-right text-bold">{{ dataOrder.awb }}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-left">Status</td>
+                      <td class="text-right text-bold">{{ dataTracking.status }}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-left">Ekspedisi</td>
+                      <td class="text-right">{{ dataOrder.courier_name }}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-left">Service</td>
+                      <td class="text-right">{{ dataOrder.service_name }}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-left">Dikirim Tanggal</td>
+                      <td class="text-right">{{ dataTracking.summary.date }}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-left">Dikirim Oleh</td>
+                      <td class="text-right">{{ dataTracking.detail.shipper }}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-left">Dikirim Kepada</td>
+                      <td class="text-right">{{ dataTracking.detail.receiver }}</td>
+                    </tr>
+                  </tbody>
+                </q-markup-table>
               </div>
             </div>
             <br/>
@@ -88,19 +125,19 @@
                 <h6 style="margin: 0; font-size: 12px; line-height: 18px" class="text-black">Rp-{{ formatPrice(dataOrder.code_unique) }}</h6>
               </div>
             </div>
-            <hr style="border: none; height: 30px" />
-            <div class="row q-px-lg">
-              <div class="col">
-                <h6 style="font-size: 14px; margin: 10px 0; font-family: 'Open Sans'; text-align: center;">Total Yang Harus Kamu Transfer</h6>
-                <h6 style="font-size: 36px; margin: 0 0 18px 0; font-family: 'Open Sans'; text-align: center; font-weight: bold">Rp{{ formatPrice(dataOrder.grand_total) }} <q-btn flat size="xs" class="bg-red text-white">Salin</q-btn></h6>
-                <h6 style="font-size: 12px; margin: 10px 0; font-family: 'Open Sans'; text-align: center; line-height: 16px">Silahkan lakukan pembayaran melalui transfer bank ke salah satu rekening dibawah ini sebelum :</h6>
-                <h6 class="text-center bg-yellow text-bold" style="font-size: 11px; margin: 0">{{ dataOrder.expired_time ? new Date(dataOrder.expired_time*1000).toLocaleString('id-ID', { dateStyle: 'full', timeZone: 'Asia/Jakarta' }) : '' }} pukul {{ dataOrder.expired_time ? new Date(dataOrder.expired_time*1000).toLocaleTimeString('en-GB') : '' }} WIB (1x24 jam)</h6>
-              </div>
-            </div>
           </div>
-          <div style="background-color: white;; padding: 13px 0 10px 0">
+          <div style="background-color: white;; padding: 13px 0 10px 0" v-if="dataOrder.status === 'waiting_payment'">
             <div class="row q-pa-lg">
               <div class="col">
+                <div class="row q-px-sm">
+                  <div class="col">
+                    <h6 style="font-size: 14px; margin: 10px 0; font-family: 'Open Sans'; text-align: center;">Total Yang Harus Kamu Transfer</h6>
+                    <h6 style="font-size: 36px; margin: 0 0 18px 0; font-family: 'Open Sans'; text-align: center; font-weight: bold">Rp{{ formatPrice(dataOrder.grand_total) }} <q-btn flat size="xs" class="bg-red text-white">Salin</q-btn></h6>
+                    <h6 style="font-size: 12px; margin: 10px 0; font-family: 'Open Sans'; text-align: center; line-height: 16px">Silahkan lakukan pembayaran melalui transfer bank ke salah satu rekening dibawah ini sebelum :</h6>
+                    <h6 class="text-center bg-yellow text-bold" style="font-size: 11px; margin: 0">{{ dataOrder.expired_time ? new Date(dataOrder.expired_time*1000).toLocaleString('id-ID', { dateStyle: 'full', timeZone: 'Asia/Jakarta' }) : '' }} pukul {{ dataOrder.expired_time ? new Date(dataOrder.expired_time*1000).toLocaleTimeString('en-GB') : '' }} WIB (1x24 jam)</h6>
+                  </div>
+                </div>
+                <br/>
                 <q-list>
                   <q-item v-for="(bank, index) in dataBank" :key="index">
                     <q-item-section side>
@@ -164,7 +201,7 @@
 
 <script>
 import axios from 'axios';
-import { showOrderUrl, identityBankUrl, paymentConfirmationUrl, paymentConfirmOrderUrl, getHeader } from 'src/config';
+import { showOrderUrl, identityBankUrl, paymentConfirmationUrl, paymentConfirmOrderUrl, trackingUrl, getHeader } from 'src/config';
 
 export default {
   data () {
@@ -179,6 +216,7 @@ export default {
       transferDate: '',
       // Toggle
       paymentConfirmation: false,
+      dataTracking: [],
     }
   },
   mounted () {
@@ -194,6 +232,8 @@ export default {
 
             if (response.status === 200) {
               this.dataOrder = response.data.data;
+
+              this.getTracking();
             }
 
           })
@@ -268,6 +308,29 @@ export default {
               console.log(error.response)
             }
           })
+
+    },
+    getTracking () {
+
+      if(this.dataOrder.length !== 0){
+
+        let trackForm = new FormData();
+
+        trackForm.set('courier', 'jne');
+        trackForm.set('awb', this.dataOrder.awb);
+
+        axios.post( trackingUrl, trackForm, { headers: getHeader() } )
+          .then(response => {
+            console.log(response)
+            this.dataTracking = response.data;
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response)
+            }
+          })
+
+      }   
 
     },
     formatPrice(value) {

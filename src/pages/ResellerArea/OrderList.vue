@@ -89,7 +89,7 @@
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                        <q-date v-model="dateFilter" mask="YYYY-MM-DD" @input="getOrder" />
+                        <q-date minimal v-model="dateFilter" mask="YYYY-MM-DD" @input="getOrder" />
                       </q-popup-proxy>
                     </q-icon>
                   </template>
@@ -169,6 +169,8 @@ export default {
     getOrder () {
       
       this.orderData = [];
+
+      $refs.qDateProxy.hide();
 
       let formatUrl = null;
 

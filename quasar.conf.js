@@ -80,7 +80,8 @@ module.exports = function (ctx) {
         'QStepper',
         'QStep',
         'QStepperNavigation',
-        'QToggle'
+        'QToggle',
+        'QMarkupTable'
       ],
 
       directives: [
