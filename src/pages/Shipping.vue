@@ -71,9 +71,9 @@
                       options-dense
                       v-model="courierSelected"
                       :options='[
-                        {value: "jne", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">JNE</div> <img src=\"assets/images/components/ekspedisi/jne.png\" height=\"20\" /></div>"},
-                        {value: "jnt", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">J&T</div> <img src=\"assets/images/components/ekspedisi/jnt.png\" height=\"20\" /></div>"},
-                        {value: "pos", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">POS</div> <img src=\"assets/images/components/ekspedisi/pos.png\" height=\"20\" /></div>"}
+                        {value: "jne", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">JNE</div> <img src=\"https://i.imgur.com/hhJyhyS.png\" height=\"20\" /></div>"},
+                        {value: "jnt", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">J&T</div> <img src=\"https://i.imgur.com/TNdagJs.png\" height=\"20\" /></div>"},
+                        {value: "pos", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">POS</div> <img src=\"https://i.imgur.com/2VEBPMp.png\" height=\"20\" /></div>"}
                       ]'
                       option-value="value"
                       option-label="label"
