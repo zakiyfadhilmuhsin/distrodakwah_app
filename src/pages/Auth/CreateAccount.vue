@@ -295,7 +295,7 @@ export default {
 				if(response.status === 200){
 					this.accessToken = response.data.data.access_token;
 					// zein21.achmadi%40gmail.com
-					axios.get('https://api.orderonline.id/submission?limit=1&sort_by=created_at&sort=desc&page=1&since=2019-08-10&until=' + this.dateNow() + '&keyword=' + email + '&payment_status=paid', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.accessToken } } ).then(response => {
+					axios.get('https://api.orderonline.id/submission?limit=1&sort_by=created_at&sort=desc&page=1&since=2018-09-27&until=' + this.dateNow() + '&keyword=' + email + '&payment_status=paid', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.accessToken } } ).then(response => {
 
 							if(response.status === 200){
 								if(response.data.data.length === 0){
