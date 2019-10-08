@@ -1,13 +1,14 @@
 <template>
   <q-layout view="hHh lpR fFf">
 
-    <q-header elevated class="mobile-layout-on-desktop">
-      <q-toolbar class="bg-distrodakwah text-white">
+    <q-header reveal class="mobile-layout-on-desktop transparent no-shadow">
+      <q-toolbar>
         <q-btn
           flat
           round
           dense
           to="/"
+          style="background-color: rgba(0, 0, 0, 0.15)"
         >
           <q-icon name="arrow_back" color="white" /> 
         </q-btn>
@@ -67,7 +68,7 @@
           </swiper-slide>
           <div class="swiper-pagination-detail" slot="pagination"></div>
         </swiper> -->
-        <img :src="dataProduct.featured_image" width="100%" />
+        <img :src="dataProduct.featured_image" width="100%" style="margin-top: -50px" />
         <div class="row q-px-md">
           <div class="col">
             <h5 class="category-text">Kategori : <span class="text-red">{{dataCategory.category_name}}</span></h5>

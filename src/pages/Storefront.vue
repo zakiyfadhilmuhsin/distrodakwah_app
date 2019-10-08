@@ -117,10 +117,10 @@
               </div>
             </div>
           </div> -->
-          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
+          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px" v-for="(brand, i) in dataBrand" :key="i">
             <div class="row q-pa-xs">
               <div class="col">
-                <h5 class="promo-text">Produk Baru</h5>
+                <h5 class="promo-text">{{ brand.brand_name }}</h5>
               </div>
               <div class="col text-right">
                 <h5 class="link-text text-orange-8">Lihat Semua</h5>
@@ -129,7 +129,7 @@
             <div class="row q-px-md" style="padding: 5px 10px 10px 10px">
               <div class="col">
                 <swiper :options="swiperProductListOption">
-                  <swiper-slide v-for="(product, index) in newProduct" :key="index">
+                  <swiper-slide v-for="(product, index) in newProduct" :key="index" v-if="product.brand_id === brand.id">
                     <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
                       <transition
                         appear
@@ -172,7 +172,7 @@
               </div>
             </div>
           </div>
-          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
+          <!-- <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
             <div class="row q-pa-xs">
               <div class="col">
                 <h5 class="promo-text">Produk Laris</h5>
@@ -226,7 +226,7 @@
                 </swiper>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </q-page>
     </q-page-container>
@@ -237,7 +237,7 @@
 import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import axios from 'axios';
-import {apiDomain, catalogCategoryUrl, catalogProductUrl, identitySliderUrl, getHeader} from 'src/config';
+import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, identitySliderUrl, getHeader} from 'src/config';
 
 export default {
   data () {
@@ -246,6 +246,8 @@ export default {
       dataSlider: [],
       // Category Section
       dataCategory: [],
+      // Brand Section
+      dataBrand: [],
       // Product Section
       dataProduct: [],
       // Slider Section
@@ -283,11 +285,30 @@ export default {
     this.user = JSON.parse(window.localStorage.getItem('profileUser'));
   },
   mounted () {
+    this.getBrand();
     this.getCategory();
     this.getProduct();
     this.getSlider();
   },
   methods: {
+    getBrand () {
+
+      axios.get( catalogBrandUrl, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+            this.dataBrand = response.data.data;
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+
+    },
     getCategory () {
 
       axios.get( catalogCategoryUrl, { headers: getHeader() } )
