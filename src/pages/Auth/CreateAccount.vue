@@ -326,11 +326,40 @@ export default {
 									});
 
 								}else{
+
+									// Post response to data user
 									this.dataUser = response.data.data;
-									this.roleName = this.dataUser[0].product_name;
-									this.email    = this.dataUser[0].customer_data.email;
-									this.name     = this.dataUser[0].customer_data.name;
-									this.phone    = this.dataUser[0].customer_data.phone.replace('+62', '');
+
+									// Check Role From Old User
+									axios.get('https://api.needherbal.web.id/auth/old_users/' + this.emailVerify).then(response =>{
+
+										if(response.status === 200){
+
+											if(response.data.length === 0){
+												// this.$q.notify({position: 'top', color: 'red-4', message: '<b>Email</b> Belum Terdaftar!', html: true});
+
+												this.roleName = this.dataUser[0].product_name;
+												this.email    = this.dataUser[0].customer_data.email;
+												this.name     = this.dataUser[0].customer_data.name;
+												this.phone    = this.dataUser[0].customer_data.phone.replace('+62', '');
+
+											}else{
+												this.roleName = response.data.role_name;
+												this.email    = this.dataUser[0].customer_data.email;
+												this.name     = this.dataUser[0].customer_data.name;
+												this.phone    = this.dataUser[0].customer_data.phone.replace('+62', '');
+											}
+
+										}
+
+									}).catch(error => {
+
+										if (error.response) {
+											console.log(error.response)
+										}
+
+									});
+
 								}
 							}
 
@@ -408,9 +437,9 @@ export default {
 			createForm.set('address', this.address);
 			createForm.set('gender', this.gender);
 			createForm.set('birthday', this.birthday);
-			if(this.roleName === 'AM Reseller PRO'){
+			if(this.roleName === 'AM Reseller PRO' || this.roleName === 'Reseller Pro'){
 				createForm.set('role_id', 8);
-			}else if(this.roleName === 'AM Reseller EKSKLUSIF'){
+			}else if(this.roleName === 'AM Reseller EKSKLUSIF' || this.roleName === 'Reseller Exclusive'){
 				createForm.set('role_id', 9);
 			}
 
