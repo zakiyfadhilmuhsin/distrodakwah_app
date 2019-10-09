@@ -299,7 +299,32 @@ export default {
 
 							if(response.status === 200){
 								if(response.data.data.length === 0){
-									this.$q.notify({position: 'top', color: 'red-4', message: '<b>Email</b> Belum Terdaftar!', html: true});
+
+									// Get Data From Old Users API
+									axios.get('https://api.needherbal.web.id/auth/old_users/' + this.emailVerify).then(response =>{
+
+										if(response.status === 200){
+
+											if(response.data.length === 0){
+												this.$q.notify({position: 'top', color: 'red-4', message: '<b>Email</b> Belum Terdaftar!', html: true});
+											}else{
+												this.dataUser = response.data;
+												this.email    = this.dataUser.email;
+												this.roleName = this.dataUser.role_name;
+												this.name 	  = this.dataUser.name;
+												this.phone    = this.dataUser.phone;
+											}
+
+										}
+
+									}).catch(error => {
+
+										if (error.response) {
+											console.log(error.response)
+										}
+
+									});
+
 								}else{
 									this.dataUser = response.data.data;
 									this.roleName = this.dataUser[0].product_name;
@@ -396,9 +421,10 @@ export default {
 				}
 
 			}).catch(error => {
-			
+				
 				if (error.response) {
 					console.log(error.response)
+					this.$q.notify({position: 'top', color: 'red-4', message: 'Mohon maaf! Email Sudah Terdaftar!', html: true});
 				}
 			
 			})

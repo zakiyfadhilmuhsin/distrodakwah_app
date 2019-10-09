@@ -115,6 +115,11 @@ export default {
           .catch(error => {
             if (error.response) {
               console.log(error.response.data.message)
+              if(error.response.data.message === 'Login Failed!, Email Not Registered!'){
+                this.$q.notify({position: 'top', color: 'red-4', message: 'Login Gagal!, Email Belum Terdaftar!', html: true});
+              }else if(error.response.data.message === 'Unauthorized'){
+                this.$q.notify({position: 'top', color: 'red-4', message: 'Login Gagal!, Email atau Password Salah!', html: true});
+              }
             }
           })
 
