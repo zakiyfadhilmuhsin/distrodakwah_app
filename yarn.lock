@@ -3942,6 +3942,11 @@ findup@^0.1.5:
     colors "~0.6.0-1"
     commander "~2.1.0"
 
+flatpickr@^4.6.1:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.6.3.tgz#15a8b76b6e34e3a072861250503a5995b9d3bc60"
+  integrity sha512-007VucCkqNOMMb9ggRLNuJowwaJcyOh4sKAFcdGfahfGc7JQbf94zSzjdBq/wVyHWUEs5o3+idhFZ0wbZMRmVQ==
+
 flush-write-stream@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/flush-write-stream/-/flush-write-stream-1.1.1.tgz#8dd7d873a1babc207d94ead0c2e0e44276ebf2e8"
@@ -8950,6 +8955,13 @@ vue-clipboard2@^0.3.0:
   integrity sha512-6/Y9NJErWb4LNBLMgsJSdKb7KpF6/jqXagvKlYut6VQzQsNj6515FpwH0r5hhmeJMqaPzf1kxAw8L8Qvw/QBJQ==
   dependencies:
     clipboard "^2.0.0"
+
+vue-flatpickr-component@^8.1.4:
+  version "8.1.4"
+  resolved "https://registry.yarnpkg.com/vue-flatpickr-component/-/vue-flatpickr-component-8.1.4.tgz#da68dd471c021d61846ca9db92a12b56df085dd9"
+  integrity sha512-+7fQITZAPs42l4q0VUDXyqJ5UK0HPTescSLbRB8JbwVJXFjYv9i79w0MjYHwOL8S6UKh27zxZ/+yZBhgmv+nbg==
+  dependencies:
+    flatpickr "^4.6.1"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.3"
