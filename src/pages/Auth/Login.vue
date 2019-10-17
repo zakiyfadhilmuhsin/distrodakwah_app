@@ -23,9 +23,9 @@
               <div class="col">
                 <q-checkbox dense v-model="rememberMe" val="true" color="orange-8" /><span class="forgot-password-text" style="margin: 5px 0; font-weight: 500; margin-left: 5px">Ingat saya</span>
               </div>
-              <div class="col text-right">
+              <!-- <div class="col text-right">
                 <div class="forgot-password-text text-amber-8" style="margin: 2px 0 10px 0; font-weight: 500">Lupa Kata Sandi?</div>
-              </div>
+              </div> -->
             </div>
             <q-btn @click="submitLogin" flat class="bg-amber-8 full-width"><span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">MASUK</span></q-btn>
             <br/>

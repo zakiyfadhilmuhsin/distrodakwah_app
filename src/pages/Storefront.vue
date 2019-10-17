@@ -34,7 +34,7 @@
           dense
           round
           dropdown
-          to="/"
+          to="/search"
         >
           <q-icon name="search" />     
         </q-btn>
@@ -83,22 +83,21 @@
     <q-page-container class="mobile-layout-on-desktop">
       <q-page>
         <div class="bg-grey-3" style="height: 100%">
+          <!-- Slider Promo -->
           <div style="background-color: white; margin-bottom: 10px" v-if="dataSlider.length !== 0">
-            <!-- swiper -->
-            <div style="padding: 20px 0 0 15px">
-              <swiper :options="swiperOption">
-                <swiper-slide v-for="(slider, index) in dataSlider" :key="index"><img :src="slider.slider_image" width="100%"></swiper-slide>
-                <div class="swiper-pagination" slot="pagination"></div>
-              </swiper>
+            <div class="q-pt-md q-pb-xs">
+              <carousel :autoplay="true" :nav="false" :items="1" :center="true" :loop="true" :stagePadding="40" :margin="10">
+                <img v-for="(slider, index) in dataSlider" :key="index" :src="slider.slider_image">
+              </carousel>
             </div>
-            <div class="row q-pa-xs">
+            <!-- <div class="row q-pa-xs">
               <div class="col">
-                <!-- <h5 class="promo-text">Promo</h5> -->
+                <h5 class="promo-text">Promo</h5>
               </div>
               <div class="col text-right">
                 <h5 class="link-text text-orange-9" style="margin-bottom: 0">Lihat Semua</h5>
               </div>
-            </div>
+            </div> -->
           </div>
           <!-- <div style="background-color: white; margin-bottom: 10px">
             <div class="row q-pa-xs">
@@ -123,7 +122,9 @@
                 <h5 class="promo-text">{{ brand.brand_name }}</h5>
               </div>
               <div class="col text-right">
-                <h5 class="link-text text-orange-8">Lihat Semua</h5>
+                <router-link :to="'/allProductBrand/' + brand.brand_name + '/' + brand.id" style="text-decoration: none;">
+                  <h5 class="link-text text-orange-8">Lihat Semua</h5>
+                </router-link>
               </div>
             </div>
             <div class="row q-px-md" style="padding: 5px 10px 10px 10px">
@@ -236,8 +237,11 @@
 <script>
 import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
+import carousel from 'vue-owl-carousel'
 import axios from 'axios';
 import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, identitySliderUrl, getHeader} from 'src/config';
+// Loading
+import { QSpinnerPuff } from 'quasar'
 
 export default {
   data () {
@@ -251,15 +255,6 @@ export default {
       // Product Section
       dataProduct: [],
       // Slider Section
-      swiperOption: {
-        slidesPerView: 'auto',
-        centeredSlides: false,
-        spaceBetween: 10,
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true
-        }
-      },
       swiperProductListOption: {
         slidesPerView: 2,
         centeredSlides: false,
@@ -332,12 +327,24 @@ export default {
       this.innerLoading = true;
       this.featuredImageShow = false;
 
+      this.$q.loading.show({
+        spinner: QSpinnerPuff,
+        spinnerColor: 'black',
+        spinnerSize: 50,
+        backgroundColor: 'grey',
+        message: '<b>Mohon Tunggu..</b>',
+        messageColor: 'black'
+      })
+
       axios.get( catalogProductUrl, { headers: getHeader() } )
         .then(response => {
           console.log(response)
 
           if (response.status === 200) {
             this.dataProduct = response.data.data;
+
+            this.$q.loading.hide()
+
             setTimeout(() => {
               this.innerLoading = false;
               this.featuredImageShow = true;
@@ -375,7 +382,7 @@ export default {
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
   },
-  components: { swiper, swiperSlide }
+  components: { swiper, swiperSlide, carousel }
 }
 </script>
 
@@ -404,5 +411,12 @@ export default {
     line-height: 15px;
     font-weight: 400;
     padding: 10px 0px;
+  }
+  .owl-carousel .owl-item img {
+    width: 100%;
+    border-radius: 10px;
+  }
+  .owl-theme .owl-dots .owl-dot.active span {
+    background: #fea500 !important;
   }
 </style>
