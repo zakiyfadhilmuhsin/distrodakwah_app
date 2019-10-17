@@ -86,7 +86,7 @@
           <!-- Slider Promo -->
           <div style="background-color: white; margin-bottom: 10px" v-if="dataSlider.length !== 0">
             <div class="q-pt-md q-pb-xs">
-              <carousel :autoplay="true" :nav="false" :items="1" :center="true" :loop="true" :stagePadding="40" :margin="10">
+              <carousel :autoplay="true" :nav="false" :items="1" :center="true" :loop="true" :stagePadding="40" :margin="10" :dots="false">
                 <img v-for="(slider, index) in dataSlider" :key="index" :src="slider.slider_image">
               </carousel>
             </div>
