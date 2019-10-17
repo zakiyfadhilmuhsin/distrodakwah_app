@@ -467,7 +467,10 @@ export default {
 				
 				if (error.response) {
 					console.log(error.response)
-					this.$q.notify({position: 'top', color: 'red-4', message: 'Mohon maaf! Email Sudah Terdaftar!', html: true});
+					console.log(error.response.data.error.email[0])
+					if(error.response.data.error.email[0] === 'The email has already been taken.'){
+						this.$q.notify({position: 'top', color: 'red-4', message: 'Mohon maaf! Email Sudah Terdaftar!', html: true});
+					}
 				}
 			
 			})
