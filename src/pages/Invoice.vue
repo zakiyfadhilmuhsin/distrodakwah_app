@@ -37,7 +37,9 @@
                 <h5 class="title-text" style="padding-left: 8px">Ringkasan Pembayaran</h5>
               </div>
               <div class="col text-right">
-                <h5 class="link-text text-red">Lihat Detail</h5>
+                <router-link :to="'/detailOrder/' + this.$route.query.orderID" style="text-decoration: none;">
+                  <h5 class="link-text text-red">Lihat Detail</h5>
+                </router-link>
               </div>
             </div>
             <div class="row q-px-lg items-center" style="padding-top: 15px; padding-bottom: 15px">
@@ -75,7 +77,7 @@
             <div class="row q-px-lg">
               <div class="col">
                 <h6 style="font-size: 14px; margin: 10px 0; font-family: 'Open Sans'; text-align: center;">Total Yang Harus Kamu Transfer</h6>
-                <h6 style="font-size: 36px; margin: 0 0 18px 0; font-family: 'Open Sans'; text-align: center; font-weight: bold">Rp{{ formatPrice(dataOrder.grand_total) }} <q-btn flat size="xs" class="bg-red text-white">Salin</q-btn></h6>
+                <h6 style="font-size: 36px; margin: 0 0 18px 0; font-family: 'Open Sans'; text-align: center; font-weight: bold">Rp{{ formatPrice(dataOrder.grand_total) }} <q-btn @click="copyTotalTransfer" flat size="xs" class="bg-red text-white">Salin</q-btn></h6>
                 <h6 style="font-size: 12px; margin: 10px 0; font-family: 'Open Sans'; text-align: center; line-height: 16px">Silahkan lakukan pembayaran melalui transfer bank ke salah satu rekening dibawah ini sebelum :</h6>
                 <h6 class="text-center bg-yellow text-bold" style="font-size: 11px; margin: 0">{{ dataOrder.expired_time ? new Date(dataOrder.expired_time*1000).toLocaleString('id-ID', { dateStyle: 'full', timeZone: 'Asia/Jakarta' }) : '' }} pukul {{ dataOrder.expired_time ? new Date(dataOrder.expired_time*1000).toLocaleTimeString('en-GB') : '' }} WIB (1x24 jam)</h6>
               </div>
@@ -92,7 +94,7 @@
 
                     <q-item-section side>{{ bank.account_number }}<br/><span style="font-size: 10px">A.N {{ bank.account_name }}</span></q-item-section>
 
-                    <q-item-section><q-btn flat size="xs" class="bg-red text-white">Salin</q-btn></q-item-section>
+                    <q-item-section><q-btn @click="copyAccountNumber(bank.account_number)" flat size="xs" class="bg-red text-white">Salin</q-btn></q-item-section>
                   </q-item>
                 </q-list>
               </div>
@@ -124,7 +126,16 @@
             <q-input type="text" color="orange-8" v-model="bankSender" label="Transfer Dari Bank" dense outlined style="margin-bottom: 5px" />
             <q-input type="text" color="orange-8" v-model="senderName" label="Nama Pengirim" dense outlined style="margin-bottom: 5px" />
             <q-input type="number" color="orange-8" v-model="totalTransfer" label="Total Transfer" dense outlined style="margin-bottom: 5px" />
-            <q-input dense outlined v-model="transferDate" color="orange-8" placeholder="Tanggal Transfer">
+            <div class="q-field row no-wrap items-start bg-grey-2 q-mb-sm q-input q-field--outlined q-field--float q-field--dense">
+              <div class="q-field__inner relative-position col self-stretch column justify-center">
+                <div class="q-field__control relative-position row no-wrap text-orange-8">
+                  <div class="q-field__control-container col relative-position row no-wrap q-anchor--skip">
+                    <flat-pickr v-model="transferDate" class="q-field__native" placeholder="Tanggal Transfer"></flat-pickr>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <q-input dense outlined v-model="transferDate" color="orange-8" placeholder="Tanggal Transfer">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -132,7 +143,7 @@
                   </q-popup-proxy>
                 </q-icon>
               </template>
-            </q-input>
+            </q-input> -->
           </q-card-section>
 
           <q-card-actions class="q-px-md">
@@ -146,10 +157,20 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import axios from 'axios';
 import { showOrderUrl, identityBankUrl, paymentConfirmationUrl, paymentConfirmOrderUrl, getHeader } from 'src/config';
+import VueClipboard from 'vue-clipboard2';
+import flatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
+import { openURL } from 'quasar';
+
+Vue.use(VueClipboard);
 
 export default {
+  components: {
+    flatPickr
+  },
   data () {
     return {
       dataBank: [],
@@ -224,6 +245,8 @@ export default {
               this.getDataBank();
               this.getOrder();
 
+              openURL("https://wa.me/6287821550989?text=Konfirmasi%20Pembayaran%0A%0ABank%20Penerima:%20" + this.bankReceiver + "%0ABank%20Pengirim:%20" + this.bankSender + "%0ANama%20Pengirim:%20" + this.senderName + "%0ATotal%20Transfer:%20" + this.totalTransfer + "%0ATanggal%20Transfer:%20" + this.transferDate + "%0A%0A*Jangan%20Lupa%20Kirim%20Bukti%20Pembayaran*");
+
               this.bankReceiver = '';
               this.bankSender = '';
               this.senderName = '';
@@ -257,6 +280,24 @@ export default {
         let val = (value/1).toFixed(0).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
+    copyTotalTransfer: function () {
+      this.$copyText(this.dataOrder.grand_total).then(function (e) {
+        alert('Berhasil Disalin!')
+        console.log(e)
+      }, function (e) {
+        alert('Gagal Disalin!')
+        console.log(e)
+      })
+    },
+    copyAccountNumber: function (accountNumber) {
+      this.$copyText(accountNumber).then(function (e) {
+        alert('Berhasil Disalin!')
+        console.log(e)
+      }, function (e) {
+        alert('Gagal Disalin!')
+        console.log(e)
+      })
+    }
   }
 }
 </script>

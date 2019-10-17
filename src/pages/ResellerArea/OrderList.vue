@@ -85,7 +85,16 @@
                 </q-input>
               </div>
               <div class="col-xs-5">
-                <q-input dense outlined v-model="dateFilter" color="orange-8" placeholder="Filter Tanggal" style="margin-left: 5px; margin-bottom: 0" @input="getOrder">
+                <div class="q-field row no-wrap items-start bg-grey-2 q-mb-sm q-input q-field--outlined q-field--float q-field--dense">
+                  <div class="q-field__inner relative-position col self-stretch column justify-center">
+                    <div class="q-field__control relative-position row no-wrap text-orange-8">
+                      <div class="q-field__control-container col relative-position row no-wrap q-anchor--skip">
+                        <flat-pickr v-model="dateFilter" class="q-field__native" placeholder="Pilih Tgl Order" @input="getOrder"></flat-pickr>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <q-input dense outlined v-model="dateFilter" color="orange-8" placeholder="Filter Tanggal" style="margin-left: 5px; margin-bottom: 0" @input="getOrder">
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -93,44 +102,54 @@
                       </q-popup-proxy>
                     </q-icon>
                   </template>
-                </q-input>
+                </q-input> -->
               </div>
             </div>
             
             <div class="row q-pa-md">
               <div class="col">
-                <div style="border: 1px solid #bdbdbd; border-radius: 5px; padding: 12px; margin-bottom: 10px" v-for="(order, index) in orderData" :key="index">
-                  <div class="row">
-                    <div class="col-xs-8">
-                      <h6 v-if="order.detail_customer.length !== 0" style="margin: 0; font-size: 12px; font-family: 'Open Sans'; line-height: 16px">Invoice <b>{{ order.invoice }}</b><br/>{{ order.created_at ? new Date(order.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) : '' }}<br/><br/>
-                      Nama Pelanggan : {{ order.detail_customer[0].customer_name }}</h6>
+                <template v-if="orderData.length !== 0">
+                  <div style="border: 1px solid #bdbdbd; border-radius: 5px; padding: 12px; margin-bottom: 10px" v-for="(order, index) in orderData" :key="index">
+                    <div class="row">
+                      <div class="col-xs-8">
+                        <h6 v-if="order.detail_customer.length !== 0" style="margin: 0; font-size: 12px; font-family: 'Open Sans'; line-height: 16px">Invoice <b>{{ order.invoice }}</b><br/>{{ order.created_at ? new Date(order.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) : '' }}<br/><br/>
+                        Nama Pelanggan : {{ order.detail_customer[0].customer_name }}</h6>
+                      </div>
+                      <div class="col-xs-4">
+                        <router-link :to="'/detailOrder/' + order.id" style="text-decoration: none;">
+                          <p style="margin: 0; font-size: 9px" class="text-orange-8 text-right">Lihat Detail</p>
+                        </router-link>
+                      </div>
                     </div>
-                    <div class="col-xs-4">
-                      <router-link :to="'/detailOrder/' + order.id" style="text-decoration: none;">
-                        <p style="margin: 0; font-size: 9px" class="text-orange-8 text-right">Lihat Detail</p>
-                      </router-link>
+                    <br/>
+                    <div class="row">
+                      <div class="col-xs-6">
+                        <h6 style="margin: 0; font-size: 12px; font-family: 'Open Sans'; line-height: 16px">Total Pembayaran<br/><b>Rp{{ formatPrice(order.grand_total) }}</b></h6>
+                      </div>
+                      <div class="col-xs-6">
+                        <h6 style="margin: 0; font-size: 12px; font-family: 'Open Sans'; line-height: 16px" class="text-right">Status Pesanan<br/>
+                          <span style="font-weight: bold;" class="text-red-7" v-if="order.status === 'waiting_payment'">Menunggu Pembayaran</span>
+                          <span style="font-weight: bold;" class="text-orange-7" v-else-if="order.status === 'waiting_fo_verification'">Menunggu Verifikasi</span>
+                          <span style="font-weight: bold;" class="text-primary" v-else-if="order.status === 'payment_confirmed'">Sudah Dibayar</span>
+                          <span style="font-weight: bold;" class="text-yellow-10" v-else-if="order.status === 'processed'">Sedang Diproses</span>
+                          <span style="font-weight: bold;" class="text-dark" v-else-if="order.status === 'packing'">Sedang Dikemas</span>
+                          <span style="font-weight: bold;" class="text-green" v-else-if="order.status === 'shipped'">Sedang Dikirim</span>
+                          <span style="font-weight: bold;" class="text-green" v-else-if="order.status === 'done'">Selesai</span>
+                          <span style="font-weight: bold;" class="text-red-7" v-else-if="order.status === 'pending'">Pending</span>
+                          <span style="font-weight: bold;" class="text-red-7" v-else-if="order.status === 'rejected'">Dibatalkan</span>
+                        </h6>
+                      </div>
                     </div>
                   </div>
-                  <br/>
-                  <div class="row">
-                    <div class="col-xs-6">
-                      <h6 style="margin: 0; font-size: 12px; font-family: 'Open Sans'; line-height: 16px">Total Pembayaran<br/><b>Rp{{ formatPrice(order.grand_total) }}</b></h6>
-                    </div>
-                    <div class="col-xs-6">
-                      <h6 style="margin: 0; font-size: 12px; font-family: 'Open Sans'; line-height: 16px" class="text-right">Status Pesanan<br/>
-                        <span style="font-weight: bold;" class="text-red-7" v-if="order.status === 'waiting_payment'">Menunggu Pembayaran</span>
-                        <span style="font-weight: bold;" class="text-orange-7" v-else-if="order.status === 'waiting_fo_verification'">Menunggu Verifikasi</span>
-                        <span style="font-weight: bold;" class="text-primary" v-else-if="order.status === 'payment_confirmed'">Sudah Dibayar</span>
-                        <span style="font-weight: bold;" class="text-yellow-10" v-else-if="order.status === 'processed'">Sedang Diproses</span>
-                        <span style="font-weight: bold;" class="text-dark" v-else-if="order.status === 'packing'">Sedang Dikemas</span>
-                        <span style="font-weight: bold;" class="text-green" v-else-if="order.status === 'shipped'">Sedang Dikirim</span>
-                        <span style="font-weight: bold;" class="text-green" v-else-if="order.status === 'done'">Selesai</span>
-                        <span style="font-weight: bold;" class="text-red-7" v-else-if="order.status === 'pending'">Pending</span>
-                        <span style="font-weight: bold;" class="text-red-7" v-else-if="order.status === 'rejected'">Dibatalkan</span>
-                      </h6>
-                    </div>
+                </template>
+                <template v-else>
+                  <div class="q-pa-md" style="padding-top: 40px">
+                    <center>
+                      <img src="~/assets/images/components/box_order.png" width="100" />
+                      <div class="text-bold text-black">Belum Ada Pesanan</div>
+                    </center>
                   </div>
-                </div>
+                </template>
               </div>
             </div>
 
@@ -150,9 +169,16 @@
 <script>
 import axios from 'axios';
 import { getOrderUrl, showCustomerUrl, getHeader } from 'src/config';
+import flatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
+// Loading
+import { QSpinnerPuff } from 'quasar'
 
 export default {
   name: 'OrderList',
+  components: {
+    flatPickr
+  },
   data () {
     return {
       orderTab: 'waiting_payment',
@@ -163,11 +189,24 @@ export default {
   },
   created () {
     this.user = JSON.parse(window.localStorage.getItem('profileUser'));
-    this.getOrder();
+    if(this.$route.params.status){
+      this.orderTab = this.$route.params.status;
+    }else{
+      this.getOrder();
+    }
   },
   methods: {
     getOrder () {
       
+      this.$q.loading.show({
+        spinner: QSpinnerPuff,
+        spinnerColor: 'black',
+        spinnerSize: 50,
+        backgroundColor: 'grey',
+        message: '<b>Mohon Tunggu..</b>',
+        messageColor: 'black'
+      })
+
       this.orderData = [];
 
       let formatUrl = null;
@@ -185,6 +224,9 @@ export default {
           console.log(response)
 
           if (response.status === 200) {
+
+            this.$q.loading.hide()
+            
             //this.orderData = response.data.data;
             for(let i=0; i<response.data.data.length; i++){
               this.orderData.push({
