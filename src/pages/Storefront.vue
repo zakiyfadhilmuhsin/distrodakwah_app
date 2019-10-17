@@ -86,7 +86,7 @@
           <!-- Slider Promo -->
           <div style="background-color: white; margin-bottom: 10px" v-if="dataSlider.length !== 0">
             <div class="q-pt-md q-pb-xs">
-              <carousel :autoplay="true" :nav="false" :items="1" :center="true" :loop="true" :stagePadding="40" :margin="0" :responsive="{0:{items:1,nav:false},600:{items:1,nav:false}}" :autoWidth="false">
+              <carousel :autoplay="true" :nav="false" :items="1" :center="true" :loop="true" :stagePadding="40" :margin="10" :responsive="{0:{items:1,nav:false},600:{items:1,nav:false}}" :autoWidth="false">
                 <img v-for="(slider, index) in dataSlider" :key="index" :src="slider.slider_image">
               </carousel>
             </div>
@@ -415,6 +415,7 @@ export default {
   .owl-carousel .owl-item img {
     width: 100%;
     border-radius: 10px;
+    display:block;
   }
   .owl-theme .owl-dots .owl-dot.active span {
     background: #fea500 !important;
