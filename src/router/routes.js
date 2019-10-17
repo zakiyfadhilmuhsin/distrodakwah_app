@@ -11,6 +11,8 @@ import InvoicePage from 'pages/Invoice';
 import OrderListPage from 'pages/ResellerArea/OrderList';
 import DetailOrderPage from 'pages/ResellerArea/DetailOrder';
 import SettingStorePage from 'pages/ResellerArea/SettingStore';
+import AllProductBrandPage from 'pages/AllProductBrand';
+import SearchPage from 'pages/Search';
 
 
 const routes = [
@@ -72,7 +74,7 @@ const routes = [
     },
   },
   {
-    path: '/orderList',
+    path: '/orderList/:status?',
     component: OrderListPage,
     meta: {
       requiresAuth: true,
@@ -95,6 +97,20 @@ const routes = [
   {
     path: '/settingStore',
     component: SettingStorePage,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/allProductBrand/:brand/:brand_id',
+    component: AllProductBrandPage,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/search',
+    component: SearchPage,
     meta: {
       requiresAuth: true,
     },
