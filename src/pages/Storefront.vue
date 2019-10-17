@@ -415,7 +415,8 @@ export default {
   .owl-carousel .owl-item img {
     width: 100%;
     border-radius: 10px;
-    display:block;
+    float:left;
+    height: auto;
   }
   .owl-theme .owl-dots .owl-dot.active span {
     background: #fea500 !important;
