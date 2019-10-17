@@ -6,7 +6,8 @@ module.exports = function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     boot: [
-      'axios'
+      'axios',
+      'addressbar-color'
     ],
 
     css: [
@@ -81,7 +82,10 @@ module.exports = function (ctx) {
         'QStep',
         'QStepperNavigation',
         'QToggle',
-        'QMarkupTable'
+        'QMarkupTable',
+        'QInfiniteScroll',
+        'QTimeline',
+        'QTimelineEntry',
       ],
 
       directives: [
@@ -93,7 +97,8 @@ module.exports = function (ctx) {
       plugins: [
         'Notify',
         'LocalStorage',
-        'Loading'
+        'Loading',
+        'AddressbarColor'
       ]
     },
 
