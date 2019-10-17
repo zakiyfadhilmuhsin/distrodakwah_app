@@ -49,9 +49,14 @@
               </div>
             </div>
             <br/>
-            <div class="row q-px-lg q-py-sm" v-if="dataOrder.status === 'shipped'">
+            <div class="row q-px-lg">
               <div class="col">
-                <q-markup-table dense bordered flat v-if="dataTracking !== []">
+                <h5 class="title-text">Info Pengiriman</h5>
+              </div>
+            </div>
+            <div class="row q-px-lg q-py-sm" v-if="dataOrder.status === 'shipped'" style="margin-bottom: 10px">
+              <div class="col" v-if="dataTracking !== []">
+                <q-markup-table dense bordered flat>
                   <tbody>
                     <tr>
                       <td class="text-left">No Resi</td>
@@ -83,10 +88,40 @@
                     </tr>
                   </tbody>
                 </q-markup-table>
+                <br/>
+                <q-timeline color="orange-8">
+                  <q-timeline-entry
+                    v-for="(ship, i) in dataTracking.history"
+                    :key="i"
+                    :title="ship.date + ' - ' + ship.location"
+                    :subtitle="ship.desc"
+                  />
+                </q-timeline>
+              </div>
+            </div>
+            <div class="row q-px-lg">
+              <div class="col">
+                <h5 class="title-text">Rincian Pesanan</h5>
               </div>
             </div>
             <br/>
-            <div class="row q-px-lg">
+            <template v-if="totalItem > 0">
+              <div class="row q-px-lg" v-for="(item, index) in items" :key="index">
+                <div class="col-3">
+                  <img :src="item.product_image" width="100%" style="border: 1px solid whitesmoke" />
+                </div>
+                <div class="col-6" style="padding: 0 15px">
+                  <h5 style="margin: 0; font-size: 14px; font-weight: bold; line-height: 16px">{{ item.product_name }}</h5>
+                  <h6 style="margin: 5px 0 0 0; font-size: 12px; line-height: 14px"><span v-for="(opt, i) in item.options" :key="i">{{opt.option + ': ' + opt.value}} </span></h6>
+                  <h6 style="margin: -5px 0 0 0; font-size: 12px;">Qty {{ item.qty }} x Rp{{ formatPrice(item.price) }}</h6>
+                </div>
+                <div class="col-3 text-right">
+                  <h6 style="margin: 0; font-size: 12px;" class="text-black">Rp{{ formatPrice(item.qty * item.price) }}</h6>
+                </div>
+              </div>
+            </template>
+            <br/>
+            <div class="row q-pl-lg q-pr-md">
               <div class="col">
                 <h5 class="title-text">Ringkasan Pembayaran</h5>
               </div>
@@ -132,7 +167,7 @@
                 <div class="row q-px-sm">
                   <div class="col">
                     <h6 style="font-size: 14px; margin: 10px 0; font-family: 'Open Sans'; text-align: center;">Total Yang Harus Kamu Transfer</h6>
-                    <h6 style="font-size: 36px; margin: 0 0 18px 0; font-family: 'Open Sans'; text-align: center; font-weight: bold">Rp{{ formatPrice(dataOrder.grand_total) }} <q-btn flat size="xs" class="bg-red text-white">Salin</q-btn></h6>
+                    <h6 style="font-size: 36px; margin: 0 0 18px 0; font-family: 'Open Sans'; text-align: center; font-weight: bold">Rp{{ formatPrice(dataOrder.grand_total) }} <q-btn @click="copyTotalTransfer" flat size="xs" class="bg-red text-white">Salin</q-btn></h6>
                     <h6 style="font-size: 12px; margin: 10px 0; font-family: 'Open Sans'; text-align: center; line-height: 16px">Silahkan lakukan pembayaran melalui transfer bank ke salah satu rekening dibawah ini sebelum :</h6>
                     <h6 class="text-center bg-yellow text-bold" style="font-size: 11px; margin: 0">{{ dataOrder.expired_time ? new Date(dataOrder.expired_time*1000).toLocaleString('id-ID', { dateStyle: 'full', timeZone: 'Asia/Jakarta' }) : '' }} pukul {{ dataOrder.expired_time ? new Date(dataOrder.expired_time*1000).toLocaleTimeString('en-GB') : '' }} WIB (1x24 jam)</h6>
                   </div>
@@ -146,7 +181,7 @@
 
                     <q-item-section side>{{ bank.account_number }}<br/><span style="font-size: 10px">A.N {{ bank.account_name }}</span></q-item-section>
 
-                    <q-item-section><q-btn flat size="xs" class="bg-red text-white">Salin</q-btn></q-item-section>
+                    <q-item-section><q-btn @click="copyAccountNumber(bank.account_number)" flat size="xs" class="bg-red text-white">Salin</q-btn></q-item-section>
                   </q-item>
                 </q-list>
               </div>
@@ -179,7 +214,16 @@
             <q-input type="text" color="orange-8" v-model="bankSender" label="Transfer Dari Bank" dense outlined style="margin-bottom: 5px" />
             <q-input type="text" color="orange-8" v-model="senderName" label="Nama Pengirim" dense outlined style="margin-bottom: 5px" />
             <q-input type="number" color="orange-8" v-model="totalTransfer" label="Total Transfer" dense outlined style="margin-bottom: 5px" />
-            <q-input dense outlined v-model="transferDate" color="orange-8" placeholder="Tanggal Transfer">
+            <div class="q-field row no-wrap items-start bg-grey-2 q-mb-sm q-input q-field--outlined q-field--float q-field--dense">
+              <div class="q-field__inner relative-position col self-stretch column justify-center">
+                <div class="q-field__control relative-position row no-wrap text-orange-8">
+                  <div class="q-field__control-container col relative-position row no-wrap q-anchor--skip">
+                    <flat-pickr v-model="transferDate" class="q-field__native" placeholder="Tanggal Transfer"></flat-pickr>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <q-input dense outlined v-model="transferDate" color="orange-8" placeholder="Tanggal Transfer">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -187,7 +231,7 @@
                   </q-popup-proxy>
                 </q-icon>
               </template>
-            </q-input>
+            </q-input> -->
           </q-card-section>
 
           <q-card-actions class="q-px-md">
@@ -200,10 +244,18 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import axios from 'axios';
-import { showOrderUrl, identityBankUrl, paymentConfirmationUrl, paymentConfirmOrderUrl, trackingUrl, getHeader } from 'src/config';
+import { showOrderUrl, identityBankUrl, paymentConfirmationUrl, paymentConfirmOrderUrl, trackingUrl, catalogProductUrl, getHeader } from 'src/config';
+import VueClipboard from 'vue-clipboard2';
+import flatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
+import { openURL } from 'quasar';
 
 export default {
+  components: {
+    flatPickr
+  },
   data () {
     return {
       dataBank: [],
@@ -217,11 +269,20 @@ export default {
       // Toggle
       paymentConfirmation: false,
       dataTracking: [],
+      // Detail Order
+      orderData: [],
+      items: [],
+      totalItem: 0,
+      subTotal: 0,
     }
+  },
+  created () {
+    this.user = JSON.parse(window.localStorage.getItem('profileUser'));
   },
   mounted () {
     this.getDataBank();
     this.getOrder();
+    this.getOrderDetail();
   },
   methods: {
     getOrder() {
@@ -242,6 +303,97 @@ export default {
               console.log(error.response)
             }
           })
+
+    },
+    getOrderDetail () {
+      
+      this.orderData = [];
+      this.items = [];
+
+      axios.get( showOrderUrl + '/' + this.$route.params.id, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+
+            this.orderData = response.data.data;
+
+            for(let i=0; i<this.orderData.order_detail.length; i++){
+              // alert(this.cartData.cart_detail[i].product_id);
+              axios.get(catalogProductUrl + '/' + this.orderData.order_detail[i].product_id, { headers: getHeader() } )
+                .then(response => {
+
+                  let product_name = response.data.data.product_name;
+                  let product_image = response.data.data.featured_image;
+                  let qty = this.orderData.order_detail[i].qty;
+                  let product_id = this.orderData.order_detail[i].product_id;
+                  let reseller_discount = null;
+                  if(this.user.role.id === 9){
+                    reseller_discount = response.data.data.reseller_exclusive_price;
+                  }else if(this.user.role.id === 8){
+                    reseller_discount = response.data.data.reseller_pro_price;
+                  }
+
+                  if(this.orderData.order_detail[i].product_sku_id !== null){
+
+                    axios.get(catalogProductUrl + '/' + this.orderData.order_detail[i].product_id + '/' + this.orderData.order_detail[i].product_sku_id, { headers: getHeader() } )
+                      .then(response => {
+
+                        // let options = JSON.parse(this.cartData.cart_detail[i].options);
+                        // for(var opt=0; opt<options.length; opt++){
+                        //   console.log(options[opt].option + 'adalah' + options[opt].value);
+                        // }
+                        
+                        this.items.push({
+                            product_id: product_id,
+                            product_name: product_name,
+                            product_image: product_image,
+                            price: response.data.data.price - (response.data.data.price * reseller_discount / 100),
+                            options: JSON.parse(this.orderData.order_detail[i].options),
+                            qty: qty,
+                        });
+
+                      }).catch(error => {
+
+                        if (error.response) {
+                          console.log(error.response)
+                        }
+
+                      })
+
+                  }else{
+
+                    this.items.push({
+                        product_id: product_id,
+                        product_name: product_name,
+                        product_image: product_image,
+                        price: response.data.data.price - (response.data.data.price * reseller_discount / 100),
+                        qty: qty,
+                    });
+
+                  }
+
+                }).catch(error => {
+
+                  if (error.response) {
+                    console.log(error.response)
+                  }
+
+                })
+
+            }
+
+          }
+
+          this.totalItem = this.orderData.order_detail.length;
+          this.subTotal = this.orderData.total_amount;
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
 
     },
     getDataBank() {
@@ -280,6 +432,8 @@ export default {
             if (response.status === 200) {
               this.getDataBank();
               this.getOrder();
+
+              openURL("https://wa.me/6287821550989?text=Konfirmasi%20Pembayaran%0A%0ABank%20Penerima:%20" + this.bankReceiver + "%0ABank%20Pengirim:%20" + this.bankSender + "%0ANama%20Pengirim:%20" + this.senderName + "%0ATotal%20Transfer:%20" + this.totalTransfer + "%0ATanggal%20Transfer:%20" + this.transferDate + "%0A%0A*Jangan%20Lupa%20Kirim%20Bukti%20Pembayaran*");
 
               this.bankReceiver = '';
               this.bankSender = '';
@@ -337,6 +491,24 @@ export default {
         let val = (value/1).toFixed(0).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
+    copyTotalTransfer: function () {
+      this.$copyText(this.dataOrder.grand_total).then(function (e) {
+        alert('Berhasil Disalin!')
+        console.log(e)
+      }, function (e) {
+        alert('Gagal Disalin!')
+        console.log(e)
+      })
+    },
+    copyAccountNumber: function (accountNumber) {
+      this.$copyText(accountNumber).then(function (e) {
+        alert('Berhasil Disalin!')
+        console.log(e)
+      }, function (e) {
+        alert('Gagal Disalin!')
+        console.log(e)
+      })
+    },
   }
 }
 </script>
@@ -352,5 +524,22 @@ export default {
     font-family: 'Open Sans';
     font-size: 13px;
     margin: 0;
+  }
+  .q-timeline__subtitle{
+    font-size: 14px !important;
+    font-weight: 600;
+    text-transform: capitalize;
+    color: black !important;
+    letter-spacing: 0px !important;
+    opacity: 1;
+  }
+  .q-timeline__title{
+    font-size: 12px !important;
+    line-height: 13px;
+    color: grey !important;
+    font-weight: normal;
+  }
+  .q-timeline__content{
+    padding-bottom: 1px !important;
   }
 </style>
