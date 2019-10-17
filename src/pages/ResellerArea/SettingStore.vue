@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hHh lpR fFf">
 
-    <q-header elevated class="mobile-layout-on-desktop">
+    <q-header class="mobile-layout-on-desktop">
       <q-toolbar class="bg-distrodakwah text-white">
         <q-btn
           flat
@@ -44,7 +44,7 @@
                     <q-input outlined dense color="orange-8" type="text" v-model="storeName" label="Nama Toko" placeholder="Masukkan Nama Toko" />
                 </div>
                 <div class="q-pa-xs">
-                    <q-input prefix="order.com/" outlined dense color="orange-8" type="text" v-model="storeUrl" label="Slug/URL Toko" placeholder="Masukkan URL Toko" />
+                    <q-input prefix="prodakwah.com/" outlined dense color="orange-8" type="text" v-model="storeUrl" label="Slug/URL Toko" placeholder="Masukkan URL Toko" />
                 </div>
                 <div class="q-pa-xs">
                     <!-- <q-input prefix="+62" outlined dense color="green-6" type="text" v-model="whatsappNumber" label="Nomor Whatsapp" placeholder="Masukkan Nomor Whatsapp" /> -->
@@ -95,7 +95,7 @@ export default {
         storeUrl: '',
         whatsappNumber: '',
         dataStore: [],
-        url: 'https://orderdd.netlify.com/#/',
+        url: 'https://prodakwah.com/#/',
     }
   },
   created () {
@@ -152,7 +152,7 @@ export default {
 
     },
     toStore() {
-      openURL('https://orderdd.netlify.com/#/' + this.storeUrl);
+      openURL('https://prodakwah.com/#/' + this.storeUrl);
     }
   }
 }

@@ -153,6 +153,8 @@
 <script>
 import axios from 'axios';
 import { getCartUrl, catalogProductUrl, removeProductCartUrl, getHeader } from 'src/config';
+// Loading
+import { QSpinnerPuff } from 'quasar'
 
 export default {
   data () {
@@ -178,6 +180,16 @@ export default {
   },
   methods: {
     getCartData () {
+
+      this.$q.loading.show({
+        spinner: QSpinnerPuff,
+        spinnerColor: 'black',
+        spinnerSize: 50,
+        backgroundColor: 'grey',
+        message: '<b>Mohon Tunggu..</b>',
+        messageColor: 'black'
+      })
+
       this.cartData = [];
       this.items = [];
       this.totalProfit = 0;
@@ -187,6 +199,8 @@ export default {
           console.log(response)
 
           if (response.status === 200) {
+
+            this.$q.loading.hide()
 
             this.cartData = response.data.data;
 

@@ -50,7 +50,7 @@
             <h6 class="dashboard-small-text">{{ user.role.role_name }}</h6>
             <br/>
             <template v-if="user.role.id === 8">
-              <q-btn flat rounded size="sm" class="bg-orange text-white">Upgrade Member</q-btn>
+              <q-btn @click="upgrade" flat rounded size="sm" class="bg-orange text-white">Upgrade Member</q-btn>
               <h6 class="dashboard-small-text" style="font-size: 10px; line-height: 11px; margin-top: 8px">Untuk dapatkan keuntungan<br/>yang lebih besar</h6>
             </template>
           </center>
@@ -92,33 +92,33 @@
               <center>
                 <div class="row">
                   <div class="col">
-                    <router-link to="/orderList" style="text-decoration: none; color: black">
+                    <router-link to="/orderList/waiting_payment" style="text-decoration: none; color: black">
                       <q-icon name="fas fa-wallet" style="font-size: 30px; margin: 0 0 5px 0" />
                       <p style="font-size: 10px; margin: 0">Belum Bayar</p>
                     </router-link>
                   </div>
                   <div class="col">
-                    <router-link to="/orderList" style="text-decoration: none; color: black">
+                    <router-link to="/orderList/processed" style="text-decoration: none; color: black">
+                      <q-icon name="fas fa-list-alt" style="font-size: 30px; margin: 0 0 5px 0" />
+                      <p style="font-size: 10px; margin: 0">Diproses</p>
+                    </router-link>
+                  </div>
+                  <div class="col">
+                    <router-link to="/orderList/packing" style="text-decoration: none; color: black">
                       <q-icon name="fas fa-box-open" style="font-size: 30px; margin: 0 0 5px 0" />
                       <p style="font-size: 10px; margin: 0">Dikemas</p>
                     </router-link>
                   </div>
                   <div class="col">
-                    <router-link to="/orderList" style="text-decoration: none; color: black">
+                    <router-link to="/orderList/shipped" style="text-decoration: none; color: black">
                       <q-icon name="fas fa-shipping-fast" style="font-size: 30px; margin: 0 0 5px 0" />
                       <p style="font-size: 10px; margin: 0">Dikirim</p>
                     </router-link>
                   </div>
                   <div class="col">
-                    <router-link to="/orderList" style="text-decoration: none; color: black">
+                    <router-link to="/orderList/done" style="text-decoration: none; color: black">
                       <q-icon name="fas fa-clipboard-check" style="font-size: 30px; margin: 0 0 5px 0" />
                       <p style="font-size: 10px; margin: 0">Selesai</p>
-                    </router-link>
-                  </div>
-                  <div class="col">
-                    <router-link to="/orderList" style="text-decoration: none; color: black">
-                      <q-icon name="fas fa-list-alt" style="font-size: 30px; margin: 0 0 5px 0" />
-                      <p style="font-size: 10px; margin: 0">Lihat Semua</p>
                     </router-link>
                   </div>
                 </div>
@@ -135,6 +135,20 @@
                     </q-item-section>
 
                     <q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Promo & Voucher Saya <span class="bg-yellow-8 text-black" style="padding: 3px 5px; border-radius: 5px; font-size: 10px">soon</span></span></q-item-section>
+
+                    <q-item-section side>
+                      <q-icon name="keyboard_arrow_right" />
+                    </q-item-section>
+                  </q-item>
+
+                  <q-separator />
+
+                  <q-item dense clickable v-ripple>
+                    <q-item-section avatar>
+                      <q-icon name="move_to_inbox" />
+                    </q-item-section>
+
+                    <q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Download Katalog <span class="bg-yellow-8 text-black" style="padding: 3px 5px; border-radius: 5px; font-size: 10px">soon</span></span></q-item-section>
 
                     <q-item-section side>
                       <q-icon name="keyboard_arrow_right" />
@@ -197,19 +211,7 @@
                     </q-item-section> -->
                   </q-item>
 
-                  <!-- <q-separator />
-
-                  <q-item dense clickable v-ripple>
-                    <q-item-section avatar>
-                      <q-icon name="move_to_inbox" />
-                    </q-item-section>
-
-                    <q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Download Katalog</span></q-item-section>
-
-                    <q-item-section side>
-                      <q-icon name="keyboard_arrow_right" />
-                    </q-item-section>
-                  </q-item>
+                  <!-- 
 
                   <q-separator />
 
@@ -261,6 +263,9 @@
 </style>
 
 <script>
+// Loading
+import { QSpinnerPuff, openURL } from 'quasar'
+
 export default {
   name: 'Dashboard',
   data () {
@@ -270,12 +275,26 @@ export default {
   },
   created () {
     this.user = JSON.parse(window.localStorage.getItem('profileUser'));
+    this.$q.loading.show({
+      spinner: QSpinnerPuff,
+      spinnerColor: 'black',
+      spinnerSize: 50,
+      backgroundColor: 'grey',
+      message: '<b>Mohon Tunggu..</b>',
+      messageColor: 'black'
+    })
+    setTimeout(() => {
+      this.$q.loading.hide()
+    }, 500);
   },
   methods: {
     logout () {
       window.localStorage.removeItem('authUser');
       window.localStorage.removeItem('profileUser');
       this.$router.push('/');
+    },
+    upgrade () {
+      openURL('https://wa.me/6287821550989?text=Saya%20Ingin%20Upgrade%20Ke%20Member%20Ekslusif');
     }
   }
 }

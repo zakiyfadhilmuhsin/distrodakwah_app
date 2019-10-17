@@ -61,27 +61,30 @@
           <div style="background-color: white;">
             <div class="row q-pa-xs items-center" style="padding-top: 20px; padding-bottom: 20px">
               <div class="col">
-                <h6 style="font-size: 14px; margin: 0; padding: 0 20px 10px 20px; font-family: 'Open Sans'; line-height: 18px; font-weight: bold">Pilih ekspedisi :</h6>
-                <center>
-                  <div class="q-px-md">
-                    <q-select 
-                      dense
-                      outlined 
-                      color="orange-8" 
-                      options-dense
-                      v-model="courierSelected"
-                      :options='[
-                        {value: "jne", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">JNE</div> <img src=\"https://i.imgur.com/hhJyhyS.png\" height=\"20\" /></div>"},
-                        {value: "jnt", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">J&T</div> <img src=\"https://i.imgur.com/TNdagJs.png\" height=\"20\" /></div>"},
-                        {value: "pos", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">POS</div> <img src=\"https://i.imgur.com/2VEBPMp.png\" height=\"20\" /></div>"}
-                      ]'
-                      option-value="value"
-                      option-label="label"
-                      emit-value
-                      map-options
-                      @input="getCostShipping"
-                    />
-                  </div>
+                <template v-if="dataCustomerSelected !== null">
+                  <h6 style="font-size: 14px; margin: 0; padding: 0 20px 10px 20px; font-family: 'Open Sans'; line-height: 18px; font-weight: bold">Pilih ekspedisi :</h6>
+                  <center>
+                    <div class="q-px-md">
+                      <q-select 
+                        dense
+                        outlined 
+                        color="orange-8" 
+                        options-dense
+                        v-model="courierSelected"
+                        :options='[
+                          {value: "jne", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">JNE</div> <img src=\"https://i.imgur.com/hhJyhyS.png\" height=\"20\" /></div>"},
+                          {value: "jnt", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">J&T</div> <img src=\"https://i.imgur.com/TNdagJs.png\" height=\"20\" /></div>"},
+                          {value: "pos", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">POS</div> <img src=\"https://i.imgur.com/2VEBPMp.png\" height=\"20\" /></div>"}
+                        ]'
+                        option-value="value"
+                        option-label="label"
+                        emit-value
+                        map-options
+                        @input="getCostShipping"
+                      />
+                    </div>
+                  </center>
+                </template>
                   <!-- <q-btn-toggle
                     v-model="courierSelected"
                     unelevated
@@ -111,7 +114,6 @@
                       </div>
                     </template>
                   </q-btn-toggle> -->
-                </center>
                 <!-- {{ dataCost.results[0].costs }} -->
                 <br/>
                 <h6 style="font-size: 14px; margin: 0; padding: 0 20px 10px 20px; font-family: 'Open Sans'; line-height: 18px; font-weight: bold" v-if="courierSelected !== '' && dataCustomerSelected !== null">Pilih tarif :</h6>
