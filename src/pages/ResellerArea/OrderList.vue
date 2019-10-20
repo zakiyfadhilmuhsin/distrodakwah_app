@@ -39,7 +39,7 @@
             icon="local_mall"
             to="/cart"
             style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Keranjang</span></q-route-tab>
+          ><span style="font-size: 10px;">Keranjang</span><q-badge color="red" text-color="white" floating v-if="totalCartItem !== null"><b>{{ totalCartItem }}</b></q-badge></q-route-tab>
           <q-route-tab
             icon="account_circle"
             to="/dashboard"
@@ -168,7 +168,7 @@
 
 <script>
 import axios from 'axios';
-import { getOrderUrl, showCustomerUrl, getHeader } from 'src/config';
+import { getOrderUrl, showCustomerUrl, totalCartItemUrl, getHeader } from 'src/config';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 // Loading
@@ -185,6 +185,8 @@ export default {
       searchInvoice: '',
       dateFilter: '',
       orderData: [],
+      // Total Count Cart Item
+      totalCartItem: null,
     }
   },
   created () {
@@ -194,6 +196,23 @@ export default {
     }else{
       this.getOrder();
     }
+  },
+  mounted () {
+    // Get Total Cart Item
+    axios.get( totalCartItemUrl + '/' + this.user.id, { headers: getHeader() } )
+      .then(response => {
+        console.log(response)
+
+        if (response.status === 200) {
+          this.totalCartItem = response.data.data;
+        }
+
+      })
+      .catch(error => {
+        if (error.response) {
+          console.log(error.response)
+        }
+      })
   },
   methods: {
     getOrder () {

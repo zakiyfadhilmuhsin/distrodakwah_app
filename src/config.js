@@ -1,7 +1,7 @@
 import router from 'src/router/routes'
 
-export const hostDomain = 'https://api.needherbal.web.id'
-//export const hostDomain = 'http://apigateway.test'
+//export const hostDomain = 'https://api.needherbal.web.id'
+export const hostDomain = 'http://apigateway.test'
 
 export const apiDomain = hostDomain
 
@@ -29,6 +29,7 @@ export const addToCartUrl = apiDomain + '/cart/add-to-cart'
 export const removeProductCartUrl = apiDomain + '/cart/remove-product'
 export const addShippingToCart = apiDomain + '/cart/add-shipping-to-cart'
 export const destroyCart = apiDomain + '/cart/destroy-cart'
+export const totalCartItemUrl = apiDomain + '/cart/cart-items'
 
 // From Shipping Service
 export const getCustomerUrl = apiDomain + '/shipping/get-customer'
@@ -49,6 +50,7 @@ export const getCostShippingNoAuthUrl = hostDomain + '/for-store/cost'
 // From Identity Service
 export const identityBankUrl = apiDomain + '/identity/banks'
 export const identitySliderUrl = apiDomain + '/identity/sliders'
+export const identityFeedbackUrl = apiDomain + '/identity/feedback'
 
 // From Order Service
 export const postToOrderUrl = apiDomain + '/order/orders'

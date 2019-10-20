@@ -39,7 +39,7 @@
             icon="local_mall"
             to="/cart"
             style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Keranjang</span></q-route-tab>
+          ><span style="font-size: 10px;">Keranjang</span><q-badge color="red" text-color="white" floating v-if="totalCartItem !== null"><b>{{ totalCartItem }}</b></q-badge></q-route-tab>
           <q-route-tab
             icon="account_circle"
             to="/dashboard"
@@ -152,7 +152,7 @@
 
 <script>
 import axios from 'axios';
-import { getCartUrl, catalogProductUrl, removeProductCartUrl, getHeader } from 'src/config';
+import { getCartUrl, catalogProductUrl, removeProductCartUrl, totalCartItemUrl, getHeader } from 'src/config';
 // Loading
 import { QSpinnerPuff } from 'quasar'
 
@@ -170,6 +170,8 @@ export default {
       donasi_rq: false,
       // User
       user: null,
+      // Total Count Cart Item
+      totalCartItem: null,
     }
   },
   created () {
@@ -177,6 +179,21 @@ export default {
   },
   mounted () {
     this.getCartData();
+    // Get Total Cart Item
+    axios.get( totalCartItemUrl + '/' + this.user.id, { headers: getHeader() } )
+      .then(response => {
+        console.log(response)
+
+        if (response.status === 200) {
+          this.totalCartItem = response.data.data;
+        }
+
+      })
+      .catch(error => {
+        if (error.response) {
+          console.log(error.response)
+        }
+      })
   },
   methods: {
     getCartData () {
@@ -241,6 +258,7 @@ export default {
                         });
 
                         this.totalProfit += (response.data.data.price * reseller_discount / 100) * qty;
+                        this.totalItem += qty;
 
                       }).catch(error => {
 
@@ -262,6 +280,7 @@ export default {
                     });
 
                     this.totalProfit += (response.data.data.price * reseller_discount / 100) * qty;
+                    this.totalItem += qty;
 
                   }
 
@@ -277,7 +296,6 @@ export default {
 
           }
 
-          this.totalItem = this.cartData.cart_detail.length;
           this.subTotal = this.cartData.total_amount;
 
         })

@@ -24,7 +24,7 @@
 	          icon="local_mall"
 	          to="/cart"
 	          style="text-transform: capitalize; font-family: 'Open Sans'"
-	        ><span style="font-size: 10px;">Keranjang</span></q-route-tab>
+	        ><span style="font-size: 10px;">Keranjang</span><q-badge color="red" text-color="white" floating v-if="totalCartItem !== null"><b>{{ totalCartItem }}</b></q-badge></q-route-tab>
 	        <q-route-tab
 	          icon="account_circle"
 	          to="/dashboard"
@@ -277,6 +277,8 @@
 </style>
 
 <script>
+import { totalCartItemUrl, getHeader } from 'src/config';
+import axios from 'axios';
 // Loading
 import { QSpinnerPuff, openURL } from 'quasar'
 
@@ -284,7 +286,8 @@ export default {
   name: 'Dashboard',
   data () {
     return {
-
+      // Total Count Cart Item
+      totalCartItem: null,
     }
   },
   created () {
@@ -300,6 +303,23 @@ export default {
     setTimeout(() => {
       this.$q.loading.hide()
     }, 500);
+  },
+  mounted () {
+    // Get Total Cart Item
+    axios.get( totalCartItemUrl + '/' + this.user.id, { headers: getHeader() } )
+      .then(response => {
+        console.log(response)
+
+        if (response.status === 200) {
+          this.totalCartItem = response.data.data;
+        }
+
+      })
+      .catch(error => {
+        if (error.response) {
+          console.log(error.response)
+        }
+      })
   },
   methods: {
     logout () {
