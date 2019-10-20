@@ -138,39 +138,50 @@
             </q-card-section>
 
             <q-card-section>
-              <q-scroll-area style="height: 350px; max-width: 360px;">
-                <div style="border: 1px solid #bdbdbd; border-radius: 5px; padding: 12px; margin-bottom: 20px" v-for="(customer, index) in dataCustomers" :key="index">
-                  <div class="row">
-                    <div class="col-xs-8">
+              <template v-if="dataCustomers.length > 0">
+                <q-scroll-area style="height: 350px; max-width: 360px;">
+                  <div style="border: 1px solid #bdbdbd; border-radius: 5px; padding: 12px; margin-bottom: 20px" v-for="(customer, index) in dataCustomers" :key="index">
+                    <div class="row">
+                      <div class="col-xs-8">
+                      </div>
+                      <div class="col-xs-4">
+                        <q-btn flat dense size="xs" class="bg-orange-8 text-white float-right text-capitalize" @click="selectCustomer(customer.id)" v-close-popup>Pilih Pelanggan</q-btn>
+                      </div>
                     </div>
-                    <div class="col-xs-4">
-                      <q-btn flat dense size="xs" class="bg-orange-8 text-white float-right text-capitalize" @click="selectCustomer(customer.id)" v-close-popup>Pilih Pelanggan</q-btn>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <div class="row">
-                        <div class="col">
-                          <h6 class="text-list"><b>Nama Customer </b></h6>
-                          <h6 class="text-list"><b>No Handphone </b></h6>
-                          <h6 class="text-list"><b>Provinsi </b></h6>
-                          <h6 class="text-list"><b>Kota/Kabupaten </b></h6>
-                          <h6 class="text-list"><b>Kecamatan </b></h6>
-                          <h6 class="text-list"><b>Detail Alamat </b></h6>
-                        </div>
-                        <div class="col">
-                          <h6 class="text-list"><b>:</b> {{ customer.customer_name }}</h6>
-                          <h6 class="text-list"><b>:</b> {{ customer.customer_phone }}</h6>
-                          <h6 class="text-list"><b>:</b> {{ customer.province.province }}</h6>
-                          <h6 class="text-list"><b>:</b> {{ customer.city.type + ' ' + customer.city.city }}</h6>
-                          <h6 class="text-list"><b>:</b> {{ customer.subdistrict.subdistrict }}</h6>
-                          <h6 class="text-list"><b>:</b> {{ customer.address_detail }}</h6>
+                    <div class="row">
+                      <div class="col">
+                        <div class="row">
+                          <div class="col">
+                            <h6 class="text-list"><b>Nama Customer </b></h6>
+                            <h6 class="text-list"><b>No Handphone </b></h6>
+                            <h6 class="text-list"><b>Provinsi </b></h6>
+                            <h6 class="text-list"><b>Kota/Kabupaten </b></h6>
+                            <h6 class="text-list"><b>Kecamatan </b></h6>
+                            <h6 class="text-list"><b>Detail Alamat </b></h6>
+                          </div>
+                          <div class="col">
+                            <h6 class="text-list"><b>:</b> {{ customer.customer_name }}</h6>
+                            <h6 class="text-list"><b>:</b> {{ customer.customer_phone }}</h6>
+                            <h6 class="text-list"><b>:</b> {{ customer.province.province }}</h6>
+                            <h6 class="text-list"><b>:</b> {{ customer.city.type + ' ' + customer.city.city }}</h6>
+                            <h6 class="text-list"><b>:</b> {{ customer.subdistrict.subdistrict }}</h6>
+                            <h6 class="text-list"><b>:</b> {{ customer.address_detail }}</h6>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                </q-scroll-area>
+              </template>
+              <template v-else>
+                <div class="q-pa-md">
+                  <center>
+                    <img src="https://image.flaticon.com/icons/svg/145/145859.svg" width="75" style="margin-bottom: 25px" />
+                    <div class="text-bold text-black">Belum Ada Pelanggan</div>
+                    <div class="text-bold text-grey">Silahkan Tambah Pelanggan terlebih dahulu</div>
+                  </center>
                 </div>
-              </q-scroll-area>
+              </template>
             </q-card-section>
 
             <!-- <q-card-actions align="right">
