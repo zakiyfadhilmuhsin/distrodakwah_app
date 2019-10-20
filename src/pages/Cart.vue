@@ -109,7 +109,7 @@
               </div>
               <div class="col">
                 <h6 style="font-size: 16px; margin: 0; font-family: 'Open Sans'">Subtotal</h6>
-                <h6 style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold">Rp{{ formatPrice(subTotal) }}</h6>
+                <h6 style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold" class="text-red">Rp{{ formatPrice(subTotal) }}</h6>
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@
               </div>
               <div class="col">
                 <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Alhamdulillah potensi keuntungan kamu adalah</h6>
-                <h6 style="font-size: 28px; margin: 8px 0; font-family: 'Open Sans'; font-weight: bold" class="text-red">Rp{{formatPrice(totalProfit)}}</h6>
+                <h6 style="font-size: 28px; margin: 8px 0; font-family: 'Open Sans'; font-weight: bold">Rp{{formatPrice(totalProfit)}}</h6>
                 <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Jangan lupa sedekah ya :)</h6>
               </div>
             </div>
