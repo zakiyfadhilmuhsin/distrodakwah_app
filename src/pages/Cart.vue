@@ -210,6 +210,7 @@ export default {
       this.cartData = [];
       this.items = [];
       this.totalProfit = 0;
+      this.totalItem = 0;
 
       axios.get( getCartUrl + '/' + this.user.id, { headers: getHeader() } )
         .then(response => {
@@ -323,6 +324,22 @@ export default {
             console.log(response)
             if (response.status === 200) {
               this.getCartData();
+
+              // Get Total Cart Item
+              axios.get( totalCartItemUrl + '/' + this.user.id, { headers: getHeader() } )
+                .then(response => {
+                  console.log(response)
+
+                  if (response.status === 200) {
+                    this.totalCartItem = response.data.data;
+                  }
+
+                })
+                .catch(error => {
+                  if (error.response) {
+                    console.log(error.response)
+                  }
+                })
             }
           }).catch(error => {
             if (error.response) {
