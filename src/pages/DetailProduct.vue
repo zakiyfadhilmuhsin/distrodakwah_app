@@ -184,54 +184,32 @@
       </q-page>
       <q-dialog v-model="confirmOrder">
         <q-card style="width: 800px; max-width: 90vw;">
-          <q-card-section class="row items-center">
+          <!-- <q-card-section class="row items-center">
             <h6 style="margin: 0; font-size: 16px">Berhasil Masuk Keranjang</h6>
             <q-space />
             <q-btn icon="close" size="sm" flat round dense v-close-popup />
-          </q-card-section>
+          </q-card-section> -->
 
           <q-card-section>
-            <!-- <div class="row">
-              <div class="col-4">
-                <img src="~/assets/images/product/247merah-square.png" width="80" />
+            <div class="row items-center">
+              <div class="col">
+                <center>
+                  <img src="~/assets/images/components/shopping-cart.svg" width="80" />
+                </center>
               </div>
-              <div class="col-6">
-                <h5 style="margin: -10px 0px 10px 0px; font-size: 14px; font-weight: bold">Kaos Dakwah AM250</h5>
-                <h6 style="margin: -15px 0; font-size: 14px;">Warna : Merah</h6>
-                <h6 style="margin: -15px 0; font-size: 14px;">Ukuran : Merah</h6>
-                <h6 style="margin: -15px 0; font-size: 14px;">Qty : 3</h6>
-              </div>
-              <div class="col-2 text-right self-center">
-                <q-icon name="delete" style="font-size: 20px" />
-              </div>
-            </div> -->
+            </div>
+            <br/>
             <div class="row">
-              <div class="col-4">
-                <img src="~/assets/images/product/247merah-square.png" width="80" />
-              </div>
-              <div class="col-8">
-                <h5 style="margin: -10px 0px 10px 0px; font-size: 14px; font-weight: bold">Kaos Dakwah AM250</h5>
-                <h6 style="margin: -15px 0; font-size: 14px;">Warna : Merah</h6>
-                <h6 style="margin: -15px 0; font-size: 14px;">Ukuran : Merah</h6>
-                <h6 style="margin: -15px 0; font-size: 14px;">Qty : 3</h6>
+              <div class="col text-center">
+                <h5 style="font-size: 18px; margin: 0; line-height: 24px"><b>{{ dataProduct.product_name }}</b><br/> telah dimasukkan ke keranjang belanja Anda</h5>
               </div>
             </div>
             <br/>
             <div class="row">
               <div class="col">
-                <h5 style="font-size: 21px; margin: 0; font-weight: bold">Subtotal</h5>
-              </div>
-              <div class="col text-right">
-                <h5 style="font-size: 21px; margin: 0;">Rp200.000</h5>
-                <h5 style="font-size: 10px; margin: -12px 0;">Harga belum termasuk ongkir</h5>
-              </div>
-            </div>
-            <br/>
-            <div class="row">
-              <div class="col">
-                <q-btn to="/cart" flat class="bg-orange-8 text-white full-width"><b>Checkout</b></q-btn>
+                <q-btn to="/cart" flat class="bg-orange-8 text-white full-width"><b>Cek Keranjang</b></q-btn>
                 <h5 style="font-size: 10px; margin: 0; text-align: center;">Atau</h5>
-                <q-btn to="/storefront" outline color="black" class="full-width"><b>Lanjut Belanja</b></q-btn>
+                <q-btn to="/" outline color="black" class="full-width"><b>Lanjut Belanja</b></q-btn>
               </div>
             </div>
           </q-card-section>
@@ -502,7 +480,7 @@ export default {
       }
     },
     addToCart () {
-        
+
         // Cek stok dulu
         if(this.stockReady > 0 && this.qty <= this.stockReady){
 
@@ -544,7 +522,8 @@ export default {
             axios.post(addToCartUrl, postData, {headers: getHeader()}).then(response => {
 
               if(response.status === 200){
-                this.$q.notify({position: 'top', color: 'dark', message: 'Produk Ditambahkan ke Keranjang'});
+                //this.$q.notify({position: 'top', color: 'dark', message: 'Produk Ditambahkan ke Keranjang'});
+                this.confirmOrder = true;
               }
 
             }).catch(error => {
