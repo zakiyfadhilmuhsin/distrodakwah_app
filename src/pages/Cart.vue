@@ -70,7 +70,8 @@
                   <h6 style="margin: -15px 0; font-size: 12px;" class="text-orange-8">Rp{{ formatPrice(item.qty * item.price) }}</h6>
                 </div>
                 <div class="col-2 text-right self-center">
-                  <q-btn flat round icon="delete_forever" style="font-size: 10px" @click="removeProduct(item.product_id, item.product_sku_id, item.qty, item.price)" />
+                  <q-btn flat round icon="create" style="font-size: 10px" @click="editQty(item.id, item.price, item.qty)" />
+                  <q-btn flat color="red" round icon="delete_forever" style="font-size: 10px" @click="removeProduct(item.product_id, item.product_sku_id, item.qty, item.price)" />
                 </div>
               </div>
             </template>
@@ -146,13 +147,34 @@
           </div>
         </div>
       </q-page>
+      <q-dialog v-model="editQtyDialog">
+        <q-card style="width: 800px; max-width: 90vw;">
+          <q-card-section class="row items-center">
+            <h6 style="margin: 0; font-size: 16px">Ubah Qty</h6>
+            <q-space />
+            <q-btn icon="close" size="sm" flat round dense v-close-popup />
+          </q-card-section>
+
+          <q-card-section>
+            <div class="row items-center">
+              <div class="col">
+                <q-input type="number" outlined dense color="orange-8" label="Qty" v-model="qty" />
+              </div>
+            </div>
+          </q-card-section>
+
+          <q-card-actions class="q-px-md q-pb-md">
+            <q-btn flat class="bg-orange-8 text-white text-capitalize full-width" @click="updateQty">Ubah</q-btn>
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
 import axios from 'axios';
-import { getCartUrl, catalogProductUrl, removeProductCartUrl, totalCartItemUrl, getHeader } from 'src/config';
+import { getCartUrl, catalogProductUrl, removeProductCartUrl, totalCartItemUrl, updateCartQtyUrl, getHeader } from 'src/config';
 // Loading
 import { QSpinnerPuff } from 'quasar'
 
@@ -172,6 +194,12 @@ export default {
       user: null,
       // Total Count Cart Item
       totalCartItem: null,
+      editQtyDialog: false,
+      // Edit Qty
+      qty: null,
+      cartID: null,
+      cartPrice: null,
+      cartQty: null,
     }
   },
   created () {
@@ -231,6 +259,7 @@ export default {
                   let product_image = response.data.data.featured_image;
                   let qty = this.cartData.cart_detail[i].qty;
                   let product_id = this.cartData.cart_detail[i].product_id;
+                  let id = this.cartData.cart_detail[i].id;
                   let reseller_discount = null;
                   if(this.user.role.id === 9){
                     reseller_discount = response.data.data.reseller_exclusive_price;
@@ -249,6 +278,7 @@ export default {
                         // }
                         
                         this.items.push({
+                            id: id,
                             product_id: product_id,
                             product_name: product_name,
                             product_image: product_image,
@@ -272,6 +302,7 @@ export default {
                   }else{
 
                     this.items.push({
+                        id: id,
                         product_id: product_id,
                         product_name: product_name,
                         product_image: product_image,
@@ -354,6 +385,75 @@ export default {
       }else{
         alert('Keranjang Belanja Masih Kosong!');
       }
+    },
+    editQty (id, price, qty) {
+      this.cartID = id;
+      this.cartPrice = price;
+      this.cartQty = qty;
+
+      this.qty = qty;
+
+      // Load editQtyDialog
+      this.editQtyDialog = true;
+    },
+    updateQty () {
+      let currentQty = this.cartQty;
+      let newQty = this.qty;
+      let currentPrice = this.cartPrice * currentQty;
+      let newPrice = this.cartPrice * newQty;
+      let totalAmount = this.subTotal;
+      let totalKurangi = totalAmount - currentPrice;
+      let totalAkhir = totalKurangi + newPrice;
+
+      console.log('Harga Lama : ' + currentPrice);
+      console.log('Harga Baru : ' + newPrice);
+
+      console.log('Total Setelah Dikurangi : ' + totalKurangi);
+      console.log('Total Akhir : ' + totalAkhir);
+
+      let updateData = new FormData();
+
+      updateData.set('cart_id', this.cartID);
+      updateData.set('current_price', currentPrice);
+      updateData.set('new_price', newPrice);
+      updateData.set('qty', newQty);
+
+      // Update Qty
+      axios.post( updateCartQtyUrl, updateData, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+            console.log(response.data.data);
+            this.getCartData();
+            this.qty = null;
+
+            // Get Total Cart Item
+            axios.get( totalCartItemUrl + '/' + this.user.id, { headers: getHeader() } )
+              .then(response => {
+                console.log(response)
+
+                if (response.status === 200) {
+                  this.totalCartItem = response.data.data;
+                }
+
+              })
+              .catch(error => {
+                if (error.response) {
+                  console.log(error.response)
+                }
+              })
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+
+      // close Dialog
+      this.editQtyDialog = false;
     }
   }
 }

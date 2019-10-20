@@ -30,6 +30,7 @@ export const removeProductCartUrl = apiDomain + '/cart/remove-product'
 export const addShippingToCart = apiDomain + '/cart/add-shipping-to-cart'
 export const destroyCart = apiDomain + '/cart/destroy-cart'
 export const totalCartItemUrl = apiDomain + '/cart/cart-items'
+export const updateCartQtyUrl = apiDomain + '/cart/update-qty'
 
 // From Shipping Service
 export const getCustomerUrl = apiDomain + '/shipping/get-customer'
