@@ -45,6 +45,7 @@
                 </div>
                 <div class="q-pa-xs">
                     <q-input prefix="prodakwah.com/" outlined dense color="orange-8" type="text" v-model="storeUrl" label="Slug/URL Toko" placeholder="Masukkan URL Toko" />
+                    <p style="margin: 0; font-size: 10px; color: red">Perhatian! Url Web Replika hanya boleh berisi huruf kecil.<br/>contoh: tokoku</p>
                 </div>
                 <div class="q-pa-xs">
                     <!-- <q-input prefix="+62" outlined dense color="green-6" type="text" v-model="whatsappNumber" label="Nomor Whatsapp" placeholder="Masukkan Nomor Whatsapp" /> -->
@@ -129,26 +130,36 @@ export default {
     },
     createStore() {
       
-      let formData = new FormData();
-      formData.set('store_name', this.storeName);
-      formData.set('store_slug', this.storeUrl);
-      formData.set('whatsapp_number', this.whatsappNumber.replace(/\D/g, ''));
-      formData.set('user_id', this.user.id);
+      var regex = new RegExp("^[a-z]+$");
 
-      axios.post( createStoreUrl + '/' + this.user.id, formData, { headers: getHeader() } )
-        .then(response => {
-          console.log(response)
+      if( regex.test(this.storeUrl) ) {
 
-          if (response.status === 200) {
-            this.$q.notify({position: 'top', color: 'light-green-6', message: 'Berhasil Disimpan!'});
-          }
+        let formData = new FormData();
+        formData.set('store_name', this.storeName);
+        formData.set('store_slug', this.storeUrl);
+        formData.set('whatsapp_number', this.whatsappNumber.replace(/\D/g, ''));
+        formData.set('user_id', this.user.id);
 
-        })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response)
-          }
-        })
+        axios.post( createStoreUrl + '/' + this.user.id, formData, { headers: getHeader() } )
+          .then(response => {
+            console.log(response)
+
+            if (response.status === 200) {
+              this.$q.notify({position: 'top', color: 'light-green-6', message: 'Berhasil Disimpan!'});
+            }
+
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response)
+            }
+          })
+
+      }else{
+
+        this.$q.notify({position: 'top', color: 'red', message: 'Format Slug/Url Web Replika Anda Salah!'});
+
+      }
 
     },
     toStore() {
