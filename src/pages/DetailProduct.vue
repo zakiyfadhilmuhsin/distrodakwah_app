@@ -500,8 +500,10 @@ export default {
               postData.set('customer_phone', this.user.phone);
               if(this.user.role.id === 9){
                 postData.set('reseller_discount', this.productVariant[0].price * this.dataProduct.reseller_exclusive_price / 100);
+                postData.set('reseller_discount_rate', this.dataProduct.reseller_exclusive_price);
               }else if(this.user.role.id === 8){
                 postData.set('reseller_discount', this.productVariant[0].price * this.dataProduct.reseller_pro_price / 100);
+                postData.set('reseller_discount_rate', this.dataProduct.reseller_pro_price);
               }
             }else{
               postData.set('product_id', this.dataProduct.id);
@@ -514,8 +516,10 @@ export default {
               postData.set('customer_phone', this.user.phone);
               if(this.user.role.id === 9){
                 postData.set('reseller_discount', this.dataProduct.price * this.dataProduct.reseller_exclusive_price / 100);
+                postData.set('reseller_discount_rate', this.dataProduct.reseller_exclusive_price);
               }else if(this.user.role.id === 8){
                 postData.set('reseller_discount', this.dataProduct.price * this.dataProduct.reseller_pro_price / 100);
+                postData.set('reseller_discount_rate', this.dataProduct.reseller_pro_price);
               }
             }
 

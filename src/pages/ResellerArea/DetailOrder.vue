@@ -49,7 +49,7 @@
               </div>
             </div>
             <br/>
-            <div class="row q-px-lg">
+            <div class="row q-px-lg" v-if="dataOrder.status === 'shipped'">
               <div class="col">
                 <h5 class="title-text">Info Pengiriman</h5>
               </div>
