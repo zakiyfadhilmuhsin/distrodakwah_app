@@ -199,6 +199,20 @@
 
                   <q-separator />
 
+                  <q-item dense clickable v-ripple to="/feedback">
+                    <q-item-section avatar>
+                      <q-icon name="insert_comment" />
+                    </q-item-section>
+
+                    <q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Kasih Masukkan</span></q-item-section>
+
+                    <q-item-section side>
+                      <q-icon name="keyboard_arrow_right" />
+                    </q-item-section>
+                  </q-item>
+
+                  <q-separator />
+
                   <q-item dense clickable v-ripple @click="logout">
                     <q-item-section avatar>
                       <q-icon name="power_settings_new" />

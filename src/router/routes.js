@@ -13,6 +13,7 @@ import DetailOrderPage from 'pages/ResellerArea/DetailOrder';
 import SettingStorePage from 'pages/ResellerArea/SettingStore';
 import AllProductBrandPage from 'pages/AllProductBrand';
 import SearchPage from 'pages/Search';
+import FeedbackPage from 'pages/ResellerArea/Feedback';
 
 
 const routes = [
@@ -111,6 +112,13 @@ const routes = [
   {
     path: '/search',
     component: SearchPage,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/feedback',
+    component: FeedbackPage,
     meta: {
       requiresAuth: true,
     },
