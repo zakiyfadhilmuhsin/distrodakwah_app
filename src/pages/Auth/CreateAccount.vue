@@ -69,6 +69,7 @@
 										</q-icon>
 									</template>
 								</q-input> -->
+								<label>Tanggal Lahir :</label>
 								<div class="q-field row no-wrap items-start bg-grey-2 q-mb-sm q-input q-field--outlined q-field--float q-field--dense">
 									<div class="q-field__inner relative-position col self-stretch column justify-center">
 										<div class="q-field__control relative-position row no-wrap text-orange-8">
@@ -92,7 +93,7 @@
 								title="Informasi Alamat"
 								icon="home"
 							>
-								<q-input v-model="address" color="orange-8" type="textarea" autogrow dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Alamat Lengkap" />
+								<q-input v-model="address" rows="3" color="orange-8" type="textarea" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Alamat Lengkap" />
 								<!-- <q-input v-model="subdistrict" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Kecamatan" />
 								<q-input v-model="city" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Kabupaten/Kota" />
 								<q-input v-model="province" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Provinsi" /> -->
@@ -141,8 +142,8 @@
 
 
 								<q-stepper-navigation>
-								<q-btn flat @click="createAccount" class="bg-amber-8"><span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">Selesai</span></q-btn>
 								<q-btn flat @click="step = 2" color="amber-8" class="q-ml-sm"><span style="font-weight: bolder; font-family: 'Open Sans'">Kembali</span></q-btn>
+								<q-btn flat @click="createAccount" class="bg-amber-8"><span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">Selesai</span></q-btn>
 								</q-stepper-navigation>
 							</q-step>
 						</q-stepper>
