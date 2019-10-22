@@ -96,7 +96,7 @@ export default {
         storeUrl: '',
         whatsappNumber: '',
         dataStore: [],
-        url: 'https://prodakwah.com/#/',
+        url: 'http://localhost:8082/',
     }
   },
   created () {
@@ -163,7 +163,7 @@ export default {
 
     },
     toStore() {
-      openURL('https://prodakwah.com/#/' + this.storeUrl);
+      openURL('http://localhost:8082/' + this.storeUrl);
     }
   }
 }
