@@ -92,6 +92,29 @@
               </div>
             </div>
           </div>
+          <div style="background-color: white; margin-bottom: 5px; padding: 13px 0 10px 0" v-if="cartData.voucher_id !== null">
+            <div class="row q-px-md">
+              <div class="col">
+                <h5 class="title-text">Potongan Harga</h5>
+              </div>
+            </div>
+            <div class="row q-px-sm">
+              <div class="col">
+                <q-list dense>
+                  <q-item>
+                    <q-item-section avatar>
+                      <img src="~/assets/images/components/coupon.png" width="30" class="self-center" />
+                    </q-item-section>
+
+                    <q-item-section><span style="font-size: 12px">Kode Kupon <b>"{{cartData.voucher_code_name}}"</b></span></q-item-section>
+
+                    <q-item-section side><h6 style="margin: 0; font-size: 12px;" class="text-red text-right">-Rp{{ formatPrice(cartData.grand_total * cartData.voucher_discount / 100) }}</h6></q-item-section>
+                  </q-item>
+                </q-list>
+                <!-- <hr style="border: 1px solid #eee" /> -->
+              </div>
+            </div>
+          </div>
           <div style="background-color: white;; padding: 13px 0 10px 0">
             <!-- <div class="row q-px-lg">
               <div class="col">
@@ -118,7 +141,8 @@
                 <h5 style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold">Total</h5>
               </div>
               <div class="col text-right">
-                <h5 style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold">Rp{{ formatPrice(cartData.grand_total) }}</h5>
+                <h5 style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold" v-if="cartData.voucher_id === null">Rp{{ formatPrice(cartData.grand_total) }}</h5>
+                <h5 style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold" v-else-if="cartData.voucher_id !== null">Rp{{ formatPrice(cartData.grand_total - (cartData.grand_total * cartData.voucher_discount / 100)) }}</h5>
               </div>
             </div>
             <hr style="border: none; height: 30px" />
@@ -271,6 +295,9 @@ export default {
         postOrder.set('customer_name', this.cartData.customer_name);
         postOrder.set('customer_email', this.cartData.customer_email);
         postOrder.set('customer_phone', this.cartData.customer_phone);
+        postOrder.set('coupon_id', this.cartData.voucher_id);
+        postOrder.set('coupon_code', this.cartData.voucher_code_name);
+        postOrder.set('coupon_discount', this.cartData.voucher_discount);
         postOrder.set('cart_details', JSON.stringify(this.cartData.cart_detail, 2, null));
 
         axios.post( postToOrderUrl, postOrder, { headers: getHeader() } )
