@@ -87,11 +87,12 @@
             </template>
             <!-- {{items}} -->
           </div>
-          <!-- <div style="background-color: white; margin-bottom: 5px">
+          <!-- Voucher -->
+          <div style="background-color: white; margin-bottom: 5px" v-if="couponUse === false">
             <div class="row q-pa-xs items-center">
               <div class="col">
                 <q-list dense>
-                  <q-item clickable v-ripple>
+                  <q-item clickable v-ripple @click="addCouponDialog = true">
                     <q-item-section avatar>
                       <img src="~/assets/images/components/coupon.png" width="30" class="self-center" />
                     </q-item-section>
@@ -101,7 +102,26 @@
                 </q-list>
               </div>
             </div>
-          </div> -->
+          </div>
+          <div style="background-color: white; margin-bottom: 5px" v-else-if="couponUse === true">
+            <div class="row q-pa-xs items-center">
+              <div class="col">
+                <q-list dense>
+                  <q-item dense>
+                    <q-item-section avatar style="margin-right: -20px">
+                      <q-icon color="green" name="check_circle" />
+                    </q-item-section>
+
+                    <q-item-section><span>Kode <b>"{{ couponCode }}"</b> Terpasang..</span></q-item-section>
+
+                    <q-item-section side>
+                      <q-btn flat dense icon="backspace" color="red" @click="removeCoupon" />
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </div>
+            </div>
+          </div>
           <div style="background-color: white; margin-bottom: 5px">
             <div class="row q-px-lg items-center" style="padding-top: 15px; padding-bottom: 15px">
               <div class="col">
@@ -168,13 +188,28 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
+      <q-dialog v-model="addCouponDialog" position="bottom">
+        <q-card style="min-width: 360px">
+          <!-- <q-card-section>
+            <div class="text-h6">Tambah Pelanggan</div>
+          </q-card-section> -->
+
+          <q-card-section>
+            <q-input type="text" outlined dense color="orange-8" label="Kode Voucher" v-model="couponCode" placeholder="Silahkan masukkan kode voucher disini.." @input="val => { couponCode = val.toUpperCase() }" />
+          </q-card-section>
+
+          <q-card-actions class="q-px-md q-pb-md q-pt-xs">
+            <q-btn flat label="Pasang Voucher" color="white" class="bg-orange-8 text-capitalize full-width" @click="addCoupon" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
 import axios from 'axios';
-import { getCartUrl, catalogProductUrl, removeProductCartUrl, totalCartItemUrl, updateCartQtyUrl, getHeader } from 'src/config';
+import { getCartUrl, catalogProductUrl, removeProductCartUrl, totalCartItemUrl, updateCartQtyUrl, checkCouponUrl, addVoucherCartUrl, removeVoucherCartUrl, getHeader } from 'src/config';
 // Loading
 import { QSpinnerPuff } from 'quasar'
 
@@ -200,6 +235,9 @@ export default {
       cartID: null,
       cartPrice: null,
       cartQty: null,
+      addCouponDialog: false,
+      couponCode: null,
+      couponUse: false,
     }
   },
   created () {
@@ -249,6 +287,11 @@ export default {
             this.$q.loading.hide()
 
             this.cartData = response.data.data;
+
+            if(this.cartData.voucher_id !== null){
+              this.couponUse = true;
+              this.couponCode = this.cartData.voucher_code_name;
+            }
 
             for(let i=0; i<this.cartData.cart_detail.length; i++){
               // alert(this.cartData.cart_detail[i].product_id);
@@ -454,6 +497,75 @@ export default {
 
       // close Dialog
       this.editQtyDialog = false;
+    },
+    addCoupon () {
+
+      axios.get( checkCouponUrl + '/' + this.couponCode, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200 && response.data.length !== 0) {
+
+            let postVoucher = new FormData();
+
+            postVoucher.set('cart_id', this.cartData.id);
+            postVoucher.set('coupon_id', response.data.id);
+            postVoucher.set('coupon_code', response.data.coupon_code);
+            postVoucher.set('coupon_discount', response.data.coupon_discount);
+
+            // Add Coupon
+            axios.post( addVoucherCartUrl, postVoucher, { headers: getHeader() } )
+              .then(response => {
+                console.log(response)
+
+                if (response.status === 200) {
+                  this.getCartData();
+                  this.couponUse = true;
+                }
+
+              })
+              .catch(error => {
+                if (error.response) {
+                  console.log(error.response)
+                }
+              })
+
+          }else{
+            this.$q.notify({position: 'top', color: 'red', message: 'Kupon tidak tersedia!'});
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+            this.$q.notify({position: 'top', color: 'red', message: 'Kupon tidak tersedia!'});
+          }
+        })
+
+    },
+    removeCoupon () {
+
+      axios.delete( removeVoucherCartUrl + '/' + this.cartData.voucher_id, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+            
+            setTimeout(() => {
+              this.getCartData();
+              this.couponUse = false;
+              this.couponCode = null;
+            }, 500);
+
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+
     }
   }
 }
