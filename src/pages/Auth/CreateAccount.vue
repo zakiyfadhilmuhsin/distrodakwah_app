@@ -316,7 +316,7 @@ export default {
 								if(response.data.data.length === 0){
 
 									// Get Data From Old Users API
-									axios.get('https://api.needherbal.web.id/auth/old_users/' + this.emailVerify).then(response =>{
+									axios.get('https://api-test.needherbal.web.id/auth/old_users/' + this.emailVerify).then(response =>{
 
 										if(response.status === 200){
 
