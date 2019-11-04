@@ -74,7 +74,8 @@
             <h5 class="category-text">Kategori : <span class="text-red">{{dataCategory.category_name}}</span></h5>
             <h5 class="category-text">Brand : <span class="text-red">{{dataBrand.brand_name}}</span></h5>
             <h4 class="product-title-text">{{dataProduct.product_name}}</h4>
-            <div style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold" v-if="stockReady !== null">Stok Tersedia : {{ stockReady }}</div>
+            <div style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold" v-if="stockReady !== null">Stok Tersedia : <span class="text-red" v-if="stockReady === 0">Maaf, Stok Belum Tersedia!</span><span v-else>{{ stockReady }}</span></div>
+            <div style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold; color: red" v-else>Maaf, Stok Belum Tersedia!</div>
 
             <hr style="margin: 15px 0" />
             
