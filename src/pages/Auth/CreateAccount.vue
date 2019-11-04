@@ -326,8 +326,12 @@ export default {
 												this.dataUser = response.data;
 												this.email    = this.dataUser.email;
 												this.roleName = this.dataUser.role_name;
-												this.name 	  = this.dataUser.name;
-												this.phone    = this.dataUser.phone;
+												this.name 	  = '';
+												if(this.dataUser.phone === 0){
+													this.phone = '';
+												}else{
+													this.phone = this.dataUser.phone;
+												}
 											}
 
 										}
@@ -355,13 +359,13 @@ export default {
 
 												this.roleName = this.dataUser[0].product_name;
 												this.email    = this.dataUser[0].customer_data.email;
-												this.name     = this.dataUser[0].customer_data.name;
+												this.name     = '';
 												this.phone    = this.dataUser[0].customer_data.phone.replace('+62', '');
 
 											}else{
 												this.roleName = response.data.role_name;
 												this.email    = this.dataUser[0].customer_data.email;
-												this.name     = this.dataUser[0].customer_data.name;
+												this.name     = '';
 												this.phone    = this.dataUser[0].customer_data.phone.replace('+62', '');
 											}
 
