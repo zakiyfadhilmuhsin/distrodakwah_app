@@ -327,11 +327,7 @@ export default {
 												this.email    = this.dataUser.email;
 												this.roleName = this.dataUser.role_name;
 												this.name 	  = '';
-												if(this.dataUser.phone === 0){
-													this.phone = '';
-												}else{
-													this.phone = this.dataUser.phone;
-												}
+												this.phone = this.dataUser.phone;
 											}
 
 										}
