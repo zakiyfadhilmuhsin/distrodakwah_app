@@ -130,7 +130,7 @@
             <div class="row q-px-md" style="padding: 5px 10px 10px 10px">
               <div class="col">
                 <swiper :options="swiperProductListOption">
-                  <swiper-slide v-for="(product, index) in newProduct" :key="index" v-if="product.brand_id === brand.id">
+                  <swiper-slide v-for="(product, index) in newProduct" :key="index" v-if="product.brand_id === brand.id && index < 6">
                     <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
                       <transition
                         appear
