@@ -13,7 +13,7 @@
 
         <q-space />
 
-        <q-toolbar-title><span style="font-size: 16px; font-weight: bold">{{ brandName }}</span></q-toolbar-title>
+        <q-toolbar-title><span style="font-size: 16px; font-weight: bold">{{ categoryName }}</span></q-toolbar-title>
 
         <q-space />
       </q-toolbar>
@@ -30,7 +30,7 @@
         <div class="bg-grey-3" style="height: 100%">
           <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
             <div v-infinite-scroll="getProduct" infinite-scroll-disabled="busy" infinite-scroll-distance="limit" class="row q-px-md" style="padding: 15px 10px">
-              <div class="col-6" style="margin-bottom: 15px" v-for="(product, index) in newProduct" :key="index" v-if="product.brand_id === Number(brandID)">
+              <div class="col-6" style="margin-bottom: 15px" v-for="(product, index) in newProduct" :key="index" v-if="product.category_id === Number(categoryID)">
     
                 <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
                   <transition
@@ -140,8 +140,8 @@ export default {
       featuredImageShow: true,
       // user
       user: [],
-      brandName: '',
-      brandID: null,
+      categoryName: '',
+      categoryID: null,
       limit: 2,
       productsCount: 0,
       busy: false,
@@ -154,8 +154,8 @@ export default {
   },
   created () {
     this.user = JSON.parse(window.localStorage.getItem('profileUser'));
-    this.brandName = this.$route.params.brand;
-    this.brandID = this.$route.params.brand_id;
+    this.categoryName = this.$route.params.category;
+    this.categoryID = this.$route.params.category_id;
     this.$q.loading.show({
       spinner: QSpinnerPuff,
       spinnerColor: 'black',
