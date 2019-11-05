@@ -56,19 +56,16 @@
 
     <q-page-container class="mobile-layout-on-desktop bg-white">
       <q-page>
-        <!-- <swiper :options="swiperOptionDetail">
-          <swiper-slide>
-            <img src="~/assets/images/product/247merah-square.png" width="100%" />
-          </swiper-slide>
-          <swiper-slide>
-            <img src="~/assets/images/product/247merah-square.png" width="100%" />
-          </swiper-slide>
-          <swiper-slide>
-            <img src="~/assets/images/product/247merah-square.png" width="100%" />
-          </swiper-slide>
-          <div class="swiper-pagination-detail" slot="pagination"></div>
-        </swiper> -->
-        <img :src="dataProduct.featured_image" width="100%" style="margin-top: -50px" />
+        <template v-if="dataProduct.length !== 0">
+          <div style="margin-bottom: 10px; margin-top: -50px" v-if="dataProduct.image_gallery.length !== 0">
+            <carousel :items="1" :nav="false" :loop="true" :autoplay="true">
+                <img :src="gallery.image" v-for="(gallery, i) in dataProduct.image_gallery" :key="i">
+            </carousel>
+          </div>
+          <div style="margin-bottom: 10px; margin-top: -50px" v-else>
+            <img :src="dataProduct.featured_image" width="100%" />
+          </div>
+        </template>
         <div class="row q-px-md">
           <div class="col">
             <h5 class="category-text">Kategori : <span class="text-red">{{dataCategory.category_name}}</span></h5>
@@ -271,8 +268,7 @@
 
 <script>
 import Vue from 'vue'
-import "swiper/dist/css/swiper.css"
-import { swiper, swiperSlide } from "vue-awesome-swiper"
+import carousel from 'vue-owl-carousel'
 import axios from 'axios';
 import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, addToCartUrl, inventoryStockUrl, getHeader} from 'src/config';
 import VueClipboard from 'vue-clipboard2'
@@ -283,18 +279,6 @@ export default {
   name: 'DetailProduct',
   data () { 
     return {
-      // Image Gallery
-      // swiperOptionDetail: {
-      //   pagination: {
-      //     // slidesPerView: 'auto',
-      //     centeredSlides: false,
-      //     spaceBetween: 10,
-      //     pagination: {
-      //       el: '.swiper-pagination-detail',
-      //       clickable: true
-      //     }
-      //   }
-      // },
       // Product
       dataProduct: [],
       dataCategory: [],
@@ -583,6 +567,6 @@ export default {
       })
     }
   },
-  components: { swiper, swiperSlide }
+  components: { carousel }
 }
 </script>

@@ -19,6 +19,7 @@ export const resetPassword = apiDomain + 'api/reset-password'
 
 // From Catalog Service
 export const catalogProductUrl = apiDomain + '/catalog/products'
+export const getProductByCategoryUrl = apiDomain + '/catalog/get-products'
 export const searchProductUrl = apiDomain + '/catalog/searchProduct'
 export const catalogBrandUrl = apiDomain + '/catalog/brands'
 export const catalogCategoryUrl = apiDomain + '/catalog/categories'
@@ -31,6 +32,8 @@ export const addShippingToCart = apiDomain + '/cart/add-shipping-to-cart'
 export const destroyCart = apiDomain + '/cart/destroy-cart'
 export const totalCartItemUrl = apiDomain + '/cart/cart-items'
 export const updateCartQtyUrl = apiDomain + '/cart/update-qty'
+export const addVoucherCartUrl = apiDomain + '/cart/add-voucher'
+export const removeVoucherCartUrl = apiDomain + '/cart/remove-voucher'
 
 // From Shipping Service
 export const getCustomerUrl = apiDomain + '/shipping/get-customer'
@@ -68,6 +71,9 @@ export const inventoryStockUrl = apiDomain + '/inventory/stocks'
 
 // From Payment Service
 export const paymentConfirmationUrl = apiDomain + '/payment/payment-confirmations'
+
+// From Voucher Service
+export const checkCouponUrl = apiDomain + '/voucher/check-coupon'
 
 
 export const getHeader = function () {
