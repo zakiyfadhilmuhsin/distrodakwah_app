@@ -116,8 +116,7 @@
               </div>
             </div>
           </div> -->
-          {{dataCategory}}
-          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px" v-for="(category, i) in dataCategory" :key="i">
+          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px" v-for="(category, i) in dataProducts" :key="i">
             <div class="row q-pa-xs">
               <div class="col">
                 <h5 class="promo-text">{{ category.category_name }}</h5>
@@ -131,7 +130,7 @@
             <div class="row q-px-md" style="padding: 5px 10px 10px 10px">
               <div class="col">
                 <swiper :options="swiperProductListOption">
-                  <swiper-slide v-for="(product, index) in newProduct" :key="index" v-if="product.category_id === category.id">
+                  <swiper-slide v-for="(product, index) in category.products" :key="index">
                     <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
                       <transition
                         appear
@@ -310,6 +309,8 @@ export default {
   methods: {
     getProductByCategory () {
 
+      this.dataProducts = [];
+
       axios.get( catalogCategoryUrl, { headers: getHeader() } )
         .then(response => {
           console.log(response)
@@ -318,12 +319,29 @@ export default {
 
             this.dataCategory = response.data.data;
 
-            for(var i=0; i < this.dataCategory.length; i++){
-              this.dataCategory.push({
-                category_id: this.dataCategory[i].id,
-                category_name: this.dataCategory[i].category_name,
+            for(let i=0; i < this.dataCategory.length; i++){
 
-              });
+              axios.get( getProductByCategoryUrl + '/' + this.dataCategory[i].id, { headers: getHeader() } )
+                .then(response => {
+                  console.log(response)
+
+                  if (response.status === 200) {
+
+                    this.dataProducts.push({
+                      id: this.dataCategory[i].id,
+                      category_name: this.dataCategory[i].category_name,
+                      products: response.data.data,
+                    })
+
+                  }
+
+                })
+                .catch(error => {
+                  if (error.response) {
+                    console.log(error.response)
+                  }
+                })
+              
             }
           
           }
@@ -334,23 +352,7 @@ export default {
             console.log(error.response)
           }
         })
-      // for(let i=0; this.dataCategory.length<i; i++){
-      //   alert(this.dataCategory[i].category_name);
-      // }
-      // axios.get( getProductByCategoryUrl, { headers: getHeader() } )
-      //   .then(response => {
-      //     console.log(response)
-
-      //     if (response.status === 200) {
-      //       this.dataProducts = response.data.data;
-      //     }
-
-      //   })
-      //   .catch(error => {
-      //     if (error.response) {
-      //       console.log(error.response)
-      //     }
-      //   })
+      
 
     },
     getBrand () {
@@ -371,24 +373,24 @@ export default {
         })
 
     },
-    getCategory () {
+    // getCategory () {
 
-      axios.get( catalogCategoryUrl, { headers: getHeader() } )
-        .then(response => {
-          console.log(response)
+    //   axios.get( catalogCategoryUrl, { headers: getHeader() } )
+    //     .then(response => {
+    //       console.log(response)
 
-          if (response.status === 200) {
-            this.dataCategory = response.data.data;
-          }
+    //       if (response.status === 200) {
+    //         this.dataCategory = response.data.data;
+    //       }
 
-        })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response)
-          }
-        })
+    //     })
+    //     .catch(error => {
+    //       if (error.response) {
+    //         console.log(error.response)
+    //       }
+    //     })
 
-    },
+    // },
     getProduct () {
       
       this.innerLoading = true;
