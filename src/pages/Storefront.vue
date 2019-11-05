@@ -116,13 +116,14 @@
               </div>
             </div>
           </div> -->
-          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px" v-for="(brand, i) in dataBrand" :key="i">
+          {{dataCategory}}
+          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px" v-for="(category, i) in dataCategory" :key="i">
             <div class="row q-pa-xs">
               <div class="col">
-                <h5 class="promo-text">{{ brand.brand_name }}</h5>
+                <h5 class="promo-text">{{ category.category_name }}</h5>
               </div>
               <div class="col text-right">
-                <router-link :to="'/allProductBrand/' + brand.brand_name + '/' + brand.id" style="text-decoration: none;">
+                <router-link :to="'/allProductBrand/' + category.category_name + '/' + category.id" style="text-decoration: none;">
                   <h5 class="link-text text-orange-8">Lihat Semua</h5>
                 </router-link>
               </div>
@@ -130,7 +131,7 @@
             <div class="row q-px-md" style="padding: 5px 10px 10px 10px">
               <div class="col">
                 <swiper :options="swiperProductListOption">
-                  <swiper-slide v-for="(product, index) in newProduct" :key="index" v-if="product.brand_id === brand.id && index < 6">
+                  <swiper-slide v-for="(product, index) in newProduct" :key="index" v-if="product.category_id === category.id">
                     <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
                       <transition
                         appear
@@ -239,7 +240,7 @@ import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import carousel from 'vue-owl-carousel'
 import axios from 'axios';
-import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, identitySliderUrl, totalCartItemUrl, getHeader} from 'src/config';
+import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, identitySliderUrl, totalCartItemUrl, getHeader, getProductByCategoryUrl} from 'src/config';
 // Loading
 import { QSpinnerPuff } from 'quasar'
 
@@ -254,6 +255,7 @@ export default {
       dataBrand: [],
       // Product Section
       dataProduct: [],
+      dataProducts: [],
       // Slider Section
       swiperProductListOption: {
         slidesPerView: 2,
@@ -271,6 +273,7 @@ export default {
       user: [],
       // Total Count Cart Item
       totalCartItem: null,
+      startProduct: 1,
     }
   },
   computed: {
@@ -280,12 +283,14 @@ export default {
   },
   created () {
     this.user = JSON.parse(window.localStorage.getItem('profileUser'));
-  },
-  mounted () {
     this.getBrand();
-    this.getCategory();
+    //this.getCategory();
     this.getProduct();
     this.getSlider();
+    this.getProductByCategory();
+  },
+  mounted () {
+    //this.getProductByCategory();
     // Get Total Cart Item
     axios.get( totalCartItemUrl + '/' + this.user.id, { headers: getHeader() } )
       .then(response => {
@@ -303,6 +308,51 @@ export default {
       })
   },
   methods: {
+    getProductByCategory () {
+
+      axios.get( catalogCategoryUrl, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+
+            this.dataCategory = response.data.data;
+
+            for(var i=0; i < this.dataCategory.length; i++){
+              this.dataCategory.push({
+                category_id: this.dataCategory[i].id,
+                category_name: this.dataCategory[i].category_name,
+
+              });
+            }
+          
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+      // for(let i=0; this.dataCategory.length<i; i++){
+      //   alert(this.dataCategory[i].category_name);
+      // }
+      // axios.get( getProductByCategoryUrl, { headers: getHeader() } )
+      //   .then(response => {
+      //     console.log(response)
+
+      //     if (response.status === 200) {
+      //       this.dataProducts = response.data.data;
+      //     }
+
+      //   })
+      //   .catch(error => {
+      //     if (error.response) {
+      //       console.log(error.response)
+      //     }
+      //   })
+
+    },
     getBrand () {
 
       axios.get( catalogBrandUrl, { headers: getHeader() } )
