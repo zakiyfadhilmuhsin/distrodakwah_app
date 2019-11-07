@@ -11,11 +11,7 @@
           <q-icon name="arrow_back" color="white" /> 
         </q-btn>
 
-        <q-space />
-
         <q-toolbar-title><span style="font-size: 16px; font-weight: bold">{{ categoryName }}</span></q-toolbar-title>
-
-        <q-space />
       </q-toolbar>
     </q-header>
 
@@ -52,7 +48,7 @@
 
                   <q-card-section style="padding: 10px 16px 16px 16px">
                     <center>
-                      <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px">{{product.product_name}}</div>
+                      <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px; height: 35px">{{ product.product_name }}</div>
                       <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
                       <div class="q-px-sm q-py-xs bg-green">
                         <div class="text-white" style="font-weight: bolder; margin-top:0" v-if="user.role.id === 9">{{'Rp' + formatPrice(product.price * product.reseller_exclusive_price / 100)}}</div>
@@ -195,7 +191,7 @@ export default {
                 this.busy = false;
                 this.innerLoading = false;
                 this.featuredImageShow = true;
-              }, 700);
+              }, 100);
             }
 
           })
