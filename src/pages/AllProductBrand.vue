@@ -20,10 +20,10 @@
 
     <q-page-container class="mobile-layout-on-desktop">
       <q-page>
-        <div class="products bg-grey-3">
-          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
+        <div class="bg-grey-3" style="height: 100%">
+          <div style="background-color: white;">
             <!-- <div v-infinite-scroll="getProduct" infinite-scroll-disabled="busy" infinite-scroll-distance="limit" class="row q-px-md" style="padding: 15px 10px"> -->
-            <div class="product-card">
+            <!-- <div class="product-card"> -->
               <!-- <div
                 class="row q-px-md"
                 style="margin-bottom: 15px padding: 15px 10px"
@@ -31,70 +31,70 @@
                 :key="index"
                 v-if="product.category_id === Number(categoryID)"
               > -->
-               <div
-                class="row q-px-md"
+              <div
+                class="row q-px-md q-py-lg"
                 style="margin-bottom: 15px padding: 15px 10px"
-                v-for="(product, index) in newProduct"
-                :key="index"
               >
-                <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
-                  <transition
-                    appear
-                    enter-active-class="animated fadeIn"
-                    leave-active-class="animated fadeOut"
-                  >
-                    <img
-                      :src="product.featured_image"
-                      style="width: 100%"
-                      v-show="featuredImageShow == true"
-                    />
-                  </transition>
+                <div class="col-6" style="margin-bottom: 15px" v-for="(product, index) in newProduct" :key="index">
+                  <q-card class="my-card bg-grey-2 col-6" style="margin: 0 5px" flat bordered>
+                    <transition
+                      appear
+                      enter-active-class="animated fadeIn"
+                      leave-active-class="animated fadeOut"
+                    >
+                      <img
+                        :src="product.featured_image"
+                        style="width: 100%"
+                        v-show="featuredImageShow == true"
+                      />
+                    </transition>
 
-                  <center>
-                    <q-spinner
-                      color="dark"
-                      size="2em"
-                      v-show="innerLoading == true"
-                      style="margin: 10px 0"
-                    />
-                  </center>
-
-                  <q-card-section style="padding: 10px 16px 16px 16px">
                     <center>
-                      <div
-                        style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px; height: 35px"
-                      >{{ product.product_name }}</div>
-                      <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
-                      <div class="q-px-sm q-py-xs bg-green">
-                        <div
-                          class="text-white"
-                          style="font-weight: bolder; margin-top:0"
-                          v-if="user.role.id === 9"
-                        >{{'Rp' + formatPrice(product.price * product.reseller_exclusive_price / 100)}}</div>
-                        <div
-                          class="text-white"
-                          style="font-weight: bolder; margin-top:0"
-                          v-else-if="user.role.id === 8"
-                        >{{'Rp' + formatPrice(product.price * product.reseller_pro_price / 100)}}</div>
-                      </div>
+                      <q-spinner
+                        color="dark"
+                        size="2em"
+                        v-show="innerLoading == true"
+                        style="margin: 10px 0"
+                      />
                     </center>
-                  </q-card-section>
 
-                  <q-card-section>
-                    <center>
-                      <q-btn
-                        :to="'/detail/' + product.id"
-                        flat
-                        class="bg-orange-8 text-white"
-                        style="padding-top: 0px; padding-bottom: 0px"
-                      >
-                        <span style="text-transform: capitalize;">Beli Sekarang</span>
-                      </q-btn>
-                    </center>
-                  </q-card-section>
-                </q-card>
+                    <q-card-section style="padding: 10px 16px 16px 16px">
+                      <center>
+                        <div
+                          style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px; height: 35px"
+                        >{{ product.product_name }}</div>
+                        <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
+                        <div class="q-px-sm q-py-xs bg-green">
+                          <div
+                            class="text-white"
+                            style="font-weight: bolder; margin-top:0"
+                            v-if="user.role.id === 9"
+                          >{{'Rp' + formatPrice(product.price * product.reseller_exclusive_price / 100)}}</div>
+                          <div
+                            class="text-white"
+                            style="font-weight: bolder; margin-top:0"
+                            v-else-if="user.role.id === 8"
+                          >{{'Rp' + formatPrice(product.price * product.reseller_pro_price / 100)}}</div>
+                        </div>
+                      </center>
+                    </q-card-section>
+
+                    <q-card-section>
+                      <center>
+                        <q-btn
+                          :to="'/detail/' + product.id"
+                          flat
+                          class="bg-orange-8 text-white"
+                          style="padding-top: 0px; padding-bottom: 0px"
+                        >
+                          <span style="text-transform: capitalize;">Beli Sekarang</span>
+                        </q-btn>
+                      </center>
+                    </q-card-section>
+                  </q-card>
+                </div>
               </div>
-            </div>
+            <!-- </div> -->
             <!-- infiniteScroll -->
             <!-- </div> -->
 
@@ -140,6 +140,17 @@
       
               </div>
             </div>-->
+            <div class="q-pb-lg flex flex-center">
+              <q-pagination
+                flat
+                v-model="page"
+                color="orange-8"
+                :max="lastPage"
+                :max-pages="6"
+                :direction-links="true"
+                @input="onChangePage"
+              ></q-pagination>
+            </div>
           </div>
         </div>
         <!-- <div class="pagination-container middle">
@@ -154,15 +165,6 @@
                 </ul>
           </div>
         </div>-->
-
-        <div class="q-pa-lg flex flex-center">
-          <q-pagination
-            v-model="page"
-            :max="lastPage"
-            :direction-links="true"
-            @input="onChangePage"
-          ></q-pagination>
-        </div>
       </q-page>
     </q-page-container>
   </q-layout>
@@ -310,15 +312,6 @@ export default {
   line-height: 15px;
   font-weight: 400;
   padding: 10px 0px;
-}
-
-.mobile-layout-on-desktop .product-card {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.product-card > * {
-  flex: 1 1 50%;
 }
 
 .pagination-container {
