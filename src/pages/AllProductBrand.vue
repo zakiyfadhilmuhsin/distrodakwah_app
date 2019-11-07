@@ -176,6 +176,8 @@ import { QSpinnerPuff, QSpinnerDots } from "quasar";
 import infiniteScroll from "vue-infinite-scroll";
 import Vue from "vue";
 
+import "../css/pagination.css";
+
 Vue.use(infiniteScroll);
 
 export default {
