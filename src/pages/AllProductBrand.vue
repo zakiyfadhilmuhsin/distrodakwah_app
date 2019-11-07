@@ -172,7 +172,7 @@
 
 <script>
 import axios from "axios";
-import { apiDomain, catalogProductUrl, getHeader } from "src/config";
+import { apiDomain, getProductByCategoryUrl, getHeader } from "src/config";
 // Loading
 import { QSpinnerPuff, QSpinnerDots } from "quasar";
 import infiniteScroll from "vue-infinite-scroll";
@@ -248,7 +248,7 @@ export default {
         this.busy = true;
 
         axios
-          .get(catalogProductUrl + `?${params}`, { headers: getHeader() })
+          .get(getProductByCategoryUrl + '/' + this.categoryID + `?${params}`, { headers: getHeader() })
           .then(response => {
             const data = response.data.data;
             if (response.status === 200) {
