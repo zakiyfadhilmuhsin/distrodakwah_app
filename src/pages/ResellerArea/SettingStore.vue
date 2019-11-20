@@ -96,7 +96,7 @@ export default {
         storeUrl: '',
         whatsappNumber: '',
         dataStore: [],
-        url: 'https://orderdd-test.netlify.com/#/',
+        url: 'https://prodakwah.com/#/',
     }
   },
   created () {
@@ -163,7 +163,7 @@ export default {
 
     },
     toStore() {
-      openURL('https://orderdd-test.netlify.com/#/' + this.storeUrl);
+      openURL('https://prodakwah.com/#/' + this.storeUrl);
     }
   }
 }
