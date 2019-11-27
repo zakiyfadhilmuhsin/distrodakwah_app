@@ -103,7 +103,7 @@ const routes = [
     },
   },
   {
-    path: '/allProductBrand/:brand/:brand_id',
+    path: '/allProductBrand/:category/:category_id',
     component: AllProductBrandPage,
     meta: {
       requiresAuth: true,

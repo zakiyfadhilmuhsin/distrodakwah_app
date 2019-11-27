@@ -86,6 +86,7 @@ module.exports = function (ctx) {
         'QInfiniteScroll',
         'QTimeline',
         'QTimelineEntry',
+        'QPagination'
       ],
 
       directives: [

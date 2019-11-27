@@ -116,13 +116,13 @@
               </div>
             </div>
           </div> -->
-          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px" v-for="(brand, i) in dataBrand" :key="i">
+          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px" v-for="(category, i) in dataProducts" :key="i">
             <div class="row q-pa-xs">
               <div class="col">
-                <h5 class="promo-text">{{ brand.brand_name }}</h5>
+                <h5 class="promo-text">{{ category.category_name }}</h5>
               </div>
               <div class="col text-right">
-                <router-link :to="'/allProductBrand/' + brand.brand_name + '/' + brand.id" style="text-decoration: none;">
+                <router-link :to="'/allProductBrand/' + category.category_name + '/' + category.id" style="text-decoration: none;">
                   <h5 class="link-text text-orange-8">Lihat Semua</h5>
                 </router-link>
               </div>
@@ -130,7 +130,7 @@
             <div class="row q-px-md" style="padding: 5px 10px 10px 10px">
               <div class="col">
                 <swiper :options="swiperProductListOption">
-                  <swiper-slide v-for="(product, index) in newProduct" :key="index" v-if="product.brand_id === brand.id">
+                  <swiper-slide v-for="(product, index) in category.products" :key="index">
                     <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
                       <transition
                         appear
@@ -151,7 +151,7 @@
 
                       <q-card-section style="padding: 10px 16px 16px 16px">
                         <center>
-                          <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px">{{product.product_name}}</div>
+                          <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px; height: 35px">{{ product.product_name }}</div>
                           <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
                           <div class="q-px-sm q-py-xs bg-green">
                             <div class="text-white" style="font-weight: bolder; margin-top:0" v-if="user.role.id === 9">{{'Rp' + formatPrice(product.price * product.reseller_exclusive_price / 100)}}</div>
@@ -239,7 +239,7 @@ import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import carousel from 'vue-owl-carousel'
 import axios from 'axios';
-import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, identitySliderUrl, totalCartItemUrl, getHeader} from 'src/config';
+import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, identitySliderUrl, totalCartItemUrl, getHeader, getProductByCategoryUrl} from 'src/config';
 // Loading
 import { QSpinnerPuff } from 'quasar'
 
@@ -254,6 +254,7 @@ export default {
       dataBrand: [],
       // Product Section
       dataProduct: [],
+      dataProducts: [],
       // Slider Section
       swiperProductListOption: {
         slidesPerView: 2,
@@ -271,6 +272,7 @@ export default {
       user: [],
       // Total Count Cart Item
       totalCartItem: null,
+      startProduct: 1,
     }
   },
   computed: {
@@ -280,12 +282,14 @@ export default {
   },
   created () {
     this.user = JSON.parse(window.localStorage.getItem('profileUser'));
-  },
-  mounted () {
     this.getBrand();
-    this.getCategory();
+    //this.getCategory();
     this.getProduct();
     this.getSlider();
+    this.getProductByCategory();
+  },
+  mounted () {
+    //this.getProductByCategory();
     // Get Total Cart Item
     axios.get( totalCartItemUrl + '/' + this.user.id, { headers: getHeader() } )
       .then(response => {
@@ -303,6 +307,54 @@ export default {
       })
   },
   methods: {
+    getProductByCategory () {
+
+      this.dataProducts = [];
+
+      axios.get( catalogCategoryUrl, { headers: getHeader() } )
+        .then(response => {
+          console.log(response)
+
+          if (response.status === 200) {
+
+            this.dataCategory = response.data.data;
+
+            for(let i=0; i < this.dataCategory.length; i++){
+
+              axios.get( getProductByCategoryUrl + '/' + this.dataCategory[i].id, { headers: getHeader() } )
+                .then(response => {
+                  console.log(response)
+
+                  if (response.status === 200) {
+
+                    this.dataProducts.push({
+                      id: this.dataCategory[i].id,
+                      category_name: this.dataCategory[i].category_name,
+                      products: response.data.data,
+                    })
+
+                  }
+
+                })
+                .catch(error => {
+                  if (error.response) {
+                    console.log(error.response)
+                  }
+                })
+              
+            }
+          
+          }
+
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response)
+          }
+        })
+      
+
+    },
     getBrand () {
 
       axios.get( catalogBrandUrl, { headers: getHeader() } )
@@ -321,24 +373,24 @@ export default {
         })
 
     },
-    getCategory () {
+    // getCategory () {
 
-      axios.get( catalogCategoryUrl, { headers: getHeader() } )
-        .then(response => {
-          console.log(response)
+    //   axios.get( catalogCategoryUrl, { headers: getHeader() } )
+    //     .then(response => {
+    //       console.log(response)
 
-          if (response.status === 200) {
-            this.dataCategory = response.data.data;
-          }
+    //       if (response.status === 200) {
+    //         this.dataCategory = response.data.data;
+    //       }
 
-        })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response)
-          }
-        })
+    //     })
+    //     .catch(error => {
+    //       if (error.response) {
+    //         console.log(error.response)
+    //       }
+    //     })
 
-    },
+    // },
     getProduct () {
       
       this.innerLoading = true;

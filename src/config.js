@@ -19,6 +19,7 @@ export const resetPassword = apiDomain + 'api/reset-password'
 
 // From Catalog Service
 export const catalogProductUrl = apiDomain + '/catalog/products'
+export const getProductByCategoryUrl = apiDomain + '/catalog/get-products'
 export const searchProductUrl = apiDomain + '/catalog/searchProduct'
 export const catalogBrandUrl = apiDomain + '/catalog/brands'
 export const catalogCategoryUrl = apiDomain + '/catalog/categories'

@@ -71,7 +71,7 @@
             <h5 class="category-text">Kategori : <span class="text-red">{{dataCategory.category_name}}</span></h5>
             <h5 class="category-text">Brand : <span class="text-red">{{dataBrand.brand_name}}</span></h5>
             <h4 class="product-title-text">{{dataProduct.product_name}}</h4>
-            <div style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold" v-if="stockReady !== null">Stok Tersedia : {{ stockReady }}</div>
+            <div style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold" v-if="stockReady !== null">Stok Tersedia : <span class="text-red" v-if="stockReady === 0">0 (Stok Kosong)</span><span v-else>{{ stockReady }}</span></div>
 
             <hr style="margin: 15px 0" />
             
@@ -157,7 +157,7 @@
             </template>
             <div class="row" v-if="user.role.id === 8 && dataProduct.length !== 0">
               <div class="col">
-                <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_exclusive_price / 100) )}}</b></h4>
+                <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;"><q-btn @click="upgrade" flat rounded size="sm" class="bg-green text-white">Upgrade Dulu Aja!</q-btn></span> Agar Dapat Harga <b>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_exclusive_price / 100) )}}</b></h4>
               </div>
             </div>
 
@@ -272,6 +272,7 @@ import carousel from 'vue-owl-carousel'
 import axios from 'axios';
 import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, addToCartUrl, inventoryStockUrl, getHeader} from 'src/config';
 import VueClipboard from 'vue-clipboard2'
+import { openURL } from 'quasar';
 
 Vue.use(VueClipboard);
 
@@ -565,8 +566,11 @@ export default {
         alert('Can not copy')
         console.log(e)
       })
+    },
+    upgrade () {
+      openURL('https://wa.me/6287821550989?text=Saya%20Ingin%20Upgrade%20Ke%20Member%20Ekslusif%0Aemail%3A%20'+this.user.email);
     }
   },
-  components: { carousel }
+  components: { carousel, openURL }
 }
 </script>
