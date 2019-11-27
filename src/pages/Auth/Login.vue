@@ -174,6 +174,12 @@ export default {
         })
         .catch(error => {
           if (error) {
+            this.$q.notify({
+              position: "top",
+              color: "red-4",
+              message: "Login Gagal!, Email atau Password Salah!",
+              html: true
+            });
             if (
               error.response.data.message ===
               "Login Failed!, Email Not Registered!"
