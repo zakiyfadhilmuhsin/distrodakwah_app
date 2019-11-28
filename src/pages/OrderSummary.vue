@@ -208,6 +208,8 @@ export default {
                     reseller_discount = response.data.data.reseller_exclusive_price;
                   }else if(this.user.role.id === 8){
                     reseller_discount = response.data.data.reseller_pro_price;
+                  }else if(this.user.role.id === 10){
+                    reseller_discount = response.data.data.reseller_free_price;
                   }
 
                   if(this.cartData.cart_detail[i].product_sku_id !== null){

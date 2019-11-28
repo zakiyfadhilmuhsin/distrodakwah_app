@@ -42,6 +42,10 @@
             <span class="text-green" v-if="this.productVariant.length > 0">{{'Rp' + formatPrice( Number(productVariant[0].price * dataProduct.reseller_pro_price / 100) * Number(this.qty) )}}</span>
             <span class="text-green" v-else>{{'Rp' + formatPrice( Number(dataProduct.price * dataProduct.reseller_pro_price / 100) * Number(this.qty) )}}</span>
           </h4>
+          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-else-if="user.role.id === 10">KAMU UNTUNG 
+            <span class="text-green" v-if="this.productVariant.length > 0">{{'Rp' + formatPrice( Number(productVariant[0].price * dataProduct.reseller_free_price / 100) * Number(this.qty) )}}</span>
+            <span class="text-green" v-else>{{'Rp' + formatPrice( Number(dataProduct.price * dataProduct.reseller_free_price / 100) * Number(this.qty) )}}</span>
+          </h4>
         </span>
         <q-space />
         <q-btn
@@ -152,6 +156,10 @@
                 <div class="col-xs-6" v-else-if="user.role.id === 8">
                   <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - (productVariant[0].price * dataProduct.reseller_pro_price / 100) )}}</h5>
                   <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_pro_price / 100) )}}</h5>
+                </div>
+                <div class="col-xs-6" v-else-if="user.role.id === 10">
+                  <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - (productVariant[0].price * dataProduct.reseller_free_price / 100) )}}</h5>
+                  <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_free_price / 100) )}}</h5>
                 </div>
               </div>
             </template>
@@ -489,6 +497,9 @@ export default {
               }else if(this.user.role.id === 8){
                 postData.set('reseller_discount', this.productVariant[0].price * this.dataProduct.reseller_pro_price / 100);
                 postData.set('reseller_discount_rate', this.dataProduct.reseller_pro_price);
+              }else if(this.user.role.id === 10){
+                postData.set('reseller_discount', this.productVariant[0].price * this.dataProduct.reseller_free_price / 100);
+                postData.set('reseller_discount_rate', this.dataProduct.reseller_free_price);
               }
             }else{
               postData.set('product_id', this.dataProduct.id);
@@ -505,6 +516,9 @@ export default {
               }else if(this.user.role.id === 8){
                 postData.set('reseller_discount', this.dataProduct.price * this.dataProduct.reseller_pro_price / 100);
                 postData.set('reseller_discount_rate', this.dataProduct.reseller_pro_price);
+              }else if(this.user.role.id === 10){
+                postData.set('reseller_discount', this.dataProduct.price * this.dataProduct.reseller_free_price / 100);
+                postData.set('reseller_discount_rate', this.dataProduct.reseller_free_price);
               }
             }
 

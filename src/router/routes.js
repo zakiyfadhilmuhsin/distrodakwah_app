@@ -1,5 +1,6 @@
 import LoginPage from 'pages/Auth/Login';
 import CreateAccountPage from 'pages/Auth/CreateAccount';
+import FreeAccountPage from 'pages/Auth/RegisterFreeMember';
 import StorefrontPage from 'pages/Storefront';
 import DetailProductPage from 'pages/DetailProduct';
 import DashboardPage from 'pages/ResellerArea/Dashboard';
@@ -27,6 +28,10 @@ const routes = [
   {
     path: '/activation',
     component: CreateAccountPage,
+  },
+  {
+    path: '/free',
+    component: FreeAccountPage,
   },
   {
     path: '/login/:message?',
