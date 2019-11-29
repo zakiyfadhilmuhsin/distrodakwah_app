@@ -1,7 +1,8 @@
 import router from 'src/router/routes'
 
 //export const hostDomain = 'https://api-test.needherbal.web.id'
-export const hostDomain = 'http://apigateway.test'
+//export const hostDomain = 'http://apigateway.test'
+export const hostDomain = 'https://api.prodakwah.id'
 
 export const apiDomain = hostDomain
 
