@@ -72,7 +72,7 @@
                     </tr>
                     <tr>
                       <td class="text-left">Service</td>
-                      <td class="text-right">{{ dataOrder.service_name }}</td>
+                      <td class="text-right">{{ dataTracking.summary.service }}</td>
                     </tr>
                     <tr>
                       <td class="text-left">Dikirim Tanggal</td>
@@ -334,6 +334,8 @@ export default {
                     reseller_discount = response.data.data.reseller_exclusive_price;
                   }else if(this.user.role.id === 8){
                     reseller_discount = response.data.data.reseller_pro_price;
+                  }else if(this.user.role.id === 10){
+                    reseller_discount = response.data.data.reseller_free_price;
                   }
 
                   if(this.orderData.order_detail[i].product_sku_id !== null){

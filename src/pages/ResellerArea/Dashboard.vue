@@ -46,10 +46,21 @@
           <center>
             <img src="~/assets/images/components/silver_badge.png" width="50" v-if="user.role.id === 8" />
             <img src="~/assets/images/components/gold_badge.png" width="50" v-else-if="user.role.id === 9" />
+            <img src="https://image.flaticon.com/icons/svg/590/590470.svg" width="50" v-else-if="user.role.id === 10" />
             <h6 style="font-size: 16px; font-family: 'Open Sans'; font-weight: bold; margin: 0">{{ user.name }}</h6>
             <h6 class="dashboard-small-text">{{ user.role.role_name }}</h6>
             <br/>
+            <div class="mb-5" style="font-size: 11px">
+            <!-- Sisa Masa Keanggotaan Anda : {{ user.expired_at ? new Date(user.expired_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'numeric', day: 'numeric' }) : '' }} -->
+            <!-- Sisa Masa Keanggotaan Anda : {{ user.created_at }} -->
+            Masa keanggotaan anda <b>{{ user.expired_at | moment("from", "now", true) }}</b> lagi
+            </div>
+            <br/>
             <template v-if="user.role.id === 8">
+              <q-btn @click="upgrade" flat rounded size="sm" class="bg-orange text-white">Upgrade Member</q-btn>
+              <h6 class="dashboard-small-text" style="font-size: 10px; line-height: 11px; margin-top: 8px">Untuk dapatkan keuntungan<br/>yang lebih besar</h6>
+            </template>
+            <template v-else-if="user.role.id === 10">
               <q-btn @click="upgrade" flat rounded size="sm" class="bg-orange text-white">Upgrade Member</q-btn>
               <h6 class="dashboard-small-text" style="font-size: 10px; line-height: 11px; margin-top: 8px">Untuk dapatkan keuntungan<br/>yang lebih besar</h6>
             </template>
@@ -183,9 +194,9 @@
                     </q-item-section>
                   </q-item>
 
-                  <q-separator />
+                  <q-separator v-if="user.role.id === 8 || user.role.id === 9" />
 
-                  <q-item dense clickable v-ripple to="settingStore">
+                  <q-item dense clickable v-ripple to="settingStore" v-if="user.role.id === 8 || user.role.id === 9">
                     <q-item-section avatar>
                       <q-icon name="store_mall_directory" />
                     </q-item-section>
@@ -280,7 +291,16 @@
 import { totalCartItemUrl, getHeader } from 'src/config';
 import axios from 'axios';
 // Loading
-import { QSpinnerPuff, openURL } from 'quasar'
+import { QSpinnerPuff, openURL } from 'quasar';
+import Vue from 'vue';
+
+import moment from 'moment'
+
+const lang = 'id'
+
+moment.locale(lang)
+
+Vue.use(require('vue-moment'), {moment})
 
 export default {
   name: 'Dashboard',
@@ -328,7 +348,7 @@ export default {
       this.$router.push('/');
     },
     upgrade () {
-      openURL('https://wa.me/6287821550989?text=Saya%20Ingin%20Upgrade%20Ke%20Member%20Ekslusif');
+      openURL('https://wa.me/6287821550989?text=Saya%20Ingin%20Upgrade%20Ke%20Member%20Ekslusif%0Aemail%3A%20'+this.user.email);
     }
   }
 }

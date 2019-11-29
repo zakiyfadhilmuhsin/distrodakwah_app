@@ -42,6 +42,10 @@
             <span class="text-green" v-if="this.productVariant.length > 0">{{'Rp' + formatPrice( Number(productVariant[0].price * dataProduct.reseller_pro_price / 100) * Number(this.qty) )}}</span>
             <span class="text-green" v-else>{{'Rp' + formatPrice( Number(dataProduct.price * dataProduct.reseller_pro_price / 100) * Number(this.qty) )}}</span>
           </h4>
+          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-else-if="user.role.id === 10">KAMU UNTUNG 
+            <span class="text-green" v-if="this.productVariant.length > 0">{{'Rp' + formatPrice( Number(productVariant[0].price * dataProduct.reseller_free_price / 100) * Number(this.qty) )}}</span>
+            <span class="text-green" v-else>{{'Rp' + formatPrice( Number(dataProduct.price * dataProduct.reseller_free_price / 100) * Number(this.qty) )}}</span>
+          </h4>
         </span>
         <q-space />
         <q-btn
@@ -153,11 +157,15 @@
                   <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - (productVariant[0].price * dataProduct.reseller_pro_price / 100) )}}</h5>
                   <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_pro_price / 100) )}}</h5>
                 </div>
+                <div class="col-xs-6" v-else-if="user.role.id === 10">
+                  <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - (productVariant[0].price * dataProduct.reseller_free_price / 100) )}}</h5>
+                  <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_free_price / 100) )}}</h5>
+                </div>
               </div>
             </template>
             <div class="row" v-if="user.role.id === 8 && dataProduct.length !== 0">
               <div class="col">
-                <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_exclusive_price / 100) )}}</b></h4>
+                <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;"><q-btn @click="upgrade" flat rounded size="sm" class="bg-green text-white">Upgrade Dulu Aja!</q-btn></span> Agar Dapat Harga <b>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_exclusive_price / 100) )}}</b></h4>
               </div>
             </div>
 
@@ -272,6 +280,7 @@ import carousel from 'vue-owl-carousel'
 import axios from 'axios';
 import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, addToCartUrl, inventoryStockUrl, getHeader} from 'src/config';
 import VueClipboard from 'vue-clipboard2'
+import { openURL } from 'quasar';
 
 Vue.use(VueClipboard);
 
@@ -488,6 +497,9 @@ export default {
               }else if(this.user.role.id === 8){
                 postData.set('reseller_discount', this.productVariant[0].price * this.dataProduct.reseller_pro_price / 100);
                 postData.set('reseller_discount_rate', this.dataProduct.reseller_pro_price);
+              }else if(this.user.role.id === 10){
+                postData.set('reseller_discount', this.productVariant[0].price * this.dataProduct.reseller_free_price / 100);
+                postData.set('reseller_discount_rate', this.dataProduct.reseller_free_price);
               }
             }else{
               postData.set('product_id', this.dataProduct.id);
@@ -504,6 +516,9 @@ export default {
               }else if(this.user.role.id === 8){
                 postData.set('reseller_discount', this.dataProduct.price * this.dataProduct.reseller_pro_price / 100);
                 postData.set('reseller_discount_rate', this.dataProduct.reseller_pro_price);
+              }else if(this.user.role.id === 10){
+                postData.set('reseller_discount', this.dataProduct.price * this.dataProduct.reseller_free_price / 100);
+                postData.set('reseller_discount_rate', this.dataProduct.reseller_free_price);
               }
             }
 
@@ -565,8 +580,11 @@ export default {
         alert('Can not copy')
         console.log(e)
       })
+    },
+    upgrade () {
+      openURL('https://wa.me/6287821550989?text=Saya%20Ingin%20Upgrade%20Ke%20Member%20Ekslusif%0Aemail%3A%20'+this.user.email);
     }
   },
-  components: { carousel }
+  components: { carousel, openURL }
 }
 </script>

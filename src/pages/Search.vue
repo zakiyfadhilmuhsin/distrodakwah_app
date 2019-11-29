@@ -66,6 +66,7 @@
                       <div class="q-px-sm q-py-xs bg-green">
                         <div class="text-white" style="font-weight: bolder; margin-top:0" v-if="user.role.id === 9">{{'Rp' + formatPrice(product.price * product.reseller_exclusive_price / 100)}}</div>
                         <div class="text-white" style="font-weight: bolder; margin-top:0" v-else-if="user.role.id === 8">{{'Rp' + formatPrice(product.price * product.reseller_pro_price / 100)}}</div>
+                        <div class="text-white" style="font-weight: bolder; margin-top:0" v-else-if="user.role.id === 10">{{'Rp' + formatPrice(product.price * product.reseller_free_price / 100)}}</div>
                       </div>
                     </center>
                   </q-card-section>

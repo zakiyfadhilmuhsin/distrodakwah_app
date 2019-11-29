@@ -76,7 +76,7 @@
               </div>
             </div>
             <br/>
-            <div class="row q-px-sm">
+            <div class="row q-px-sm" v-if="cartData.shipment_fee !== 0">
               <div class="col">
                 <q-list dense>
                   <q-item>
@@ -89,6 +89,16 @@
                   </q-item>
                 </q-list>
                 <!-- <hr style="border: 1px solid #eee" /> -->
+              </div>
+            </div>
+            <div class="row q-px-sm" v-else>
+              <div class="col">
+                <q-list dense>
+                  <q-item>
+                    <q-item-section>Resi Otomatis (Gratis Ongkir)</q-item-section>
+                    <q-item-section side><h6 style="margin: 0; font-size: 12px;" class="text-black text-right">Rp0</h6></q-item-section>
+                  </q-item>
+                </q-list> 
               </div>
             </div>
           </div>
@@ -208,6 +218,8 @@ export default {
                     reseller_discount = response.data.data.reseller_exclusive_price;
                   }else if(this.user.role.id === 8){
                     reseller_discount = response.data.data.reseller_pro_price;
+                  }else if(this.user.role.id === 10){
+                    reseller_discount = response.data.data.reseller_free_price;
                   }
 
                   if(this.cartData.cart_detail[i].product_sku_id !== null){
@@ -284,12 +296,27 @@ export default {
     checkout () {
 
         let postOrder = new FormData();
+        let autoReceiptNumber = '';
+        let courierName = '';
+        let shipmentFee = 0;
+
+        if(this.cartData.shipment_fee === 0){
+          autoReceiptNumber = this.cartData.auto_receipt_number;
+          courierName = this.cartData.auto_receipt_courier;
+          shipmentFee = 0;
+        }else{
+          autoReceiptNumber = '';
+          courierName = this.cartData.courier_name;
+          shipmentFee = this.cartData.shipment_fee;
+        }
+
         postOrder.set('total_amount', this.cartData.total_amount);
         postOrder.set('total_weight', this.cartData.total_weight);
         postOrder.set('grand_total', this.cartData.grand_total);
-        postOrder.set('shipment_fee', this.cartData.shipment_fee);
-        postOrder.set('courier_name', this.cartData.courier_name);
+        postOrder.set('shipment_fee', shipmentFee);
+        postOrder.set('courier_name', courierName);
         postOrder.set('service_name', this.cartData.service_name);
+        postOrder.set('awb', autoReceiptNumber);
         postOrder.set('customer_address_id', this.cartData.customer_address_id);
         postOrder.set('customer_id', this.cartData.customer_id);
         postOrder.set('customer_name', this.cartData.customer_name);
