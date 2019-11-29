@@ -58,77 +58,112 @@
               </div>
             </div>
           </div>
-          <div style="background-color: white;">
-            <div class="row q-pa-xs items-center" style="padding-top: 20px; padding-bottom: 20px">
-              <div class="col">
-                <template v-if="dataCustomerSelected !== null">
-                  <h6 style="font-size: 14px; margin: 0; padding: 0 20px 10px 20px; font-family: 'Open Sans'; line-height: 18px; font-weight: bold">Pilih ekspedisi :</h6>
-                  <center>
-                    <div class="q-px-md">
-                      <q-select 
-                        dense
-                        outlined 
-                        color="orange-8" 
-                        options-dense
-                        v-model="courierSelected"
-                        :options='[
-                          {value: "jne", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">JNE</div> <img src=\"https://i.imgur.com/hhJyhyS.png\" height=\"20\" /></div>"},
-                          {value: "jnt", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">J&T</div> <img src=\"https://i.imgur.com/TNdagJs.png\" height=\"20\" /></div>"},
-                          {value: "pos", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">POS</div> <img src=\"https://i.imgur.com/2VEBPMp.png\" height=\"20\" /></div>"}
-                        ]'
-                        option-value="value"
-                        option-label="label"
-                        emit-value
-                        map-options
-                        @input="getCostShipping"
-                      />
-                    </div>
-                  </center>
-                </template>
-                  <!-- <q-btn-toggle
-                    v-model="courierSelected"
-                    unelevated
-                    toggle-color="blue-grey-1"
-                    @input="getCostShipping"
-                    :options="[
-                      {value: 'jne', slot: 'jne'},
-                      {value: 'jnt', slot: 'jnt'},
-                      {value: 'pos', slot: 'pos'}
-                    ]"
-                  >
-                    <template v-slot:jne>
-                      <div class="row items-center no-wrap">
-                        <img src="~/assets/images/components/ekspedisi/jne.png" width="65" />
-                      </div>
-                    </template>
-
-                    <template v-slot:jnt>
-                      <div class="row items-center no-wrap">
-                        <img src="~/assets/images/components/ekspedisi/jnt.png" width="65" />
-                      </div>
-                    </template>
-
-                    <template v-slot:pos>
-                      <div class="row items-center no-wrap">
-                        <img src="~/assets/images/components/ekspedisi/pos.png" width="65" />
-                      </div>
-                    </template>
-                  </q-btn-toggle> -->
-                <!-- {{ dataCost.results[0].costs }} -->
-                <br/>
-                <h6 style="font-size: 14px; margin: 0; padding: 0 20px 10px 20px; font-family: 'Open Sans'; line-height: 18px; font-weight: bold" v-if="courierSelected !== '' && dataCustomerSelected !== null">Pilih tarif :</h6>
-                <q-list dense>
-                  <q-item v-for="(cost, index) in dataCost" :key="index">
-                    <q-item-section side>
-                      <q-radio keep-color color="orange-8" dense v-model="costShipping" :val="cost.cost[0].value" @input="serviceSelected = cost.service" />
-                    </q-item-section>
-                    <!-- {{ dataCost.results.name }} -->
-                    <q-item-section>{{ courierName }} {{ cost.service }}<br/><span style="font-size: 10px">Rp{{ formatPrice(cost.cost[0].value) }} <span v-if="cost.cost[0].etd !== ''">{{ '(Estimasi ' + cost.cost[0].etd + ' Hari)' }}</span></span></q-item-section>
-                  </q-item>
-                </q-list>
+          <template v-if="dataCustomerSelected !== null">
+            <div style="background-color: white; margin-bottom: 5px">
+              <div class="row q-pa-xs q-px-md items-center" style="padding-top: 10px; padding-bottom: 10px">
+                <div class="col">
+                  <q-checkbox left-label dense v-model="resiOtomatis" color="orange-8" label="Input Resi Otomatis?" />
+                </div>
               </div>
             </div>
-          </div>
+            <div style="background-color: white;">
+              <div class="row q-pa-xs items-center" style="padding-top: 20px; padding-bottom: 20px">
+                <div class="col">
+                  <template v-if="resiOtomatis !== true">
+                    <h6 style="font-size: 14px; margin: 0; padding: 0 20px 10px 20px; font-family: 'Open Sans'; line-height: 18px; font-weight: bold">Pilih ekspedisi :</h6>
+                    <center>
+                      <div class="q-px-md">
+                        <q-select 
+                          dense
+                          outlined 
+                          color="orange-8" 
+                          options-dense
+                          v-model="courierSelected"
+                          :options='[
+                            {value: "jne", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">JNE</div> <img src=\"https://i.imgur.com/hhJyhyS.png\" height=\"20\" /></div>"},
+                            {value: "jnt", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">J&T</div> <img src=\"https://i.imgur.com/TNdagJs.png\" height=\"20\" /></div>"},
+                            {value: "pos", label: "<div class=\"row\"><div class=\"self-center\" style=\"margin-right: 10px\">POS</div> <img src=\"https://i.imgur.com/2VEBPMp.png\" height=\"20\" /></div>"}
+                          ]'
+                          option-value="value"
+                          option-label="label"
+                          emit-value
+                          map-options
+                          @input="getCostShipping"
+                        />
+                      </div>
+                    </center>
+                    <!-- <q-btn-toggle
+                      v-model="courierSelected"
+                      unelevated
+                      toggle-color="blue-grey-1"
+                      @input="getCostShipping"
+                      :options="[
+                        {value: 'jne', slot: 'jne'},
+                        {value: 'jnt', slot: 'jnt'},
+                        {value: 'pos', slot: 'pos'}
+                      ]"
+                    >
+                      <template v-slot:jne>
+                        <div class="row items-center no-wrap">
+                          <img src="~/assets/images/components/ekspedisi/jne.png" width="65" />
+                        </div>
+                      </template>
+
+                      <template v-slot:jnt>
+                        <div class="row items-center no-wrap">
+                          <img src="~/assets/images/components/ekspedisi/jnt.png" width="65" />
+                        </div>
+                      </template>
+
+                      <template v-slot:pos>
+                        <div class="row items-center no-wrap">
+                          <img src="~/assets/images/components/ekspedisi/pos.png" width="65" />
+                        </div>
+                      </template>
+                    </q-btn-toggle> -->
+                  <!-- {{ dataCost.results[0].costs }} -->
+                    <br/>
+                    <h6 style="font-size: 14px; margin: 0; padding: 0 20px 10px 20px; font-family: 'Open Sans'; line-height: 18px; font-weight: bold" v-if="courierSelected !== '' && dataCustomerSelected !== null">Pilih tarif :</h6>
+                    <q-list dense>
+                      <q-item v-for="(cost, index) in dataCost" :key="index">
+                        <q-item-section side>
+                          <q-radio keep-color color="orange-8" dense v-model="costShipping" :val="cost.cost[0].value" @input="serviceSelected = cost.service" />
+                        </q-item-section>
+                        <!-- {{ dataCost.results.name }} -->
+                        <q-item-section>{{ courierName }} {{ cost.service }}<br/><span style="font-size: 10px">Rp{{ formatPrice(cost.cost[0].value) }} <span v-if="cost.cost[0].etd !== ''">{{ '(Estimasi ' + cost.cost[0].etd + ' Hari)' }}</span></span></q-item-section>
+                      </q-item>
+                    </q-list>
+                  </template>
+                  <template v-else>
+                    <div class="row q-px-md">
+                      <div class="col">
+                        <q-input
+                          v-model="autoReceiptNumber"
+                          color="orange-8"
+                          type="text"
+                          dense
+                          class="bg-grey-2 q-mb-sm"
+                          outlined
+                          placeholder="Silahkan Masukkan No Resi Otomatis Disini.."
+                          label="No Resi Otomatis"
+                        />
+                        <q-input
+                          v-model="autoReceiptCourier"
+                          color="orange-8"
+                          type="text"
+                          dense
+                          class="bg-grey-2 q-mb-sm"
+                          outlined
+                          placeholder="Silahkan Masukkan Nama Ekpedisi Disini.."
+                          label="Nama Ekspedisi"
+                        />
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </template>
         </div>
 
         <q-dialog v-model="selectCustomerDialog" position="bottom">
@@ -284,8 +319,11 @@ export default {
       courierSelected: '',
       serviceSelected: '',
       costShipping: '',
+      resiOtomatis: false,
 
       cartData: [],
+      autoReceiptNumber: '',
+      autoReceiptCourier: '',
     }
   },
   created () {
@@ -341,6 +379,10 @@ export default {
 
           if (response.status === 200) {
             this.dataCustomerSelected = response.data.data;
+
+            // Set Ekspedisi
+            this.courierSelected = 'jne';
+            this.getCostShipping();
           }
 
         })
@@ -489,6 +531,10 @@ export default {
     reviewOrder () {
 
         let post = new FormData();
+        // Resi Otomatis
+        post.set('auto_receipt_number', this.autoReceiptNumber);
+        post.set('auto_receipt_courier', this.autoReceiptCourier);
+        // Ongkir Biasa
         post.set('shipment_fee', this.costShipping);
         post.set('courier_name', this.courierName);
         post.set('service_name', this.serviceSelected);
