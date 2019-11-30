@@ -50,12 +50,11 @@
             <h6 style="font-size: 16px; font-family: 'Open Sans'; font-weight: bold; margin: 0">{{ user.name }}</h6>
             <h6 class="dashboard-small-text">{{ user.role.role_name }}</h6>
             <br/>
-            <div class="mb-5" style="font-size: 11px">
-            <!-- Sisa Masa Keanggotaan Anda : {{ user.expired_at ? new Date(user.expired_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'numeric', day: 'numeric' }) : '' }} -->
-            <!-- Sisa Masa Keanggotaan Anda : {{ user.created_at }} -->
+            <!-- <div class="mb-5" style="font-size: 11px">
+            Sisa Masa Keanggotaan Anda : {{ user.expired_at ? new Date(user.expired_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'numeric', day: 'numeric' }) : '' }}
+            Sisa Masa Keanggotaan Anda : {{ user.created_at }}
             Masa keanggotaan anda <b>{{ user.expired_at | moment("from", "now", true) }}</b> lagi
-            </div>
-            <br/>
+            </div> -->
             <template v-if="user.role.id === 8">
               <q-btn @click="upgrade" flat rounded size="sm" class="bg-orange text-white">Upgrade Member</q-btn>
               <h6 class="dashboard-small-text" style="font-size: 10px; line-height: 11px; margin-top: 8px">Untuk dapatkan keuntungan<br/>yang lebih besar</h6>
