@@ -163,7 +163,7 @@ export default {
 
     },
     toStore() {
-      openURL('https://orderdd-test.netlify.com/#/' + this.storeUrl);
+      openURL('http://localhost:8082/#/' + this.storeUrl);
     }
   }
 }
