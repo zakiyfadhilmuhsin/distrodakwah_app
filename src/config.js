@@ -2,7 +2,7 @@ import router from 'src/router/routes'
 
 //export const hostDomain = 'https://api-test.needherbal.web.id'
 export const hostDomain = 'http://apigateway.test'
-
+export const webReplicaDomain = 'http://localhost:8082/#/'
 export const apiDomain = hostDomain
 
 export const loginUrl = apiDomain + '/auth/login'
