@@ -60,25 +60,31 @@
 							>
 								<q-input v-model="name" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Nama Lengkap" />
 								<q-input v-model="phone" prefix="+62" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan No Handphone" />
-								<!-- <q-input color="orange-8" dense class="bg-grey-2 q-mb-sm" outlined v-model="birthday" placeholder="Pilih Tanggal Lahir">
-									<template v-slot:append>
-										<q-icon name="event" class="cursor-pointer">
-										<q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-											<q-date minimal color="orange-8" v-model="birthday" mask="YYYY-MM-DD" @input="() => $refs.qDateProxy.hide()" />
-										</q-popup-proxy>
-										</q-icon>
-									</template>
-								</q-input> -->
 								<label>Tanggal Lahir :</label>
-								<div class="q-field row no-wrap items-start bg-grey-2 q-mb-sm q-input q-field--outlined q-field--float q-field--dense">
-									<div class="q-field__inner relative-position col self-stretch column justify-center">
-										<div class="q-field__control relative-position row no-wrap text-orange-8">
-											<div class="q-field__control-container col relative-position row no-wrap q-anchor--skip">
-												<flat-pickr v-model="birthday" class="q-field__native" placeholder="Pilih Tanggal Lahir"></flat-pickr>
+								<template v-if="dateStyleOption === false">
+									<q-input color="orange-8" dense class="bg-grey-2 q-mb-sm" outlined v-model="birthday" placeholder="Pilih Tanggal Lahir">
+										<template v-slot:append>
+											<q-icon name="event" class="cursor-pointer">
+											<q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+												<q-date minimal color="orange-8" v-model="birthday" mask="YYYY-MM-DD" @input="() => $refs.qDateProxy.hide()" />
+											</q-popup-proxy>
+											</q-icon>
+										</template>
+									</q-input>
+								</template>
+								<template v-else-if="dateStyleOption === true">
+									<div class="q-field row no-wrap items-start bg-grey-2 q-mb-sm q-input q-field--outlined q-field--float q-field--dense">
+										<div class="q-field__inner relative-position col self-stretch column justify-center">
+											<div class="q-field__control relative-position row no-wrap text-orange-8">
+												<div class="q-field__control-container col relative-position row no-wrap q-anchor--skip">
+													<flat-pickr v-model="birthday" class="q-field__native" placeholder="Pilih Tanggal Lahir"></flat-pickr>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
+								</template>
+								<small class="text-red">Pilihan tanggal tidak muncul?</small>
+								<q-toggle color="amber-8" v-model="dateStyleOption" val="false" label="Pilihan Tanggal Alternatif" left-label />
 								<q-radio color="amber-8" v-model="gender" val="male" label="Pria" />
 								<q-radio color="amber-8" v-model="gender" val="female" label="Wanita" />
 
@@ -219,6 +225,7 @@ export default {
 	  dataProvince: [],
       dataCity: [],
       dataSubdistrict: [],
+	  dateStyleOption: false,
     }
   },
   mounted () {

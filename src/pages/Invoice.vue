@@ -96,7 +96,7 @@
 
                     <q-item-section side>{{ bank.account_number }}<br/><span style="font-size: 10px">A.N {{ bank.account_name }}</span></q-item-section>
 
-                    <q-item-section><q-btn @click="copyAccountNumber(bank.account_number)" flat size="xs" class="bg-red text-white">Salin</q-btn></q-item-section>
+                    <q-item-section class="fixed-right absolute-right"><q-btn @click="copyAccountNumber(bank.account_number)" flat size="xs" class="bg-red text-white" style="width: 60px;">Salin</q-btn></q-item-section>
                   </q-item>
                 </q-list>
               </div>
