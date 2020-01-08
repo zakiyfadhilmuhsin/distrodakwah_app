@@ -300,114 +300,147 @@ export default {
 	    this.subdistrict = this.subdistrictSelected.subdistrict;
 
     },
-	verifyEmail () {
+	verifyEmail() {
+      if (this.emailVerify !== "") {
+        // Set Verify Email
+        let email = this.emailVerify.replace("@", "%40");
+        let getUser = new FormData();
+        getUser.set("email", this.emailVerify);
 
-		if(this.emailVerify !== ''){
+        axios
+          .post("http://apigateway.test/auth/searchUser", getUser)
+          .then(response => {
+            console.log(response.data);
+            if (response.data!== "") {
+              this.$q.notify({
+                position: "top",
+                color: "red-4",
+                message: "Aktifasi Gagal!, Email Sudah Terdaftar!",
+                html: true
+              });
+              return;
+            } else {
+              let loginOrderOnline = new FormData();
 
-			// Set Verify Email
-		let email = this.emailVerify.replace('@','%40');
+              loginOrderOnline.set("email", "vanprelid2@gmail.com");
+              loginOrderOnline.set("password", "qwerty1234");
 
-		let loginOrderOnline = new FormData ();
+              axios
+                .post("https://api.orderonline.id/auth", loginOrderOnline)
+                .then(response => {
+                  if (response.status === 200) {
+                    this.accessToken = response.data.data.access_token;
+                    // zein21.achmadi%40gmail.com
+                    axios
+                      .get(
+                        "https://api.orderonline.id/submission?limit=1&sort_by=created_at&sort=desc&page=1&since=2018-09-27&until=" +
+                          this.dateNow() +
+                          "&keyword=" +
+                          email +
+                          "&payment_status=paid",
+                        {
+                          headers: {
+                            Accept: "application/json",
+                            Authorization: "Bearer " + this.accessToken
+                          }
+                        }
+                      )
+                      .then(response => {
+                        if (response.status === 200) {
+                          if (response.data.data.length === 0) {
+                            // Get Data From Old Users API
+                            axios
+                              .get(
+                                "https://api.prodakwah.id/auth/old_users/" +
+                                  this.emailVerify
+                              )
+                              .then(response => {
+                                if (response.status === 200) {
+                                  if (response.data.length === 0) {
+                                    this.$q.notify({
+                                      position: "top",
+                                      color: "red-4",
+                                      message: "<b>Email</b> Belum Terdaftar!",
+                                      html: true
+                                    });
+                                  } else {
+                                    this.dataUser = response.data;
+                                    this.email = this.dataUser.email;
+                                    this.roleName = this.dataUser.role_name;
+                                    this.name = "";
+                                    this.phone = this.dataUser.phone;
+                                  }
+                                }
+                              })
+                              .catch(error => {
+                                if (error.response) {
+                                  console.log(error.response);
+                                }
+                              });
+                          } else {
+                            // Post response to data user
+                            this.dataUser = response.data.data;
 
-		loginOrderOnline.set('email', 'vanprelid2@gmail.com');
-		loginOrderOnline.set('password', 'qwerty1234');
+                            // Check Role From Old User
+                            axios
+                              .get(
+                                "https://api.prodakwah.id/auth/old_users/" +
+                                  this.emailVerify
+                              )
+                              .then(response => {
+                                if (response.status === 200) {
+                                  if (response.data.length === 0) {
+                                    // this.$q.notify({position: 'top', color: 'red-4', message: '<b>Email</b> Belum Terdaftar!', html: true});
 
-		axios.post('https://api.orderonline.id/auth', loginOrderOnline).then(response => {
-
-				if(response.status === 200){
-					this.accessToken = response.data.data.access_token;
-					// zein21.achmadi%40gmail.com
-					axios.get('https://api.orderonline.id/submission?limit=1&sort_by=created_at&sort=desc&page=1&since=2018-09-27&until=' + this.dateNow() + '&keyword=' + email + '&payment_status=paid', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + this.accessToken } } ).then(response => {
-
-							if(response.status === 200){
-								if(response.data.data.length === 0){
-
-									// Get Data From Old Users API
-									axios.get('https://api.prodakwah.id/auth/old_users/' + this.emailVerify).then(response =>{
-
-										if(response.status === 200){
-
-											if(response.data.length === 0){
-												this.$q.notify({position: 'top', color: 'red-4', message: '<b>Email</b> Belum Terdaftar!', html: true});
-											}else{
-												this.dataUser = response.data;
-												this.email    = this.dataUser.email;
-												this.roleName = this.dataUser.role_name;
-												this.name 	  = '';
-												this.phone = this.dataUser.phone;
-											}
-
-										}
-
-									}).catch(error => {
-
-										if (error.response) {
-											console.log(error.response)
-										}
-
-									});
-
-								}else{
-
-									// Post response to data user
-									this.dataUser = response.data.data;
-
-									// Check Role From Old User
-									axios.get('https://api.prodakwah.id/auth/old_users/' + this.emailVerify).then(response =>{
-
-										if(response.status === 200){
-
-											if(response.data.length === 0){
-												// this.$q.notify({position: 'top', color: 'red-4', message: '<b>Email</b> Belum Terdaftar!', html: true});
-
-												this.roleName = this.dataUser[0].product_name;
-												this.email    = this.dataUser[0].customer_data.email;
-												this.name     = '';
-												this.phone    = this.dataUser[0].customer_data.phone.replace('+62', '');
-
-											}else{
-												this.roleName = response.data.role_name;
-												this.email    = this.dataUser[0].customer_data.email;
-												this.name     = '';
-												this.phone    = this.dataUser[0].customer_data.phone.replace('+62', '');
-											}
-
-										}
-
-									}).catch(error => {
-
-										if (error.response) {
-											console.log(error.response)
-										}
-
-									});
-
-								}
-							}
-
-						}).catch(error => {
-						
-							if (error.response) {
-								console.log(error.response)
-							}
-						
-						})
-
-				}
-
-			}).catch(error => {
-			
-				if (error.response) {
-					console.log(error.response)
-				}
-			
-			})
-
-		}else{
-			this.$q.notify({position: 'top', color: 'red-4', message: '<b>Email</b> Belum Diisi!', html: true});
-		}
-
-	},
+                                    this.roleName = this.dataUser[0].product_name;
+                                    this.email = this.dataUser[0].customer_data.email;
+                                    this.name = "";
+                                    this.phone = this.dataUser[0].customer_data.phone.replace(
+                                      "+62",
+                                      ""
+                                    );
+                                  } else {
+                                    this.roleName = response.data.role_name;
+                                    this.email = this.dataUser[0].customer_data.email;
+                                    this.name = "";
+                                    this.phone = this.dataUser[0].customer_data.phone.replace(
+                                      "+62",
+                                      ""
+                                    );
+                                  }
+                                }
+                              })
+                              .catch(error => {
+                                if (error.response) {
+                                  console.log(error.response);
+                                }
+                              });
+                          }
+                        }
+                      })
+                      .catch(error => {
+                        if (error.response) {
+                          console.log(error.response);
+                        }
+                      });
+                  }
+                })
+                .catch(error => {
+                  if (error.response) {
+                    console.log(error.response);
+                  }
+                });
+            }
+          });
+      } else {
+        this.$q.notify({
+          position: "top",
+          color: "red-4",
+          message: "<b>Email</b> Belum Diisi!",
+          html: true
+        });
+      }
+    },  
     createAccount () {
 		if( this.email === '' ){
 			this.notifForm('Email');
