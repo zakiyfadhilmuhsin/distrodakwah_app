@@ -262,21 +262,6 @@ export default {
               console.log(error.response)
             }
           })
-
-        let changeStatus = new FormData();
-
-        changeStatus.set('id', this.dataOrder.id);
-
-        axios.post( paymentConfirmOrderUrl, changeStatus, { headers: getHeader() } )
-          .then(response => {
-            console.log(response)
-          })
-          .catch(error => {
-            if (error.response) {
-              console.log(error.response)
-            }
-          })   
-
     },
     formatPrice(value) {
         let val = (value/1).toFixed(0).replace('.', ',')
