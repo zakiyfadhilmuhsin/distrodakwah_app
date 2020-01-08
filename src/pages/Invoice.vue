@@ -238,7 +238,8 @@ export default {
         paymentConfirm.set('sender_name', this.senderName);
         paymentConfirm.set('total_transfer', this.totalTransfer);
         paymentConfirm.set('transfer_date', this.transferDate);
-
+        paymentConfirm.set('order_id', this.dataOrder.id);
+        
         axios.post( paymentConfirmationUrl, paymentConfirm, { headers: getHeader() } )
           .then(response => {
             console.log(response)
