@@ -308,7 +308,7 @@ export default {
         getUser.set("email", this.emailVerify);
 
         axios
-          .post("http://apigateway.test/auth/searchUser", getUser)
+          .post("https://api.prodakwah.id/auth/searchUser", getUser)
           .then(response => {
             console.log(response.data);
             if (response.data!== "") {
