@@ -12,6 +12,9 @@
 						<p class="create-account-small-text text-center">Verifikasi email anda disini</p>
 						<q-input v-model="emailVerify" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Email" />
 						<q-btn @click="verifyEmail" flat class="bg-amber-8 full-width"><span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">Verifikasi</span></q-btn>
+						<q-btn v-if="preventReactivation" @click="()=>this.$router.push('/login')" flat class="bg-green-8 full-width"><span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">Ke halaman Login</span></q-btn>
+
+
 					</div>
 				</div>
 			</template>
@@ -226,7 +229,11 @@ export default {
       dataCity: [],
       dataSubdistrict: [],
 	  dateStyleOption: false,
+	  preventReactivation: false
     }
+  },
+  computed : {
+
   },
   mounted () {
     this.getProvince();
@@ -317,7 +324,8 @@ export default {
                 color: "red-4",
                 message: "Aktifasi Gagal!, Email Sudah Terdaftar!",
                 html: true
-              });
+			  });
+			  this.preventReactivation = true;
               return;
             } else {
               let loginOrderOnline = new FormData();
@@ -357,6 +365,7 @@ export default {
                               .then(response => {
                                 if (response.status === 200) {
                                   if (response.data.length === 0) {
+									this.preventReactivation = false;
                                     this.$q.notify({
                                       position: "top",
                                       color: "red-4",
@@ -368,7 +377,7 @@ export default {
                                     this.email = this.dataUser.email;
                                     this.roleName = this.dataUser.role_name;
                                     this.name = "";
-                                    this.phone = this.dataUser.phone;
+									this.phone = this.dataUser.phone;
                                   }
                                 }
                               })
