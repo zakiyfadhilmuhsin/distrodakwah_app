@@ -11,9 +11,9 @@
 						<br/>
 						<p class="create-account-small-text text-center">Verifikasi email anda disini</p>
 						<q-input v-model="emailVerify" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Email" />
-						<q-btn @click="verifyEmail" flat class="bg-amber-8 full-width"><span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">Verifikasi</span></q-btn>
-						<q-btn v-if="preventReactivation" @click="()=>this.$router.push('/login')" flat class="bg-green-8 full-width"><span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">Ke halaman Login</span></q-btn>
+						<q-btn @click="verifyEmail" flat class="bg-amber-8 full-width q-mb-sm"><span class="text-white " style="font-weight: bolder; font-family: 'Open Sans'">Verifikasi</span></q-btn>
 
+						<q-btn v-if="preventReactivation" @click="()=>this.$router.push('/login')" flat class="full-width text-black" label="Login 🡲" :size="xs"/>
 
 					</div>
 				</div>
