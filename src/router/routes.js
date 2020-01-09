@@ -16,6 +16,7 @@ import AllProductBrandPage from 'pages/AllProductBrand';
 import SearchPage from 'pages/Search';
 import FeedbackPage from 'pages/ResellerArea/Feedback';
 import HelpDeskPage from 'pages/ResellerArea/HelpDesk';
+import DownloadCatalogPage from 'pages/ResellerArea/DownloadCatalog';
 
 
 const routes = [
@@ -132,6 +133,13 @@ const routes = [
   {
     path: '/helpdesk',
     component: HelpDeskPage,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/downloadCatalog',
+    component: DownloadCatalogPage,
     meta: {
       requiresAuth: true,
     },
