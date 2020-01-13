@@ -110,6 +110,9 @@ export default {
     };
   },
   created() {
+    console.log('process.env.APIGATEWAY: ' + process.env.APIGATEWAY);
+    console.log('process.env.WEBREPLICA_DOMAIN: ' + process.env.WEBREPLICA_DOMAIN);
+
     if (this.$route.params.message === "createsuccess") {
       this.$q.notify({
         position: "top",

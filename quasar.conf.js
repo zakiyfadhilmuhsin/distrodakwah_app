@@ -106,6 +106,15 @@ module.exports = function (ctx) {
     supportIE: false,
 
     build: {
+      env: ctx.dev
+      ? { // so on dev we'll have
+        APIGATEWAY: JSON.stringify('http://apigateway.test'),
+        WEBREPLICA_DOMAIN: JSON.stringify('http://localhost:8082/#')
+      }
+      : { // and on build (production):
+        APIGATEWAY: JSON.stringify('https://api-test.needherbal.web.id'),
+        WEBREPLICA_DOMAIN: JSON.stringify('https://orderdd-test.netlify.com/#')
+      },
       scopeHoisting: true,
       // vueRouterMode: 'history',
       // vueCompiler: true,
