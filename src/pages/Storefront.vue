@@ -116,7 +116,7 @@
               </div>
             </div>
           </div> -->
-          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px" v-for="(category, i) in dataProducts" :key="i">
+          <div v-if="category.id !== 7" style="background-color: white; margin-bottom: 10px; padding-bottom: 15px" v-for="(category, i) in dataProducts" :key="i">
             <div class="row q-pa-xs">
               <div class="col">
                 <h5 class="promo-text">{{ category.category_name }}</h5>
@@ -132,6 +132,7 @@
                 <swiper :options="swiperProductListOption">
                   <swiper-slide v-for="(product, index) in category.products" :key="index">
                     <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
+  
                       <transition
                         appear
                         enter-active-class="animated fadeIn"
@@ -308,6 +309,7 @@ export default {
       })
   },
   methods: {
+
     getProductByCategory () {
 
       this.dataProducts = [];
@@ -411,6 +413,11 @@ export default {
           console.log(response)
 
           if (response.status === 200) {
+
+            console.log('fajarsidiq');
+            console.log(response.data.data.filter(product=> product.category_id !==7));
+            
+            
             this.dataProduct = response.data.data;
 
             this.$q.loading.hide()

@@ -582,7 +582,7 @@ export default {
       })
     },
     upgrade () {
-      openURL('https://wa.me/6287821550989?text=Saya%20Ingin%20Upgrade%20Ke%20Member%20Ekslusif%0Aemail%3A%20'+this.user.email);
+      openURL('https://serbalaris.orderonline.id/upgrade-eksklusif');
     }
   },
   components: { carousel, openURL }
