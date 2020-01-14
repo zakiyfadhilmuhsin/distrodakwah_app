@@ -11,7 +11,10 @@
 						<br/>
 						<p class="create-account-small-text text-center">Verifikasi email anda disini</p>
 						<q-input v-model="emailVerify" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Email" />
-						<q-btn @click="verifyEmail" flat class="bg-amber-8 full-width"><span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">Verifikasi</span></q-btn>
+						<q-btn @click="verifyEmail" flat class="bg-amber-8 full-width q-mb-sm"><span class="text-white " style="font-weight: bolder; font-family: 'Open Sans'">Verifikasi</span></q-btn>
+
+						<q-btn v-if="preventReactivation" @click="()=>this.$router.push('/login')" flat class="full-width text-black" label="Login 🡲" :size="xs"/>
+
 					</div>
 				</div>
 			</template>
@@ -60,25 +63,31 @@
 							>
 								<q-input v-model="name" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Nama Lengkap" />
 								<q-input v-model="phone" prefix="+62" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan No Handphone" />
-								<!-- <q-input color="orange-8" dense class="bg-grey-2 q-mb-sm" outlined v-model="birthday" placeholder="Pilih Tanggal Lahir">
-									<template v-slot:append>
-										<q-icon name="event" class="cursor-pointer">
-										<q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-											<q-date minimal color="orange-8" v-model="birthday" mask="YYYY-MM-DD" @input="() => $refs.qDateProxy.hide()" />
-										</q-popup-proxy>
-										</q-icon>
-									</template>
-								</q-input> -->
 								<label>Tanggal Lahir :</label>
-								<div class="q-field row no-wrap items-start bg-grey-2 q-mb-sm q-input q-field--outlined q-field--float q-field--dense">
-									<div class="q-field__inner relative-position col self-stretch column justify-center">
-										<div class="q-field__control relative-position row no-wrap text-orange-8">
-											<div class="q-field__control-container col relative-position row no-wrap q-anchor--skip">
-												<flat-pickr v-model="birthday" class="q-field__native" placeholder="Pilih Tanggal Lahir"></flat-pickr>
+								<template v-if="dateStyleOption === false">
+									<q-input color="orange-8" dense class="bg-grey-2 q-mb-sm" outlined v-model="birthday" placeholder="Pilih Tanggal Lahir">
+										<template v-slot:append>
+											<q-icon name="event" class="cursor-pointer">
+											<q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+												<q-date minimal color="orange-8" v-model="birthday" mask="YYYY-MM-DD" @input="() => $refs.qDateProxy.hide()" />
+											</q-popup-proxy>
+											</q-icon>
+										</template>
+									</q-input>
+								</template>
+								<template v-else-if="dateStyleOption === true">
+									<div class="q-field row no-wrap items-start bg-grey-2 q-mb-sm q-input q-field--outlined q-field--float q-field--dense">
+										<div class="q-field__inner relative-position col self-stretch column justify-center">
+											<div class="q-field__control relative-position row no-wrap text-orange-8">
+												<div class="q-field__control-container col relative-position row no-wrap q-anchor--skip">
+													<flat-pickr v-model="birthday" class="q-field__native" placeholder="Pilih Tanggal Lahir"></flat-pickr>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
+								</template>
+								<small class="text-red">Pilihan tanggal tidak muncul?</small>
+								<q-toggle color="amber-8" v-model="dateStyleOption" val="false" label="Pilihan Tanggal Alternatif" left-label />
 								<q-radio color="amber-8" v-model="gender" val="male" label="Pria" />
 								<q-radio color="amber-8" v-model="gender" val="female" label="Wanita" />
 
@@ -219,7 +228,12 @@ export default {
 	  dataProvince: [],
       dataCity: [],
       dataSubdistrict: [],
+	  dateStyleOption: false,
+	  preventReactivation: false
     }
+  },
+  computed : {
+
   },
   mounted () {
     this.getProvince();
@@ -293,7 +307,7 @@ export default {
 	    this.subdistrict = this.subdistrictSelected.subdistrict;
 
     },
-        verifyEmail() {
+	verifyEmail() {
       if (this.emailVerify !== "") {
         // Set Verify Email
         let email = this.emailVerify.replace("@", "%40");
@@ -310,7 +324,8 @@ export default {
                 color: "red-4",
                 message: "Aktifasi Gagal!, Email Sudah Terdaftar!",
                 html: true
-              });
+			  });
+			  this.preventReactivation = true;
               return;
             } else {
               let loginOrderOnline = new FormData();
@@ -350,6 +365,7 @@ export default {
                               .then(response => {
                                 if (response.status === 200) {
                                   if (response.data.length === 0) {
+									this.preventReactivation = false;
                                     this.$q.notify({
                                       position: "top",
                                       color: "red-4",
@@ -361,7 +377,7 @@ export default {
                                     this.email = this.dataUser.email;
                                     this.roleName = this.dataUser.role_name;
                                     this.name = "";
-                                    this.phone = this.dataUser.phone;
+									this.phone = this.dataUser.phone;
                                   }
                                 }
                               })

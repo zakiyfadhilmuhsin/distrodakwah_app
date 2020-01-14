@@ -22,25 +22,6 @@
             <q-card bordered class="shadow-1">
               <q-card-section>
                 <div class="q-pa-xs">
-                    <center>
-                        <q-btn @click="toStore" flat dense style="font-size: 12px" class="q-py-sm bg-white text-primary text-capitalize">Kunjungi Web Replika <q-icon name="launch" color="primary" style="font-size: 16px" /></q-btn>
-                        <div class="q-py-sm">
-                            Share Web Replika :
-                            <br/>
-                            <facebook :url="url + storeUrl" scale="2" class="q-pa-sm"></facebook>
-                            <telegram :url="url + storeUrl" scale="2" class="q-pa-sm"></telegram>
-                            <twitter :url="url + storeUrl" scale="2" class="q-pa-sm"></twitter>
-                            <whats-app :url="url + storeUrl" scale="2" class="q-pa-sm"></whats-app>
-                            <email :url="url + storeUrl" scale="2" class="q-pa-sm"></email>
-                        </div>
-                    </center>
-                </div>
-              </q-card-section>
-            </q-card>
-            <br/>
-            <q-card bordered class="shadow-1">
-              <q-card-section>
-                <div class="q-pa-xs">
                     <q-input outlined dense color="orange-8" type="text" v-model="storeName" label="Nama Toko" placeholder="Masukkan Nama Toko" />
                 </div>
                 <div class="q-pa-xs">
@@ -49,8 +30,25 @@
                 </div>
                 <div class="q-pa-xs">
                     <!-- <q-input prefix="+62" outlined dense color="green-6" type="text" v-model="whatsappNumber" label="Nomor Whatsapp" placeholder="Masukkan Nomor Whatsapp" /> -->
-                    <vue-tel-input v-model="whatsappNumber" enabledCountryCode mode="international" disabledFormatting="true" placeholder="Masukkan Nomor Whatsapp"></vue-tel-input>
+                    <vue-tel-input v-model="whatsappNumber" enabledCountryCode mode="international" disabledFormatting="true" placeholder="Masukkan Nomor Whatsapp" style="height: 40px; margin-bottom: 5px"></vue-tel-input>
                 </div>
+                <template v-if="dataStore !== null">
+                  <br/>
+                  <div class="q-pa-xs">
+                      <center>
+                          <q-btn @click="toStore" flat dense style="font-size: 12px" class="q-py-sm bg-white text-primary text-capitalize">Kunjungi Web Replika <q-icon name="launch" color="primary" style="font-size: 16px" /></q-btn>
+                          <div class="q-py-sm">
+                              Share Web Replika :
+                              <br/>
+                              <facebook :url="url + storeUrl" scale="2" class="q-pa-sm"></facebook>
+                              <telegram :url="url + storeUrl" scale="2" class="q-pa-sm"></telegram>
+                              <twitter :url="url + storeUrl" scale="2" class="q-pa-sm"></twitter>
+                              <whats-app :url="url + storeUrl" scale="2" class="q-pa-sm"></whats-app>
+                              <email :url="url + storeUrl" scale="2" class="q-pa-sm"></email>
+                          </div>
+                      </center>
+                  </div>
+                </template>
               </q-card-section>
             </q-card>
             <br/>
@@ -96,7 +94,7 @@ export default {
         storeUrl: '',
         whatsappNumber: '',
         dataStore: [],
-        url: 'https://orderdd-test.netlify.com/#/',
+        url: 'https://prodakwah.com/#/',
     }
   },
   created () {
@@ -146,6 +144,10 @@ export default {
 
             if (response.status === 200) {
               this.$q.notify({position: 'top', color: 'light-green-6', message: 'Berhasil Disimpan!'});
+              this.storeName = '';
+              this.storeUrl  = '';
+              this.whatsappNumber = '';
+              this.getStore();
             }
 
           })
