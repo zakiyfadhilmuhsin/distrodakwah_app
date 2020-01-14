@@ -106,6 +106,15 @@ module.exports = function (ctx) {
     supportIE: false,
 
     build: {
+      env: ctx.dev
+      ? { // so on dev we'll have
+        APIGATEWAY: JSON.stringify('http://apigateway.test'),
+        WEBREPLICA_DOMAIN: JSON.stringify('http://localhost:8082/#')
+      }
+      : { // and on build (production):
+        APIGATEWAY: JSON.stringify('https://api.prodakwah.id'),
+        WEBREPLICA_DOMAIN: JSON.stringify('https://prodakwah.com/#')
+      },
       scopeHoisting: true,
       // vueRouterMode: 'history',
       // vueCompiler: true,
@@ -118,7 +127,7 @@ module.exports = function (ctx) {
 
     devServer: {
       // https: true,
-      // port: 8080,
+      port: 8081,
       open: true // opens browser window automatically
     },
 

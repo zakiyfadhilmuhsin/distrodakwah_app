@@ -74,7 +74,7 @@
 
 <script>
 import axios from 'axios';
-import { getStoreUrl, createStoreUrl, getHeader } from 'src/config';
+import { getStoreUrl, createStoreUrl, getHeader, webReplicaDomain } from 'src/config';
 import { openURL } from 'quasar'
 // Sharing Social Media
 import { Facebook, Telegram, Twitter, WhatsApp, Email } from 'vue-socialmedia-share';
@@ -165,7 +165,7 @@ export default {
 
     },
     toStore() {
-      openURL('https://prodakwah.com/#/' + this.storeUrl);
+      openURL(webReplicaDomain + this.storeUrl);
     }
   }
 }

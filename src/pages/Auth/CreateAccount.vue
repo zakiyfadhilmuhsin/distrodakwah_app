@@ -193,7 +193,7 @@
 
 <script>
 import axios from 'axios';
-import { createAccountUrl, getProvinceNoAuthUrl, getCityNoAuthUrl, getSubdistrictNoAuthUrl, getHeader } from 'src/config';
+import { apiDomain, createAccountUrl, getProvinceNoAuthUrl, getCityNoAuthUrl, getSubdistrictNoAuthUrl, getHeader } from 'src/config';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 
@@ -315,7 +315,7 @@ export default {
         getUser.set("email", this.emailVerify);
 
         axios
-          .post("https://api.prodakwah.id/auth/searchUser", getUser)
+          .post(apiDomain + "/auth/searchUser", getUser)
           .then(response => {
             console.log(response.data);
             if (response.data!== "") {
@@ -359,7 +359,7 @@ export default {
                             // Get Data From Old Users API
                             axios
                               .get(
-                                "https://api.prodakwah.id/auth/old_users/" +
+                                apiDomain + "/auth/old_users/" +
                                   this.emailVerify
                               )
                               .then(response => {
@@ -393,7 +393,7 @@ export default {
                             // Check Role From Old User
                             axios
                               .get(
-                                "https://api.prodakwah.id/auth/old_users/" +
+                                apiDomain + "/auth/old_users/" +
                                   this.emailVerify
                               )
                               .then(response => {
