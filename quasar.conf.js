@@ -112,8 +112,8 @@ module.exports = function (ctx) {
         WEBREPLICA_DOMAIN: JSON.stringify('http://localhost:8082/#')
       }
       : { // and on build (production):
-        APIGATEWAY: JSON.stringify('https://api.prodakwah.id'),
-        WEBREPLICA_DOMAIN: JSON.stringify('https://prodakwah.com/#')
+        APIGATEWAY: JSON.stringify('https://api-test.needherbal.web.id'),
+        WEBREPLICA_DOMAIN: JSON.stringify('https://orderdd.netlify.com/#')
       },
       scopeHoisting: true,
       // vueRouterMode: 'history',
