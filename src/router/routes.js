@@ -17,7 +17,8 @@ import SearchPage from 'pages/Search';
 import FeedbackPage from 'pages/ResellerArea/Feedback';
 import HelpDeskPage from 'pages/ResellerArea/HelpDesk';
 import DownloadCatalogPage from 'pages/ResellerArea/DownloadCatalog';
-
+import ResetPassword from 'pages/Auth/ResetPassword';  
+import UpdatePassword from 'pages/Auth/UpdatePassword';
 
 const routes = [
   {
@@ -30,6 +31,14 @@ const routes = [
   {
     path: '/activation',
     component: CreateAccountPage,
+  },
+  {
+    path: '/resetPassword',
+    component: ResetPassword,
+  },
+  {
+    path: '/updatePassword',
+    component: UpdatePassword
   },
   {
     path: '/free',

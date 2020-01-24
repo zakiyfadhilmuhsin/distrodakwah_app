@@ -167,6 +167,36 @@
 
                   <q-separator />
 
+                  <q-item dense clickable v-ripple to="/resetPassword">
+                    <q-item-section avatar>
+                      <q-icon name="lock_open" />
+                    </q-item-section>
+
+                    <q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Reset Password</span></q-item-section>
+
+                    <q-item-section side>
+                      <q-icon name="keyboard_arrow_right" />
+                    </q-item-section>
+                  </q-item>
+
+
+                  <q-separator />
+
+                  <q-item dense clickable v-ripple to="/updatePassword">
+                    <q-item-section avatar>
+                      <q-icon name="lock_open" />
+                    </q-item-section>
+
+                    <q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Ganti Password</span></q-item-section>
+
+                    <q-item-section side>
+                      <q-icon name="keyboard_arrow_right" />
+                    </q-item-section>
+                  </q-item>
+
+
+                  <q-separator />
+
                   <!-- <q-item dense clickable v-ripple>
                     <q-item-section avatar>
                       <q-icon name="o_favorite" />
