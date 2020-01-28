@@ -6,7 +6,7 @@
           <q-icon name="arrow_back" color="white" />
         </q-btn>
         <q-toolbar-title>
-          <span style="font-size: 16px; font-weight: bold">Ganti Password</span>
+          <span style="font-size: 16px; font-weight: bold">Password Baru</span>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -20,16 +20,7 @@
                 <img src="~/assets/images/components/logo-distrodakwah-small.png" width="170px" />
               </center>
               <br />
-              <p class="create-account-small-text text-center">Ganti Password</p>
-              <q-input
-                v-model="oldPassword"
-                color="orange-8"
-                type="text"
-                dense
-                class="bg-grey-2 q-mb-sm"
-                outlined
-                placeholder="Password lama(sekarang dipakai)"
-              />
+              <p class="create-account-small-text text-center">Masukkan Password Anda</p>
               <q-input
                 v-model="newPassword"
                 :color="passwordColor"
@@ -112,7 +103,7 @@ import "flatpickr/dist/flatpickr.css";
 import { QSpinnerPuff } from "quasar";
 
 export default {
-  name: "UpdatePassword",
+  name: "UpdatePasswordHasToken",
   components: {
     flatPickr
   },
@@ -120,8 +111,7 @@ export default {
     return {
       newPassword: "",
       newPasswordConfirmation: "",
-      oldPassword: "",
-      loading: false
+      loading: ""
     };
   },
   computed: {
@@ -161,6 +151,7 @@ export default {
       }
     }
   },
+  created() {},
   methods: {
     async onUpdate() {
       if (this.newPassword !== this.newPasswordConfirmation) return;
@@ -168,7 +159,11 @@ export default {
       this.loading = true;
 
       let updatePasswordForm = new FormData();
-      updatePasswordForm.set("oldPassword", this.oldPassword);
+      updatePasswordForm.set("email", this.$route.query.email);
+      updatePasswordForm.set(
+        "forgot_password_token",
+        this.$route.query.forgot_password_token
+      );
       updatePasswordForm.set("newPassword", this.newPassword);
       updatePasswordForm.set(
         "newPassword_confirmation",
@@ -177,35 +172,30 @@ export default {
 
       try {
         let response = await this.$axios.post(
-          apiDomain + "/auth/updatePassword",
+          apiDomain + "/auth/updatePassword/has-token",
           updatePasswordForm,
           { headers: getHeader() }
         );
 
-        if (response.data.message === "password_changed") {
+        if (response.data.message === "reset_password_completed") {
           this.$q.notify({
             position: "top",
             color: "green",
             message: "Password Berhasil Diganti!",
             html: true
           });
-          window.localStorage.removeItem("authUser");
-          window.localStorage.removeItem("profileUser");
         }
       } catch (err) {
-        if (err.response.data.message === "old_password_wrong") {
-          this.$q.notify({
-            position: "top",
-            color: "red",
-            message: "Password lama salah!",
-            html: true
-          });
-        } else {
-          console.log("error");
-        }
+        console.log(err.response.data.message);
+        this.$q.notify({
+          position: "top",
+          color: "red",
+          message: "Gagal Reset, silihakan kembali ke halaman reset",
+          html: true
+        });
       } finally {
         this.loading = false;
-        this.$router.push("/");
+        this.$router.push("/login");
       }
     }
   }

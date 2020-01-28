@@ -110,8 +110,7 @@ export default {
     };
   },
   created() {
-    console.log('process.env.APIGATEWAY: ' + process.env.APIGATEWAY);
-    console.log('process.env.WEBREPLICA_DOMAIN: ' + process.env.WEBREPLICA_DOMAIN);
+    this.$q.loading.hide();
 
     if (this.$route.params.message === "createsuccess") {
       this.$q.notify({
@@ -144,14 +143,11 @@ export default {
 
         return;
       }
-      console.log(postData);
       const authUser = {};
 
       axios
         .post(loginUrl, postData)
         .then(response => {
-          console.log(postData);
-
           if (response.status === 200) {
             authUser.access_token = response.data.access_token;
             authUser.refresh_token = response.data.refresh_token;
@@ -212,7 +208,7 @@ export default {
             this.$q.notify({
               position: "top",
               color: "red-4",
-              message: "Login Gagal!, Email Belum Teqweqweqrdaftar!",
+              message: "Login Gagal!, Email Belum Terdaftar!",
               html: true
             });
           }

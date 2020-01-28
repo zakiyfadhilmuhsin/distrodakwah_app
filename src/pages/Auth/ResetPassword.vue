@@ -1,16 +1,13 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="mobile-layout-on-desktop">
-	<q-header class="mobile-layout-on-desktop">
+    <q-header class="mobile-layout-on-desktop">
       <q-toolbar class="bg-distrodakwah text-white">
-        <q-btn
-          flat
-          round
-          dense
-          to="/dashboard"
-        >
-          <q-icon name="arrow_back" color="white" /> 
+        <q-btn flat round dense to="/dashboard">
+          <q-icon name="arrow_back" color="white" />
         </q-btn>
-        <q-toolbar-title><span style="font-size: 16px; font-weight: bold">Reset Password</span></q-toolbar-title>
+        <q-toolbar-title>
+          <span style="font-size: 16px; font-weight: bold">Reset Password</span>
+        </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
@@ -83,16 +80,17 @@ import {
 } from "src/config";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
+import { QSpinnerPuff } from "quasar";
 
 export default {
-  name: "CreateAccount",
+  name: "ResetPassword",
   components: {
     flatPickr
   },
   data() {
     return {
       email: "",
-      loading: false
+      loading: ""
     };
   },
   watch: {
@@ -103,7 +101,7 @@ export default {
           spinnerColor: "black",
           spinnerSize: 50,
           backgroundColor: "grey",
-          message: "<b>Sedang mengupdate Password..</b>",
+          message: "<b>Mohon Tunggu</b>",
           messageColor: "black"
         });
       } else {
@@ -111,11 +109,15 @@ export default {
       }
     }
   },
+  created() {
+    this.loading = false;
+  },
   methods: {
     async onResetRequest() {
       let resetForm = new FormData();
       resetForm.set("email", this.email);
       this.loading = true;
+
       try {
         let response = await this.$axios.post(
           apiDomain + "/auth/resetPasswordConfirmation",
@@ -141,9 +143,9 @@ export default {
           console.log("error");
         }
       } finally {
-		this.loading = false;
-		this.$router.push('/dashboard')
-	  }
+        this.loading = false;
+        this.$router.push("/dashboard");
+      }
     }
   }
 };
