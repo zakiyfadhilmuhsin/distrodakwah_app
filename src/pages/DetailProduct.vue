@@ -60,7 +60,7 @@
 
     <q-page-container class="mobile-layout-on-desktop bg-white">
       <q-page>
-        <template v-if="dataProduct.length !== 0">
+        <!-- <template v-if="dataProduct.length !== 0">
           <div style="margin-bottom: 10px; margin-top: -50px" v-if="dataProduct.image_gallery.length !== 0">
             <carousel :items="1" :nav="false" :loop="true" :autoplay="true">
                 <img :src="gallery.image" v-for="(gallery, i) in dataProduct.image_gallery" :key="i">
@@ -69,9 +69,26 @@
           <div style="margin-bottom: 10px; margin-top: -50px" v-else>
             <img :src="dataProduct.featured_image" width="100%" />
           </div>
+        </template> -->
+        <!-------------------------->
+        <!-- Product Image Slider -->
+        <!-------------------------->
+        <template v-if="dataProduct.length !== 0">
+          <div style="margin-bottom: 10px; margin-top: -50px" v-if="dataProduct.product_variants.length !== 0">
+            <carousel :items="1" :nav="false" :loop="true" :autoplay="true">
+                <img :src="gallery.image" v-for="(gallery, i) in dataProduct.product_variants" :key="i">
+            </carousel>
+          </div>
+          <div style="margin-bottom: 10px; margin-top: -50px" v-else>
+            <img :src="dataProduct.featured_image" width="100%" />
+          </div>
         </template>
+        <!------------------------->
+        <!-- Information Section -->
+        <!------------------------->
         <div class="row q-px-md">
           <div class="col">
+            <!-- Informasi Umum -->
             <h5 class="category-text">Kategori : <span class="text-red">{{dataCategory.category_name}}</span></h5>
             <h5 class="category-text">Brand : <span class="text-red">{{dataBrand.brand_name}}</span></h5>
             <h4 class="product-title-text">{{dataProduct.product_name}}</h4>
@@ -134,6 +151,8 @@
             </div>
             <br/>
 
+            {{ this.productVariant }}
+
             <!-- Informasi Harga -->
             <template v-if="this.dataProduct.product_type === 'Simple Product' || this.productVariant.length > 0">
               <div class="row">
@@ -150,7 +169,7 @@
                   <h5 class="price-detail-text" v-else>Rp{{formatPrice(dataProduct.price)}}</h5>
                 </div>
                 <div class="col-xs-6" v-if="user.role.id === 9">
-                  <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - (productVariant[0].price * dataProduct.reseller_exclusive_price / 100))}}</h5>
+                  <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].reseller_exclusive_price)}}</h5>
                   <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_exclusive_price / 100) )}}</h5>
                 </div>
                 <div class="col-xs-6" v-else-if="user.role.id === 8">
@@ -448,9 +467,11 @@ export default {
             this.productVariant.push({
               id: varPro[i].id,
               product_id: varPro[i].product_id,
-              sku: varPro[i].sku,
+              sku: varPro[i].sku_display,
               price: varPro[i].price,
-              stock: varPro[i].stock,
+              reseller_pro_price: varPro[i].reseller_pro_price,
+              reseller_exclusive_price: varPro[i].reseller_exclusive_price,
+              stock_qty: varPro[i].stock_qty,
             })
 
             axios.get(inventoryStockUrl + '/' + varPro[i].sku, {headers: getHeader()}).then(response => {
