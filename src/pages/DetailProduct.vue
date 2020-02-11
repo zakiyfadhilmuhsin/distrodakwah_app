@@ -29,7 +29,7 @@
       style="border-top: 2px solid #eee"
     >
       <q-toolbar class="bg-white text-black">
-        <span v-if="dataProduct.length !== 0">
+        <span v-if="productVariant">
           <h4
             style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
             v-if="user.role.id === 9"
@@ -37,12 +37,7 @@
             KAMU UNTUNG
             <span
               class="text-green"
-              v-if="this.productVariant.length > 0"
-            >{{'Rp' + formatPrice( Number(productVariant[0].price * dataProduct.reseller_exclusive_price / 100) * Number(this.qty) )}}</span>
-            <span
-              class="text-green"
-              v-else
-            >{{'Rp' + formatPrice( Number(dataProduct.price * dataProduct.reseller_exclusive_price / 100) * Number(this.qty) )}}</span>
+            >{{'Rp' + formatPrice( Number(productVariant.price - productVariant.reseller_exclusive_price) * Number(this.qty) )}}</span>
           </h4>
           <h4
             style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
@@ -51,26 +46,14 @@
             KAMU UNTUNG
             <span
               class="text-green"
-              v-if="this.productVariant.length > 0"
-            >{{'Rp' + formatPrice( Number(productVariant[0].price * dataProduct.reseller_pro_price / 100) * Number(this.qty) )}}</span>
-            <span
-              class="text-green"
-              v-else
-            >{{'Rp' + formatPrice( Number(dataProduct.price * dataProduct.reseller_pro_price / 100) * Number(this.qty) )}}</span>
+            >{{'Rp' + formatPrice( Number(productVariant.price - productVariant.reseller_pro_price) * Number(this.qty) )}}</span>
           </h4>
           <h4
             style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
             v-else-if="user.role.id === 10"
           >
             KAMU UNTUNG
-            <span
-              class="text-green"
-              v-if="this.productVariant.length > 0"
-            >{{'Rp' + formatPrice( Number(productVariant[0].price * dataProduct.reseller_free_price / 100) * Number(this.qty) )}}</span>
-            <span
-              class="text-green"
-              v-else
-            >{{'Rp' + formatPrice( Number(dataProduct.price * dataProduct.reseller_free_price / 100) * Number(this.qty) )}}</span>
+            <span class="text-green"></span>
           </h4>
         </span>
         <q-space />
@@ -125,12 +108,12 @@
               <span class="text-red">{{dataBrand.brand_name}}</span>
             </h5>
             <h4 class="product-title-text">{{dataProduct.product_name}}</h4>
-            <div
-              style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold"
-              v-if="stockReady !== null"
-            >
+            <div style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold">
               Stok Tersedia :
-              <span class="text-red" v-if="stockReady === 0">0 (Stok Kosong)</span>
+              <span
+                class="text-red"
+                v-if="stockReady == null"
+              >Silahkan pilih varian lain</span>
               <span v-else>{{ stockReady }}</span>
             </div>
 
@@ -207,7 +190,7 @@
             <br />
             <!-- Informasi Harga -->
             <template
-              v-if="this.dataProduct.product_type === 'Simple Product' || this.productVariant.length > 0"
+              v-if="dataProduct.product_type === 'Simple Product' || ( productVariant !== null && productVariant !== '')"
             >
               <div class="row">
                 <div class="col-xs-6">
@@ -221,43 +204,44 @@
                 <div class="col-xs-6">
                   <h5
                     class="price-detail-text"
-                    v-if="this.productVariant.length > 0"
-                  >Rp{{formatPrice(productVariant[0].price)}}</h5>
-                  <h5 class="price-detail-text" v-else>Rp{{formatPrice(dataProduct.price)}}</h5>
+                    v-if="productVariant"
+                  >Rp{{formatPrice(productVariant.price * qty)}}</h5>
+
+                  <h5 class="price-detail-text" v-else>Rp{{formatPrice(dataProduct.price * qty)}}</h5>
                 </div>
                 <div class="col-xs-6" v-if="user.role.id === 9">
                   <h5
                     class="price-detail-text text-green"
-                    v-if="this.productVariant.length > 0"
-                  >Rp{{formatPrice(productVariant[0].reseller_exclusive_price)}}</h5>
+                    v-if="productVariant"
+                  >Rp{{formatPrice(productVariant.reseller_exclusive_price * qty)}}</h5>
                   <h5
                     class="price-detail-text text-green"
                     v-else
-                  >Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_exclusive_price / 100) )}}</h5>
+                  >Rp{{formatPrice(dataProduct.reseller_exclusive_price * qty)}}</h5>
                 </div>
                 <div class="col-xs-6" v-else-if="user.role.id === 8">
                   <h5
                     class="price-detail-text text-green"
-                    v-if="this.productVariant.length > 0"
-                  >Rp{{formatPrice(productVariant[0].reseller_pro_price )}}</h5>
+                    v-if="productVariant"
+                  >Rp{{formatPrice(productVariant.reseller_pro_price * qty)}}</h5>
                   <h5
                     class="price-detail-text text-green"
                     v-else
-                  >Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_pro_price / 100) )}}</h5>
+                  >Rp{{formatPrice(dataProduct.reseller_pro_price * qty)}}</h5>
                 </div>
                 <div class="col-xs-6" v-else-if="user.role.id === 10">
                   <h5
                     class="price-detail-text text-green"
-                    v-if="this.productVariant.length > 0"
-                  >Rp{{formatPrice(productVariant[0].price - (productVariant[0].price * dataProduct.reseller_free_price / 100) )}}</h5>
+                    v-if="productVariant"
+                  >Rp{{formatPrice(productVariant.price )}}</h5>
                   <h5
                     class="price-detail-text text-green"
                     v-else
-                  >Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_free_price / 100) )}}</h5>
+                  >Rp{{formatPrice(dataProduct.price )}}</h5>
                 </div>
               </div>
             </template>
-            <div class="row" v-if="user.role.id === 8 && dataProduct.length !== 0">
+            <div class="row" v-if="user.role.id === 8 && productVariant">
               <div class="col">
                 <h4 class="upgrade-cta-text">
                   <span class="text-black" style="text-decoration: underline;">
@@ -269,7 +253,7 @@
                       class="bg-green text-white"
                     >Upgrade Dulu Aja!</q-btn>
                   </span> Agar Dapat Harga
-                  <b>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_exclusive_price / 100) )}}</b>
+                  <b>Rp{{formatPrice( productVariant.reseller_exclusive_price)}}</b>
                 </h4>
               </div>
             </div>
@@ -417,13 +401,21 @@ export default {
       optionValueSelected: [],
       qty: 1,
       // Product Variant
-      productVariant: [],
+      productVariant: "",
       // Extra
       confirmOrder: false,
-      user: null,
-      stockReady: null,
-      skuSelected: null
+      user: null
+      // skuSelected: null
     };
+  },
+  computed: {
+    stockReady: function() {
+      if (this.productVariant)
+        return (
+          this.productVariant.stock_qty - this.productVariant.keep_stock_qty
+        );
+      return null;
+    }
   },
   created() {
     this.user = JSON.parse(window.localStorage.getItem("profileUser"));
@@ -450,25 +442,26 @@ export default {
 
             if (this.dataProduct.product_type === "Variant Product") {
               this.getInputOptions();
-            } else {
-              axios
-                .get(inventoryStockUrl + "/" + this.dataProduct.sku, {
-                  headers: getHeader()
-                })
-                .then(response => {
-                  if (response.status === 200) {
-                    this.stockReady =
-                      response.data.data.stock_qty -
-                      response.data.data.keep_stock_qty;
-                    this.skuSelected = response.data.data.sku;
-                  }
-                })
-                .catch(error => {
-                  if (error.response) {
-                    console.log(error.response);
-                  }
-                });
             }
+            // else {
+            //   axios
+            //     .get(inventoryStockUrl + "/" + this.dataProduct.sku, {
+            //       headers: getHeader()
+            //     })
+            //     .then(response => {
+            //       if (response.status === 200) {
+            //         this.stockReady =
+            //           response.data.data.stock_qty -
+            //           response.data.data.keep_stock_qty;
+            //         this.skuSelected = response.data.data.sku;
+            //       }
+            //     })
+            //     .catch(error => {
+            //       if (error.response) {
+            //         console.log(error.response);
+            //       }
+            //     });
+            // }
           }
         })
         .catch(error => {
@@ -546,7 +539,7 @@ export default {
         JSON.stringify(this.dataProduct.product_variants)
       );
 
-      this.productVariant = [];
+      this.productVariant = "";
       //let storeVar = [];
       for (var i = 0, l = varPro.length; i < l; i++) {
         if (
@@ -555,42 +548,43 @@ export default {
         ) {
           // store product variant
 
-          this.productVariant.push({
+          this.productVariant = {
             id: varPro[i].id,
             product_id: varPro[i].product_id,
             sku: varPro[i].sku_display,
             price: varPro[i].price,
             reseller_pro_price: varPro[i].reseller_pro_price,
             reseller_exclusive_price: varPro[i].reseller_exclusive_price,
-            stock_qty: varPro[i].stock_qty
-          });
+            stock_qty: varPro[i].stock_qty,
+            keep_stock_qty: varPro[i].keep_stock_qty
+          };
 
-          axios
-            .get(
-              catalogProductUrl +
-                "/" +
-                varPro[i].product_id +
-                "/" +
-                varPro[i].id,
-              {
-                headers: getHeader()
-              }
-            )
-            .then(response => {
-              console.log("fajar");
+          // axios
+          //   .get(
+          //     catalogProductUrl +
+          //       "/" +
+          //       varPro[i].product_id +
+          //       "/" +
+          //       varPro[i].id,
+          //     {
+          //       headers: getHeader()
+          //     }
+          //   )
+          //   .then(response => {
+          //     console.log("fajar");
 
-              if (response.status === 200) {
-                this.stockReady =
-                  response.data.data.stock_qty -
-                  response.data.data.keep_stock_qty;
-                this.skuSelected = response.data.data.sku;
-              }
-            })
-            .catch(error => {
-              if (error.response) {
-                console.log(error.response);
-              }
-            });
+          //     if (response.status === 200) {
+          //       this.stockReady =
+          //         response.data.data.stock_qty -
+          //         response.data.data.keep_stock_qty;
+          //       this.skuSelected = response.data.data.sku;
+          //     }
+          //   })
+          //   .catch(error => {
+          //     if (error.response) {
+          //       console.log(error.response);
+          //     }
+          //   });
         }
       }
     },
@@ -602,9 +596,9 @@ export default {
         if (this.dataProduct.product_type === "Variant Product") {
           postData.set("product_id", this.dataProduct.id);
           // Post Data Product Variant
-          postData.set("product_sku_id", this.productVariant[0].id);
-          postData.set("product_sku", this.skuSelected);
-          postData.set("product_sku_price", this.productVariant[0].price);
+          postData.set("product_sku_id", this.productVariant.id);
+          postData.set("product_sku", this.productVariant.sku);
+          postData.set("product_sku_price", this.productVariant.price);
           postData.set("options", this.optionValueSelected);
           postData.set("qty", this.qty);
           postData.set("customer_id", this.user.id);
@@ -615,7 +609,7 @@ export default {
         } else {
           postData.set("product_id", this.dataProduct.id);
           postData.set("product_sku_id", 0);
-          postData.set("product_sku", this.skuSelected);
+          postData.set("product_sku", this.productVariant.sku);
           postData.set("qty", this.qty);
           postData.set("customer_id", this.user.id);
           postData.set("customer_name", this.user.name);
@@ -650,7 +644,7 @@ export default {
 
     //     if(this.productVariant.length > 0){
 
-    //         axios.get(inventoryStockUrl + '/' + this.productVariant[0].sku, {headers: getHeader()}).then(response => {
+    //         axios.get(inventoryStockUrl + '/' + this.productVariant.sku, {headers: getHeader()}).then(response => {
 
     //             if(response.status === 200){
     //               this.stockReady = response.data.data.stock_qty;
