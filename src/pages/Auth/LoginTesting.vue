@@ -6,7 +6,7 @@
           <div class="col">
             <img src="~/assets/images/components/logo-distrodakwah-small.png" width="170px" />
             <br />
-            <h1 class="login-text">LOGIN</h1>
+            <h1 class="login-text">LOGIN (Testing)</h1>
             <p class="login-small-text">
               Untuk dapatkan berbagai macam
               <br />keuntungan di Distrodakwah.id
@@ -111,7 +111,6 @@ export default {
   },
   created() {
     this.$q.loading.hide();
-    this.$router.push('/maintenance');
     if (this.$route.params.message === "createsuccess") {
       this.$q.notify({
         position: "top",
