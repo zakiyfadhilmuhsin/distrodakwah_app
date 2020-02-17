@@ -1,157 +1,182 @@
-import LoginPage from 'pages/Auth/Login';
-import CreateAccountPage from 'pages/Auth/CreateAccount';
-import FreeAccountPage from 'pages/Auth/RegisterFreeMember';
-import StorefrontPage from 'pages/Storefront';
-import DetailProductPage from 'pages/DetailProduct';
-import DashboardPage from 'pages/ResellerArea/Dashboard';
-import ListCustomerPage from 'pages/ResellerArea/ListCustomer';
-import ShippingPage from 'pages/Shipping';
-import OrderSummaryPage from 'pages/OrderSummary';
-import CartPage from 'pages/Cart';
-import InvoicePage from 'pages/Invoice';
-import OrderListPage from 'pages/ResellerArea/OrderList';
-import DetailOrderPage from 'pages/ResellerArea/DetailOrder';
-import SettingStorePage from 'pages/ResellerArea/SettingStore';
-import AllProductBrandPage from 'pages/AllProductBrand';
-import SearchPage from 'pages/Search';
-import FeedbackPage from 'pages/ResellerArea/Feedback';
-import HelpDeskPage from 'pages/ResellerArea/HelpDesk';
-import DownloadCatalogPage from 'pages/ResellerArea/DownloadCatalog';
+import LoginPage from "pages/Auth/Login";
+import CreateAccountPage from "pages/Auth/CreateAccount";
+import FreeAccountPage from "pages/Auth/RegisterFreeMember";
+import StorefrontPage from "pages/Storefront";
+import DetailProductPage from "pages/DetailProduct";
+import DashboardPage from "pages/ResellerArea/Dashboard";
+import ListCustomerPage from "pages/ResellerArea/ListCustomer";
+import ShippingPage from "pages/Shipping";
+import OrderSummaryPage from "pages/OrderSummary";
+import CartPage from "pages/Cart";
+import InvoicePage from "pages/Invoice";
+import OrderListPage from "pages/ResellerArea/OrderList";
+import DetailOrderPage from "pages/ResellerArea/DetailOrder";
+import SettingStorePage from "pages/ResellerArea/SettingStore";
+import AllProductBrandPage from "pages/AllProductBrand";
+import SearchPage from "pages/Search";
+import FeedbackPage from "pages/ResellerArea/Feedback";
+import HelpDeskPage from "pages/ResellerArea/HelpDesk";
+import DownloadCatalogPage from "pages/ResellerArea/DownloadCatalog";
+import ResetPassword from "pages/Auth/ResetPassword";
+import UpdatePassword from "pages/Auth/UpdatePassword";
+import UpdatePasswordHasToken from "pages/Auth/UpdatePasswordHasToken";
+import MaintenancePage from "pages/Maintenance";
 
+import LoginTesting from "pages/Auth/LoginTesting";
 
 const routes = [
   {
-    path: '/',
+    path: "/",
     meta: {
-      requiresAuth: true,
+      requiresAuth: true
     },
-    component: StorefrontPage,
+    component: StorefrontPage
   },
   {
-    path: '/activation',
-    component: CreateAccountPage,
+    path: "/activation",
+    component: CreateAccountPage
   },
   {
-    path: '/free',
-    component: FreeAccountPage,
+    path: "/resetPassword",
+    component: ResetPassword
   },
   {
-    path: '/login/:message?',
-    component: LoginPage,
+    path: "/updatePassword",
+    component: UpdatePassword
   },
   {
-    path: '/detail/:id',
+    path: "/updatePassword/HasToken",
+    component: UpdatePasswordHasToken
+  },
+  {
+    path: "/free",
+    component: FreeAccountPage
+  },
+  {
+    path: "/login/:message?",
+    component: LoginPage
+  },
+  {
+    path: "/login-testing/:message?",
+    component: LoginTesting
+  },
+  {
+    path: "/detail/:id",
     component: DetailProductPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/cart',
+    path: "/cart",
     component: CartPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/shipping',
+    path: "/shipping",
     component: ShippingPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/orderSummary',
+    path: "/orderSummary",
     component: OrderSummaryPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/invoice',
+    path: "/invoice",
     component: InvoicePage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/dashboard',
+    path: "/dashboard",
     component: DashboardPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/orderList/:status?',
+    path: "/orderList/:status?",
     component: OrderListPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/detailOrder/:id',
+    path: "/detailOrder/:id",
     component: DetailOrderPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/listCustomer',
+    path: "/listCustomer",
     component: ListCustomerPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/settingStore',
+    path: "/settingStore",
     component: SettingStorePage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/allProductBrand/:category/:category_id',
+    path: "/allProductBrand/:category/:category_id",
     component: AllProductBrandPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/search',
+    path: "/search",
     component: SearchPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/feedback',
+    path: "/feedback",
     component: FeedbackPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/helpdesk',
+    path: "/helpdesk",
     component: HelpDeskPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
   {
-    path: '/downloadCatalog',
+    path: "/downloadCatalog",
     component: DownloadCatalogPage,
     meta: {
-      requiresAuth: true,
-    },
+      requiresAuth: true
+    }
   },
-]
+  {
+    path: "/maintenance",
+    component: MaintenancePage
+  }
+];
 
 // Always leave this as last one
-if (process.env.MODE !== 'ssr') {
+if (process.env.MODE !== "ssr") {
   routes.push({
-    path: '*',
-    component: () => import('pages/Error404.vue')
-  })
+    path: "*",
+    component: () => import("pages/Error404.vue")
+  });
 }
 
-export default routes
+export default routes;
