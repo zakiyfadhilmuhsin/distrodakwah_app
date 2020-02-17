@@ -25,6 +25,9 @@
         },
         "pwa": {
           "iconHash": "ff5051838bc18280e738439da8a02eb9"
+        },
+        "spa": {
+          "iconHash": "ff5051838bc18280e738439da8a02eb9"
         }
       }
     }

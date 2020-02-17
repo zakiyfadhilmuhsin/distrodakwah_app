@@ -1,8 +1,8 @@
 import router from 'src/router/routes'
 
 //export const hostDomain = 'https://api-test.needherbal.web.id'
-export const hostDomain = process.env.APIGATEWAY
-export const webReplicaDomain = process.env.WEBREPLICA_DOMAIN
+export const hostDomain = process.env.DEV ? process.env.API_DEV : process.env.API
+export const webReplicaDomain = process.env.DEV ? process.env.WEBREPLICA_DOMAIN_DEV : process.env.WEBREPLICA_DOMAIN
 export const apiDomain = hostDomain
 
 export const loginUrl = apiDomain + '/auth/login'
