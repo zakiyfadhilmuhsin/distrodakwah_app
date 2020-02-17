@@ -1,17 +1,13 @@
 <template>
   <q-layout view="hHh lpR fFf">
-
     <q-header class="mobile-layout-on-desktop">
       <q-toolbar class="bg-distrodakwah text-white">
-        <q-btn
-          flat
-          round
-          dense
-          to="/"
-        >
-          <q-icon name="arrow_back" color="white" /> 
+        <q-btn flat round dense to="/">
+          <q-icon name="arrow_back" color="white" />
         </q-btn>
-        <q-toolbar-title><span style="font-size: 16px; font-weight: bold">Keranjang Belanja</span></q-toolbar-title>
+        <q-toolbar-title>
+          <span style="font-size: 16px; font-weight: bold">Keranjang Belanja</span>
+        </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
@@ -29,27 +25,38 @@
             icon="home"
             to="/"
             style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Beranda</span></q-route-tab>
+          >
+            <span style="font-size: 10px;">Beranda</span>
+          </q-route-tab>
           <q-route-tab
             icon="receipt"
             to="/orderList"
             style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Pesanan</span></q-route-tab>
+          >
+            <span style="font-size: 10px;">Pesanan</span>
+          </q-route-tab>
           <q-route-tab
             icon="local_mall"
             to="/cart"
             style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Keranjang</span><q-badge color="red" text-color="white" floating v-if="totalCartItem !== null"><b>{{ totalCartItem }}</b></q-badge></q-route-tab>
+          >
+            <span style="font-size: 10px;">Keranjang</span>
+            <q-badge color="red" text-color="white" floating v-if="totalCartItem !== null">
+              <b>{{ totalCartItem }}</b>
+            </q-badge>
+          </q-route-tab>
           <q-route-tab
             icon="account_circle"
             to="/dashboard"
             style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Profil</span></q-route-tab>
+          >
+            <span style="font-size: 10px;">Profil</span>
+          </q-route-tab>
           <!-- <q-route-tab
             icon="verified_user"
             to="/storefront"
             style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Support</span></q-route-tab> -->
+          ><span style="font-size: 10px;">Support</span></q-route-tab>-->
         </q-tabs>
       </center>
     </q-footer>
@@ -64,14 +71,39 @@
                   <img :src="item.product_image" width="100%" style="border: 1px solid whitesmoke" />
                 </div>
                 <div class="col-7" style="padding: 0 15px">
-                  <h5 style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; line-height: 16px">{{ item.product_name }}</h5>
-                  <h6 style="margin: -15px 0; font-size: 12px;"><span v-for="(opt, i) in item.options" :key="i">{{opt.option + ': ' + opt.value}} </span></h6>
-                  <h6 style="margin: -15px 0; font-size: 12px;">Qty {{ item.qty }} x Rp{{ formatPrice(item.price) }}</h6>
-                  <h6 style="margin: -15px 0; font-size: 12px;" class="text-orange-8">Rp{{ formatPrice(item.qty * item.price) }}</h6>
+                  <h5
+                    style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; line-height: 16px"
+                  >{{ item.product_name }}</h5>
+                  <h6 style="margin: -15px 0; font-size: 12px;">
+                    <span
+                      v-for="(opt, i) in item.options"
+                      :key="i"
+                    >{{opt.option + ': ' + opt.value}}</span>
+                  </h6>
+                  <h6
+                    style="margin: -15px 0; font-size: 12px;"
+                  >Qty {{ item.qty }} x Rp{{ formatPrice(item.price) }}</h6>
+                  <h6
+                    style="margin: -15px 0; font-size: 12px;"
+                    class="text-orange-8"
+                  >Rp{{ formatPrice(item.qty * item.price) }}</h6>
                 </div>
                 <div class="col-2 text-right self-center">
-                  <q-btn flat round icon="create" style="font-size: 10px" @click="editQty(item.id, item.price, item.qty)" />
-                  <q-btn flat color="red" round icon="delete_forever" style="font-size: 10px" @click="removeProduct(item.product_id, item.product_sku_id, item.qty, item.price)" />
+                  <q-btn
+                    flat
+                    round
+                    icon="create"
+                    style="font-size: 10px"
+                    @click="editQty(item.id, item.price, item.qty)"
+                  />
+                  <q-btn
+                    flat
+                    color="red"
+                    round
+                    icon="delete_forever"
+                    style="font-size: 10px"
+                    @click="removeProduct(item.product_id, item.product_sku_id, item.qty, item.price)"
+                  />
                 </div>
               </div>
             </template>
@@ -79,7 +111,10 @@
               <div class="row q-pa-lg">
                 <div class="col">
                   <center>
-                    <img src="http://balitakita.com/packages/yusidabcs/checkout/img/empty-cart-vector.png" width="85" />
+                    <img
+                      src="http://balitakita.com/packages/yusidabcs/checkout/img/empty-cart-vector.png"
+                      width="85"
+                    />
                     <div>Yah, Keranjang Masih Kosong.. Belanja Yuk!</div>
                   </center>
                 </div>
@@ -94,7 +129,11 @@
                 <q-list dense>
                   <q-item clickable v-ripple @click="addCouponDialog = true">
                     <q-item-section avatar>
-                      <img src="~/assets/images/components/coupon.png" width="30" class="self-center" />
+                      <img
+                        src="~/assets/images/components/coupon.png"
+                        width="30"
+                        class="self-center"
+                      />
                     </q-item-section>
 
                     <q-item-section>Punya kode voucher?</q-item-section>
@@ -112,7 +151,12 @@
                       <q-icon color="green" name="check_circle" />
                     </q-item-section>
 
-                    <q-item-section><span>Kode <b>"{{ couponCode }}"</b> Terpasang..</span></q-item-section>
+                    <q-item-section>
+                      <span>
+                        Kode
+                        <b>"{{ couponCode }}"</b> Terpasang..
+                      </span>
+                    </q-item-section>
 
                     <q-item-section side>
                       <q-btn flat dense icon="backspace" color="red" @click="removeCoupon" />
@@ -126,11 +170,16 @@
             <div class="row q-px-lg items-center" style="padding-top: 15px; padding-bottom: 15px">
               <div class="col">
                 <h6 style="font-size: 16px; margin: 0; font-family: 'Open Sans'">Total Item</h6>
-                <h6 style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold">{{ totalItem }}</h6>
+                <h6
+                  style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold"
+                >{{ totalItem }}</h6>
               </div>
               <div class="col">
                 <h6 style="font-size: 16px; margin: 0; font-family: 'Open Sans'">Subtotal</h6>
-                <h6 style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold" class="text-red">Rp{{ formatPrice(subTotal) }}</h6>
+                <h6
+                  style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold"
+                  class="text-red"
+                >Rp{{ formatPrice(subTotal) }}</h6>
               </div>
             </div>
           </div>
@@ -140,9 +189,15 @@
                 <img src="~/assets/images/components/peti.png" width="130" />
               </div>
               <div class="col">
-                <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Alhamdulillah potensi keuntungan kamu adalah</h6>
-                <h6 style="font-size: 28px; margin: 8px 0; font-family: 'Open Sans'; font-weight: bold">Rp{{formatPrice(totalProfit)}}</h6>
-                <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Jangan lupa sedekah ya :)</h6>
+                <h6
+                  style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px"
+                >Alhamdulillah potensi keuntungan kamu adalah</h6>
+                <h6
+                  style="font-size: 28px; margin: 8px 0; font-family: 'Open Sans'; font-weight: bold"
+                >Rp{{formatPrice(totalProfit)}}</h6>
+                <h6
+                  style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px"
+                >Jangan lupa sedekah ya :)</h6>
               </div>
             </div>
           </div>
@@ -153,7 +208,7 @@
                 <q-checkbox keep-color color="orange-8" dense v-model="donasi_rq"><h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Donasi <span class="text-bold">Rp300</span> untuk Rumah Quran</h6></q-checkbox>
               </div>
             </div>
-          </div> -->
+          </div>-->
         </div>
         <div class="row bg-white q-pa-md">
           <div class="col">
@@ -161,9 +216,7 @@
               flat
               class="bg-orange-8 text-white full-width"
               @click="setShippingAddress"
-            >
-              Atur Alamat Pengiriman
-            </q-btn>
+            >Atur Alamat Pengiriman</q-btn>
           </div>
         </div>
       </q-page>
@@ -184,7 +237,11 @@
           </q-card-section>
 
           <q-card-actions class="q-px-md q-pb-md">
-            <q-btn flat class="bg-orange-8 text-white text-capitalize full-width" @click="updateQty">Ubah</q-btn>
+            <q-btn
+              flat
+              class="bg-orange-8 text-white text-capitalize full-width"
+              @click="updateQty"
+            >Ubah</q-btn>
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -192,14 +249,30 @@
         <q-card style="min-width: 360px">
           <!-- <q-card-section>
             <div class="text-h6">Tambah Pelanggan</div>
-          </q-card-section> -->
+          </q-card-section>-->
 
           <q-card-section>
-            <q-input type="text" outlined dense color="orange-8" label="Kode Voucher" v-model="couponCode" placeholder="Silahkan masukkan kode voucher disini.." @input="val => { couponCode = val.toUpperCase() }" />
+            <q-input
+              type="text"
+              outlined
+              dense
+              color="orange-8"
+              label="Kode Voucher"
+              v-model="couponCode"
+              placeholder="Silahkan masukkan kode voucher disini.."
+              @input="val => { couponCode = val.toUpperCase() }"
+            />
           </q-card-section>
 
           <q-card-actions class="q-px-md q-pb-md q-pt-xs">
-            <q-btn flat label="Pasang Voucher" color="white" class="bg-orange-8 text-capitalize full-width" @click="addCoupon" v-close-popup />
+            <q-btn
+              flat
+              label="Pasang Voucher"
+              color="white"
+              class="bg-orange-8 text-capitalize full-width"
+              @click="addCoupon"
+              v-close-popup
+            />
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -208,13 +281,23 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { getCartUrl, catalogProductUrl, removeProductCartUrl, totalCartItemUrl, updateCartQtyUrl, checkCouponUrl, addVoucherCartUrl, removeVoucherCartUrl, getHeader } from 'src/config';
+import axios from "axios";
+import {
+  getCartUrl,
+  catalogProductUrl,
+  removeProductCartUrl,
+  totalCartItemUrl,
+  updateCartQtyUrl,
+  checkCouponUrl,
+  addVoucherCartUrl,
+  removeVoucherCartUrl,
+  getHeader
+} from "src/config";
 // Loading
-import { QSpinnerPuff } from 'quasar'
+import { QSpinnerPuff } from "quasar";
 
 export default {
-  data () {
+  data() {
     return {
       // Data Keranjang/Cart
       cartData: [],
@@ -237,201 +320,232 @@ export default {
       cartQty: null,
       addCouponDialog: false,
       couponCode: null,
-      couponUse: false,
-    }
+      couponUse: false
+    };
   },
-  created () {
-    this.user = JSON.parse(window.localStorage.getItem('profileUser'));
+  created() {
+    this.user = JSON.parse(window.localStorage.getItem("profileUser"));
   },
-  mounted () {
+  mounted() {
     this.getCartData();
     // Get Total Cart Item
-    axios.get( totalCartItemUrl + '/' + this.user.id, { headers: getHeader() } )
+    axios
+      .get(totalCartItemUrl + "/" + this.user.id, { headers: getHeader() })
       .then(response => {
-        console.log(response)
+        console.log(response);
 
         if (response.status === 200) {
           this.totalCartItem = response.data.data;
         }
-
       })
       .catch(error => {
         if (error.response) {
-          console.log(error.response)
+          console.log(error.response);
         }
-      })
+      });
   },
   methods: {
-    getCartData () {
-
+    getCartData() {
       this.$q.loading.show({
         spinner: QSpinnerPuff,
-        spinnerColor: 'black',
+        spinnerColor: "black",
         spinnerSize: 50,
-        backgroundColor: 'grey',
-        message: '<b>Mohon Tunggu..</b>',
-        messageColor: 'black'
-      })
+        backgroundColor: "grey",
+        message: "<b>Mohon Tunggu..</b>",
+        messageColor: "black"
+      });
 
       this.cartData = [];
       this.items = [];
       this.totalProfit = 0;
       this.totalItem = 0;
 
-      axios.get( getCartUrl + '/' + this.user.id, { headers: getHeader() } )
+      axios
+        .get(getCartUrl + "/" + this.user.id, { headers: getHeader() })
         .then(response => {
-          console.log(response)
+          console.log(response);
 
           if (response.status === 200) {
-
-            this.$q.loading.hide()
+            this.$q.loading.hide();
 
             this.cartData = response.data.data;
 
-            if(this.cartData.voucher_id !== null){
+            if (this.cartData.voucher_id !== null) {
               this.couponUse = true;
               this.couponCode = this.cartData.voucher_code_name;
             }
 
-            for(let i=0; i<this.cartData.cart_detail.length; i++){
+            for (let i = 0; i < this.cartData.cart_detail.length; i++) {
               // alert(this.cartData.cart_detail[i].product_id);
-              axios.get(catalogProductUrl + '/' + this.cartData.cart_detail[i].product_id, { headers: getHeader() } )
+              axios
+                .get(
+                  catalogProductUrl +
+                    "/" +
+                    this.cartData.cart_detail[i].product_id,
+                  { headers: getHeader() }
+                )
                 .then(response => {
-
                   let product_name = response.data.data.product_name;
                   let product_image = response.data.data.featured_image;
                   let qty = this.cartData.cart_detail[i].qty;
                   let product_id = this.cartData.cart_detail[i].product_id;
                   let id = this.cartData.cart_detail[i].id;
-                  let reseller_discount = null;
-                  if(this.user.role.id === 9){
-                    reseller_discount = response.data.data.reseller_exclusive_price;
-                  }else if(this.user.role.id === 8){
-                    reseller_discount = response.data.data.reseller_pro_price;
-                  }else if(this.user.role.id === 10){
-                    reseller_discount = response.data.data.reseller_free_price;
-                  }
 
-                  if(this.cartData.cart_detail[i].product_sku_id !== null){
-
-                    axios.get(catalogProductUrl + '/' + this.cartData.cart_detail[i].product_id + '/' + this.cartData.cart_detail[i].product_sku_id, { headers: getHeader() } )
+                  if (this.cartData.cart_detail[i].product_sku_id !== null) {
+                    axios
+                      .get(
+                        catalogProductUrl +
+                          "/" +
+                          this.cartData.cart_detail[i].product_id +
+                          "/" +
+                          this.cartData.cart_detail[i].product_sku_id,
+                        { headers: getHeader() }
+                      )
                       .then(response => {
+                        console.log(response.data.data);
 
                         // let options = JSON.parse(this.cartData.cart_detail[i].options);
                         // for(var opt=0; opt<options.length; opt++){
                         //   console.log(options[opt].option + 'adalah' + options[opt].value);
                         // }
-                        
+                        let price = null;
+                        if (this.user.role.id === 9) {
+                          price = response.data.data.reseller_exclusive_price;
+                        } else if (this.user.role.id === 8) {
+                          price = response.data.data.reseller_pro_price;
+                        } else if (this.user.role.id === 10) {
+                          price = response.data.data.reseller_free_price;
+                        }
                         this.items.push({
-                            id: id,
-                            product_id: product_id,
-                            product_name: product_name,
-                            product_image: product_image,
-                            price: response.data.data.price - (response.data.data.price * reseller_discount / 100),
-                            options: JSON.parse(this.cartData.cart_detail[i].options),
-                            qty: qty,
-                            product_sku_id: this.cartData.cart_detail[i].product_sku_id,
+                          id: id,
+                          product_id: product_id,
+                          product_name: product_name,
+                          product_image: product_image,
+                          price,
+                          options: JSON.parse(
+                            this.cartData.cart_detail[i].options
+                          ),
+                          qty: qty,
+                          product_sku_id: this.cartData.cart_detail[i]
+                            .product_sku_id
                         });
 
-                        this.totalProfit += (response.data.data.price * reseller_discount / 100) * qty;
+                        this.totalProfit +=
+                          (response.data.data.price - price) * qty;
                         this.totalItem += qty;
-
-                      }).catch(error => {
-
-                        if (error.response) {
-                          console.log(error.response)
-                        }
-
                       })
-
-                  }else{
-
+                      .catch(error => {
+                        if (error.response) {
+                          console.log(error.response);
+                        }
+                      });
+                  } else {
+                    let price = null;
+                    if (this.user.role.id === 9) {
+                      price = response.data.data.reseller_exclusive_price;
+                    } else if (this.user.role.id === 8) {
+                      price = response.data.data.reseller_pro_price;
+                    } else if (this.user.role.id === 10) {
+                      price = response.data.data.reseller_free_price;
+                    }
                     this.items.push({
-                        id: id,
-                        product_id: product_id,
-                        product_name: product_name,
-                        product_image: product_image,
-                        price: response.data.data.price - (response.data.data.price * reseller_discount / 100),
-                        qty: qty,
-                        product_sku_id: this.cartData.cart_detail[i].product_sku_id,
+                      id: id,
+                      product_id: product_id,
+                      product_name: product_name,
+                      product_image: product_image,
+                      price,
+                      qty: qty,
+                      product_sku_id: this.cartData.cart_detail[i]
+                        .product_sku_id
                     });
 
-                    this.totalProfit += (response.data.data.price * reseller_discount / 100) * qty;
+                    this.totalProfit +=
+                      (response.data.data.price - price) * qty;
                     this.totalItem += qty;
-
                   }
-
-                }).catch(error => {
-
-                  if (error.response) {
-                    console.log(error.response)
-                  }
-
-                })
-
-            }
-
-          }
-
-          this.subTotal = this.cartData.total_amount;
-
-        })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response)
-          }
-        })
-    },
-    formatPrice(value) {
-        let val = (value/1).toFixed(0).replace('.', ',')
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-    },
-    removeProduct(id, product_sku_id, qty, price) {
-        let sku_id = null;
-
-        if(product_sku_id !== null){
-          sku_id = product_sku_id;
-        }else{
-          sku_id = 0;
-        }
-          
-        axios.delete( removeProductCartUrl + '/' + this.user.id + '/' + id + '/' + sku_id + '/' + qty + '/' + price, { headers: getHeader() } )
-          .then(response => {
-            console.log(response)
-            if (response.status === 200) {
-              this.getCartData();
-
-              // Get Total Cart Item
-              axios.get( totalCartItemUrl + '/' + this.user.id, { headers: getHeader() } )
-                .then(response => {
-                  console.log(response)
-
-                  if (response.status === 200) {
-                    this.totalCartItem = response.data.data;
-                  }
-
                 })
                 .catch(error => {
                   if (error.response) {
-                    console.log(error.response)
+                    console.log(error.response);
                   }
-                })
+                });
             }
-          }).catch(error => {
-            if (error.response) {
-              console.log(error.response)
-            }
-          })
+          }
 
+          this.subTotal = this.cartData.total_amount;
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response);
+          }
+        });
     },
-    setShippingAddress () {
-      if(this.totalItem > 0){
-        this.$router.push('/shipping');
-      }else{
-        alert('Keranjang Belanja Masih Kosong!');
+    formatPrice(value) {
+      let val = (value / 1).toFixed(0).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    },
+    removeProduct(id, product_sku_id, qty, price) {
+      let sku_id = null;
+
+      if (product_sku_id !== null) {
+        sku_id = product_sku_id;
+      } else {
+        sku_id = 0;
+      }
+
+      axios
+        .delete(
+          removeProductCartUrl +
+            "/" +
+            this.user.id +
+            "/" +
+            id +
+            "/" +
+            sku_id +
+            "/" +
+            qty +
+            "/" +
+            price,
+          { headers: getHeader() }
+        )
+        .then(response => {
+          console.log(response);
+          if (response.status === 200) {
+            this.getCartData();
+
+            // Get Total Cart Item
+            axios
+              .get(totalCartItemUrl + "/" + this.user.id, {
+                headers: getHeader()
+              })
+              .then(response => {
+                console.log(response);
+
+                if (response.status === 200) {
+                  this.totalCartItem = response.data.data;
+                }
+              })
+              .catch(error => {
+                if (error.response) {
+                  console.log(error.response);
+                }
+              });
+          }
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response);
+          }
+        });
+    },
+    setShippingAddress() {
+      if (this.totalItem > 0) {
+        this.$router.push("/shipping");
+      } else {
+        alert("Keranjang Belanja Masih Kosong!");
       }
     },
-    editQty (id, price, qty) {
+    editQty(id, price, qty) {
       this.cartID = id;
       this.cartPrice = price;
       this.cartQty = qty;
@@ -441,7 +555,7 @@ export default {
       // Load editQtyDialog
       this.editQtyDialog = true;
     },
-    updateQty () {
+    updateQty() {
       let currentQty = this.cartQty;
       let newQty = this.qty;
       let currentPrice = this.cartPrice * currentQty;
@@ -450,23 +564,24 @@ export default {
       let totalKurangi = totalAmount - currentPrice;
       let totalAkhir = totalKurangi + newPrice;
 
-      console.log('Harga Lama : ' + currentPrice);
-      console.log('Harga Baru : ' + newPrice);
+      console.log("Harga Lama : " + currentPrice);
+      console.log("Harga Baru : " + newPrice);
 
-      console.log('Total Setelah Dikurangi : ' + totalKurangi);
-      console.log('Total Akhir : ' + totalAkhir);
+      console.log("Total Setelah Dikurangi : " + totalKurangi);
+      console.log("Total Akhir : " + totalAkhir);
 
       let updateData = new FormData();
 
-      updateData.set('cart_id', this.cartID);
-      updateData.set('current_price', currentPrice);
-      updateData.set('new_price', newPrice);
-      updateData.set('qty', newQty);
+      updateData.set("cart_id", this.cartID);
+      updateData.set("current_price", currentPrice);
+      updateData.set("new_price", newPrice);
+      updateData.set("qty", newQty);
 
       // Update Qty
-      axios.post( updateCartQtyUrl, updateData, { headers: getHeader() } )
+      axios
+        .post(updateCartQtyUrl, updateData, { headers: getHeader() })
         .then(response => {
-          console.log(response)
+          console.log(response);
 
           if (response.status === 200) {
             console.log(response.data.data);
@@ -474,103 +589,106 @@ export default {
             this.qty = null;
 
             // Get Total Cart Item
-            axios.get( totalCartItemUrl + '/' + this.user.id, { headers: getHeader() } )
+            axios
+              .get(totalCartItemUrl + "/" + this.user.id, {
+                headers: getHeader()
+              })
               .then(response => {
-                console.log(response)
+                console.log(response);
 
                 if (response.status === 200) {
                   this.totalCartItem = response.data.data;
                 }
-
               })
               .catch(error => {
                 if (error.response) {
-                  console.log(error.response)
+                  console.log(error.response);
                 }
-              })
+              });
           }
-
         })
         .catch(error => {
           if (error.response) {
-            console.log(error.response)
+            console.log(error.response);
           }
-        })
+        });
 
       // close Dialog
       this.editQtyDialog = false;
     },
-    addCoupon () {
-
-      axios.get( checkCouponUrl + '/' + this.couponCode, { headers: getHeader() } )
+    addCoupon() {
+      axios
+        .get(checkCouponUrl + "/" + this.couponCode, { headers: getHeader() })
         .then(response => {
-          console.log(response)
+          console.log(response);
 
           if (response.status === 200 && response.data.length !== 0) {
-
             let postVoucher = new FormData();
 
-            postVoucher.set('cart_id', this.cartData.id);
-            postVoucher.set('coupon_id', response.data.id);
-            postVoucher.set('coupon_code', response.data.coupon_code);
-            postVoucher.set('coupon_discount', response.data.coupon_discount);
+            postVoucher.set("cart_id", this.cartData.id);
+            postVoucher.set("coupon_id", response.data.id);
+            postVoucher.set("coupon_code", response.data.coupon_code);
+            postVoucher.set("coupon_discount", response.data.coupon_discount);
 
             // Add Coupon
-            axios.post( addVoucherCartUrl, postVoucher, { headers: getHeader() } )
+            axios
+              .post(addVoucherCartUrl, postVoucher, { headers: getHeader() })
               .then(response => {
-                console.log(response)
+                console.log(response);
 
                 if (response.status === 200) {
                   this.getCartData();
                   this.couponUse = true;
                 }
-
               })
               .catch(error => {
                 if (error.response) {
-                  console.log(error.response)
+                  console.log(error.response);
                 }
-              })
-
-          }else{
-            this.$q.notify({position: 'top', color: 'red', message: 'Kupon tidak tersedia!'});
+              });
+          } else {
+            this.$q.notify({
+              position: "top",
+              color: "red",
+              message: "Kupon tidak tersedia!"
+            });
           }
-
         })
         .catch(error => {
           if (error.response) {
-            console.log(error.response)
-            this.$q.notify({position: 'top', color: 'red', message: 'Kupon tidak tersedia!'});
+            console.log(error.response);
+            this.$q.notify({
+              position: "top",
+              color: "red",
+              message: "Kupon tidak tersedia!"
+            });
           }
-        })
-
+        });
     },
-    removeCoupon () {
-
-      axios.delete( removeVoucherCartUrl + '/' + this.cartData.voucher_id, { headers: getHeader() } )
+    removeCoupon() {
+      axios
+        .delete(removeVoucherCartUrl + "/" + this.cartData.voucher_id, {
+          headers: getHeader()
+        })
         .then(response => {
-          console.log(response)
+          console.log(response);
 
           if (response.status === 200) {
-            
             setTimeout(() => {
               this.getCartData();
               this.couponUse = false;
               this.couponCode = null;
             }, 500);
-
           }
-
         })
         .catch(error => {
           if (error.response) {
-            console.log(error.response)
+            console.log(error.response);
           }
-        })
-
+        });
     }
   }
-}
+};
 </script>
 
 <style>
