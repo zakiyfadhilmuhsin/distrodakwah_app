@@ -1,6 +1,6 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
-
+const env = require('quasar-dotenv').config()
 module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
@@ -106,15 +106,7 @@ module.exports = function (ctx) {
     supportIE: false,
 
     build: {
-      env: ctx.dev
-      ? { // so on dev we'll have
-        APIGATEWAY: JSON.stringify('http://apigateway.test'),
-        WEBREPLICA_DOMAIN: JSON.stringify('http://localhost:8082/#')
-      }
-      : { // and on build (production):
-        APIGATEWAY: JSON.stringify('https://api.needherbal.web.id'),
-        WEBREPLICA_DOMAIN: JSON.stringify('https://orderdd.netlify.com/#')
-      },
+      env: env,
       scopeHoisting: true,
       // vueRouterMode: 'history',
       // vueCompiler: true,
