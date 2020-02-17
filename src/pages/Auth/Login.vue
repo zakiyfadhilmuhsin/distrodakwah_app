@@ -111,8 +111,6 @@ export default {
   },
   created() {
     this.$q.loading.hide();
-    console.log('fajar');
-    console.log(process.env.APIGATEWAY);
     this.$router.push('/maintenance');
     if (this.$route.params.message === "createsuccess") {
       this.$q.notify({
