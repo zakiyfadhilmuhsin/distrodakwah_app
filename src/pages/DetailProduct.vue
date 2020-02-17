@@ -679,8 +679,8 @@ export default {
         }
       );
     },
-    upgrade () {
-      openURL('https://serbalaris.orderonline.id/upgrade-eksklusif');
+    upgrade() {
+      openURL("https://serbalaris.orderonline.id/upgrade-eksklusif");
     }
   },
   components: { carousel, openURL }
