@@ -24,81 +24,83 @@
           <div style="background-color: white;">
             <!-- <div v-infinite-scroll="getProduct" infinite-scroll-disabled="busy" infinite-scroll-distance="limit" class="row q-px-md" style="padding: 15px 10px"> -->
             <!-- <div class="product-card"> -->
-              <!-- <div
+            <!-- <div
                 class="row q-px-md"
                 style="margin-bottom: 15px padding: 15px 10px"
                 v-for="(product, index) in newProduct"
                 :key="index"
                 v-if="product.category_id === Number(categoryID)"
-              > -->
+            >-->
+            <div class="row q-px-md q-py-lg" style="margin-bottom: 15px padding: 15px 10px">
               <div
-                class="row q-px-md q-py-lg"
-                style="margin-bottom: 15px padding: 15px 10px"
+                class="col-6"
+                style="margin-bottom: 15px"
+                v-for="(product, index) in newProduct"
+                :key="index"
               >
-                <div class="col-6" style="margin-bottom: 15px" v-for="(product, index) in newProduct" :key="index">
-                  <q-card class="my-card bg-grey-2 col-6" style="margin: 0 5px" flat bordered>
-                    <transition
-                      appear
-                      enter-active-class="animated fadeIn"
-                      leave-active-class="animated fadeOut"
-                    >
-                      <img
-                        :src="product.featured_image"
-                        style="width: 100%"
-                        v-show="featuredImageShow == true"
-                      />
-                    </transition>
+                <q-card class="my-card bg-grey-2 col-6" style="margin: 0 5px" flat bordered>
+                  <transition
+                    appear
+                    enter-active-class="animated fadeIn"
+                    leave-active-class="animated fadeOut"
+                  >
+                    <img
+                      :src="product.featured_image"
+                      style="width: 100%"
+                      v-show="featuredImageShow == true"
+                    />
+                  </transition>
 
+                  <center>
+                    <q-spinner
+                      color="dark"
+                      size="2em"
+                      v-show="innerLoading == true"
+                      style="margin: 10px 0"
+                    />
+                  </center>
+
+                  <q-card-section style="padding: 10px 16px 16px 16px">
                     <center>
-                      <q-spinner
-                        color="dark"
-                        size="2em"
-                        v-show="innerLoading == true"
-                        style="margin: 10px 0"
-                      />
-                    </center>
-
-                    <q-card-section style="padding: 10px 16px 16px 16px">
-                      <center>
+                      <div
+                        style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px; height: 35px"
+                      >{{ product.product_name }}</div>
+                      <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
+                      <div class="q-px-sm q-py-xs bg-green">
                         <div
-                          style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px; height: 35px"
-                        >{{ product.product_name }}</div>
-                        <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
-                        <div class="q-px-sm q-py-xs bg-green">
-                          <div
-                            class="text-white"
-                            style="font-weight: bolder; margin-top:0"
-                            v-if="user.role.id === 9"
-                          >{{'Rp' + formatPrice(product.price * product.reseller_exclusive_price / 100)}}</div>
-                          <div
-                            class="text-white"
-                            style="font-weight: bolder; margin-top:0"
-                            v-else-if="user.role.id === 8"
-                          >{{'Rp' + formatPrice(product.price * product.reseller_pro_price / 100)}}</div>
-                          <div
-                            class="text-white"
-                            style="font-weight: bolder; margin-top:0"
-                            v-else-if="user.role.id === 10"
-                          >{{'Rp' + formatPrice(product.price * product.reseller_free_price / 100)}}</div>
-                        </div>
-                      </center>
-                    </q-card-section>
+                          class="text-white"
+                          style="font-weight: bolder; margin-top:0"
+                          v-if="user.role.id === 9"
+                        >{{'Rp' + formatPrice(product.product_variants[0].price - product.product_variants[0].reseller_exclusive_price)}}</div>
+                        <div
+                          class="text-white"
+                          style="font-weight: bolder; margin-top:0"
+                          v-else-if="user.role.id === 8"
+                        >{{'Rp' + formatPrice(product.product_variants[0].price - product.product_variants[0].reseller_pro_price)}}</div>
+                        <div
+                          class="text-white"
+                          style="font-weight: bolder; margin-top:0"
+                          v-else-if="user.role.id === 10"
+                        >0</div>
+                      </div>
+                    </center>
+                  </q-card-section>
 
-                    <q-card-section>
-                      <center>
-                        <q-btn
-                          :to="'/detail/' + product.id"
-                          flat
-                          class="bg-orange-8 text-white"
-                          style="padding-top: 0px; padding-bottom: 0px"
-                        >
-                          <span style="text-transform: capitalize;">Beli Sekarang</span>
-                        </q-btn>
-                      </center>
-                    </q-card-section>
-                  </q-card>
-                </div>
+                  <q-card-section>
+                    <center>
+                      <q-btn
+                        :to="'/detail/' + product.id"
+                        flat
+                        class="bg-orange-8 text-white"
+                        style="padding-top: 0px; padding-bottom: 0px"
+                      >
+                        <span style="text-transform: capitalize;">Beli Sekarang</span>
+                      </q-btn>
+                    </center>
+                  </q-card-section>
+                </q-card>
               </div>
+            </div>
             <!-- </div> -->
             <!-- infiniteScroll -->
             <!-- </div> -->
@@ -232,14 +234,11 @@ export default {
   },
   methods: {
     onChangePage(page) {
-      this.getProduct()
+      this.getProduct();
     },
     getProduct() {
-      console.log('poqwei')
-
       // if (this.productsCount !== this.dataProduct.length || this.productsCount === 0) {
-        if (this.productsCount === 0) {
-
+      if (this.productsCount === 0) {
         const params = [
           //'api_key=bb6f51bef07465653c3e553d6ab161a8',
           `sort=${this.sortField}`,
@@ -253,7 +252,9 @@ export default {
         this.busy = true;
 
         axios
-          .get(getProductByCategoryUrl + '/' + this.categoryID + `?${params}`, { headers: getHeader() })
+          .get(getProductByCategoryUrl + "/" + this.categoryID + `?${params}`, {
+            headers: getHeader()
+          })
           .then(response => {
             const data = response.data.data;
             if (response.status === 200) {

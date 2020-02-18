@@ -202,8 +202,8 @@
                           <q-btn
                             :to="'/detail/' + product.id"
                             flat
-                            class="bg-orange-8 text-white"
-                            style="padding-top: 0px; padding-bottom: 0px"
+                            class="bg-orange-8 text-white centered-text"
+                            style=""
                           >
                             <span style="text-transform: capitalize;">Beli Sekarang</span>
                           </q-btn>
@@ -528,5 +528,8 @@ export default {
 }
 .owl-theme .owl-dots .owl-dot.active span {
   background: #fea500 !important;
+}
+.q-btn__wrapper{
+  width:auto;
 }
 </style>
