@@ -160,7 +160,6 @@
 
 <script>
 import Vue from 'vue';
-import axios from 'axios';
 import { showOrderUrl, identityBankUrl, paymentConfirmationUrl, paymentConfirmOrderUrl, getHeader } from 'src/config';
 import VueClipboard from 'vue-clipboard2';
 import flatPickr from 'vue-flatpickr-component';
@@ -194,7 +193,7 @@ export default {
   methods: {
     getOrder() {
 
-        axios.get( showOrderUrl + '/' + this.$route.query.orderID, { headers: getHeader() } )
+        this.$axios.get( showOrderUrl + '/' + this.$route.query.orderID, { headers: getHeader() } )
           .then(response => {
             console.log(response)
 
@@ -212,7 +211,7 @@ export default {
     },
     getDataBank() {
 
-        axios.get( identityBankUrl, { headers: getHeader() } )
+        this.$axios.get( identityBankUrl, { headers: getHeader() } )
           .then(response => {
             console.log(response)
 
@@ -240,9 +239,8 @@ export default {
         paymentConfirm.set('transfer_date', this.transferDate);
         paymentConfirm.set('order_id', this.dataOrder.id);
         
-        axios.post( paymentConfirmationUrl, paymentConfirm, { headers: getHeader() } )
+        this.$axios.post( paymentConfirmationUrl, paymentConfirm, { headers: getHeader() } )
           .then(response => {
-            console.log(response)
 
             if (response.status === 200) {
               this.getDataBank();

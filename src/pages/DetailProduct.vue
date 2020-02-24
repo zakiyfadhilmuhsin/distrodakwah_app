@@ -83,8 +83,8 @@
           >
             <carousel :items="1" :nav="false" :loop="true" :autoplay="true">
               <img
-                :src="gallery.image"
-                v-for="(gallery, i) in dataProduct.product_variants"
+                :src="images.image"
+                v-for="(images, i) in dataProduct.image_gallery"
                 :key="i"
               />
             </carousel>
@@ -443,25 +443,6 @@ export default {
             if (this.dataProduct.product_type === "Variant Product") {
               this.getInputOptions();
             }
-            // else {
-            //   axios
-            //     .get(inventoryStockUrl + "/" + this.dataProduct.sku, {
-            //       headers: getHeader()
-            //     })
-            //     .then(response => {
-            //       if (response.status === 200) {
-            //         this.stockReady =
-            //           response.data.data.stock_qty -
-            //           response.data.data.keep_stock_qty;
-            //         this.skuSelected = response.data.data.sku;
-            //       }
-            //     })
-            //     .catch(error => {
-            //       if (error.response) {
-            //         console.log(error.response);
-            //       }
-            //     });
-            // }
           }
         })
         .catch(error => {
@@ -542,6 +523,9 @@ export default {
       this.productVariant = "";
       //let storeVar = [];
       for (var i = 0, l = varPro.length; i < l; i++) {
+        console.log(optionSelected);
+console.log(varPro.sku);
+
         if (
           optionSelected.toUpperCase() ===
           varPro[i].sku.replace(this.dataProduct.sku, "")

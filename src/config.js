@@ -60,7 +60,6 @@ export const identityFeedbackUrl = apiDomain + '/identity/feedback'
 export const postToOrderUrl = apiDomain + '/order/orders'
 export const showOrderUrl = apiDomain + '/order/orders'
 export const getOrderUrl = apiDomain + '/order/orders-for-reseller'
-export const paymentConfirmOrderUrl = apiDomain + '/order/orders/confirmPayment'
 
 // From Store Service
 export const getStoreUrl = apiDomain + '/store/get-store'
