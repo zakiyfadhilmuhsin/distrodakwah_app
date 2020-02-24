@@ -127,7 +127,7 @@
               </div>
             </div>
           </div> -->
-          <div v-if="category.id !== 7" style="background-color: white; margin-bottom: 10px; padding-bottom: 15px" v-for="(category, i) in dataProducts" :key="i">
+          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px" v-for="(category, i) in dataProducts" :key="i">
             <div class="row q-pa-xs">
               <div class="col">
                 <h5 class="promo-text">{{ category.category_name }}</h5>
@@ -302,7 +302,6 @@ export default {
       // Brand Section
       dataBrand: [],
       // Product Section
-      dataProduct: [],
       dataProducts: [],
       // Slider Section
       swiperProductListOption: {
@@ -332,13 +331,11 @@ export default {
   created() {
     this.user = JSON.parse(window.localStorage.getItem("profileUser"));
     this.getBrand();
-    //this.getCategory();
-    this.getProduct();
+
     this.getSlider();
     this.getProductByCategory();
   },
   mounted() {
-    //this.getProductByCategory();
     // Get Total Cart Item
     axios
       .get(totalCartItemUrl + "/" + this.user.id, { headers: getHeader() })
@@ -413,64 +410,7 @@ export default {
           }
         });
     },
-    // getCategory () {
 
-    //   axios.get( catalogCategoryUrl, { headers: getHeader() } )
-    //     .then(response => {
-    //       console.log(response)
-
-    //       if (response.status === 200) {
-    //         this.dataCategory = response.data.data;
-    //       }
-
-    //     })
-    //     .catch(error => {
-    //       if (error.response) {
-    //         console.log(error.response)
-    //       }
-    //     })
-
-    // },
-    getProduct() {
-      this.innerLoading = true;
-      this.featuredImageShow = false;
-
-      this.$q.loading.show({
-        spinner: QSpinnerPuff,
-        spinnerColor: "black",
-        spinnerSize: 50,
-        backgroundColor: "grey",
-        message: "<b>Mohon Tunggu..</b>",
-        messageColor: "black"
-      });
-
-      axios
-        .get(catalogProductUrl, { headers: getHeader() })
-        .then(response => {
-          console.log(response);
-
-          if (response.status === 200) {
-
-            console.log('fajarsidiq');
-            console.log(response.data.data.filter(product=> product.category_id !==7));
-            
-            
-            this.dataProduct = response.data.data;
-
-            this.$q.loading.hide();
-
-            setTimeout(() => {
-              this.innerLoading = false;
-              this.featuredImageShow = true;
-            }, 700);
-          }
-        })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response);
-          }
-        });
-    },
     getSlider() {
       axios
         .get(identitySliderUrl, { headers: getHeader() })

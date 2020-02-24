@@ -247,7 +247,6 @@
 
 <script>
 import Vue from 'vue';
-import axios from 'axios';
 import { showOrderUrl, identityBankUrl, paymentConfirmationUrl, paymentConfirmOrderUrl, trackingUrl, catalogProductUrl, getHeader } from 'src/config';
 import VueClipboard from 'vue-clipboard2';
 import flatPickr from 'vue-flatpickr-component';
@@ -289,7 +288,7 @@ export default {
   methods: {
     getOrder() {
 
-        axios.get( showOrderUrl + '/' + this.$route.params.id, { headers: getHeader() } )
+        this.$axios.get( showOrderUrl + '/' + this.$route.params.id, { headers: getHeader() } )
           .then(response => {
             console.log(response)
 
@@ -312,7 +311,7 @@ export default {
       this.orderData = [];
       this.items = [];
 
-      axios.get( showOrderUrl + '/' + this.$route.params.id, { headers: getHeader() } )
+      this.$axios.get( showOrderUrl + '/' + this.$route.params.id, { headers: getHeader() } )
         .then(response => {
           console.log(response)
 
@@ -322,7 +321,7 @@ export default {
 
             for(let i=0; i<this.orderData.order_detail.length; i++){
               // alert(this.cartData.cart_detail[i].product_id);
-              axios.get(catalogProductUrl + '/' + this.orderData.order_detail[i].product_id, { headers: getHeader() } )
+              this.$axios.get(catalogProductUrl + '/' + this.orderData.order_detail[i].product_id, { headers: getHeader() } )
                 .then(response => {
 
                   let product_name = response.data.data.product_name;
@@ -340,7 +339,7 @@ export default {
 
                   if(this.orderData.order_detail[i].product_sku_id !== null){
 
-                    axios.get(catalogProductUrl + '/' + this.orderData.order_detail[i].product_id + '/' + this.orderData.order_detail[i].product_sku_id, { headers: getHeader() } )
+                    this.$axios.get(catalogProductUrl + '/' + this.orderData.order_detail[i].product_id + '/' + this.orderData.order_detail[i].product_sku_id, { headers: getHeader() } )
                       .then(response => {
 
                         // let options = JSON.parse(this.cartData.cart_detail[i].options);
@@ -402,7 +401,7 @@ export default {
     },
     getDataBank() {
 
-        axios.get( identityBankUrl, { headers: getHeader() } )
+        this.$axios.get( identityBankUrl, { headers: getHeader() } )
           .then(response => {
             console.log(response)
 
@@ -430,9 +429,8 @@ export default {
         paymentConfirm.set('transfer_date', this.transferDate);
         paymentConfirm.set('order_id', this.dataOrder.id);
 
-        axios.post( paymentConfirmationUrl, paymentConfirm, { headers: getHeader() } )
+        this.$axios.post( paymentConfirmationUrl, paymentConfirm, { headers: getHeader() } )
           .then(response => {
-            console.log(response)
 
             if (response.status === 200) {
               this.getDataBank();
@@ -452,22 +450,7 @@ export default {
             if (error.response) {
               console.log(error.response)
             }
-          })
-
-        let changeStatus = new FormData();
-
-        changeStatus.set('id', this.dataOrder.id);
-
-        axios.post( paymentConfirmOrderUrl, changeStatus, { headers: getHeader() } )
-          .then(response => {
-            console.log(response)
-          })
-          .catch(error => {
-            if (error.response) {
-              console.log(error.response)
-            }
-          })
-
+          });
     },
     getTracking () {
 
@@ -478,7 +461,7 @@ export default {
         trackForm.set('courier', 'jne');
         trackForm.set('awb', this.dataOrder.awb);
 
-        axios.post( trackingUrl, trackForm, { headers: getHeader() } )
+        this.$axios.post( trackingUrl, trackForm, { headers: getHeader() } )
           .then(response => {
             console.log(response)
             this.dataTracking = response.data;

@@ -448,18 +448,18 @@ export default {
 
             skuProductPost.set("sku", JSON.stringify(this.skuProduct, 2, null));
 
-            axios
-              .post(inventoryStockUrl + "/addKeepStock", skuProductPost, {
-                headers: getHeader()
-              })
-              .then(response => {
-                console.log(response);
-              })
-              .catch(error => {
-                if (error.response) {
-                  console.log(error.response);
-                }
-              });
+            // axios
+            //   .post(inventoryStockUrl + "/addKeepStock", skuProductPost, {
+            //     headers: getHeader()
+            //   })
+            //   .then(response => {
+            //     console.log(response);
+            //   })
+            //   .catch(error => {
+            //     if (error.response) {
+            //       console.log(error.response);
+            //     }
+            //   });
 
             // Reduce Stock Product //
 
