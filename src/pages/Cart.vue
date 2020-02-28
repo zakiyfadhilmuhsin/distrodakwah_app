@@ -53,9 +53,9 @@
             <span style="font-size: 10px;">Profil</span>
           </q-route-tab>
           <!-- <q-route-tab
-            icon="verified_user"
-            to="/storefront"
-            style="text-transform: capitalize; font-family: 'Open Sans'"
+						icon="verified_user"
+						to="/storefront"
+						style="text-transform: capitalize; font-family: 'Open Sans'"
           ><span style="font-size: 10px;">Support</span></q-route-tab>-->
         </q-tabs>
       </center>
@@ -74,19 +74,18 @@
                   <h5
                     style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; line-height: 16px"
                   >{{ item.product_name }}</h5>
-                  <h6 style="margin: -15px 0; font-size: 12px;">
-                    <span
-                      v-for="(opt, i) in item.options"
-                      :key="i"
-                    >{{opt.option + ': ' + opt.value}}</span>
-                  </h6>
+                  <h6
+                    v-for="(opt, i) in item.options"
+                    :key="i"
+                    style="margin: -15px 0; font-size: 12px;"
+                  >{{opt.option + ': ' + opt.value}}</h6>
                   <h6
                     style="margin: -15px 0; font-size: 12px;"
-                  >Qty {{ item.qty }} x Rp{{ formatPrice(item.price) }}</h6>
+                  >Qty {{ item.qty }} x Rp {{ formatPrice(item.price) }}</h6>
                   <h6
                     style="margin: -15px 0; font-size: 12px;"
                     class="text-orange-8"
-                  >Rp{{ formatPrice(item.qty * item.price) }}</h6>
+                  >Rp {{ formatPrice(item.qty * item.price) }}</h6>
                 </div>
                 <div class="col-2 text-right self-center">
                   <q-btn
@@ -94,7 +93,7 @@
                     round
                     icon="create"
                     style="font-size: 10px"
-                    @click="editQty(item.id, item.price, item.qty)"
+                    @click="editQty(item.id, item.price, item.qty, item.product_sku_id)"
                   />
                   <q-btn
                     flat
@@ -179,7 +178,7 @@
                 <h6
                   style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold"
                   class="text-red"
-                >Rp{{ formatPrice(subTotal) }}</h6>
+                >Rp {{ formatPrice(subTotal) }}</h6>
               </div>
             </div>
           </div>
@@ -194,7 +193,7 @@
                 >Alhamdulillah potensi keuntungan kamu adalah</h6>
                 <h6
                   style="font-size: 28px; margin: 8px 0; font-family: 'Open Sans'; font-weight: bold"
-                >Rp{{formatPrice(totalProfit)}}</h6>
+                >Rp {{formatPrice(totalProfit)}}</h6>
                 <h6
                   style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px"
                 >Jangan lupa sedekah ya :)</h6>
@@ -202,12 +201,12 @@
             </div>
           </div>
           <!-- <div style="background-color: white; margin-bottom: 5px">
-            <div class="row q-px-lg items-center" style="padding-top: 15px; padding-bottom: 15px">
-              <div class="col">
-                <q-checkbox keep-color color="orange-8" dense v-model="donasi_act"><h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Donasi <span class="text-bold">Rp300</span> melalui lembaga ACT</h6></q-checkbox>
-                <q-checkbox keep-color color="orange-8" dense v-model="donasi_rq"><h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Donasi <span class="text-bold">Rp300</span> untuk Rumah Quran</h6></q-checkbox>
-              </div>
-            </div>
+						<div class="row q-px-lg items-center" style="padding-top: 15px; padding-bottom: 15px">
+							<div class="col">
+								<q-checkbox keep-color color="orange-8" dense v-model="donasi_act"><h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Donasi <span class="text-bold">Rp 300</span> melalui lembaga ACT</h6></q-checkbox>
+								<q-checkbox keep-color color="orange-8" dense v-model="donasi_rq"><h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Donasi <span class="text-bold">Rp 300</span> untuk Rumah Quran</h6></q-checkbox>
+							</div>
+						</div>
           </div>-->
         </div>
         <div class="row bg-white q-pa-md">
@@ -223,7 +222,7 @@
       <q-dialog v-model="editQtyDialog">
         <q-card style="width: 800px; max-width: 90vw;">
           <q-card-section class="row items-center">
-            <h6 style="margin: 0; font-size: 16px">Ubah Qty</h6>
+            <h6 style="margin: 0; font-size: 16px">Ubah Jumlah Barang</h6>
             <q-space />
             <q-btn icon="close" size="sm" flat round dense v-close-popup />
           </q-card-section>
@@ -231,7 +230,14 @@
           <q-card-section>
             <div class="row items-center">
               <div class="col">
-                <q-input type="number" outlined dense color="orange-8" label="Qty" v-model="qty" />
+                <q-input
+                  type="number"
+                  outlined
+                  dense
+                  color="orange-8"
+                  label="Jumlah"
+                  v-model="qtyForm"
+                />
               </div>
             </div>
           </q-card-section>
@@ -248,7 +254,7 @@
       <q-dialog v-model="addCouponDialog" position="bottom">
         <q-card style="min-width: 360px">
           <!-- <q-card-section>
-            <div class="text-h6">Tambah Pelanggan</div>
+						<div class="text-h6">Tambah Pelanggan</div>
           </q-card-section>-->
 
           <q-card-section>
@@ -300,7 +306,7 @@ export default {
   data() {
     return {
       // Data Keranjang/Cart
-      cartData: [],
+      cartData: {},
       items: [],
       totalItem: 0,
       subTotal: null,
@@ -314,10 +320,11 @@ export default {
       totalCartItem: null,
       editQtyDialog: false,
       // Edit Qty
-      qty: null,
-      cartID: null,
-      cartPrice: null,
-      cartQty: null,
+      qtyForm: null,
+      cartDetailIdEdit: null,
+      cartDetailPrice: null,
+      cartDetailQtyEdit: null,
+      productSkuIdEdit: null,
       addCouponDialog: false,
       couponCode: null,
       couponUse: false
@@ -329,20 +336,20 @@ export default {
   mounted() {
     this.getCartData();
     // Get Total Cart Item
-    axios
-      .get(totalCartItemUrl + "/" + this.user.id, { headers: getHeader() })
-      .then(response => {
-        console.log(response);
+    // axios
+    //   .get(totalCartItemUrl + "/" + this.user.id, { headers: getHeader() })
+    //   .then(response => {
+    //     console.log(response);
 
-        if (response.status === 200) {
-          this.totalCartItem = response.data.data;
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.log(error.response);
-        }
-      });
+    //     if (response.status === 200) {
+    //       this.totalCartItem = response.data.data;
+    //     }
+    //   })
+    //   .catch(error => {
+    //     if (error.response) {
+    //       console.log(error.response);
+    //     }
+    //   });
   },
   methods: {
     getCartData() {
@@ -545,76 +552,89 @@ export default {
         alert("Keranjang Belanja Masih Kosong!");
       }
     },
-    editQty(id, price, qty) {
-      this.cartID = id;
-      this.cartPrice = price;
-      this.cartQty = qty;
-
-      this.qty = qty;
+    editQty(id, price, qty, product_sku_id) {
+      this.cartDetailIdEdit = id;
+      // this.cartDetailPrice = price;
+      this.cartDetailQtyEdit = qty;
+      this.productSkuIdEdit = product_sku_id;
+      this.qtyForm = qty;
 
       // Load editQtyDialog
       this.editQtyDialog = true;
     },
     updateQty() {
-      let currentQty = this.cartQty;
-      let newQty = this.qty;
-      let currentPrice = this.cartPrice * currentQty;
-      let newPrice = this.cartPrice * newQty;
-      let totalAmount = this.subTotal;
-      let totalKurangi = totalAmount - currentPrice;
-      let totalAkhir = totalKurangi + newPrice;
+      let error = null;
+      !/[0-9]/.test(this.qtyForm) || this.qtyForm <= 0
+        ? (error = "notAllowed")
+        : "";
 
-      console.log("Harga Lama : " + currentPrice);
-      console.log("Harga Baru : " + newPrice);
+      if (!error) {
+        // let currentQty = this.cartDetailQtyEdit;
+        // let newQty = this.qtyForm;
+        // let cartDetailPrice = this.cartDetailPrice * currentQty;
+        // let newPrice = this.cartDetailPrice * newQty;
+        // let totalAmount = this.subTotal;
+        // let totalKurangi = totalAmount - cartDetailPrice;
+        // let totalAkhir = totalKurangi + newPrice;
 
-      console.log("Total Setelah Dikurangi : " + totalKurangi);
-      console.log("Total Akhir : " + totalAkhir);
+        let updateForm = new FormData();
 
-      let updateData = new FormData();
+        updateForm.set("cart_id", this.cartData.id);
+        updateForm.set("cart_detail_id", this.cartDetailIdEdit);
+        updateForm.set("role_id", this.user.role_id);
+        updateForm.set("product_sku_id", this.productSkuIdEdit);
+        // updateData.set("current_price", cartDetailPrice);
+        // updateData.set("new_price", newPrice);
+        updateForm.set("qty", this.qtyForm);
 
-      updateData.set("cart_id", this.cartID);
-      updateData.set("current_price", currentPrice);
-      updateData.set("new_price", newPrice);
-      updateData.set("qty", newQty);
+        axios
+          .post(updateCartQtyUrl, updateForm, { headers: getHeader() })
+          .then(response => {
+            console.log(response);
 
-      // Update Qty
-      axios
-        .post(updateCartQtyUrl, updateData, { headers: getHeader() })
-        .then(response => {
-          console.log(response);
+            if (response.status === 200) {
+              console.log(response.data.data);
+              this.getCartData();
+              this.qtyForm = null;
 
-          if (response.status === 200) {
-            console.log(response.data.data);
-            this.getCartData();
-            this.qty = null;
+              // Get Total Cart Item
+              axios
+                .get(totalCartItemUrl + "/" + this.user.id, {
+                  headers: getHeader()
+                })
+                .then(response => {
+                  console.log(response);
 
-            // Get Total Cart Item
-            axios
-              .get(totalCartItemUrl + "/" + this.user.id, {
-                headers: getHeader()
-              })
-              .then(response => {
-                console.log(response);
-
-                if (response.status === 200) {
-                  this.totalCartItem = response.data.data;
-                }
-              })
-              .catch(error => {
-                if (error.response) {
-                  console.log(error.response);
-                }
+                  if (response.status === 200) {
+                    this.totalCartItem = response.data.data;
+                  }
+                })
+                .catch(error => {
+                  if (error.response) {
+                    console.log(error.response);
+                  }
+                });
+            }
+          })
+          .catch(error => {
+            if (error.response.data.error == "insufficientStock") {
+              this.$q.notify({
+                position: "top",
+                color: "red",
+                message: "Stock Tidak Mencukupi"
               });
-          }
-        })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response);
-          }
-        });
+            }
+          });
 
-      // close Dialog
-      this.editQtyDialog = false;
+        // close Dialog
+        this.editQtyDialog = false;
+      } else {
+        this.$q.notify({
+          position: "top",
+          color: "red",
+          message: "Cek Jumlah Yang Anda Masukkan"
+        });
+      }
     },
     addCoupon() {
       axios

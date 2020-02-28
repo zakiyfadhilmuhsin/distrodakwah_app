@@ -82,11 +82,7 @@
             v-if="dataProduct.product_variants.length !== 0"
           >
             <carousel :items="1" :nav="false" :loop="true" :autoplay="true">
-              <img
-                :src="images.image"
-                v-for="(images, i) in dataProduct.image_gallery"
-                :key="i"
-              />
+              <img :src="images.image" v-for="(images, i) in dataProduct.image_gallery" :key="i" />
             </carousel>
           </div>
           <div style="margin-bottom: 10px; margin-top: -50px" v-else>
@@ -109,12 +105,11 @@
             </h5>
             <h4 class="product-title-text">{{dataProduct.product_name}}</h4>
             <div style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold">
-              Stok Tersedia :
               <span
                 class="text-red"
                 v-if="stockReady == null"
-              >Silahkan pilih varian lain</span>
-              <span v-else>{{ stockReady }}</span>
+              >Pilih Varian Untuk Melihat Jumlah Stok</span>
+              <span v-else>Stok Tersedia: {{ stockReady }}</span>
             </div>
 
             <hr style="margin: 15px 0" />
@@ -385,6 +380,8 @@ import {
 import VueClipboard from "vue-clipboard2";
 import { openURL } from "quasar";
 
+//vanilla.js
+
 Vue.use(VueClipboard);
 
 export default {
@@ -395,6 +392,7 @@ export default {
       dataProduct: [],
       dataCategory: [],
       dataBrand: [],
+
       productDesc: null,
       // Product Option
       inputOptions: [],
@@ -523,9 +521,6 @@ export default {
       this.productVariant = "";
       //let storeVar = [];
       for (var i = 0, l = varPro.length; i < l; i++) {
-        console.log(optionSelected);
-console.log(varPro.sku);
-
         if (
           optionSelected.toUpperCase() ===
           varPro[i].sku.replace(this.dataProduct.sku, "")
@@ -535,46 +530,26 @@ console.log(varPro.sku);
           this.productVariant = {
             id: varPro[i].id,
             product_id: varPro[i].product_id,
-            sku: varPro[i].sku_display,
+            sku: varPro[i].sku,
             price: varPro[i].price,
             reseller_pro_price: varPro[i].reseller_pro_price,
             reseller_exclusive_price: varPro[i].reseller_exclusive_price,
             stock_qty: varPro[i].stock_qty,
             keep_stock_qty: varPro[i].keep_stock_qty
           };
-
-          // axios
-          //   .get(
-          //     catalogProductUrl +
-          //       "/" +
-          //       varPro[i].product_id +
-          //       "/" +
-          //       varPro[i].id,
-          //     {
-          //       headers: getHeader()
-          //     }
-          //   )
-          //   .then(response => {
-          //     console.log("fajar");
-
-          //     if (response.status === 200) {
-          //       this.stockReady =
-          //         response.data.data.stock_qty -
-          //         response.data.data.keep_stock_qty;
-          //       this.skuSelected = response.data.data.sku;
-          //     }
-          //   })
-          //   .catch(error => {
-          //     if (error.response) {
-          //       console.log(error.response);
-          //     }
-          //   });
         }
       }
     },
     addToCart() {
       // Cek stok dulu
-      if (this.stockReady > 0 && this.qty <= this.stockReady) {
+      let error = null;
+      !/[0-9]/.test(this.qty) || this.qty <= 0 ? (error = "notAllowed") : "";
+      this.qty > this.stockReady || this.stockReady <= 0
+        ? (error = "insufficientStock")
+        : "";
+      this.stockReady == null ? (error = "variantNotSelected") : "";
+
+      if (!error) {
         let postData = new FormData();
 
         if (this.dataProduct.product_type === "Variant Product") {
@@ -611,40 +586,40 @@ console.log(varPro.sku);
             }
           })
           .catch(error => {
-            if (error.response) {
-              console.log(error.response);
+            if (error.response.data.error == "insufficientStock") {
+              this.$q.notify({
+                position: "top",
+                color: "red",
+                message: "Keranjang anda melebihi stok yang tersedia"
+              });
+            } else {
+              this.$q.notify({
+                position: "top",
+                color: "red",
+                message: "Periksa Kembali Keranjang Anda"
+              });
             }
           });
+      } else if (error == "notAllowed") {
+        this.$q.notify({
+          position: "top",
+          color: "red",
+          message: "Cek Jumlah Yang Anda Masukkan"
+        });
+      } else if (error == "insufficientStock") {
+        this.$q.notify({
+          position: "top",
+          color: "red",
+          message: "Stock Belum Tersedia"
+        });
       } else {
         this.$q.notify({
           position: "top",
           color: "red",
-          message: "Maaf, Stok Belum Ada!"
+          message: "Silahkan Pilih Varian Terlebih Dahulu"
         });
       }
     },
-    // checkStock () {
-    //     //this.stockReady = null;
-
-    //     if(this.productVariant.length > 0){
-
-    //         axios.get(inventoryStockUrl + '/' + this.productVariant.sku, {headers: getHeader()}).then(response => {
-
-    //             if(response.status === 200){
-    //               this.stockReady = response.data.data.stock_qty;
-    //             }
-
-    //           }).catch(error => {
-
-    //             if (error.response) {
-    //               console.log(error.response)
-    //             }
-
-    //           })
-
-    //     }
-
-    // },
     formatPrice(value) {
       let val = (value / 1).toFixed(0).replace(".", ",");
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -655,11 +630,9 @@ console.log(varPro.sku);
       this.$copyText(h2p(this.productDesc)).then(
         function(e) {
           alert("Copied");
-          console.log(e);
         },
         function(e) {
           alert("Can not copy");
-          console.log(e);
         }
       );
     },
