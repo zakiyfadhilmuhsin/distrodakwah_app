@@ -175,18 +175,76 @@
                   </div>
                 </div>
                 <br/>
-                <q-list>
-                  <q-item v-for="(bank, index) in dataBank" :key="index">
-                    <q-item-section side>
-                      <img :src="bank.bank_image" width="50" />
-                    </q-item-section>
+                <div class="row-accordion">
+                  <div class="col-accordion">
+                    <div class="tabs">
+                      <div class="tab">
+                        <input type="checkbox" id="chck1" class="accordion-input"/>
+                        <label class="tab-label" for="chck1">Transfer Bank</label>
+                        <div class="tab-content">
+                          <q-list>
+                            <q-item
+                              v-for="(bank, index) in dataBank.filter(bank=>bank.account_category == 1)"
+                              :key="index"
+                            >
+                              <q-item-section side>
+                                <img :src="bank.bank_image" width="50" />
+                              </q-item-section>
 
-                    <q-item-section side>{{ bank.account_number }}<br/><span style="font-size: 10px">A.N {{ bank.account_name }}</span></q-item-section>
+                              <q-item-section side>
+                                {{ bank.account_number }}
+                                <br />
+                                <span style="font-size: 10px">A.N {{ bank.account_name }}</span>
+                              </q-item-section>
 
-                    <q-item-section class="fixed-right absolute-right"><q-btn @click="copyAccountNumber(bank.account_number)" flat size="xs" class="bg-red text-white" style="width: 60px;">Salin</q-btn></q-item-section>
-                  </q-item>
-                </q-list>
-              </div>
+                              <q-item-section class="fixed-right absolute-right">
+                                <q-btn
+                                  @click="copyAccountNumber(bank.account_number)"
+                                  flat
+                                  size="xs"
+                                  class="bg-red text-white"
+                                  style="width: 60px;"
+                                >Salin</q-btn>
+                              </q-item-section>
+                            </q-item>
+                          </q-list>
+                        </div>
+                      </div>
+                      <div class="tab">
+                        <input type="checkbox" id="chck2" class="accordion-input"/>
+                        <label class="tab-label" for="chck2">Virtual Account</label>
+                        <div class="tab-content">
+                          <q-list>
+                            <q-item
+                              v-for="(bank, index) in dataBank.filter(bank=>bank.account_category == 2)"
+                              :key="index"
+                            >
+                              <q-item-section side>
+                                <img :src="bank.bank_image" width="50" />
+                              </q-item-section>
+
+                              <q-item-section side>
+                                {{ bank.account_number }}
+                                <br />
+                                <span style="font-size: 10px">A.N {{ bank.account_name }}</span>
+                              </q-item-section>
+
+                              <q-item-section class="fixed-right absolute-right">
+                                <q-btn
+                                  @click="copyAccountNumber(bank.account_number)"
+                                  flat
+                                  size="xs"
+                                  class="bg-red text-white"
+                                  style="width: 60px;"
+                                >Salin</q-btn>
+                              </q-item-section>
+                            </q-item>
+                          </q-list>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>              </div>
             </div>
             <br/>
           </div>
@@ -530,4 +588,81 @@ export default {
   .q-timeline__content{
     padding-bottom: 1px !important;
   }
+
+  /* accordion */
+  .accordion-input {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+.row-accordion {
+  display: -webkit-box;
+  display: flex;
+}
+.row-accordion .col-accordion {
+  -webkit-box-flex: 1;
+  flex: 1;
+}
+.row-accordion .col-accordion:last-child {
+}
+
+/* Accordion styles */
+.tabs {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.5);
+}
+
+.tab {
+  width: 100%;
+  color: white;
+  overflow: hidden;
+}
+.tab-label {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  padding: 1em;
+  background: #fea500;
+  font-weight: bold;
+  cursor: pointer;
+  /* Icon */
+}
+.tab-label::after {
+  content: "\276F";
+  width: 1em;
+  height: 1em;
+  text-align: center;
+  -webkit-transition: all 0.35s;
+  transition: all 0.35s;
+}
+.tab-content {
+  max-height: 0;
+  padding: 0 1em;
+  color: #fea500;
+  background: white;
+  -webkit-transition: all 0.35s;
+  transition: all 0.35s;
+}
+.tab-close {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  padding: 1em;
+  font-size: 0.75em;
+  background: #fea500;
+  cursor: pointer;
+}
+
+input:checked + .tab-label::after {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+input:checked ~ .tab-content {
+  max-height: 100vh;
+  padding: 0.4em;
+}
+
 </style>
