@@ -66,7 +66,7 @@
             @input="getOrder"
             >
               <q-tab name="waiting_payment" label="Belum Dibayar" />
-              <q-tab name="waiting_fo_verification" label="Menunggu Verifikasi" />
+              <q-tab name="waiting_for_verification" label="Menunggu Verifikasi" />
               <q-tab name="payment_confirmed" label="Sudah Dibayar" />
               <q-tab name="processed" label="Sedang Diproses" />
               <q-tab name="packing" label="Sedang Dikemas" />
