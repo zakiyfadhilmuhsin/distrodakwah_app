@@ -264,8 +264,8 @@
               outlined
               v-model="bankReceiver"
               :options="dataBank"
-              option-value="bank_name"
-              option-label="bank_name"
+              option-value="bank_name_tmp"
+              option-label="bank_name_tmp"
               label="Bank Tujuan"
               emit-value
               map-options
@@ -464,7 +464,11 @@ export default {
             console.log(response)
 
             if (response.status === 200) {
-              this.dataBank = response.data.data;
+              this.dataBank = response.data.data.map(bank => {
+                if (bank.account_category == 2) bank.bank_name_tmp = bank.bank_name + "~Virtual Account";
+                else bank.bank_name_tmp = bank.bank_name;
+                return bank;
+              });
             }
 
           })

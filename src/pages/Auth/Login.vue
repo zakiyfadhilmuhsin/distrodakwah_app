@@ -111,7 +111,6 @@ export default {
   },
   created() {
     this.$q.loading.hide();
-    this.$router.push('/maintenance');
     if (this.$route.params.message === "createsuccess") {
       this.$q.notify({
         position: "top",
