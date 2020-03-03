@@ -131,7 +131,7 @@
                   <div class="col-accordion">
                     <div class="tabs">
                       <div class="tab">
-                        <input type="checkbox" id="chck1" class="accordion-input"/>
+                        <input type="checkbox" id="chck1" class="accordion-input" />
                         <label class="tab-label" for="chck1">Transfer Bank</label>
                         <div class="tab-content">
                           <q-list>
@@ -163,7 +163,7 @@
                         </div>
                       </div>
                       <div class="tab">
-                        <input type="checkbox" id="chck2" class="accordion-input"/>
+                        <input type="checkbox" id="chck2" class="accordion-input" />
                         <label class="tab-label" for="chck2">Virtual Account</label>
                         <div class="tab-content">
                           <q-list>
@@ -194,6 +194,10 @@
                           </q-list>
                         </div>
                       </div>
+                      <a target="_blank" href="https://bit.ly/VADistroDakwah" class="tab" style="text-decoration:none;">
+                        <input type="checkbox" class="accordion-input" />
+                        <label class="tab-label">Halaman Panduan Pembayaran</label>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -358,11 +362,12 @@ export default {
           console.log(response);
 
           if (response.status === 200) {
-              this.dataBank = response.data.data.map(bank => {
-                if (bank.account_category == 2) bank.bank_name_tmp = bank.bank_name + "~Virtual Account";
-                else bank.bank_name_tmp = bank.bank_name;
-                return bank;
-              });
+            this.dataBank = response.data.data.map(bank => {
+              if (bank.account_category == 2)
+                bank.bank_name_tmp = bank.bank_name + "~Virtual Account";
+              else bank.bank_name_tmp = bank.bank_name;
+              return bank;
+            });
           }
         })
         .catch(error => {
