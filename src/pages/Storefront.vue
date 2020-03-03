@@ -85,7 +85,7 @@
       <q-page>
         <div class="bg-grey-3" style="height: 100%">
           <!-- Slider Promo -->
-          <div style="background-color: white; margin-bottom: 10px" v-if="dataSlider.length !== 0">
+          <!-- <div style="background-color: white; margin-bottom: 10px" v-if="dataSlider.length !== 0">
             <div class="q-pt-md q-pb-xs">
               <carousel
                 :autoplay="true"
@@ -101,15 +101,15 @@
                 <img v-for="(slider, index) in dataSlider" :key="index" :src="slider.slider_image" />
               </carousel>
             </div>
-            <!-- <div class="row q-pa-xs">
+             <div class="row q-pa-xs">
               <div class="col">
                 <h5 class="promo-text">Promo</h5>
               </div>
               <div class="col text-right">
                 <h5 class="link-text text-orange-9" style="margin-bottom: 0">Lihat Semua</h5>
               </div>
-            </div>-->
-          </div>
+            </div>  should be commented
+          </div> -->
           <!-- <div style="background-color: white; margin-bottom: 10px">
             <div class="row q-pa-xs">
               <div class="col">
