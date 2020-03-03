@@ -398,25 +398,27 @@ export default {
         shipmentFee = this.cartData.shipment_fee;
       }
 
-      postOrder.set("total_amount", this.cartData.total_amount);
-      postOrder.set("total_weight", this.cartData.total_weight);
-      postOrder.set("grand_total", this.cartData.grand_total);
-      postOrder.set("shipment_fee", shipmentFee);
-      postOrder.set("courier_name", courierName);
-      postOrder.set("service_name", this.cartData.service_name);
-      postOrder.set("awb", autoReceiptNumber);
-      postOrder.set("customer_address_id", this.cartData.customer_address_id);
       postOrder.set("customer_id", this.cartData.customer_id);
-      postOrder.set("customer_name", this.cartData.customer_name);
-      postOrder.set("customer_email", this.cartData.customer_email);
-      postOrder.set("customer_phone", this.cartData.customer_phone);
-      postOrder.set("coupon_id", this.cartData.voucher_id);
-      postOrder.set("coupon_code", this.cartData.voucher_code_name);
-      postOrder.set("coupon_discount", this.cartData.voucher_discount);
-      postOrder.set(
-        "cart_details",
-        JSON.stringify(this.cartData.cart_detail, 2, null)
-      );
+
+      // postOrder.set("total_amount", this.cartData.total_amount);
+      // postOrder.set("total_weight", this.cartData.total_weight);
+      // postOrder.set("grand_total", this.cartData.grand_total);
+      // postOrder.set("shipment_fee", shipmentFee);
+      // postOrder.set("courier_name", courierName);
+      // postOrder.set("service_name", this.cartData.service_name);
+      postOrder.set("awb", autoReceiptNumber);
+      // postOrder.set("customer_address_id", this.cartData.customer_address_id);
+      // postOrder.set("customer_id", this.cartData.customer_id);
+      // postOrder.set("customer_name", this.cartData.customer_name);
+      // postOrder.set("customer_email", this.cartData.customer_email);
+      // postOrder.set("customer_phone", this.cartData.customer_phone);
+      // postOrder.set("coupon_id", this.cartData.voucher_id);
+      // postOrder.set("coupon_code", this.cartData.voucher_code_name);
+      // postOrder.set("coupon_discount", this.cartData.voucher_discount);
+      // postOrder.set(
+      //   "cart_details",
+      //   JSON.stringify(this.cartData.cart_detail, 2, null)
+      // );
 
       axios
         .post(postToOrderUrl, postOrder, { headers: getHeader() })
