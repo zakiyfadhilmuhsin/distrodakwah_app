@@ -152,7 +152,7 @@
                         enter-active-class="animated fadeIn"
                         leave-active-class="animated fadeOut"
                       >
-                        <img
+                        <q-img
                           :src="product.featured_image"
                           style="width: 100%"
                           v-show="featuredImageShow == true"
