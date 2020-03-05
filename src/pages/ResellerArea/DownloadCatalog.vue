@@ -21,11 +21,6 @@
           <div class="col q-pa-lg">
             <q-list bordered separator>
                 <q-item>
-                    <q-item-section>Katalog Yaumee</q-item-section>
-                    <q-item-section side><q-btn @click="downloadYaumee" class="bg-red-8 text-white full-width" size="sm">Download</q-btn></q-item-section>
-                </q-item>
-
-                <q-item>
                     <q-item-section>Katalog Hawary</q-item-section>
                     <q-item-section side><q-btn @click="downloadHawary" flat class="bg-red-8 text-white full-width" size="sm">Download</q-btn></q-item-section>
                 </q-item>
