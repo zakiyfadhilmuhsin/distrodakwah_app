@@ -54,8 +54,8 @@
               <span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">MASUK</span>
             </q-btn>
             <p class="login-small-text">
-              Jadilah member kami sekarang,
-              <a href="#" @click="$router.push('/activation')">daftar di sini</a>
+              
+              <a href="#" @click="$router.push('/resetPassword')">Lupa Password?</a>
             </p>
 
             <br />
