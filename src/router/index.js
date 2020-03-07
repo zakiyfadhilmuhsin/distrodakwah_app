@@ -19,13 +19,12 @@ export default function (/* { store, ssrContext } */) {
     // Leave these as is and change from quasar.conf.js instead!
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
-    mode: process.env.VUE_ROUTER_MODE,
+    mode: 'history',
     base: process.env.VUE_ROUTER_BASE
   })
-
+  
 
   Router.beforeEach((to, from, next) => {
-    console.log(to)
 
     if (to.matched.some(item => item.meta.requiresAuth)) {
 
