@@ -165,7 +165,7 @@ export default {
 
     },
     toStore() {
-      openURL(webReplicaDomain + this.storeUrl);
+      openURL(webReplicaDomain + '/' + this.storeUrl);
     }
   }
 }
