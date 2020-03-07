@@ -53,7 +53,13 @@
             <q-btn @click="submitLogin" flat class="bg-amber-8 full-width">
               <span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">MASUK</span>
             </q-btn>
+            <p class="login-small-text">
+              Jadilah member kami sekarang,
+              <a href="#" @click="toActivation">daftar di sini</a>
+            </p>
+
             <br />
+
             <center>
               <img
                 src="~/assets/images/components/coin-big.png"
@@ -121,6 +127,9 @@ export default {
     }
   },
   methods: {
+    toActivation(){
+      this.$router.push('/activation');
+    },
     submitLogin() {
       const postData = {
         email: this.email,
