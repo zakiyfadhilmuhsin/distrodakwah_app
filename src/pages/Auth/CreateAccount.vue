@@ -122,9 +122,18 @@
                     placeholder="Masukkan No Handphone"
                   />
                   <label>Tanggal Lahir :</label>
-				  <div>
-					  <dropdown-datepicker dayLabel="Tanggal" monthLabel="Bulan" yearLabel="Tahun" class="dd-datepicker" v-model="birthday"></dropdown-datepicker>
-				  </div>
+                  <div>
+                    <dropdown-datepicker
+                      minDate="1700-01-01"
+                      :maxDate="dateNow()"
+                      :daySuffixes=false
+                      dayLabel="Tanggal"
+                      monthLabel="Bulan"
+                      yearLabel="Tahun"
+                      class="dd-datepicker"
+                      v-model="birthday"
+                    ></dropdown-datepicker>
+                  </div>
                   <label>Jenis Kelamin:</label>
                   <div class="gender">
                     <q-radio color="amber-8" v-model="gender" val="male" label="Pria" />
@@ -254,7 +263,7 @@
 }
 
 .dd-datepicker {
-	display: flex;
+  display: flex;
   flex-direction: column;
 }
 
@@ -271,7 +280,13 @@
 </style>
 
 <script>
-import DropdownDatepicker from '../../components/shared/dropdown-datepicker'
+import DropdownDatepicker from "../../components/shared/dropdown-datepicker";
+import Vue from 'vue';
+import moment from 'moment'
+const lang = 'id'
+moment.locale(lang)
+Vue.use(require('vue-moment'), {moment})
+
 import {
   apiDomain,
   createAccountUrl,
@@ -280,11 +295,12 @@ import {
   getSubdistrictNoAuthUrl,
   getHeader
 } from "src/config";
+import { log } from 'util';
 
 export default {
   name: "CreateAccount",
   components: {
-	  DropdownDatepicker
+    DropdownDatepicker
   },
   data() {
     return {
@@ -317,6 +333,8 @@ export default {
   },
   computed: {},
   mounted() {
+    
+    
     this.getProvince();
   },
   methods: {
@@ -387,129 +405,135 @@ export default {
         let getUser = new FormData();
         getUser.set("email", this.emailVerify);
 
-        this.$axios.post(apiDomain + "/auth/searchUser", getUser).then(response => {
-          console.log(response.data);
-          if (response.data !== "") {
-            this.$q.notify({
-              position: "top",
-              color: "red-4",
-              message: "Aktifasi Gagal!, Email Sudah Terdaftar!",
-              html: true
-            });
-            this.preventReactivation = true;
-            return;
-          } else {
-            let loginOrderOnline = new FormData();
-
-            loginOrderOnline.set("email", "vanprelid2@gmail.com");
-            loginOrderOnline.set("password", "qwerty1234");
-
-            this.$axios
-              .post("https://api.orderonline.id/auth", loginOrderOnline)
-              .then(response => {
-                if (response.status === 200) {
-                  this.accessToken = response.data.data.access_token;
-                  // zein21.achmadi%40gmail.com
-                  this.$axios
-                    .get(
-                      "https://api.orderonline.id/submission?limit=1&sort_by=created_at&sort=desc&page=1&since=2018-09-27&until=" +
-                        this.dateNow() +
-                        "&keyword=" +
-                        email +
-                        "&payment_status=paid",
-                      {
-                        headers: {
-                          Accept: "application/json",
-                          Authorization: "Bearer " + this.accessToken
-                        }
-                      }
-                    )
-                    .then(response => {
-                      if (response.status === 200) {
-                        if (response.data.data.length === 0) {
-                          // Get Data From Old Users API
-                          this.$axios
-                            .get(
-                              apiDomain + "/auth/old_users/" + this.emailVerify
-                            )
-                            .then(response => {
-                              if (response.status === 200) {
-                                if (response.data.length === 0) {
-                                  this.preventReactivation = false;
-                                  this.$q.notify({
-                                    position: "top",
-                                    color: "red-4",
-                                    message: "<b>Email</b> Belum Terdaftar!",
-                                    html: true
-                                  });
-                                } else {
-                                  this.dataUser = response.data;
-                                  this.email = this.dataUser.email;
-                                  this.roleName = this.dataUser.role_name;
-                                  this.name = "";
-                                  this.phone = this.dataUser.phone;
-                                }
-                              }
-                            })
-                            .catch(error => {
-                              if (error.response) {
-                                console.log(error.response);
-                              }
-                            });
-                        } else {
-                          // Post response to data user
-                          this.dataUser = response.data.data;
-
-                          // Check Role From Old User
-                          this.$axios
-                            .get(
-                              apiDomain + "/auth/old_users/" + this.emailVerify
-                            )
-                            .then(response => {
-                              if (response.status === 200) {
-                                if (response.data.length === 0) {
-                                  // this.$q.notify({position: 'top', color: 'red-4', message: '<b>Email</b> Belum Terdaftar!', html: true});
-
-                                  this.roleName = this.dataUser[0].product_name;
-                                  this.email = this.dataUser[0].customer_data.email;
-                                  this.name = "";
-                                  this.phone = this.dataUser[0].customer_data.phone.replace(
-                                    "+62",
-                                    ""
-                                  );
-                                } else {
-                                  this.roleName = response.data.role_name;
-                                  this.email = this.dataUser[0].customer_data.email;
-                                  this.name = "";
-                                  this.phone = this.dataUser[0].customer_data.phone.replace(
-                                    "+62",
-                                    ""
-                                  );
-                                }
-                              }
-                            })
-                            .catch(error => {
-                              if (error.response) {
-                                console.log(error.response);
-                              }
-                            });
-                        }
-                      }
-                    })
-                    .catch(error => {
-                      if (error.response) {
-                        console.log(error.response);
-                      }
-                    });
-                }
-              })
-              .catch(error => {
-                if (error.response) {
-                  console.log(error.response);
-                }
+        this.$axios
+          .post(apiDomain + "/auth/searchUser", getUser)
+          .then(response => {
+            console.log(response.data);
+            if (response.data !== "") {
+              this.$q.notify({
+                position: "top",
+                color: "red-4",
+                message: "Aktifasi Gagal!, Email Sudah Terdaftar!",
+                html: true
               });
-          }
-        });
+              this.preventReactivation = true;
+              return;
+            } else {
+              let loginOrderOnline = new FormData();
+
+              loginOrderOnline.set("email", "vanprelid2@gmail.com");
+              loginOrderOnline.set("password", "qwerty1234");
+
+              this.$axios
+                .post("https://api.orderonline.id/auth", loginOrderOnline)
+                .then(response => {
+                  if (response.status === 200) {
+                    this.accessToken = response.data.data.access_token;
+                    // zein21.achmadi%40gmail.com
+                    this.$axios
+                      .get(
+                        "https://api.orderonline.id/submission?limit=1&sort_by=created_at&sort=desc&page=1&since=2018-09-27&until=" +
+                          this.dateNow() +
+                          "&keyword=" +
+                          email +
+                          "&payment_status=paid",
+                        {
+                          headers: {
+                            Accept: "application/json",
+                            Authorization: "Bearer " + this.accessToken
+                          }
+                        }
+                      )
+                      .then(response => {
+                        if (response.status === 200) {
+                          if (response.data.data.length === 0) {
+                            // Get Data From Old Users API
+                            this.$axios
+                              .get(
+                                apiDomain +
+                                  "/auth/old_users/" +
+                                  this.emailVerify
+                              )
+                              .then(response => {
+                                if (response.status === 200) {
+                                  if (response.data.length === 0) {
+                                    this.preventReactivation = false;
+                                    this.$q.notify({
+                                      position: "top",
+                                      color: "red-4",
+                                      message: "<b>Email</b> Belum Terdaftar!",
+                                      html: true
+                                    });
+                                  } else {
+                                    this.dataUser = response.data;
+                                    this.email = this.dataUser.email;
+                                    this.roleName = this.dataUser.role_name;
+                                    this.name = "";
+                                    this.phone = this.dataUser.phone;
+                                  }
+                                }
+                              })
+                              .catch(error => {
+                                if (error.response) {
+                                  console.log(error.response);
+                                }
+                              });
+                          } else {
+                            // Post response to data user
+                            this.dataUser = response.data.data;
+
+                            // Check Role From Old User
+                            this.$axios
+                              .get(
+                                apiDomain +
+                                  "/auth/old_users/" +
+                                  this.emailVerify
+                              )
+                              .then(response => {
+                                if (response.status === 200) {
+                                  if (response.data.length === 0) {
+                                    // this.$q.notify({position: 'top', color: 'red-4', message: '<b>Email</b> Belum Terdaftar!', html: true});
+
+                                    this.roleName = this.dataUser[0].product_name;
+                                    this.email = this.dataUser[0].customer_data.email;
+                                    this.name = "";
+                                    this.phone = this.dataUser[0].customer_data.phone.replace(
+                                      "+62",
+                                      ""
+                                    );
+                                  } else {
+                                    this.roleName = response.data.role_name;
+                                    this.email = this.dataUser[0].customer_data.email;
+                                    this.name = "";
+                                    this.phone = this.dataUser[0].customer_data.phone.replace(
+                                      "+62",
+                                      ""
+                                    );
+                                  }
+                                }
+                              })
+                              .catch(error => {
+                                if (error.response) {
+                                  console.log(error.response);
+                                }
+                              });
+                          }
+                        }
+                      })
+                      .catch(error => {
+                        if (error.response) {
+                          console.log(error.response);
+                        }
+                      });
+                  }
+                })
+                .catch(error => {
+                  if (error.response) {
+                    console.log(error.response);
+                  }
+                });
+            }
+          });
       } else {
         this.$q.notify({
           position: "top",
