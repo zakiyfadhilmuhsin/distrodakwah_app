@@ -42,6 +42,9 @@ const routes = [
   },
   {
     path: "/updatePassword",
+    meta: {
+      requiresAuth: true
+    },
     component: UpdatePassword
   },
   {
