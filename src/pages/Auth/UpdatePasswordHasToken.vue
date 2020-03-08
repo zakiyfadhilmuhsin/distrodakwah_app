@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="mobile-layout-on-desktop">
-    <q-header class="mobile-layout-on-desktop">
+        <q-header class="mobile-layout-on-desktop">
       <q-toolbar class="bg-distrodakwah text-white">
         <q-btn flat round dense to="/dashboard">
           <q-icon name="arrow_back" color="white" />
