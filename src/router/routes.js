@@ -45,7 +45,7 @@ const routes = [
     component: UpdatePassword
   },
   {
-    path: "/updatePassword/HasToken",
+    path: "/updatePasswordHasToken",
     component: UpdatePasswordHasToken
   },
   {
