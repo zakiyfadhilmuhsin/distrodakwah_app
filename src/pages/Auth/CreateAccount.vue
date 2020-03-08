@@ -132,6 +132,7 @@
                       yearLabel="Tahun"
                       class="dd-datepicker"
                       v-model="birthday"
+                      :defaultDate="birthday"
                     ></dropdown-datepicker>
                   </div>
                   <label>Jenis Kelamin:</label>
