@@ -431,7 +431,7 @@ export default {
         console.log("gakerl");
         console.log(registeredUserV1);
 
-        if (registeredUserV1 !== "does not exist") {
+        if (registeredUserV1 === "does not exist") {
           this.$q.notify({
             position: "top",
             color: "red-4",
