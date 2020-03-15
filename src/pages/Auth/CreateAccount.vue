@@ -336,6 +336,8 @@ export default {
   },
   computed: {},
   mounted() {
+    this.$q.loading.hide();
+
     this.getProvince();
   },
   methods: {
@@ -400,15 +402,14 @@ export default {
       this.subdistrict = this.subdistrictSelected.subdistrict;
     },
     async verifyEmail() {
-          this.$q.loading.show({
-      spinner: QSpinnerPuff,
-      spinnerColor: "black",
-      spinnerSize: 50,
-      backgroundColor: "grey",
-      message: "<b>Mohon Tunggu..</b>",
-      messageColor: "black"
-    });
-
+      this.$q.loading.show({
+        spinner: QSpinnerPuff,
+        spinnerColor: "black",
+        spinnerSize: 50,
+        backgroundColor: "grey",
+        message: "<b>Mohon Tunggu..</b>",
+        messageColor: "black"
+      });
       if (this.emailVerify !== "") {
         // Set Verify Email
         let OO_GetUser;
@@ -416,14 +417,21 @@ export default {
         let emailParam = { email: this.emailVerify };
         let registeredUserV1;
         try {
-          registeredUserV1 = await this.$axios.get(apiDomain + "/auth/", {
-            params: emailParam
-          });
+          registeredUserV1 = await this.$axios.post(
+            apiDomain + "/auth/exists",
+            {
+              headers: getHeader(),
+              params: emailParam
+            }
+          );
         } catch (error) {
           console.log(error.response.data.error);
         }
         //registered/exists?
-        if (registeredUserV1.data !== "does not exist") {
+        console.log("gakerl");
+        console.log(registeredUserV1);
+
+        if (registeredUserV1 !== "does not exist") {
           this.$q.notify({
             position: "top",
             color: "red-4",
@@ -431,6 +439,7 @@ export default {
             html: true
           });
           this.preventReactivation = true;
+          this.$q.loading.hide();
           return;
         }
 
@@ -445,9 +454,7 @@ export default {
             OO_Cred
           );
           accessToken = OO_Auth.data.data.access_token;
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
         //findUser in orderonline
         try {
           const OO_user = {
@@ -472,9 +479,7 @@ export default {
             "https://api.orderonline.id/submission",
             config
           );
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
         //empty means not found
         // find on another account
 
@@ -490,9 +495,7 @@ export default {
               OO_Cred
             );
             accessToken = OO_Auth.data.data.access_token;
-          } catch (error) {
-            console.log(error);
-          }
+          } catch (error) {}
 
           try {
             const OO_user = {
@@ -517,9 +520,7 @@ export default {
               "https://api.orderonline.id/submission",
               config
             );
-          } catch (error) {
-            console.log(error);
-          }
+          } catch (error) {}
         } else {
           this.dataUser = OO_GetUser.data.data;
           let DBV1User;
@@ -557,6 +558,8 @@ export default {
 
             this.phone = this.dataUser.phone;
           } catch (error) {
+            console.log("fajar");
+
             this.preventReactivation = false;
             this.$q.notify({
               position: "top",
@@ -566,7 +569,6 @@ export default {
             });
           }
         } else {
-
           this.dataUser = OO_GetUser.data.data;
           let DBV1User;
           try {
@@ -574,8 +576,6 @@ export default {
               params: emailParam
             });
           } catch (error) {
-                      console.log("lkslkd");
-
             this.roleName = this.dataUser[0].product_name;
             this.email = this.dataUser[0].customer_data.email;
             this.name = "";
@@ -590,6 +590,8 @@ export default {
           this.name = "";
           this.phone = this.dataUser[0].customer_data.phone.replace("+62", "");
         }
+
+        this.$q.loading.hide();
       } else {
         this.$q.notify({
           position: "top",
@@ -598,8 +600,7 @@ export default {
           html: true
         });
       }
-          this.$q.loading.hide();
-
+      this.$q.loading.hide();
     },
     createAccount() {
       if (this.email === "") {
@@ -653,7 +654,7 @@ export default {
           createForm.set("role_id", 8);
         } else if (
           this.roleName === "AM Reseller EKSKLUSIF" ||
-          this.roleName === "Reseller Exclusive" || 
+          this.roleName === "Reseller Exclusive" ||
           this.roleName === "KB Reseller Exclusive"
         ) {
           createForm.set("role_id", 9);
