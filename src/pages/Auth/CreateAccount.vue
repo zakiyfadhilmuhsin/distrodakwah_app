@@ -424,14 +424,11 @@ export default {
               headers: getHeader(),
               params: emailParam
             }
-          );          
+          );
         } catch (error) {
           console.log(error.response.data.error);
         }
         //registered/exists?
-console.log('faksf');
-console.log(registeredUserV1.data);
-
 
         if (registeredUserV1.data !== "does not exist") {
           this.$q.notify({
@@ -648,16 +645,27 @@ console.log(registeredUserV1.data);
         createForm.set("address", this.address);
         createForm.set("gender", this.gender);
         createForm.set("birthday", this.birthday);
+
         if (
-          this.roleName === "AM Reseller PRO" ||
-          this.roleName === "Reseller Pro" ||
-          this.roleName === "KB Reseller PRO"
+          [
+            "AM Reseller PRO",
+            "Reseller Pro",
+            "KB Reseller PRO",
+            "DD Reseller PRO",
+            "MHK Reseller PRO",
+            "BB Reseller PRO"
+          ].includes(this.roleName)
         ) {
           createForm.set("role_id", 8);
         } else if (
-          this.roleName === "AM Reseller EKSKLUSIF" ||
-          this.roleName === "Reseller Exclusive" ||
-          this.roleName === "KB Reseller Exclusive"
+          [
+            "AM Reseller EKSKLUSIF",
+            "Reseller Exclusive",
+            "KB Reseller Exclusive",
+            "DD Reseller EKSLUSIF",
+            "MHK Reseller EKSLUSIF",
+            "BB Reseller EKSLUSIF"
+          ].includes(this.roleName)
         ) {
           createForm.set("role_id", 9);
         }
