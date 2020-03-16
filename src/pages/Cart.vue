@@ -101,7 +101,7 @@
                     round
                     icon="delete_forever"
                     style="font-size: 10px"
-                    @click="removeProduct(item.product_id, item.product_sku_id, item.qty, item.price)"
+                    @click="removeProduct(item.product_sku_id)"
                   />
                 </div>
               </div>
@@ -370,8 +370,6 @@ export default {
       axios
         .get(getCartUrl + "/" + this.user.id, { headers: getHeader() })
         .then(response => {
-          console.log(response);
-
           if (response.status === 200) {
             this.$q.loading.hide();
 
@@ -491,30 +489,15 @@ export default {
       let val = (value / 1).toFixed(0).replace(".", ",");
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
-    removeProduct(id, product_sku_id, qty, price) {
-      let sku_id = null;
-
-      if (product_sku_id !== null) {
-        sku_id = product_sku_id;
-      } else {
-        sku_id = 0;
-      }
-
+    removeProduct(product_sku_id) {
+      const removeProductParams = {
+        product_sku_id: product_sku_id
+      };
       axios
-        .delete(
-          removeProductCartUrl +
-            "/" +
-            this.user.id +
-            "/" +
-            id +
-            "/" +
-            sku_id +
-            "/" +
-            qty +
-            "/" +
-            price,
-          { headers: getHeader() }
-        )
+        .delete(removeProductCartUrl, {
+          headers: getHeader(),
+          params: removeProductParams
+        })
         .then(response => {
           console.log(response);
           if (response.status === 200) {

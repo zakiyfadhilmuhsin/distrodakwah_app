@@ -431,9 +431,7 @@ export default {
           if (response.status === 200) {
             this.dataProduct = response.data.data;
 
-            this.category_name = this.categoryProduct(
-              this.dataProduct.category_id
-            );
+            this.category_name = this.categoryProduct(this.dataProduct.category_id);
             this.brand_name = this.brandProduct(this.dataProduct.brand_id);
 
             this.productDesc = this.dataProduct.product_description;
@@ -552,30 +550,17 @@ export default {
       if (!error) {
         let postData = new FormData();
 
-        if (this.dataProduct.product_type === "Variant Product") {
-          postData.set("product_id", this.dataProduct.id);
-          // Post Data Product Variant
-          postData.set("product_sku_id", this.productVariant.id);
-          postData.set("product_sku", this.productVariant.sku);
-          postData.set("product_sku_price", this.productVariant.price);
-          postData.set("options", this.optionValueSelected);
-          postData.set("qty", this.qty);
-          postData.set("customer_id", this.user.id);
-          postData.set("customer_name", this.user.name);
-          postData.set("customer_email", this.user.email);
-          postData.set("customer_phone", this.user.phone);
-          postData.set("role_id", this.user.role.id);
-        } else {
-          postData.set("product_id", this.dataProduct.id);
-          postData.set("product_sku_id", 0);
-          postData.set("product_sku", this.productVariant.sku);
-          postData.set("qty", this.qty);
-          postData.set("customer_id", this.user.id);
-          postData.set("customer_name", this.user.name);
-          postData.set("customer_email", this.user.email);
-          postData.set("customer_phone", this.user.phone);
-          postData.set("role_id", this.user.role.id);
-        }
+        postData.set("product_id", this.dataProduct.id);
+        // Post Data Product Variant
+        postData.set("product_sku_id", this.productVariant.id);
+        postData.set("product_sku", this.productVariant.sku);
+        postData.set("options", this.optionValueSelected);
+        postData.set("qty", this.qty);
+        postData.set("customer_id", this.user.id);
+        postData.set("customer_name", this.user.name);
+        postData.set("customer_email", this.user.email);
+        postData.set("customer_phone", this.user.phone);
+        postData.set("role_id", this.user.role.id);
 
         axios
           .post(addToCartUrl, postData, { headers: getHeader() })
