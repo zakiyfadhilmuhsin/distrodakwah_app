@@ -410,7 +410,8 @@ export default {
         message: "<b>Mohon Tunggu..</b>",
         messageColor: "black"
       });
-      if (this.emailVerify !== "") {
+      //check contains whitespaces
+      if (this.emailVerify !== "" && /\s/.test(this.emailVerify) === false) {
         // Set Verify Email
         let OO_GetUser;
 
@@ -423,15 +424,16 @@ export default {
               headers: getHeader(),
               params: emailParam
             }
-          );
+          );          
         } catch (error) {
           console.log(error.response.data.error);
         }
         //registered/exists?
-        console.log("gakerl");
-        console.log(registeredUserV1);
+console.log('faksf');
+console.log(registeredUserV1.data);
 
-        if (registeredUserV1 === "does not exist") {
+
+        if (registeredUserV1.data !== "does not exist") {
           this.$q.notify({
             position: "top",
             color: "red-4",
@@ -596,7 +598,7 @@ export default {
         this.$q.notify({
           position: "top",
           color: "red-4",
-          message: "<b>Email</b> Belum Diisi!",
+          message: "<b>Email</b> Salah atau mengandung spasi!",
           html: true
         });
       }
