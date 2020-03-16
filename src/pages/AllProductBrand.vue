@@ -230,6 +230,8 @@ export default {
     });
   },
   mounted() {
+            this.$q.loading.hide();
+
     this.getProduct();
   },
   methods: {

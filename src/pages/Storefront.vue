@@ -109,7 +109,7 @@
                 <h5 class="link-text text-orange-9" style="margin-bottom: 0">Lihat Semua</h5>
               </div>
             </div>  should be commented
-          </div> -->
+          </div>-->
           <!-- <div style="background-color: white; margin-bottom: 10px">
             <div class="row q-pa-xs">
               <div class="col">
@@ -126,8 +126,12 @@
                 </div>
               </div>
             </div>
-          </div> -->
-          <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px" v-for="(category, i) in dataProducts" :key="i">
+          </div>-->
+          <div
+            style="background-color: white; margin-bottom: 10px; padding-bottom: 15px"
+            v-for="(category, i) in dataProducts"
+            :key="i"
+          >
             <div class="row q-pa-xs">
               <div class="col">
                 <h5 class="promo-text">{{ category.category_name }}</h5>
@@ -146,7 +150,6 @@
                 <swiper :options="swiperProductListOption">
                   <swiper-slide v-for="(product, index) in category.products" :key="index">
                     <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
-  
                       <transition
                         appear
                         enter-active-class="animated fadeIn"
@@ -200,7 +203,7 @@
                             :to="'/detail/' + product.id"
                             flat
                             class="bg-orange-8 text-white centered-text"
-                            style=""
+                            style
                           >
                             <span style="text-transform: capitalize;">Beli Sekarang</span>
                           </q-btn>
@@ -335,22 +338,17 @@ export default {
     this.getSlider();
     this.getProductByCategory();
   },
-  mounted() {
+  async mounted() {
     // Get Total Cart Item
-    axios
-      .get(totalCartItemUrl + "/" + this.user.id, { headers: getHeader() })
-      .then(response => {
-        console.log(response);
-
-        if (response.status === 200) {
-          this.totalCartItem = response.data.data;
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.log(error.response);
-        }
-      });
+    try {
+      const totalCartItems = await axios.get(
+        totalCartItemUrl + "/" + this.user.id,
+        { headers: getHeader() }
+      );
+      if (totalCartItems.data.data !== "cart_is_empty") {
+        this.totalCartItem = totalCartItems.data.data;
+      }
+    } catch (error) {}
   },
   methods: {
     getProductByCategory() {
@@ -471,7 +469,7 @@ export default {
 .owl-theme .owl-dots .owl-dot.active span {
   background: #fea500 !important;
 }
-.q-btn__wrapper{
-  width:auto;
+.q-btn__wrapper {
+  width: auto;
 }
 </style>
