@@ -417,8 +417,8 @@ export default {
         let emailParam = { email: this.emailVerify };
         let registeredUserV1;
         try {
-          registeredUserV1 = await this.$axios.post(
-            apiDomain + "/auth/exists",
+          registeredUserV1 = await this.$axios.get(
+            apiDomain + "/auth/searchUser",
             {
               headers: getHeader(),
               params: emailParam
