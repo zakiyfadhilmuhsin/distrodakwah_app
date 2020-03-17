@@ -98,32 +98,32 @@
               </div>
             </div>
             <br />
-            <div class="row q-px-sm" v-if="cartData.shipment_fee !== 0">
+            <div class="row q-px-sm" v-if="$attrs.shipment.type === 'courierService'">
               <div class="col">
                 <q-list dense>
                   <q-item>
                     <q-item-section
                       side
-                      v-if="cartData.courier_name === 'Jalur Nugraha Ekakurir (JNE)'"
+                      v-if="$attrs.shipment.courierName === 'Jalur Nugraha Ekakurir (JNE)'"
                     >
                       <img src="~/assets/images/components/ekspedisi/jne.png" width="65" />
                     </q-item-section>
-                    <q-item-section side v-else-if="cartData.courier_name === 'J&T Express'">
+                    <q-item-section side v-else-if="$attrs.shipment.courierName === 'J&T Express'">
                       <img src="~/assets/images/components/ekspedisi/jnt.png" width="65" />
                     </q-item-section>
                     <q-item-section
                       side
-                      v-else-if="cartData.courier_name === 'POS Indonesia (POS)'"
+                      v-else-if="$attrs.shipment.courierName === 'POS Indonesia (POS)'"
                     >
                       <img src="~/assets/images/components/ekspedisi/pos.png" width="65" />
                     </q-item-section>
 
-                    <q-item-section>{{ cartData.courier_name + ' ' + cartData.service_name }}</q-item-section>
+                    <q-item-section>{{ $attrs.shipment.courierName + ' ' + $attrs.shipment.serviceSelected }}</q-item-section>
                     <q-item-section side>
                       <h6
                         style="margin: 0; font-size: 12px;"
                         class="text-black text-right"
-                      >Rp{{ formatPrice(cartData.shipment_fee) }}</h6>
+                      >Rp{{ formatPrice($attrs.shipment.shippingCost) }}</h6>
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -243,6 +243,7 @@
 import axios from "axios";
 import {
   getCartUrl,
+  addShippingToCart,
   catalogProductUrl,
   postToOrderUrl,
   destroyCart,
@@ -277,8 +278,6 @@ export default {
       axios
         .get(getCartUrl + "/" + this.user.id, { headers: getHeader() })
         .then(response => {
-          console.log(response);
-
           if (response.status === 200) {
             this.cartData = response.data.data;
 
@@ -382,22 +381,55 @@ export default {
           }
         });
     },
-    checkout() {
+    async checkout() {
+      let post = new FormData();
+      // Resi Otomatis
+      if (this.$attrs.shipment.type === "resiOtomatis") {
+        post.set("auto_receipt_number", this.$attrs.shipment.autoReceiptNumber);
+        post.set(
+          "auto_receipt_courier",
+          this.$attrs.shipment.autoReceiptCourier
+        );
+      } else if (this.$attrs.shipment.type === "courierService") {
+        post.set("shipment_fee", this.$attrs.shipment.shippingCost);
+        post.set("courier_name", this.$attrs.shipment.courierName);
+        post.set("service_name", this.$attrs.shipment.serviceSelected);
+        post.set("customer_address_id", this.$attrs.shipment.destinationId);
+      }
+
+      // Ongkir Biasa
+      await axios
+        .post(addShippingToCart + "/" + this.user.id, post, {
+          headers: getHeader()
+        })
+        .then(response => {
+          if (response.status === 200) {
+          }
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response);
+          }
+        });
+
       let postOrder = new FormData();
+
       let autoReceiptNumber = "";
       let courierName = "";
       let shipmentFee = 0;
 
-      if (this.cartData.shipment_fee === 0) {
-        autoReceiptNumber = this.cartData.auto_receipt_number;
-        courierName = this.cartData.auto_receipt_courier;
+      if (this.$attrs.shipment.type === "resiOtomatis") {
+        postOrder.set("shipmentType", "resiOtomatis");
+        autoReceiptNumber = this.$attrs.shipment.auto_receipt_number;
+        courierName = this.$attrs.shipment.auto_receipt_courier;
         shipmentFee = 0;
-      } else {
+        postOrder.set("awb", autoReceiptNumber);
+      } else if (this.$attrs.shipment.type === "courierService") {
+        postOrder.set("shipmentType", "courierService");
         autoReceiptNumber = "";
-        courierName = this.cartData.courier_name;
-        shipmentFee = this.cartData.shipment_fee;
+        courierName = this.$attrs.shipment.courierName;
+        shipmentFee = this.$attrs.shipment.shippingCost;
       }
-
       postOrder.set("customer_id", this.cartData.customer_id);
 
       // postOrder.set("total_amount", this.cartData.total_amount);
@@ -406,7 +438,6 @@ export default {
       // postOrder.set("shipment_fee", shipmentFee);
       // postOrder.set("courier_name", courierName);
       // postOrder.set("service_name", this.cartData.service_name);
-      postOrder.set("awb", autoReceiptNumber);
       // postOrder.set("customer_address_id", this.cartData.customer_address_id);
       // postOrder.set("customer_id", this.cartData.customer_id);
       // postOrder.set("customer_name", this.cartData.customer_name);
@@ -420,11 +451,9 @@ export default {
       //   JSON.stringify(this.cartData.cart_detail, 2, null)
       // );
 
-      axios
+      await axios
         .post(postToOrderUrl, postOrder, { headers: getHeader() })
         .then(response => {
-          console.log(response);
-
           if (response.status === 200) {
             this.$router.push({
               path: "/invoice",
@@ -436,46 +465,12 @@ export default {
               .delete(destroyCart + "/" + this.cartData.id, {
                 headers: getHeader()
               })
-              .then(response => {
-                console.log(response);
-              })
+              .then(response => {})
               .catch(error => {
                 if (error.response) {
                   console.log(error.response);
                 }
               });
-
-            // Add Keep Stock
-            let skuProductPost = new FormData();
-
-            skuProductPost.set("sku", JSON.stringify(this.skuProduct, 2, null));
-
-            // axios
-            //   .post(inventoryStockUrl + "/addKeepStock", skuProductPost, {
-            //     headers: getHeader()
-            //   })
-            //   .then(response => {
-            //     console.log(response);
-            //   })
-            //   .catch(error => {
-            //     if (error.response) {
-            //       console.log(error.response);
-            //     }
-            //   });
-
-            // Reduce Stock Product //
-
-            // axios.post( inventoryStockUrl + '/reduceStock', skuProductPost, { headers: getHeader() } )
-            //   .then(response => {
-            //     console.log(response)
-            //   })
-            //   .catch(error => {
-            //     if (error.response) {
-            //       console.log(error.response)
-            //     }
-            //   })
-
-            // End Reduce Stock Product //
           }
         })
         .catch(error => {
