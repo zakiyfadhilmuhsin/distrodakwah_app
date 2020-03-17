@@ -25,161 +25,164 @@ import UpdatePasswordHasToken from "pages/Auth/UpdatePasswordHasToken";
 import LoginTesting from "pages/Auth/LoginTesting";
 
 const routes = [
-  {
-    path: "/",
-    meta: {
-      requiresAuth: true
-    },
-    component: StorefrontPage
-  },
-  {
-    path: "/activation",
-    component: CreateAccountPage
-  },
-  {
-    path: "/resetPassword",
-    component: ResetPassword
-  },
-  {
-    path: "/updatePassword",
-    meta: {
-      requiresAuth: true
-    },
-    component: UpdatePassword
-  },
-  {
-    path: "/updatePasswordHasToken",
-    component: UpdatePasswordHasToken
-  },
-  {
-    path: "/free",
-    component: FreeAccountPage
-  },
-  {
-    path: "/login/:message?",
-    component: LoginPage
-  },
-  // {
-  //   path: "/login-testing/:message?",
-  //   component: LoginTesting
-  // },
-  {
-    path: "/detail/:id",
-    component: DetailProductPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/cart",
-    component: CartPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/shipping",
-    component: ShippingPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
+	{
+		path: "/",
+		meta: {
+			requiresAuth: true
+		},
+		component: StorefrontPage
+	},
+	{
+		path: "/activation",
+		component: CreateAccountPage
+	},
+	{
+		path: "/resetPassword",
+		component: ResetPassword
+	},
+	{
+		path: "/updatePassword",
+		meta: {
+			requiresAuth: true
+		},
+		component: UpdatePassword
+	},
+	{
+		path: "/updatePasswordHasToken",
+		component: UpdatePasswordHasToken
+	},
+	{
+		path: "/free",
+		component: FreeAccountPage
+	},
+	{
+		path: "/login/:message?",
+		component: LoginPage
+	},
+	// {
+	//   path: "/login-testing/:message?",
+	//   component: LoginTesting
+	// },
+	{
+		path: "/detail/:id",
+		component: DetailProductPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/cart",
+		component: CartPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/shipping",
+		component: ShippingPage,
+		meta: {
+			requiresAuth: true
+		},
+
+	},
+	{
+    name: "orderSummary",
     path: "/orderSummary",
-    component: OrderSummaryPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/invoice",
-    component: InvoicePage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/dashboard",
-    component: DashboardPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/orderList/:status?",
-    component: OrderListPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/detailOrder/:id",
-    component: DetailOrderPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/listCustomer",
-    component: ListCustomerPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/settingStore",
-    component: SettingStorePage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/allProductBrand/:category/:category_id",
-    component: AllProductBrandPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/search",
-    component: SearchPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/feedback",
-    component: FeedbackPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/helpdesk",
-    component: HelpDeskPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: "/downloadCatalog",
-    component: DownloadCatalogPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  // {
-  //   path: "/maintenance",
-  //   component: MaintenancePage
-  // }
+		component: OrderSummaryPage,
+		meta: {
+			requiresAuth: true
+    },
+    props: true
+	},
+	{
+		path: "/invoice",
+		component: InvoicePage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/dashboard",
+		component: DashboardPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/orderList/:status?",
+		component: OrderListPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/detailOrder/:id",
+		component: DetailOrderPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/listCustomer",
+		component: ListCustomerPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/settingStore",
+		component: SettingStorePage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/allProductBrand/:category/:category_id",
+		component: AllProductBrandPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/search",
+		component: SearchPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/feedback",
+		component: FeedbackPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/helpdesk",
+		component: HelpDeskPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/downloadCatalog",
+		component: DownloadCatalogPage,
+		meta: {
+			requiresAuth: true
+		}
+	}
+	// {
+	//   path: "/maintenance",
+	//   component: MaintenancePage
+	// }
 ];
 
 // Always leave this as last one
 if (process.env.MODE !== "ssr") {
-  routes.push({
-    path: "*",
-    component: () => import("pages/Error404.vue")
-  });
+	routes.push({
+		path: "*",
+		component: () => import("pages/Error404.vue")
+	});
 }
 
 export default routes;
