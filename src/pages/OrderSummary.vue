@@ -214,7 +214,7 @@
                 <h5
                   style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold"
                   v-if="cartData.voucher_id === null"
-                >Rp{{ formatPrice(cartData.grand_total) }}</h5>
+                >Rp{{ formatPrice(cartData.grand_total + $attrs.shipment.shippingCost) }}</h5>
                 <h5
                   style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold"
                   v-else-if="cartData.voucher_id !== null"
