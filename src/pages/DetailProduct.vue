@@ -132,7 +132,7 @@
                       outlined
                       color="orange-8"
                       options-dense
-                      v-model="opt.optionModel"
+                      v-model="opt.selectedOption"
                       :options="opt.optionValue"
                       option-value="value"
                       option-label="label"
@@ -143,7 +143,7 @@
                   </template>
                   <template v-else-if="opt.optionValue.length <= 3">
                     <q-btn-toggle
-                      v-model="opt.optionModel"
+                      v-model="opt.selectedOption"
                       unelevated
                       toggle-color="orange-8"
                       color="white"
@@ -381,7 +381,7 @@ import VueClipboard from "vue-clipboard2";
 import { openURL } from "quasar";
 
 //vanilla.js
-
+import { nthIndex } from "../library/stringManipulation";
 Vue.use(VueClipboard);
 
 export default {
@@ -431,7 +431,9 @@ export default {
           if (response.status === 200) {
             this.dataProduct = response.data.data;
 
-            this.category_name = this.categoryProduct(this.dataProduct.category_id);
+            this.category_name = this.categoryProduct(
+              this.dataProduct.category_id
+            );
             this.brand_name = this.brandProduct(this.dataProduct.brand_id);
 
             this.productDesc = this.dataProduct.product_description;
@@ -476,23 +478,56 @@ export default {
         });
     },
     getInputOptions() {
-      let productOptions = this.dataProduct.product_options;
+      const productVariantsLength = this.dataProduct.product_variants.length;
+      let initialIndex = 0;
 
-      for (var i = 0; i < productOptions.length; i++) {
-        //alert(productOptions[i].option_name);
-        this.inputOptions.push({
-          optionTitle: productOptions[i].option_name,
-          optionModel: "",
-          optionValue: []
-        });
+      this.inputOptions = this.dataProduct.product_options.map(
+        (option, optionIndex) => {
+          let optionValueSet = new Set();
 
-        for (var val = 0; val < productOptions[i].values.length; val++) {
-          this.inputOptions[i].optionValue.push({
-            label: productOptions[i].values[val].value_name,
-            value: productOptions[i].values[val].value_name
+          for (let index = 0; index < productVariantsLength; index++) {
+            const variant = this.dataProduct.product_variants[index];
+            const fromIndex = nthIndex(variant.sku, "~", optionIndex + 1) + 1; // ~ and move +1 index
+            const toIndex = nthIndex(variant.sku, "~", optionIndex + 2); //next ~(+2) and move +1 index
+
+            const result = variant.sku.substring(
+              fromIndex,
+              toIndex != -1 ? toIndex : variant.sku.length
+            );
+            optionValueSet.add(result);
+          }
+
+          const optionValueArr = [...optionValueSet];
+          const optionValue = optionValueArr.map(optionValue => {
+            return {
+              label: optionValue,
+              value: optionValue
+            };
           });
+          return {
+            optionTitle: option.option_name,
+            selectedOption: "",
+            optionValue
+          };
         }
-      }
+      );
+
+      // return;
+      // for (var i = 0; i < productOptions.length; i++) {
+      //   //alert(productOptions[i].option_name);
+      //   this.inputOptions.push({
+      //     optionTitle: productOptions[i].option_name,
+      //     selectedOption: "",
+      //     optionValue: []
+      //   });
+
+      //   for (var val = 0; val < productOptions[i].values.length; val++) {
+      //     this.inputOptions[i].optionValue.push({
+      //       label: productOptions[i].values[val].value_name,
+      //       value: productOptions[i].values[val].value_name
+      //     });
+      //   }
+      // }
     },
     getProductVariant() {
       // Get option value
@@ -502,12 +537,12 @@ export default {
       for (var key in this.inputOptions) {
         productOptionSelected.push({
           option: this.inputOptions[key].optionTitle,
-          value: this.inputOptions[key].optionModel
+          value: this.inputOptions[key].selectedOption
         });
-        val.push(this.inputOptions[key].optionModel);
+        val.push(this.inputOptions[key].selectedOption);
       }
 
-      let optionSelected = val.join("");
+      let optionSelected = String(this.dataProduct.sku) + "~" + val.join("~");
 
       this.optionValueSelected = JSON.stringify(productOptionSelected);
 
@@ -519,10 +554,7 @@ export default {
       this.productVariant = "";
       //let storeVar = [];
       for (var i = 0, l = varPro.length; i < l; i++) {
-        if (
-          optionSelected.toUpperCase() ===
-          varPro[i].sku.replace(this.dataProduct.sku, "")
-        ) {
+        if (optionSelected.toUpperCase() === varPro[i].sku) {
           // store product variant
 
           this.productVariant = {
@@ -539,6 +571,8 @@ export default {
       }
     },
     addToCart() {
+      // this.getInputOptions();
+      // return;
       // Cek stok dulu
       let error = null;
       !/[0-9]/.test(this.qty) || this.qty <= 0 ? (error = "notAllowed") : "";
