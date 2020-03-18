@@ -420,7 +420,6 @@ export default {
   },
   mounted() {
     this.getProductDetail();
-
   },
   methods: {
     getProductDetail() {
@@ -440,9 +439,7 @@ export default {
             this.productDesc = this.dataProduct.product_description;
 
             if (this.dataProduct.product_type === "Variant Product") {
-
               this.getInputOptions();
-              
             }
           }
         })
@@ -451,8 +448,6 @@ export default {
             console.log(error.response);
           }
         });
-
-
     },
     categoryProduct(id) {
       axios
@@ -483,22 +478,15 @@ export default {
         });
     },
     getInputOptions() {
-      let productOptions = this.dataProduct.product_options;
       const productVariantsLength = this.dataProduct.product_variants.length;
       let initialIndex = 0;
 
       this.inputOptions = this.dataProduct.product_options.map(
         (option, optionIndex) => {
-
           let optionValueSet = new Set();
 
           for (let index = 0; index < productVariantsLength; index++) {
-
             const variant = this.dataProduct.product_variants[index];
-            // const fromIndex = variant.sku.indexOf("~", initialIndex) + 1;
-
-            // const toIndex = variant.sku.indexOf("~", fromIndex);
-            // const value = variant.sku.substring(fromIndex, toIndex);
             const fromIndex = nthIndex(variant.sku, "~", optionIndex + 1) + 1; // ~ and move +1 index
             const toIndex = nthIndex(variant.sku, "~", optionIndex + 2); //next ~(+2) and move +1 index
 
@@ -507,10 +495,7 @@ export default {
               toIndex != -1 ? toIndex : variant.sku.length
             );
             optionValueSet.add(result);
-
-            // initialIndex = productVariantsLength - index == 1 ? toIndex : initialIndex;
           }
-
 
           const optionValueArr = [...optionValueSet];
           const optionValue = optionValueArr.map(optionValue => {
