@@ -158,7 +158,7 @@
                             dense
                             v-model="shipment.shippingCost"
                             :val="cost.cost[0].value"
-                            @input="shipment.serviceSelected = cost.service"
+                            @input="shipment.selectedService = cost.service"
                           />
                         </q-item-section>
                         <!-- {{ dataCost.results.name }} -->
@@ -480,7 +480,7 @@ export default {
         this.shipment.autoReceiptNumber
       ) {
         return "resiOtomatis";
-      } else if (this.resiOtomatis == false && this.shipment.serviceSelected) {
+      } else if (this.resiOtomatis == false && this.shipment.selectedService) {
         return "courierService";
       }
       return false;

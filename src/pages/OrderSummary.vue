@@ -382,74 +382,20 @@ export default {
         });
     },
     async checkout() {
-      let post = new FormData();
-      // Resi Otomatis
-      if (this.$attrs.shipment.type === "resiOtomatis") {
-        post.set("auto_receipt_number", this.$attrs.shipment.autoReceiptNumber);
-        post.set(
-          "auto_receipt_courier",
-          this.$attrs.shipment.autoReceiptCourier
-        );
-      } else if (this.$attrs.shipment.type === "courierService") {
-        post.set("shipment_fee", this.$attrs.shipment.shippingCost);
-        post.set("courier_name", this.$attrs.shipment.courierName);
-        post.set("service_name", this.$attrs.shipment.serviceSelected);
-        post.set("customer_address_id", this.$attrs.shipment.destinationId);
-      }
-
-      // Ongkir Biasa
-      await axios
-        .post(addShippingToCart + "/" + this.user.id, post, {
-          headers: getHeader()
-        })
-        .then(response => {
-          if (response.status === 200) {
-          }
-        })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response);
-          }
-        });
-
       let postOrder = new FormData();
-
-      let autoReceiptNumber = "";
-      let courierName = "";
-      let shipmentFee = 0;
+      postOrder.set("customer_id", this.cartData.customer_id);
+      postOrder.set("customer_address_id", this.$attrs.shipment.destinationId);
 
       if (this.$attrs.shipment.type === "resiOtomatis") {
         postOrder.set("shipmentType", "resiOtomatis");
-        autoReceiptNumber = this.$attrs.shipment.auto_receipt_number;
-        courierName = this.$attrs.shipment.auto_receipt_courier;
-        shipmentFee = 0;
-        postOrder.set("awb", autoReceiptNumber);
+        postOrder.set("awb", this.$attrs.shipment.autoReceiptNumber);
+        postOrder.set("courier_name", this.$attrs.shipment.autoReceiptCourier);
       } else if (this.$attrs.shipment.type === "courierService") {
         postOrder.set("shipmentType", "courierService");
-        autoReceiptNumber = "";
-        courierName = this.$attrs.shipment.courierName;
-        shipmentFee = this.$attrs.shipment.shippingCost;
+        postOrder.set("courier_name", this.$attrs.shipment.courierName);
+        postOrder.set("service_name", this.$attrs.shipment.selectedService);
+        postOrder.set("shipment_fee", this.$attrs.shipment.shippingCost);
       }
-      postOrder.set("customer_id", this.cartData.customer_id);
-
-      // postOrder.set("total_amount", this.cartData.total_amount);
-      // postOrder.set("total_weight", this.cartData.total_weight);
-      // postOrder.set("grand_total", this.cartData.grand_total);
-      // postOrder.set("shipment_fee", shipmentFee);
-      // postOrder.set("courier_name", courierName);
-      // postOrder.set("service_name", this.cartData.service_name);
-      // postOrder.set("customer_address_id", this.cartData.customer_address_id);
-      // postOrder.set("customer_id", this.cartData.customer_id);
-      // postOrder.set("customer_name", this.cartData.customer_name);
-      // postOrder.set("customer_email", this.cartData.customer_email);
-      // postOrder.set("customer_phone", this.cartData.customer_phone);
-      // postOrder.set("coupon_id", this.cartData.voucher_id);
-      // postOrder.set("coupon_code", this.cartData.voucher_code_name);
-      // postOrder.set("coupon_discount", this.cartData.voucher_discount);
-      // postOrder.set(
-      //   "cart_details",
-      //   JSON.stringify(this.cartData.cart_detail, 2, null)
-      // );
 
       await axios
         .post(postToOrderUrl, postOrder, { headers: getHeader() })
