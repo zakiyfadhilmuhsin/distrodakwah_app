@@ -134,9 +134,9 @@
               <div class="col">
                 <q-list dense>
                   <q-item>
-                    <q-item-section>Resi Otomatis (Gratis Ongkir)</q-item-section>
+                    <q-item-section>Resi Otomatis </q-item-section>
                     <q-item-section side>
-                      <h6 style="margin: 0; font-size: 12px;" class="text-black text-right">Rp0</h6>
+                      <h6 style="margin: 0; font-size: 12px;" class="text-black text-right">Rp{{formatPrice(this.$attrs.shipment.shippingCost)}}</h6>
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -385,6 +385,7 @@ export default {
       let postOrder = new FormData();
       postOrder.set("customer_id", this.cartData.customer_id);
       postOrder.set("customer_address_id", this.$attrs.shipment.destinationId);
+      postOrder.set("shipment_fee", this.$attrs.shipment.shippingCost);
 
       if (this.$attrs.shipment.type === "resiOtomatis") {
         postOrder.set("shipmentType", "resiOtomatis");
@@ -394,7 +395,6 @@ export default {
         postOrder.set("shipmentType", "courierService");
         postOrder.set("courier_name", this.$attrs.shipment.courierName);
         postOrder.set("service_name", this.$attrs.shipment.selectedService);
-        postOrder.set("shipment_fee", this.$attrs.shipment.shippingCost);
       }
 
       await axios

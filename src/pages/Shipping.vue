@@ -86,6 +86,7 @@
                     v-model="resiOtomatis"
                     color="orange-8"
                     label="Input Resi Otomatis?"
+                    @input="emptyShipment"
                   />
                 </div>
               </div>
@@ -96,7 +97,7 @@
                   <template v-if="resiOtomatis !== true">
                     <h6
                       style="font-size: 14px; margin: 0; padding: 0 20px 10px 20px; font-family: 'Open Sans'; line-height: 18px; font-weight: bold"
-                    >Pilih ekspedisi :</h6>
+                    >Perhitungan Ongkos Kirim:</h6>
                     <center>
                       <div class="q-px-md">
                         <q-select
@@ -110,6 +111,7 @@
                           option-label="label"
                           emit-value
                           map-options
+                          label="Pilihan Ekspedisi"
                           @input="getCostShipping"
                         />
                       </div>
@@ -176,7 +178,27 @@
                   </template>
                   <template v-else>
                     <div class="row q-px-md">
-                      <div class="col">
+                      <div class="col-12">
+                        <q-input
+                          v-model="shipment.shippingCost"
+                          color="orange-8"
+                          type="text"
+                          dense
+                          class="bg-grey-2 q-mb-sm"
+                          outlined
+                          label="Ongkos Kirim"
+                        />
+                        <q-input
+                          v-model="shipment.shippingCostCut"
+                          color="orange-8"
+                          type="text"
+                          dense
+                          class="bg-grey-2 q-mb-sm"
+                          outlined
+                          label="Potongan/Subsidi Ongkir"
+                        />
+                      </div>
+                      <div class="col-12">
                         <q-input
                           v-model="shipment.autoReceiptNumber"
                           color="orange-8"
@@ -186,6 +208,7 @@
                           outlined
                           placeholder="Silahkan Masukkan No Resi Otomatis Disini.."
                           label="No Resi Otomatis"
+                          :disable="disableResiInput"
                         />
                         <q-input
                           v-model="shipment.autoReceiptCourier"
@@ -196,6 +219,7 @@
                           outlined
                           placeholder="Silahkan Masukkan Nama Ekpedisi Disini.."
                           label="Nama Ekspedisi"
+                          :disable="disableResiInput"
                         />
                       </div>
                     </div>
@@ -483,6 +507,16 @@ export default {
         return "courierService";
       }
       return false;
+    },
+    disableResiInput: function() {
+      if (
+        this.resiOtomatis == true &&
+        this.shipment.shippingCost &&
+        this.shipment.shippingCostCut
+      ) {
+        return false;
+      }
+      return true;
     }
   },
   created() {
@@ -530,7 +564,7 @@ export default {
             this.dataCustomerSelected = response.data.data;
 
             // Set Ekspedisi
-            this.shipment.courierSelected = "jne";
+          
             this.getCostShipping();
           }
         })
@@ -664,6 +698,10 @@ export default {
 
     reviewOrder() {
       if (["resiOtomatis", "courierService"].includes(this.allowOrder)) {
+        if(this.allowOrder == "resiOtomatis") {
+          this.shipment.shippingCost -= this.shipment.shippingCostCut
+          delete this.shipment.shippingCostCut
+        }
         this.$router.push({
           name: "orderSummary",
           params: {
@@ -681,6 +719,11 @@ export default {
           message: "Silakan Pilih Pelanggan dan Jasa Kurir"
         });
       }
+    },
+    emptyShipment(){
+      this.dataCost=null;
+      this.serviceSelectedRadio = null;
+      this.shipment = {};
     }
   }
 };
