@@ -155,10 +155,9 @@
                           <q-radio
                             keep-color
                             color="orange-8"
-                            dense
-                            v-model="shipment.shippingCost"
-                            :val="cost.cost[0].value"
-                            @input="shipment.serviceSelected = cost.service"
+                            v-model="serviceSelectedRadio"
+                            :val="cost"
+                            @input="onServiceSelectedRadio"
                           />
                         </q-item-section>
                         <!-- {{ dataCost.results.name }} -->
@@ -467,7 +466,7 @@ export default {
       addCustomer: false,
       selectCustomerDialog: false,
       resiOtomatis: false,
-
+      serviceSelectedRadio: null,
       cartData: [],
       shipment: {}
     };
@@ -480,7 +479,7 @@ export default {
         this.shipment.autoReceiptNumber
       ) {
         return "resiOtomatis";
-      } else if (this.resiOtomatis == false && this.shipment.serviceSelected) {
+      } else if (this.resiOtomatis == false && this.serviceSelectedRadio) {
         return "courierService";
       }
       return false;
@@ -642,6 +641,9 @@ export default {
               this.dataCost = response.data.rajaongkir.results[0].costs;
               this.shipment.courierName =
                 response.data.rajaongkir.results[0].name;
+              this.serviceSelectedRadio = null;
+              this.shipment.serviceSelected = null;
+              this.shipment.shippingCost = null;
             }
           })
           .catch(error => {
@@ -651,10 +653,15 @@ export default {
           });
       }
     },
+    onServiceSelectedRadio() {
+      this.shipment.serviceSelected = this.serviceSelectedRadio.service;
+      this.shipment.shippingCost = this.serviceSelectedRadio.cost[0].value;
+    },
     formatPrice(value) {
       let val = (value / 1).toFixed(0).replace(".", ",");
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
+
     reviewOrder() {
       if (["resiOtomatis", "courierService"].includes(this.allowOrder)) {
         this.$router.push({
