@@ -20,7 +20,7 @@ export default function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     mode: 'history',
-    base: process.env.VUE_ROUTER_BASE
+    base: '/'
   })
   
 
