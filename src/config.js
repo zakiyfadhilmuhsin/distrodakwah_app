@@ -9,6 +9,8 @@ export const apiDomain = hostDomain
 export const loginUrl = apiDomain + '/auth/login'
 export const createAccountUrl = apiDomain + '/auth/signup'
 export const trackingUrl = apiDomain + '/auth/tracking'
+export const logoutUrl = apiDomain + `/auth/logout`
+
 
 export const signGoogleUrl = apiDomain + 'googlesign'
 export const signFacebookUrl = apiDomain + 'facebooksign'
