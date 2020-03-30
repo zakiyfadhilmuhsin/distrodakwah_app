@@ -108,7 +108,6 @@ export default {
       
       axios.get( getStoreUrl + '/' + this.user.id, { headers: getHeader() } )
         .then(response => {
-          console.log(response)
 
           if (response.status === 200) {
             this.dataStore = response.data.data;
@@ -140,7 +139,6 @@ export default {
 
         axios.post( createStoreUrl + '/' + this.user.id, formData, { headers: getHeader() } )
           .then(response => {
-            console.log(response)
 
             if (response.status === 200) {
               this.$q.notify({position: 'top', color: 'light-green-6', message: 'Berhasil Disimpan!'});
