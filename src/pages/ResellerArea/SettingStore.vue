@@ -40,11 +40,11 @@
                           <div class="q-py-sm">
                               Share Web Replika :
                               <br/>
-                              <facebook :url="url + storeUrl" scale="2" class="q-pa-sm"></facebook>
-                              <telegram :url="url + storeUrl" scale="2" class="q-pa-sm"></telegram>
-                              <twitter :url="url + storeUrl" scale="2" class="q-pa-sm"></twitter>
-                              <whats-app :url="url + storeUrl" scale="2" class="q-pa-sm"></whats-app>
-                              <email :url="url + storeUrl" scale="2" class="q-pa-sm"></email>
+                              <facebook :url="url + '/' + storeUrl" scale="2" class="q-pa-sm"></facebook>
+                              <telegram :url="url + '/' + storeUrl" scale="2" class="q-pa-sm"></telegram>
+                              <twitter :url="url + '/' + storeUrl" scale="2" class="q-pa-sm"></twitter>
+                              <whats-app :url="url + '/' + storeUrl" scale="2" class="q-pa-sm"></whats-app>
+                              <email :url="url + '/' + storeUrl" scale="2" class="q-pa-sm"></email>
                           </div>
                       </center>
                   </div>
@@ -94,7 +94,7 @@ export default {
         storeUrl: '',
         whatsappNumber: '',
         dataStore: [],
-        url: 'https://prodakwah.com/#/',
+        url: webReplicaDomain,
     }
   },
   created () {
