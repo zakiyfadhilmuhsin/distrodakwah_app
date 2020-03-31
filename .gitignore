@@ -20,3 +20,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 .project
+# Local Netlify folder
+.netlify
