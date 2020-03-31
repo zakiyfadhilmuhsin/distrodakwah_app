@@ -108,6 +108,8 @@ module.exports = function (ctx) {
 
     build: {
       scopeHoisting: true,
+      vueRouterMode: 'history',
+      distDir: 'public',
       // vueRouterMode: 'history',
       // vueCompiler: true,
       // gzip: true,
