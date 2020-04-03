@@ -323,7 +323,7 @@ export default {
       user: [],
       // Total Count Cart Item
       totalCartItem: null,
-      startProduct: 1
+      startProduct: 1,
     };
   },
   computed: {
@@ -331,7 +331,7 @@ export default {
       return this.dataProduct.slice().reverse();
     }
   },
-  created() {
+  async created() {
     this.user = JSON.parse(window.localStorage.getItem("profileUser"));
     this.getBrand();
 
