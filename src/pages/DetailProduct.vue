@@ -261,6 +261,12 @@
                   <div class="col">
                     <h4 class="price-title-small-text">Rincian Produk</h4>
                   </div>
+                  <q-table
+                    title="Stock Varian"
+                    :data="yaumeeSpreadsheetsTable.data"
+                    :columns="yaumeeSpreadsheetsTable.column"
+                    row-key="name"
+                  />
                   <div class="col text-right" style="padding-top: 5px">
                     <q-btn flat class="bg-red text-white" size="sm" label="Salin" @click="doCopy" />
                   </div>
@@ -379,29 +385,65 @@ import {
 } from "src/config";
 import VueClipboard from "vue-clipboard2";
 import { openURL } from "quasar";
-
+import { googleSpreadsheetDoc } from "../../config/googleSpreadsheets";
 //vanilla.js
 import { nthIndex } from "../library/stringManipulation";
+
 Vue.use(VueClipboard);
 
 export default {
   name: "DetailProduct",
   data() {
     return {
-      // Product
       dataProduct: [],
       dataCategory: [],
       dataBrand: [],
-
       productDesc: null,
-      // Product Option
+      yaumeeSpreadsheetsTable: {
+        column: [
+          {
+            name: "id",
+            required: true,
+            label: "ID",
+            align: "left",
+            field: row => row.id,
+            format: val => `${val}`,
+            sortable: true
+          },
+          {
+            name: "warna",
+            align: "center",
+            label: "Warna",
+            field: "warna",
+            field: row => row.warna,
+            sortable: true
+          },
+                    {
+            name: "size",
+            align: "center",
+            label: "Size",
+            field: "size",
+            field: row => row.size,
+            sortable: true
+          },
+          {
+            name: "stock",
+            align: "center",
+            label: "Stock",
+            field: "stock",
+            field: row => row.stock,
+            sortable: true
+          },
+        ],
+        data: []
+      },
+
       inputOptions: [],
       optionValueSelected: [],
       qty: 1,
-      // Product Variant
       productVariant: "",
-      // Extra
       confirmOrder: false,
+      innerLoading: [],
       user: null
       // skuSelected: null
     };
@@ -415,8 +457,22 @@ export default {
       return null;
     }
   },
-  created() {
+  async created() {
     this.user = JSON.parse(window.localStorage.getItem("profileUser"));
+    const doc = await googleSpreadsheetDoc();
+    const sheet = await doc.sheetsByIndex[0];
+    const rows = await sheet.getRows();
+    const rowsMap = [];
+
+    for await (const row of rows) {
+      rowsMap.push({
+        id: row.id,
+        warna: row.warna,
+        size: row.size,
+        stock: row.stock
+      });
+    }
+    this.yaumeeSpreadsheetsTable.data = rowsMap;
   },
   mounted() {
     this.getProductDetail();
