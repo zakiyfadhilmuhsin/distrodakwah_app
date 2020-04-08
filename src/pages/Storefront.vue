@@ -149,67 +149,8 @@
               <div class="col">
                 <swiper :options="swiperProductListOption">
                   <swiper-slide v-for="(product, index) in category.products" :key="index">
-                    <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
-                      <transition
-                        appear
-                        enter-active-class="animated fadeIn"
-                        leave-active-class="animated fadeOut"
-                      >
-                        <q-img
-                          :src="product.featured_image"
-                          style="width: 100%"
-                          v-show="featuredImageShow == true"
-                        />
-                      </transition>
-
-                      <center>
-                        <q-spinner
-                          color="dark"
-                          size="2em"
-                          v-show="innerLoading == true"
-                          style="margin: 10px 0"
-                        />
-                      </center>
-
-                      <q-card-section style="padding: 10px 16px 16px 16px">
-                        <center>
-                          <div
-                            style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px; height: 35px"
-                          >{{ product.product_name }}</div>
-                          <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
-                          <div class="q-px-sm q-py-xs bg-green">
-                            <div
-                              class="text-white"
-                              style="font-weight: bolder; margin-top:0"
-                              v-if="user.role.id === 9"
-                            >{{'Rp' + formatPrice(product.product_variants[0].price - product.product_variants[0].reseller_exclusive_price)}}</div>
-                            <div
-                              class="text-white"
-                              style="font-weight: bolder; margin-top:0"
-                              v-else-if="user.role.id === 8"
-                            >{{'Rp' + formatPrice(product.product_variants[0].price - product.product_variants[0].reseller_pro_price)}}</div>
-                            <div
-                              class="text-white"
-                              style="font-weight: bolder; margin-top:0"
-                              v-else-if="user.role.id === 10"
-                            >0</div>
-                          </div>
-                        </center>
-                      </q-card-section>
-
-                      <q-card-section>
-                        <center>
-                          <q-btn
-                            :to="'/detail/' + product.id"
-                            flat
-                            class="bg-orange-8 text-white centered-text"
-                            style
-                          >
-                            <span style="text-transform: capitalize;">Beli Sekarang</span>
-                          </q-btn>
-                        </center>
-                      </q-card-section>
-                    </q-card>
+                    <KeepProductCard :product="product" :user="user" v-if="product.brand_id ===7" />
+                    <VendorProductCard :product="product" :user="user" v-else />
                   </swiper-slide>
                   <div class="swiper-product-pagination" slot="pagination"></div>
                 </swiper>
@@ -294,8 +235,17 @@ import {
 } from "src/config";
 // Loading
 import { QSpinnerPuff } from "quasar";
-
+//components
+import VendorProductCard from "../components/vendorProductCard.vue";
+import KeepProductCard from "../components/keepProductCard.vue";
 export default {
+  components: {
+    swiper,
+    swiperSlide,
+    carousel,
+    VendorProductCard,
+    KeepProductCard
+  },
   data() {
     return {
       // Slider Section
@@ -318,12 +268,11 @@ export default {
       },
       // Loading
       innerLoading: false,
-      featuredImageShow: true,
       // user
       user: [],
       // Total Count Cart Item
       totalCartItem: null,
-      startProduct: 1,
+      startProduct: 1
     };
   },
   computed: {
@@ -334,7 +283,6 @@ export default {
   async created() {
     this.user = JSON.parse(window.localStorage.getItem("profileUser"));
     this.getBrand();
-
     this.getSlider();
     this.getProductByCategory();
   },
@@ -357,7 +305,6 @@ export default {
       axios
         .get(catalogCategoryUrl, { headers: getHeader() })
         .then(response => {
-          console.log(response);
 
           if (response.status === 200) {
             this.dataCategory = response.data.data;
@@ -368,7 +315,6 @@ export default {
                   headers: getHeader()
                 })
                 .then(response => {
-                  console.log(response);
 
                   if (response.status === 200) {
                     this.dataProducts.push({
@@ -396,7 +342,6 @@ export default {
       axios
         .get(catalogBrandUrl, { headers: getHeader() })
         .then(response => {
-          console.log(response);
 
           if (response.status === 200) {
             this.dataBrand = response.data.data;
@@ -413,7 +358,6 @@ export default {
       axios
         .get(identitySliderUrl, { headers: getHeader() })
         .then(response => {
-          console.log(response);
 
           if (response.status === 200) {
             this.dataSlider = response.data.data;
@@ -429,8 +373,7 @@ export default {
       let val = (value / 1).toFixed(0).replace(".", ",");
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
-  },
-  components: { swiper, swiperSlide, carousel }
+  }
 };
 </script>
 

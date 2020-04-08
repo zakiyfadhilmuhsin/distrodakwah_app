@@ -3,6 +3,7 @@ import CreateAccountPage from "pages/Auth/CreateAccount";
 import FreeAccountPage from "pages/Auth/RegisterFreeMember";
 import StorefrontPage from "pages/Storefront";
 import DetailProductPage from "pages/DetailProduct";
+import KeepDetailProductPage from "pages/KeepDetailProduct";
 import DashboardPage from "pages/ResellerArea/Dashboard";
 import ListCustomerPage from "pages/ResellerArea/ListCustomer";
 import ShippingPage from "pages/Shipping";
@@ -71,6 +72,13 @@ const routes = [
 		}
 	},
 	{
+		path: "/detail/keep/:id",
+		component : KeepDetailProductPage,
+		meta: {
+			requiresAuth : true
+		}
+	},
+	{
 		path: "/cart",
 		component: CartPage,
 		meta: {
@@ -82,17 +90,16 @@ const routes = [
 		component: ShippingPage,
 		meta: {
 			requiresAuth: true
-		},
-
+		}
 	},
 	{
-    name: "orderSummary",
-    path: "/orderSummary",
+		name: "orderSummary",
+		path: "/orderSummary",
 		component: OrderSummaryPage,
 		meta: {
 			requiresAuth: true
-    },
-    props: true
+		},
+		props: true
 	},
 	{
 		path: "/invoice",
