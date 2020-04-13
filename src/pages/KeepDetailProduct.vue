@@ -106,10 +106,8 @@
             <h4 class="product-title-text">{{dataProduct.product_name}}</h4>
             <div style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold">
               <span
-                class="text-red"
-                v-if="stockReady == null"
-              >Pilih Varian Untuk Melihat Jumlah Stok</span>
-              <span v-else>Stok Tersedia: {{ stockReady }}</span>
+                class="text"
+              >Stok Tersedia</span>
             </div>
 
             <hr style="margin: 15px 0" />
@@ -254,21 +252,27 @@
             </div>
 
             <hr style="margin: 15px 0" />
-
             <div class="row">
               <div class="col">
-                <div class="row" style="margin-bottom: 5px">
-                  <div class="col">
-                    <h4 class="price-title-small-text">Rincian Produk</h4>
-                  </div>
-
-                  <div class="col text-right" style="padding-top: 5px">
-                    <q-btn flat class="bg-red text-white" size="sm" label="Salin" @click="doCopy" />
-                  </div>
-                </div>
-                <p v-html="dataProduct.product_description"></p>
+                <h4 class="price-title-small-text">Stok bahan baku:</h4>
+              </div>
+              <q-table
+                title="Stock Varian"
+                :data="yaumeeSpreadsheetsTable.data"
+                :columns="yaumeeSpreadsheetsTable.column"
+                row-key="name"
+              />
+            </div>
+            <hr style="margin: 15px 0" />
+            <div class="row" style="margin-bottom: 5px">
+              <div class="col">
+                <h4 class="price-title-small-text">Rincian Produk</h4>
+              </div>
+              <div class="col text-right" style="padding-top: 5px">
+                <q-btn flat class="bg-red text-white" size="sm" label="Salin" @click="doCopy" />
               </div>
             </div>
+            <p v-html="dataProduct.product_description"></p>
           </div>
         </div>
       </q-page>
@@ -387,7 +391,7 @@ import { nthIndex } from "../library/stringManipulation";
 Vue.use(VueClipboard);
 
 export default {
-  name: "DetailProduct",
+  name: "KeepDetailProduct",
   data() {
     return {
       dataProduct: [],
@@ -481,6 +485,9 @@ export default {
         .then(response => {
           if (response.status === 200) {
             this.dataProduct = response.data.data;
+            console.log("fajarsidiqsalviro");
+
+            console.log(this.dataProduct);
 
             this.category_name = this.categoryProduct(
               this.dataProduct.category_id

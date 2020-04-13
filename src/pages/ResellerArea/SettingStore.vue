@@ -99,6 +99,7 @@ export default {
   },
   created () {
     this.user = JSON.parse(window.localStorage.getItem('profileUser'));
+    
   },
   mounted () {
     this.getStore();
