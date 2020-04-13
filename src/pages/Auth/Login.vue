@@ -55,7 +55,7 @@
             </q-btn>
             <p class="login-small-text">
               
-              <a href="#" @click="$router.push('/resetPassword')">Lupa Password?</a>
+              <a @click="$router.push('/resetPassword')">Lupa Password?</a>
             </p>
 
             <br />
