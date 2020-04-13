@@ -54,8 +54,7 @@
               <span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">MASUK</span>
             </q-btn>
             <p class="login-small-text">
-              
-              <a @click="$router.push('/resetPassword')">Lupa Password?</a>
+              <a style="color:blue; font-weight: bold; cursor:pointer;" @click="$router.push('/resetPassword')">Lupa Password?</a>
             </p>
 
             <br />
