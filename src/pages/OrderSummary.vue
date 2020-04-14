@@ -394,7 +394,7 @@ export default {
       } else if (this.$attrs.shipment.type === "courierService") {
         postOrder.set("shipmentType", "courierService");
         postOrder.set("courier_name", this.$attrs.shipment.courierName);
-        postOrder.set("service_name", this.$attrs.shipment.selectedService);
+        postOrder.set("service_name", this.$attrs.shipment.serviceSelected);
       }
 
       await axios
