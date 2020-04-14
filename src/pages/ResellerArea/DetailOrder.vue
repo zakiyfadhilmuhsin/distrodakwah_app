@@ -721,8 +721,21 @@ export default {
     getTracking() {
       if (this.dataOrder.length !== 0) {
         let trackForm = new FormData();
-
-        trackForm.set("courier", "jne");
+        let courier = null;
+        switch (this.orderData.courier_name) {
+          case "Jalur Nugraha Ekakurir (JNE)":
+            courier = "jne";
+            break;
+          case "J&T Express":
+            courier = "jnt";
+            break;
+          case "POS Indonesia (POS)":
+            courier = "pos";
+            break;
+          default:
+            break;
+        }
+        trackForm.set("courier", courier);
         trackForm.set("awb", this.dataOrder.awb);
 
         this.$axios
