@@ -123,7 +123,7 @@
               v-if="dataOrder.status === 'shipped'"
               style="margin-bottom: 10px"
             >
-              <div class="col" v-if="dataTracking !== []">
+              <div class="col" v-if="dataTracking.length !== 0">
                 <q-markup-table dense bordered flat>
                   <tbody>
                     <tr>
@@ -527,7 +527,7 @@ export default {
     this.getOrderDetail();
   },
   methods: {
-    getOrder() {
+    async getOrder() {
       this.$axios
         .get(showOrderUrl + "/" + this.$route.params.id, {
           headers: getHeader()
@@ -722,7 +722,7 @@ export default {
       if (this.dataOrder.length !== 0) {
         let trackForm = new FormData();
         let courier = null;
-        switch (this.orderData.courier_name) {
+        switch (this.dataOrder.courier_name) {
           case "Jalur Nugraha Ekakurir (JNE)":
             courier = "jne";
             break;
