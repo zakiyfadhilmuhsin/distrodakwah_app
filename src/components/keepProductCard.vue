@@ -1,7 +1,7 @@
 <template>
   <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
     <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
-      <q-img :src="product.featured_image" style="width: 100%" v-show="featuredImageShow == true" />
+      <q-img :src="product.featured_image == 'noimage' ? 'https://via.placeholder.com/158x197' : product.featured_image" style="width: 100%" v-show="featuredImageShow == true" />
     </transition>
 
     <center>
