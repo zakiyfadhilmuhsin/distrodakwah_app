@@ -513,7 +513,11 @@
 									</div>
 								</div>
 								<br />
-                <Notes v-if="Object.keys(orderData).length>0" :orderIdProp="orderData.id" :notesProp="orderData.notes"/>
+								<Notes
+									v-if="Object.keys(orderData).length > 0"
+									:orderIdProp="orderData.id"
+									:notesProp="orderData.notes"
+								/>
 							</div>
 						</div>
 						<br />
@@ -623,7 +627,7 @@ import {
 	showOrderUrl,
 	identityBankUrl,
 	paymentConfirmationUrl,
-  paymentConfirmOrderUrl,
+	paymentConfirmOrderUrl,
 	trackingUrl,
 	catalogProductUrl,
 	getHeader
@@ -656,8 +660,8 @@ export default {
 			items: [],
 			orderData: [],
 			totalItem: 0,
-      subTotal: 0,
-      //components
+			subTotal: 0
+			//components
 		};
 	},
 	created() {
@@ -675,8 +679,6 @@ export default {
 					headers: getHeader()
 				})
 				.then(response => {
-					console.log(response);
-
 					if (response.status === 200) {
 						this.dataOrder = response.data.data;
 
@@ -698,8 +700,6 @@ export default {
 					headers: getHeader()
 				})
 				.then(response => {
-					console.log(response);
-
 					if (response.status === 200) {
 						this.orderData = response.data.data;
 
@@ -713,66 +713,21 @@ export default {
 									{ headers: getHeader() }
 								)
 								.then(response => {
-									let product_name = response.data.data.product_name;
-									let product_image = response.data.data.featured_image;
-									let qty = this.orderData.order_detail[i].qty;
-									let product_id = this.orderData.order_detail[i].product_id;
-									let reseller_discount = null;
-									if (this.user.role.id === 9) {
-										reseller_discount =
-											response.data.data.reseller_exclusive_price;
-									} else if (this.user.role.id === 8) {
-										reseller_discount = response.data.data.reseller_pro_price;
-									} else if (this.user.role.id === 10) {
-										reseller_discount = response.data.data.reseller_free_price;
-									}
-
-									if (this.orderData.order_detail[i].product_sku_id !== null) {
-										this.$axios
-											.get(
-												catalogProductUrl +
-													"/" +
-													this.orderData.order_detail[i].product_id +
-													"/" +
-													this.orderData.order_detail[i].product_sku_id,
-												{ headers: getHeader() }
-											)
-											.then(response => {
-												// let options = JSON.parse(this.cartData.cart_detail[i].options);
-												// for(var opt=0; opt<options.length; opt++){
-												//   console.log(options[opt].option + 'adalah' + options[opt].value);
-												// }
-
-												this.items.push({
-													product_id: product_id,
-													product_name: product_name,
-													product_image: product_image,
-													price:
-														response.data.data.price -
-														(response.data.data.price * reseller_discount) /
-															100,
-													options: JSON.parse(
-														this.orderData.order_detail[i].options
-													),
-													qty: qty
-												});
-											})
-											.catch(error => {
-												if (error.response) {
-													console.log(error.response);
-												}
-											});
-									} else {
-										this.items.push({
-											product_id: product_id,
-											product_name: product_name,
-											product_image: product_image,
-											price:
-												response.data.data.price -
-												(response.data.data.price * reseller_discount) / 100,
-											qty: qty
-										});
-									}
+									const product_name = response.data.data.product_name;
+									const product_image = response.data.data.featured_image;
+									const qty = this.orderData.order_detail[i].qty;
+									const price = this.orderData.order_detail[i].reseller_price;
+									const product_id = this.orderData.order_detail[i].product_id;
+									const reseller_discount = null;
+									const options =  JSON.parse(this.orderData.order_detail[i].options);
+									this.items.push({
+										product_id,
+										product_name,
+										product_image,
+										price,
+										options,
+										qty: qty
+									});
 								})
 								.catch(error => {
 									if (error.response) {
@@ -795,8 +750,6 @@ export default {
 			this.$axios
 				.get(identityBankUrl, { headers: getHeader() })
 				.then(response => {
-					console.log(response);
-
 					if (response.status === 200) {
 						this.dataBank = response.data.data.map(bank => {
 							if (bank.account_category == 2)
@@ -883,7 +836,6 @@ export default {
 				this.$axios
 					.post(trackingUrl, trackForm, { headers: getHeader() })
 					.then(response => {
-						console.log(response);
 						this.dataTracking = response.data;
 					})
 					.catch(error => {
@@ -920,7 +872,7 @@ export default {
 					console.log(e);
 				}
 			);
-    },
+		}
 	}
 };
 </script>
