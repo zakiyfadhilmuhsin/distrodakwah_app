@@ -1,18 +1,21 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header class="mobile-layout-on-desktop">
-      <q-toolbar class="bg-distrodakwah text-white">
-        <!-- <q-toolbar-title>
+	<q-layout view="lHh Lpr lFf">
+		<q-header class="mobile-layout-on-desktop">
+			<q-toolbar class="bg-distrodakwah text-white">
+				<!-- <q-toolbar-title>
           Distrodakwah
         </q-toolbar-title>-->
-        <q-btn flat dense round>
-          <q-icon name="notifications" />
-        </q-btn>
+				<q-btn flat dense round>
+					<q-icon name="notifications" />
+				</q-btn>
 
-        <q-space />
+				<q-space />
 
-        <img src="~/assets/images/components/logo-distrodakwah.png" width="50%" />
-        <!-- <div class="row no-wrap">
+				<img
+					src="~/assets/images/components/logo-distrodakwah.png"
+					width="50%"
+				/>
+				<!-- <div class="row no-wrap">
           <center>
             
             <q-input type="text" dense outlined color="amber-8" bg-color="white" placeholder="Mau Belanja Apa Hari Ini?" style=" margin: 8px 0px">
@@ -23,69 +26,74 @@
           </center>
         </div>-->
 
-        <q-space />
+				<q-space />
 
-        <q-btn flat dense round dropdown to="/search">
-          <q-icon name="search" />
-        </q-btn>
-      </q-toolbar>
-    </q-header>
+				<q-btn flat dense round dropdown to="/search">
+					<q-icon name="search" />
+				</q-btn>
+			</q-toolbar>
+		</q-header>
 
-    <q-footer class="mobile-layout-on-desktop">
-      <center>
-        <q-tabs
-          dense
-          class="bg-white text-black"
-          style="border-top: 2px solid #eeeeee;"
-          animated
-          swipeable
-          align="justify"
-        >
-          <q-route-tab
-            icon="home"
-            to="/"
-            style="text-transform: capitalize; font-family: 'Open Sans'"
-          >
-            <span style="font-size: 10px;">Beranda</span>
-          </q-route-tab>
-          <q-route-tab
-            icon="receipt"
-            to="/orderList"
-            style="text-transform: capitalize; font-family: 'Open Sans'"
-          >
-            <span style="font-size: 10px;">Pesanan</span>
-          </q-route-tab>
-          <q-route-tab
-            icon="local_mall"
-            to="/cart"
-            style="text-transform: capitalize; font-family: 'Open Sans'"
-          >
-            <span style="font-size: 10px;">Keranjang</span>
-            <q-badge color="red" text-color="white" floating v-if="totalCartItem !== null">
-              <b>{{ totalCartItem }}</b>
-            </q-badge>
-          </q-route-tab>
-          <q-route-tab
-            icon="account_circle"
-            to="/dashboard"
-            style="text-transform: capitalize; font-family: 'Open Sans'"
-          >
-            <span style="font-size: 10px;">Profil</span>
-          </q-route-tab>
-          <!-- <q-route-tab
+		<q-footer class="mobile-layout-on-desktop">
+			<center>
+				<q-tabs
+					dense
+					class="bg-white text-black"
+					style="border-top: 2px solid #eeeeee;"
+					animated
+					swipeable
+					align="justify"
+				>
+					<q-route-tab
+						icon="home"
+						to="/"
+						style="text-transform: capitalize; font-family: 'Open Sans'"
+					>
+						<span style="font-size: 10px;">Beranda</span>
+					</q-route-tab>
+					<q-route-tab
+						icon="receipt"
+						to="/orderList"
+						style="text-transform: capitalize; font-family: 'Open Sans'"
+					>
+						<span style="font-size: 10px;">Pesanan</span>
+					</q-route-tab>
+					<q-route-tab
+						icon="local_mall"
+						to="/cart"
+						style="text-transform: capitalize; font-family: 'Open Sans'"
+					>
+						<span style="font-size: 10px;">Keranjang</span>
+						<q-badge
+							color="red"
+							text-color="white"
+							floating
+							v-if="totalCartItem !== null"
+						>
+							<b>{{ totalCartItem }}</b>
+						</q-badge>
+					</q-route-tab>
+					<q-route-tab
+						icon="account_circle"
+						to="/dashboard"
+						style="text-transform: capitalize; font-family: 'Open Sans'"
+					>
+						<span style="font-size: 10px;">Profil</span>
+					</q-route-tab>
+					<!-- <q-route-tab
             icon="verified_user"
             to="/storefront"
             style="text-transform: capitalize; font-family: 'Open Sans'"
           ><span style="font-size: 10px;">Support</span></q-route-tab>-->
-        </q-tabs>
-      </center>
-    </q-footer>
+				</q-tabs>
+			</center>
+		</q-footer>
 
-    <q-page-container class="mobile-layout-on-desktop">
-      <q-page>
-        <div class="bg-grey-3" style="height: 100%">
-          <!-- Slider Promo -->
-          <!-- <div style="background-color: white; margin-bottom: 10px" v-if="dataSlider.length !== 0">
+		<q-page-container class="mobile-layout-on-desktop">
+			<q-page>
+				<div class="bg-grey-3" style="height: 100%">
+					<!-- Slider Promo -->
+					<!-- <div style="background-color: white; margin-bottom: 10px" v-if="dataSlider.length !== 0">
             <div class="q-pt-md q-pb-xs">
               <carousel
                 :autoplay="true"
@@ -110,7 +118,7 @@
               </div>
             </div>  should be commented
           </div>-->
-          <!-- <div style="background-color: white; margin-bottom: 10px">
+					<!-- <div style="background-color: white; margin-bottom: 10px">
             <div class="row q-pa-xs">
               <div class="col">
                 <h5 class="promo-text">Kategori</h5>
@@ -127,37 +135,52 @@
               </div>
             </div>
           </div>-->
-          <div
-            style="background-color: white; margin-bottom: 10px; padding-bottom: 15px"
-            v-for="(category, i) in dataProducts"
-            :key="i"
-          >
-            <div class="row q-pa-xs">
-              <div class="col">
-                <h5 class="promo-text">{{ category.category_name }}</h5>
-              </div>
-              <div class="col text-right">
-                <router-link
-                  :to="'/allProductBrand/' + category.category_name + '/' + category.id"
-                  style="text-decoration: none;"
-                >
-                  <h5 class="link-text text-orange-8">Lihat Semua</h5>
-                </router-link>
-              </div>
-            </div>
-            <div class="row q-px-md" style="padding: 5px 10px 10px 10px">
-              <div class="col">
-                <swiper :options="swiperProductListOption">
-                  <swiper-slide v-for="(product, index) in category.products" :key="index">
-                    <KeepProductCard :product="product" :user="user" v-if="product.brand_id ===7" />
-                    <VendorProductCard :product="product" :user="user" v-else />
-                  </swiper-slide>
-                  <div class="swiper-product-pagination" slot="pagination"></div>
-                </swiper>
-              </div>
-            </div>
-          </div>
-          <!-- <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
+					<div
+						style="background-color: white; margin-bottom: 10px; padding-bottom: 15px"
+						v-for="(category, i) in dataProducts"
+						:key="i"
+					>
+						<div class="row q-pa-xs">
+							<div class="col">
+								<h5 class="promo-text">{{ category.category_name }}</h5>
+							</div>
+							<div class="col text-right">
+								<router-link
+									:to="
+										'/allProductBrand/' +
+											category.category_name +
+											'/' +
+											category.id
+									"
+									style="text-decoration: none;"
+								>
+									<h5 class="link-text text-orange-8">Lihat Semua</h5>
+								</router-link>
+							</div>
+						</div>
+						<div class="row q-px-md" style="padding: 5px 10px 10px 10px">
+							<div class="col">
+								<swiper :options="swiperProductListOption">
+									<swiper-slide
+										v-for="(product, index) in category.products"
+										:key="index"
+									>
+										<KeepProductCard
+											:product="product"
+											:user="user"
+											v-if="product.brand_id === 7"
+										/>
+										<VendorProductCard :product="product" :user="user" v-else />
+									</swiper-slide>
+									<div
+										class="swiper-product-pagination"
+										slot="pagination"
+									></div>
+								</swiper>
+							</div>
+						</div>
+					</div>
+					<!-- <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
             <div class="row q-pa-xs">
               <div class="col">
                 <h5 class="promo-text">Produk Laris</h5>
@@ -212,10 +235,10 @@
               </div>
             </div>
           </div>-->
-        </div>
-      </q-page>
-    </q-page-container>
-  </q-layout>
+				</div>
+			</q-page>
+		</q-page-container>
+	</q-layout>
 </template>
 
 <script>
@@ -224,14 +247,14 @@ import { swiper, swiperSlide } from "vue-awesome-swiper";
 import carousel from "vue-owl-carousel";
 import axios from "axios";
 import {
-  apiDomain,
-  catalogCategoryUrl,
-  catalogBrandUrl,
-  catalogProductUrl,
-  identitySliderUrl,
-  totalCartItemUrl,
-  getHeader,
-  getProductByCategoryUrl
+	apiDomain,
+	catalogCategoryUrl,
+	catalogBrandUrl,
+	catalogProductUrl,
+	identitySliderUrl,
+	totalCartItemUrl,
+	getHeader,
+	getProductByCategoryUrl
 } from "src/config";
 // Loading
 import { QSpinnerPuff } from "quasar";
@@ -239,180 +262,182 @@ import { QSpinnerPuff } from "quasar";
 import VendorProductCard from "../components/vendorProductCard.vue";
 import KeepProductCard from "../components/keepProductCard.vue";
 export default {
-  components: {
-    swiper,
-    swiperSlide,
-    carousel,
-    VendorProductCard,
-    KeepProductCard
-  },
-  data() {
-    return {
-      // Slider Section
-      dataSlider: [],
-      // Category Section
-      dataCategory: [],
-      // Brand Section
-      dataBrand: [],
-      // Product Section
-      dataProducts: [],
-      // Slider Section
-      swiperProductListOption: {
-        slidesPerView: 2,
-        centeredSlides: false,
-        spaceBetween: 10,
-        pagination: {
-          el: ".swiper-product-pagination",
-          clickable: true
-        }
-      },
-      // Loading
-      innerLoading: false,
-      // user
-      user: [],
-      // Total Count Cart Item
-      totalCartItem: null,
-      startProduct: 1
-    };
-  },
-  computed: {
-    newProduct() {
-      return this.dataProduct.slice().reverse();
-    }
-  },
-  async created() {
-    this.user = JSON.parse(window.localStorage.getItem("profileUser"));
-    this.getBrand();
-    this.getSlider();
-    this.getProductByCategory();
-  },
-  async mounted() {
-    // Get Total Cart Item
-    try {
-      const totalCartItems = await axios.get(
-        totalCartItemUrl + "/" + this.user.id,
-        { headers: getHeader() }
-      );
-      if (totalCartItems.data.data !== "cart_is_empty") {
-        this.totalCartItem = totalCartItems.data.data;
-      }
-    } catch (error) {}
-  },
-  methods: {
-    getProductByCategory() {
-      this.dataProducts = [];
+	components: {
+		swiper,
+		swiperSlide,
+		carousel,
+		VendorProductCard,
+		KeepProductCard
+	},
+	data() {
+		return {
+			// Slider Section
+			dataSlider: [],
+			// Category Section
+			dataCategory: [],
+			// Brand Section
+			dataBrand: [],
+			// Product Section
+			dataProducts: [],
+			// Slider Section
+			swiperProductListOption: {
+				slidesPerView: 2,
+				centeredSlides: false,
+				spaceBetween: 10,
+				pagination: {
+					el: ".swiper-product-pagination",
+					clickable: true
+				}
+			},
+			// Loading
+			innerLoading: false,
+			// user
+			user: [],
+			// Total Count Cart Item
+			totalCartItem: null,
+			startProduct: 1
+		};
+	},
+	computed: {
+		newProduct() {
+			return this.dataProduct.slice().reverse();
+		}
+	},
+	async created() {
+		this.user = JSON.parse(window.localStorage.getItem("profileUser"));
+		this.getBrand();
+		this.getSlider();
+		this.getProductByCategory();
+	},
+	async mounted() {
+		// Get Total Cart Item
+		try {
+			const totalCartItems = await axios.get(
+				totalCartItemUrl + "/" + this.user.id,
+				{ headers: getHeader() }
+			);
+			if (totalCartItems.data.data !== "cart_is_empty") {
+				this.totalCartItem = totalCartItems.data.data;
+			}
+		} catch (error) {}
+	},
+	methods: {
+		getProductByCategory() {
+			this.dataProducts = [];
 
-      axios
-        .get(catalogCategoryUrl, { headers: getHeader() })
-        .then(response => {
+			axios
+				.get(catalogCategoryUrl, { headers: getHeader() })
+				.then(response => {
+					if (response.status === 200) {
+						this.dataCategory = response.data.data;
 
-          if (response.status === 200) {
-            this.dataCategory = response.data.data;
+						for (let i = 0; i < this.dataCategory.length; i++) {
+							axios
+								.get(getProductByCategoryUrl + "/" + this.dataCategory[i].id, {
+									headers: getHeader()
+								})
+								.then(response => {
+									if (response.status === 200) {
+										if (
+											this.dataCategory[i].id !== 7 &&
+                      this.dataCategory[i].id !== 8 &&
+                      this.dataCategory[i].id !== 9 
+										) {
+											this.dataProducts.push({
+												id: this.dataCategory[i].id,
+												category_name: this.dataCategory[i].category_name,
+												products: response.data.data
+											});
+										}
+									}
+								})
+								.catch(error => {
+									if (error.response) {
+										console.log(error.response);
+									}
+								});
+						}
+					}
+				})
+				.catch(error => {
+					if (error.response) {
+						console.log(error.response);
+					}
+				});
+		},
+		getBrand() {
+			axios
+				.get(catalogBrandUrl, { headers: getHeader() })
+				.then(response => {
+					if (response.status === 200) {
+						this.dataBrand = response.data.data;
+					}
+				})
+				.catch(error => {
+					if (error.response) {
+						console.log(error.response);
+					}
+				});
+		},
 
-            for (let i = 0; i < this.dataCategory.length; i++) {
-              axios
-                .get(getProductByCategoryUrl + "/" + this.dataCategory[i].id, {
-                  headers: getHeader()
-                })
-                .then(response => {
-
-                  if (response.status === 200) {
-                    this.dataProducts.push({
-                      id: this.dataCategory[i].id,
-                      category_name: this.dataCategory[i].category_name,
-                      products: response.data.data
-                    });
-                  }
-                })
-                .catch(error => {
-                  if (error.response) {
-                    console.log(error.response);
-                  }
-                });
-            }
-          }
-        })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response);
-          }
-        });
-    },
-    getBrand() {
-      axios
-        .get(catalogBrandUrl, { headers: getHeader() })
-        .then(response => {
-
-          if (response.status === 200) {
-            this.dataBrand = response.data.data;
-          }
-        })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response);
-          }
-        });
-    },
-
-    getSlider() {
-      axios
-        .get(identitySliderUrl, { headers: getHeader() })
-        .then(response => {
-
-          if (response.status === 200) {
-            this.dataSlider = response.data.data;
-          }
-        })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response);
-          }
-        });
-    },
-    formatPrice(value) {
-      let val = (value / 1).toFixed(0).replace(".", ",");
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-  }
+		getSlider() {
+			axios
+				.get(identitySliderUrl, { headers: getHeader() })
+				.then(response => {
+					if (response.status === 200) {
+						this.dataSlider = response.data.data;
+					}
+				})
+				.catch(error => {
+					if (error.response) {
+						console.log(error.response);
+					}
+				});
+		},
+		formatPrice(value) {
+			let val = (value / 1).toFixed(0).replace(".", ",");
+			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+		}
+	}
 };
 </script>
 
 <style>
 .promo-text {
-  font-family: "Open Sans";
-  font-size: 13px;
-  font-weight: bold;
-  margin: 0;
-  padding-left: 12px;
+	font-family: "Open Sans";
+	font-size: 13px;
+	font-weight: bold;
+	margin: 0;
+	padding-left: 12px;
 }
 .link-text {
-  font-family: "Open Sans";
-  font-size: 13px;
-  margin: 0;
-  padding-right: 10px;
+	font-family: "Open Sans";
+	font-size: 13px;
+	margin: 0;
+	padding-right: 10px;
 }
 .swiper-slide {
-  width: 85%;
+	width: 85%;
 }
 .category-title {
-  font-size: 13px;
-  margin: 0;
-  text-align: center;
-  text-transform: capitalize;
-  line-height: 15px;
-  font-weight: 400;
-  padding: 10px 0px;
+	font-size: 13px;
+	margin: 0;
+	text-align: center;
+	text-transform: capitalize;
+	line-height: 15px;
+	font-weight: 400;
+	padding: 10px 0px;
 }
 .owl-carousel .owl-item img {
-  width: 100%;
-  border-radius: 10px;
-  float: left;
-  height: auto;
+	width: 100%;
+	border-radius: 10px;
+	float: left;
+	height: auto;
 }
 .owl-theme .owl-dots .owl-dot.active span {
-  background: #fea500 !important;
+	background: #fea500 !important;
 }
 .q-btn__wrapper {
-  width: auto;
+	width: auto;
 }
 </style>
