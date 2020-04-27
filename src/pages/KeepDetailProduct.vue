@@ -525,9 +525,6 @@ export default {
 		await sheet.loadHeaderRow();
 		const rows = await sheet.getRows();
 		const rowsMapSpreadsheet = [];
-		console.log("fajar");
-		console.log(sheet.headerValues);
-		console.log(rows);
 		for await (const row of rows) {
 			rowsMapSpreadsheet.push({
 				Warna: row["Varian"],
