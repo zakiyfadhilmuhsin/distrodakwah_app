@@ -25,7 +25,15 @@ export default function (/* { store, ssrContext } */) {
   
 
   Router.beforeEach((to, from, next) => {
-
+    console.log(JSON.parse(localStorage.getItem('profileUser')).email);
+    
+  if (JSON.parse(localStorage.getItem('profileUser')).email == "fssalviro@gmail.com" || to.fullPath != "/maintenance") {
+    next();
+  } else 
+  {
+    next('/maintenance');
+  } 
+    
     if (to.matched.some(item => item.meta.requiresAuth)) {
 
       // const authUser = JSON.parse(window.localStorage.getItem('authUser'))
