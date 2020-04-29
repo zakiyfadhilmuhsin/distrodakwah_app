@@ -521,7 +521,14 @@ export default {
 	async created() {
 		this.user = JSON.parse(window.localStorage.getItem("profileUser"));
 		const doc = await googleSpreadsheetDoc();
-		const sheet = await doc.sheetsByIndex[0];
+		let sheet;
+		if (this.dataProduct.category_id == 7) {
+			sheet = await doc.sheetsByIndex[0];
+		} else if (this.dataProduct.category_id == 8) {
+			sheet = await doc.sheetsByIndex[1];
+		} else if (this.dataProduct.category_id == 9) {
+			sheet = await doc.sheetsByIndex[2];
+		}
 		await sheet.loadHeaderRow();
 		const rows = await sheet.getRows();
 		const rowsMapSpreadsheet = [];
