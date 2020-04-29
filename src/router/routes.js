@@ -23,7 +23,7 @@ import UpdatePassword from "pages/Auth/UpdatePassword";
 import UpdatePasswordHasToken from "pages/Auth/UpdatePasswordHasToken";
 import MaintenancePage from "pages/Maintenance";
 
-// import LoginTesting from "pages/Auth/LoginTesting";
+import LoginTesting from "pages/Auth/LoginTesting";
 
 const routes = [
 	{
@@ -60,10 +60,10 @@ const routes = [
 		path: "/login/:message?",
 		component: LoginPage
 	},
-	// {
-	//   path: "/login-testing/:message?",
-	//   component: LoginTesting
-	// },
+	{
+	  path: "/login-testing/:message?",
+	  component: LoginTesting
+	},
 	{
 		path: "/detail/:id",
 		component: DetailProductPage,
