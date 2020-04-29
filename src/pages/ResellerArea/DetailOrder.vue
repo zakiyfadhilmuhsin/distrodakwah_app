@@ -512,15 +512,16 @@
 										</div>
 									</div>
 								</div>
-								<br />
-								<Notes
-									v-if="Object.keys(orderData).length > 0"
-									:orderIdProp="orderData.id"
-									:notesProp="orderData.notes"
-								/>
 							</div>
+							<br />
 						</div>
-						<br />
+					</div>
+					<div class="row q-pa-lg">
+						<Notes
+							v-if="Object.keys(orderData).length > 0"
+							:orderIdProp="orderData.id"
+							:notesProp="orderData.notes"
+						/>
 					</div>
 				</div>
 			</q-page>
@@ -646,7 +647,6 @@ export default {
 		return {
 			dataBank: [],
 			dataOrder: [],
-			notes: "",
 			// Payment Confirmation
 			bankReceiver: "",
 			bankSender: "",
@@ -719,7 +719,9 @@ export default {
 									const price = this.orderData.order_detail[i].reseller_price;
 									const product_id = this.orderData.order_detail[i].product_id;
 									const reseller_discount = null;
-									const options =  JSON.parse(this.orderData.order_detail[i].options);
+									const options = JSON.parse(
+										this.orderData.order_detail[i].options
+									);
 									this.items.push({
 										product_id,
 										product_name,
@@ -982,13 +984,5 @@ input:checked ~ .tab-content {
 	max-height: 100vh;
 	padding: 0.4em;
 }
-.flex-container {
-	display: flex;
-	justify-content: space-around;
-}
-.flex-container > * {
-}
-.btn-right {
-	flex: 2 2 100px;
-}
+
 </style>
