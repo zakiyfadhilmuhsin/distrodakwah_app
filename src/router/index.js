@@ -28,12 +28,10 @@ export default function(/* { store, ssrContext } */) {
 			// const authUser = JSON.parse(window.localStorage.getItem('authUser'))
 
 			if (LocalStorage.has("authUser")) {
-				if (
-					LocalStorage.getItem("authUser") &&
-					LocalStorage.getItem("authUser").access_token !== "undefined"
-				) {
-					//console.log(authUser.access_token)
-					next();
+				if (JSON.parse(LocalStorage.getItem("authUser")) !== null) {
+					if (LocalStorage.getItem("authUser").access_token !== "undefined") {
+						next();
+					}
 				}
 			} else {
 				next({
