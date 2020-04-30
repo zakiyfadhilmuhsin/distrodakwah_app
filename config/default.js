@@ -1,5 +1,5 @@
-const API = 'https://phpstack-372088-1163655.cloudwaysapps.com';
-const API_DEV = 'https://phpstack-372088-1163655.cloudwaysapps.com';
+const API = 'https://api.prodakwah.id';
+const API_DEV = 'https://apigateway.test';
 const WEBREPLICA_DOMAIN = 'https://prodakwah.com';
 const WEBREPLICA_DOMAIN_DEV = 'http://localhost:8082';
 
