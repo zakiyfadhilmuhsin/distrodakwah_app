@@ -556,12 +556,7 @@ export default {
 				this.$router.push("/");
 			} catch (error) {
 				console.log(error.response);
-
-				this.$q.notify({
-					position: "top",
-					color: "red",
-					message: "Logout Gagal, silahkan coba lagi"
-				});
+				this.$router.push("/login");
 			}
 		},
 		upgrade() {
