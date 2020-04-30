@@ -24,19 +24,6 @@ export default function(/* { store, ssrContext } */) {
 	});
 
 	Router.beforeEach((to, from, next) => {
-		console.log(JSON.parse(localStorage.getItem("profileUser"))==null);
-    if(	JSON.parse(localStorage.getItem("profileUser")) != null) {
-      if(		JSON.parse(localStorage.getItem("profileUser")).email ==
-      "fssalviro@gmail.com") {
-        next();
-      }
-    } else if(to.fullPath == "/maintenance" || to.fullPath == "/login-testing") {
-      next()
-    } else {
-      next('/maintenance')
-    }
-	
-
 		if (to.matched.some(item => item.meta.requiresAuth)) {
 			// const authUser = JSON.parse(window.localStorage.getItem('authUser'))
 

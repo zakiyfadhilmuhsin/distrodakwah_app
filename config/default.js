@@ -1,5 +1,5 @@
 const API = 'https://api.prodakwah.id';
-const API_DEV = 'https://apigateway.test';
+const API_DEV = 'http://apigateway.test';
 const WEBREPLICA_DOMAIN = 'https://prodakwah.com';
 const WEBREPLICA_DOMAIN_DEV = 'http://localhost:8082';
 
