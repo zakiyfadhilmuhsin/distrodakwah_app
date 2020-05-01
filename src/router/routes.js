@@ -1,5 +1,5 @@
-import LoginPage from "pages/Auth/Login";
-import CreateAccountPage from "pages/Auth/CreateAccount";
+import LoginPage from "pages/Auth/LoginNew";
+import CreateAccountPage from "pages/Auth/CreateAccountNew";
 import FreeAccountPage from "pages/Auth/RegisterFreeMember";
 import StorefrontPage from "pages/Storefront";
 import DetailProductPage from "pages/DetailProduct";
