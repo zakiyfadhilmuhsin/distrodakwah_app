@@ -6,7 +6,7 @@
           <div class="col">
             <img src="~/assets/images/components/logo-distrodakwah-small.png" width="170px" />
             <br />
-            <h1 class="login-text">LOGIN (Testing)</h1>
+            <h1 class="login-text">LOGIN-TESTING</h1>
             <p class="login-small-text">
               Untuk dapatkan berbagai macam
               <br />keuntungan di Distrodakwah.id
@@ -53,7 +53,12 @@
             <q-btn @click="submitLogin" flat class="bg-amber-8 full-width">
               <span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">MASUK</span>
             </q-btn>
+            <p class="login-small-text">
+              <a style="color:blue; font-weight: bold; cursor:pointer;" @click="$router.push('/resetPassword')">Lupa Password?</a>
+            </p>
+
             <br />
+
             <center>
               <img
                 src="~/assets/images/components/coin-big.png"
@@ -121,6 +126,9 @@ export default {
     }
   },
   methods: {
+    toActivation(){
+      this.$router.push('/activation');
+    },
     submitLogin() {
       const postData = {
         email: this.email,

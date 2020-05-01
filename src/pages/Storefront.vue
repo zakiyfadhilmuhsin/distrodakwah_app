@@ -338,17 +338,11 @@ export default {
 								})
 								.then(response => {
 									if (response.status === 200) {
-										if (
-											this.dataCategory[i].id !== 7 &&
-                      this.dataCategory[i].id !== 8 &&
-                      this.dataCategory[i].id !== 9 
-										) {
-											this.dataProducts.push({
-												id: this.dataCategory[i].id,
-												category_name: this.dataCategory[i].category_name,
-												products: response.data.data
-											});
-										}
+										this.dataProducts.push({
+											id: this.dataCategory[i].id,
+											category_name: this.dataCategory[i].category_name,
+											products: response.data.data
+										});
 									}
 								})
 								.catch(error => {
