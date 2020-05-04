@@ -755,7 +755,7 @@ export default {
 				if (
 					[
 						"AM Reseller PRO",
-						"Reseller Pro",
+						"Reseller Pro", //v1
 						"KB Reseller PRO",
 						"DD Reseller PRO",
 						"MHK Reseller PRO",
@@ -766,7 +766,7 @@ export default {
 				} else if (
 					[
 						"AM Reseller EKSKLUSIF",
-						"Reseller EKSKLUSIF",
+						"Reseller Exclusive", //v1
 						"KB Reseller EKSKLUSIF",
 						"DD Reseller EKSLUSIF",
 						"MHK Reseller EKSLUSIF",
