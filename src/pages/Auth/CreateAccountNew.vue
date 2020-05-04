@@ -703,6 +703,8 @@ export default {
 			this.$q.loading.hide();
 		},
 		createAccount() {
+			console.log(this.email);
+			
 			if (this.email === "") {
 				this.notifForm("Email");
 			} else if (this.password === "") {
@@ -764,8 +766,8 @@ export default {
 				} else if (
 					[
 						"AM Reseller EKSKLUSIF",
-						"Reseller Exclusive",
-						"KB Reseller Exclusive",
+						"Reseller EKSKLUSIF",
+						"KB Reseller EKSKLUSIF",
 						"DD Reseller EKSLUSIF",
 						"MHK Reseller EKSLUSIF",
 						"BB Reseller EKSLUSIF"
