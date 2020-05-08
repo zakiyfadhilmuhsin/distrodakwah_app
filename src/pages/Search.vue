@@ -18,11 +18,11 @@
           class="full-width"
           autofocus
           clearable
-          @input="getProduct"
+          @change="getProduct"
           @clear="getProduct"
         >
           <template v-slot:append>
-            <q-icon name="search" />
+            <q-icon name="search" @click="getProduct"/>
           </template>
         </q-input>
       </q-toolbar>
