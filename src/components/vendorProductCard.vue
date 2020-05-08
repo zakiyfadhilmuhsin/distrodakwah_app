@@ -1,5 +1,6 @@
 <template>
-  <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
+  <router-link :to="'/detail/keep/' + product.id" class="cursor-pointer" style="text-decoration: none; color: black">
+  <q-card class="vendor-catalog-card bg-white" style="margin: 0 5px" flat bordered>
     <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
       <q-img :src="product.featured_image" style="width: 100%" v-show="featuredImageShow == true" />
     </transition>
@@ -34,7 +35,7 @@
       </center>
     </q-card-section>
 
-    <q-card-section>
+    <!-- <q-card-section>
       <center>
         <q-btn
           :to="'/detail/' + product.id"
@@ -45,8 +46,9 @@
           <span style="text-transform: capitalize;">Beli Sekarang</span>
         </q-btn>
       </center>
-    </q-card-section>
+    </q-card-section> -->
   </q-card>
+  </router-link>
 </template>
 
 <script>
@@ -68,4 +70,9 @@ export default {
 </script>
 
 <style>
+.vendor-catalog-card {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid #e5e3e3;
+  border-radius: 5px;
+}
 </style>

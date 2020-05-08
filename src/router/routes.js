@@ -1,7 +1,7 @@
 import LoginPage from "pages/Auth/LoginNew";
 import CreateAccountPage from "pages/Auth/CreateAccountNew";
 import FreeAccountPage from "pages/Auth/RegisterFreeMember";
-import StorefrontPage from "pages/Storefront";
+import StorefrontPage from "pages/StorefrontNew";
 import DetailProductPage from "pages/DetailProduct";
 import KeepDetailProductPage from "pages/KeepDetailProduct";
 import DashboardPage from "pages/ResellerArea/Dashboard";
@@ -10,7 +10,7 @@ import ShippingPage from "pages/Shipping";
 import OrderSummaryPage from "pages/OrderSummary";
 import CartPage from "pages/Cart";
 import InvoicePage from "pages/Invoice";
-import OrderListPage from "pages/ResellerArea/OrderList";
+import OrderListPage from "pages/ResellerArea/OrderListNew";
 import DetailOrderPage from "pages/ResellerArea/DetailOrder";
 import SettingStorePage from "pages/ResellerArea/SettingStore";
 import AllProductBrandPage from "pages/AllProductBrand";
@@ -113,7 +113,7 @@ const routes = [
 		}
 	},
 	{
-		path: "/orderList/:status?",
+		path: "/orderList",
 		component: OrderListPage,
 		meta: {
 			requiresAuth: true

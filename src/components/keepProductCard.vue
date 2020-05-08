@@ -1,5 +1,6 @@
 <template>
-  <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
+  <router-link :to="'/detail/keep/' + product.id" class="cursor-pointer" style="text-decoration: none; color: black">
+  <q-card class="yaumee-catalog-card bg-white" style="margin: 0 5px" flat>
     <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
       <q-img :src="product.featured_image == 'noimage' ? 'https://via.placeholder.com/158x197' : product.featured_image" style="width: 100%" v-show="featuredImageShow == true" />
     </transition>
@@ -14,7 +15,7 @@
           style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px; height: 35px"
         >{{ product.product_name }}</div>
         <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
-        <div class="q-px-sm q-py-xs bg-green">
+        <div class="q-px-sm q-py-xs bg-green" style="border-radius: 5px">
           <div
             class="text-white"
             style="font-weight: bolder; margin-top:0"
@@ -34,7 +35,7 @@
       </center>
     </q-card-section>
 
-    <q-card-section>
+    <!-- <q-card-section>
       <center>
         <q-btn
           :to="'/detail/keep/' + product.id"
@@ -45,8 +46,9 @@
           <span style="text-transform: capitalize;">Beli Sekarang</span>
         </q-btn>
       </center>
-    </q-card-section>
+    </q-card-section> -->
   </q-card>
+  </router-link>
 </template>
 
 <script>
@@ -68,4 +70,9 @@ export default {
 </script>
 
 <style>
+.yaumee-catalog-card {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid #e5e3e3;
+  border-radius: 5px;
+}
 </style>

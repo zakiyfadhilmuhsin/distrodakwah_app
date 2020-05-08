@@ -86,7 +86,10 @@ module.exports = function(ctx) {
 				"QTimelineEntry",
 				"QToggle",
 				"QToolbar",
-				"QToolbarTitle"
+				"QToolbarTitle",
+				'QCarousel',
+				'QCarouselControl',
+				'QCarouselSlide'
 			],
 
 			directives: ["Ripple", "ClosePopup"],

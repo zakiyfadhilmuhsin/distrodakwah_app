@@ -26,6 +26,9 @@ export const getProductByCategoryUrl = apiDomain + '/catalog/get-products'
 export const searchProductUrl = apiDomain + '/catalog/searchProduct'
 export const catalogBrandUrl = apiDomain + '/catalog/brands'
 export const catalogCategoryUrl = apiDomain + '/catalog/categories'
+export const getNewProductUrl = apiDomain + '/catalog/get-newest-products'
+export const getProductByClassUrl = apiDomain + '/catalog/get-products-by-product-classification'
+export const getBestSellerProductUrl = apiDomain + '/catalog/get-newest-products'
 
 // From Cart Service
 export const getCartUrl = apiDomain + '/cart/get-cart'
