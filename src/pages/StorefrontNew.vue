@@ -103,7 +103,7 @@
 							<p class="text-white text-bold" style="margin: 0; font-family:'Open Sans'; font-size: 14px">{{ user.name }}</p>
 							<p class="text-white" style="margin: 0 0 5px 0; font-size: 11px">{{ user.role.role_name }}</p>
 							<div class="bg-white shadow-2" style="border-radius: 5px; width: max-content; padding: 2px 5px">
-								<p class="text-bold text-amber-9" style="margin: 0; font-size: 10px">Total Pendapatan : <span class="text-green">Rp150.000</span></p>
+								<p class="text-bold text-amber-9" style="margin: 0; font-size: 10px">Total Pendapatan : <span class="text-green">Rp0</span></p>
 							</div>
 						</div>
 						<div class="col-sm-3">
