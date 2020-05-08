@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="'/detail/keep/' + product.id" class="cursor-pointer" style="text-decoration: none; color: black">
+  <router-link :to="'/detail/' + product.id" class="cursor-pointer" style="text-decoration: none; color: black">
   <q-card class="vendor-catalog-card bg-white" style="margin: 0 5px" flat bordered>
     <transition appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
       <q-img :src="product.featured_image" style="width: 100%" v-show="featuredImageShow == true" />
