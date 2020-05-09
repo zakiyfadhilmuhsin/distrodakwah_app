@@ -21,6 +21,7 @@ export const forgotPassword = apiDomain + 'api/forgot-password'
 export const resetPassword = apiDomain + 'api/reset-password'
 
 // From Catalog Service
+export const catalogService = apiDomain + '/catalog';
 export const catalogProductUrl = apiDomain + '/catalog/products'
 export const getProductByCategoryUrl = apiDomain + '/catalog/get-products'
 export const searchProductUrl = apiDomain + '/catalog/searchProduct'
@@ -63,6 +64,7 @@ export const identitySliderUrl = apiDomain + '/identity/sliders'
 export const identityFeedbackUrl = apiDomain + '/identity/feedback'
 
 // From Order Service
+export const orderService = apiDomain + '/order'
 export const postToOrderUrl = apiDomain + '/order/orders'
 export const showOrderUrl = apiDomain + '/order/orders'
 export const getOrderUrl = apiDomain + '/order/orders-for-reseller'

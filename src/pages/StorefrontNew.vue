@@ -1,6 +1,9 @@
 <template>
 	<q-layout view="lHh Lpr lFf">
-		<q-header class="mobile-layout-on-desktop" style="box-shadow: none !important">
+		<q-header
+			class="mobile-layout-on-desktop"
+			style="box-shadow: none !important"
+		>
 			<q-toolbar class="bg-distrodakwah text-white">
 				<!-- <q-space /> -->
 				<img
@@ -78,7 +81,10 @@
 					<!----------------------->
 					<!-- Header Storefront -->
 					<!----------------------->
-					<div class="bg-distrodakwah q-px-md row" style="padding-top: 15px; padding-bottom: 40px">
+					<div
+						class="bg-distrodakwah q-px-md row"
+						style="padding-top: 15px; padding-bottom: 40px"
+					>
 						<div class="col-sm-2">
 							<div v-if="user.role.id === 8">
 								<img
@@ -100,19 +106,43 @@
 							</div>
 						</div>
 						<div class="col-sm-7 q-px-md">
-							<p class="text-white text-bold" style="margin: 0; font-family:'Open Sans'; font-size: 14px">{{ user.name }}</p>
-							<p class="text-white" style="margin: 0 0 5px 0; font-size: 11px">{{ user.role.role_name }}</p>
-							<div class="bg-white shadow-2" style="border-radius: 5px; width: max-content; padding: 2px 5px">
-								<p class="text-bold text-amber-9" style="margin: 0; font-size: 10px">Total Pendapatan : <span class="text-green">Rp0</span></p>
+							<p
+								class="text-white text-bold"
+								style="margin: 0; font-family:'Open Sans'; font-size: 14px"
+							>
+								{{ user.name }}
+							</p>
+							<p class="text-white" style="margin: 0 0 5px 0; font-size: 11px">
+								{{ user.role.role_name }}
+							</p>
+							<div
+								class="bg-white shadow-2"
+								style="border-radius: 5px; width: max-content; padding: 2px 5px"
+							>
+								<p
+									class="text-bold text-amber-9"
+									style="margin: 0; font-size: 10px"
+								>
+									Total Pendapatan : <span class="text-green">Rp0</span>
+								</p>
 							</div>
 						</div>
 						<div class="col-sm-3">
-							<router-link
-								to="/orderList/"
-								style="text-decoration: none;"
-							>
-								<div class="bg-white shadow-2" style="border-radius: 15px; width: max-content; padding: 4px 6px">
-									<p class="text-bold text-grey-9" style="margin: 0; font-size: 11px; font-family: 'Poppins'"><q-icon name="style" style="font-size: 13px; color: #db5959" /> Pesanan</p>
+							<router-link to="/orderList/" style="text-decoration: none;">
+								<div
+									class="bg-white shadow-2"
+									style="border-radius: 15px; width: max-content; padding: 4px 6px"
+								>
+									<p
+										class="text-bold text-grey-9"
+										style="margin: 0; font-size: 11px; font-family: 'Poppins'"
+									>
+										<q-icon
+											name="style"
+											style="font-size: 13px; color: #db5959"
+										/>
+										Pesanan
+									</p>
 								</div>
 							</router-link>
 						</div>
@@ -120,22 +150,32 @@
 					<!------------------>
 					<!-- Slider Promo -->
 					<!------------------>
-					<div style="margin-top: -43px; margin-bottom: -20px" v-if="dataSlider.length !== 0">
-					  <div class="q-pa-md">
-						<carousel
-							:autoplay="true"
-							:nav="false"
-							:items="1"
-							:center="true"
-							:loop="true"
-							:stagePadding="0"
-							:margin="0"
-							:responsive="{0:{items:1,nav:false},600:{items:1,nav:false}}"
-							style="width: 100%"
-						>
-							<img v-for="(slider, index) in dataSlider" :key="index" :src="slider.slider_image" />
-						</carousel>
-					  </div>
+					<div
+						style="margin-top: -43px; margin-bottom: -20px"
+						v-if="dataSlider.length !== 0"
+					>
+						<div class="q-pa-md">
+							<carousel
+								:autoplay="true"
+								:nav="false"
+								:items="1"
+								:center="true"
+								:loop="true"
+								:stagePadding="0"
+								:margin="0"
+								:responsive="{
+									0: { items: 1, nav: false },
+									600: { items: 1, nav: false }
+								}"
+								style="width: 100%"
+							>
+								<img
+									v-for="(slider, index) in dataSlider"
+									:key="index"
+									:src="slider.slider_image"
+								/>
+							</carousel>
+						</div>
 					</div>
 					<!--------------------->
 					<!-- Kategori Produk -->
@@ -150,7 +190,11 @@
 							</div> -->
 						</div>
 						<div class="row" style="padding: 0px 10px 15px 10px">
-							<div class="col-3" v-for="(category, index) in dataCategory" :key="index">
+							<div
+								class="col-3"
+								v-for="(category, index) in dataCategory"
+								:key="index"
+							>
 								<div style="margin: 5px">
 									<router-link
 										:to="
@@ -161,10 +205,12 @@
 										"
 										style="text-decoration: none; color: black !important"
 									>
-									<center>
-										<img :src="category.image_url" width="40" />
-									</center>
-									<p style="margin: 0; font-size: 10px; text-align: center">{{category.category_name}}</p>
+										<center>
+											<img :src="category.image_url" width="40" />
+										</center>
+										<p style="margin: 0; font-size: 10px; text-align: center">
+											{{ category.category_name }}
+										</p>
 									</router-link>
 								</div>
 							</div>
@@ -180,7 +226,7 @@
 						</div>
 						<div class="col-4 text-right">
 							<!-- <router-link> -->
-								<h5 class="link-text text-orange-8">Lihat Semua</h5>
+							<h5 class="link-text text-orange-8">Lihat Semua</h5>
 							<!-- </router-link> -->
 						</div>
 					</div>
@@ -188,7 +234,10 @@
 						<div class="col">
 							<swiper :options="swiperProductListOption">
 								<swiper-slide
-									v-for="(product, index) in orderBy(dataNewProduct, 'product_name').reverse()"
+									v-for="(product, index) in orderBy(
+										dataNewProduct,
+										'product_name'
+									).reverse()"
 									:key="index"
 								>
 									<KeepProductCard
@@ -198,10 +247,7 @@
 									/>
 									<VendorProductCard :product="product" :user="user" v-else />
 								</swiper-slide>
-								<div
-									class="swiper-product-pagination"
-									slot="pagination"
-								></div>
+								<div class="swiper-product-pagination" slot="pagination"></div>
 							</swiper>
 						</div>
 					</div>
@@ -215,7 +261,7 @@
 						</div>
 						<div class="col-4 text-right">
 							<!-- <router-link> -->
-								<h5 class="link-text text-orange-8">Lihat Semua</h5>
+							<h5 class="link-text text-orange-8">Lihat Semua</h5>
 							<!-- </router-link> -->
 						</div>
 					</div>
@@ -223,7 +269,10 @@
 						<div class="col">
 							<swiper :options="swiperProductListOption">
 								<swiper-slide
-									v-for="(product, index) in orderBy(dataSpesialRamadhanProduct, 'product_name').reverse()"
+									v-for="(product, index) in orderBy(
+										dataSpesialRamadhanProduct,
+										'product_name'
+									).reverse()"
 									:key="index"
 								>
 									<KeepProductCard
@@ -233,10 +282,7 @@
 									/>
 									<VendorProductCard :product="product" :user="user" v-else />
 								</swiper-slide>
-								<div
-									class="swiper-product-pagination"
-									slot="pagination"
-								></div>
+								<div class="swiper-product-pagination" slot="pagination"></div>
 							</swiper>
 						</div>
 					</div>
@@ -250,7 +296,7 @@
 						</div>
 						<div class="col-4 text-right">
 							<!-- <router-link> -->
-								<h5 class="link-text text-orange-8">Lihat Semua</h5>
+							<h5 class="link-text text-orange-8">Lihat Semua</h5>
 							<!-- </router-link> -->
 						</div>
 					</div>
@@ -258,7 +304,10 @@
 						<div class="col">
 							<swiper :options="swiperProductListOption">
 								<swiper-slide
-									v-for="(product, index) in orderBy(dataFeaturedProduct, 'product_name').reverse()"
+									v-for="(product, index) in orderBy(
+										dataFeaturedProduct,
+										'product_name'
+									).reverse()"
 									:key="index"
 								>
 									<KeepProductCard
@@ -268,10 +317,7 @@
 									/>
 									<VendorProductCard :product="product" :user="user" v-else />
 								</swiper-slide>
-								<div
-									class="swiper-product-pagination"
-									slot="pagination"
-								></div>
+								<div class="swiper-product-pagination" slot="pagination"></div>
 							</swiper>
 						</div>
 					</div>
@@ -285,7 +331,7 @@
 						</div>
 						<div class="col-4 text-right">
 							<!-- <router-link> -->
-								<h5 class="link-text text-orange-8">Lihat Semua</h5>
+							<h5 class="link-text text-orange-8">Lihat Semua</h5>
 							<!-- </router-link> -->
 						</div>
 					</div>
@@ -293,7 +339,10 @@
 						<div class="col">
 							<swiper :options="swiperProductListOption">
 								<swiper-slide
-									v-for="(product, index) in orderBy(dataBestSellerProduct, 'product_name').reverse()"
+									v-for="(product, index) in orderBy(
+										dataBestSellerProduct,
+										'product_name'
+									).reverse()"
 									:key="index"
 								>
 									<KeepProductCard
@@ -303,10 +352,7 @@
 									/>
 									<VendorProductCard :product="product" :user="user" v-else />
 								</swiper-slide>
-								<div
-									class="swiper-product-pagination"
-									slot="pagination"
-								></div>
+								<div class="swiper-product-pagination" slot="pagination"></div>
 							</swiper>
 						</div>
 					</div>
@@ -320,7 +366,7 @@
 						</div>
 						<div class="col-4 text-right">
 							<!-- <router-link> -->
-								<h5 class="link-text text-orange-8">Lihat Semua</h5>
+							<h5 class="link-text text-orange-8">Lihat Semua</h5>
 							<!-- </router-link> -->
 						</div>
 					</div>
@@ -328,7 +374,10 @@
 						<div class="col">
 							<swiper :options="swiperProductListOption">
 								<swiper-slide
-									v-for="(product, index) in orderBy(dataProductCustom, 'product_name').reverse()"
+									v-for="(product, index) in orderBy(
+										dataProductCustom,
+										'product_name'
+									).reverse()"
 									:key="index"
 								>
 									<KeepProductCard
@@ -338,10 +387,7 @@
 									/>
 									<VendorProductCard :product="product" :user="user" v-else />
 								</swiper-slide>
-								<div
-									class="swiper-product-pagination"
-									slot="pagination"
-								></div>
+								<div class="swiper-product-pagination" slot="pagination"></div>
 							</swiper>
 						</div>
 					</div>
@@ -413,19 +459,21 @@ import {
 	catalogCategoryUrl,
 	catalogBrandUrl,
 	catalogProductUrl,
-	identitySliderUrl,
-	totalCartItemUrl,
+	catalogService,
 	getHeader,
 	getProductByCategoryUrl,
 	getNewProductUrl,
-	getProductByClassUrl
+	getProductByClassUrl,
+	identitySliderUrl,
+	orderService,
+	totalCartItemUrl
 } from "src/config";
 // Loading
 import { QSpinnerPuff } from "quasar";
 //components
 import VendorProductCard from "../components/vendorProductCard.vue";
 import KeepProductCard from "../components/keepProductCard.vue";
-import Vue2Filters from 'vue2-filters';
+import Vue2Filters from "vue2-filters";
 export default {
 	components: {
 		swiper,
@@ -439,8 +487,8 @@ export default {
 		return {
 			// Slider Section
 			dataSlider: [],
-			slide: 'style',
-			lorem: 'Lorem ipsum dolor, sit amet consectetur ',
+			slide: "style",
+			lorem: "Lorem ipsum dolor, sit amet consectetur ",
 			// Category Section
 			dataCategory: [],
 			// Brand Section
@@ -542,13 +590,12 @@ export default {
 			this.dataNewProduct = [];
 
 			axios
-				.get(getProductByClassUrl + '/' + 'new', {
+				.get(getProductByClassUrl + "/" + "new", {
 					headers: getHeader()
 				})
 				.then(response => {
 					if (response.status === 200) {
 						this.dataNewProduct = response.data.data;
-						console.log(this.dataNewProduct)
 					}
 				})
 				.catch(error => {
@@ -556,13 +603,12 @@ export default {
 						console.log(error.response);
 					}
 				});
-				
 		},
 		getSpesialRamadhanProduct() {
 			this.dataSpesialRamadhanProduct = [];
 
 			axios
-				.get(getProductByClassUrl + '/' + 'spesial-ramadhan', {
+				.get(getProductByClassUrl + "/" + "spesial-ramadhan", {
 					headers: getHeader()
 				})
 				.then(response => {
@@ -575,13 +621,12 @@ export default {
 						console.log(error.response);
 					}
 				});
-				
 		},
 		getFeaturedProduct() {
 			this.dataFeaturedProduct = [];
 
 			axios
-				.get(getProductByClassUrl + '/' + 'produk-unggulan', {
+				.get(getProductByClassUrl + "/" + "produk-unggulan", {
 					headers: getHeader()
 				})
 				.then(response => {
@@ -594,32 +639,42 @@ export default {
 						console.log(error.response);
 					}
 				});
-				
 		},
-		getBestSellerProduct() {
-			this.dataBestSellerProduct = [];
-
-			axios
-				.get(getProductByClassUrl + '/' + 'best-seller', {
-					headers: getHeader()
-				})
-				.then(response => {
-					if (response.status === 200) {
-						this.dataBestSellerProduct = response.data.data;
+		async getBestSellerProduct() {
+			let orderRes, catalogRes, productIds;
+			try {
+				orderRes = await axios.get(
+					`${orderService}/get-frequently-purchased-products`,
+					{
+						headers: getHeader()
 					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
+				);
+//orderIds of best seller
+				productIds = orderRes.data.data.map(order => order.product_id);
+				
+			} catch (error) {
+				console.log("error fetching best seller");
+				console.log(error.message);
+			}
+
+			try {
+				catalogRes = await axios.get(`${catalogService}/get-products-by-id`, {
+					headers: getHeader(),
+					params: {
+						product_ids: JSON.stringify(productIds)
 					}
 				});
-				
+				this.dataBestSellerProduct = catalogRes.data.data;
+			} catch (error) {
+				console.log("error products");
+				console.log(error.message);
+			}
 		},
 		getProductCustom() {
 			this.dataProductCustom = [];
 
 			axios
-				.get(getProductByClassUrl + '/' + 'product-custom', {
+				.get(getProductByClassUrl + "/" + "product-custom", {
 					headers: getHeader()
 				})
 				.then(response => {
@@ -632,7 +687,6 @@ export default {
 						console.log(error.response);
 					}
 				});
-				
 		},
 		getBrand() {
 			axios
@@ -705,7 +759,8 @@ export default {
 }
 #storefront .owl-carousel .owl-stage-outer {
 	border-radius: 10px;
-	box-shadow: 0 2px 4px -1px rgba(0,0,0,0.2), 0 4px 5px rgba(0,0,0,0.14), 0 1px 10px rgba(0,0,0,0.12);
+	box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px rgba(0, 0, 0, 0.14),
+		0 1px 10px rgba(0, 0, 0, 0.12);
 }
 .owl-theme .owl-dots .owl-dot.active span {
 	background: #fea500 !important;
