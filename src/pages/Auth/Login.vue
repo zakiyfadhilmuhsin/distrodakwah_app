@@ -161,21 +161,24 @@ export default {
 
             window.localStorage.setItem("authUser", JSON.stringify(authUser)); // simpan token
 
-            let url = apiDomain + "/auth/user";
-            axios
-              .get(url, { headers: getHeader() }) // ambil user profile
-              .then(response => {
-                window.localStorage.setItem(
-                  "profileUser",
-                  JSON.stringify(response.data)
-                );
-                // this.loginSukses = true // I assume that you would not want to leave it open upon navigating away
-                // this.$router.replace(this.$route.query.redirect || '/')
                 this.$router.push({
                   path: "/",
                   redirect: this.$route.query.redirect
                 });
-              });
+
+            // let url = apiDomain + "/auth/user";
+            // axios
+            //   .get(url, { headers: getHeader() }) // ambil user profile
+            //   .then(response => {
+            //     window.localStorage.setItem(
+            //       "profileUser",
+            //       JSON.stringify(response.data)
+            //     );
+            //     this.$router.push({
+            //       path: "/",
+            //       redirect: this.$route.query.redirect
+            //     });
+            //   });
           }
         })
         .catch(error => {
