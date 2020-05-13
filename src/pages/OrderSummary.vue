@@ -17,7 +17,7 @@
     >
       <q-toolbar class="bg-white text-black">
         <q-space />
-        <q-btn flat class="bg-orange-8 text-white full-width" @click="checkout">Lakukan Pembayaran</q-btn>
+        <q-btn flat class="bg-orange-8 text-white full-width" @click.once="checkout">Lakukan Pembayaran</q-btn>
       </q-toolbar>
     </q-footer>
 
