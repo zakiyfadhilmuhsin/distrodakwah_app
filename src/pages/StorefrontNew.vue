@@ -564,9 +564,6 @@ export default {
 					const userRes = await this.$axios.get(`${apiDomain}/auth/user`, {
 						headers: getHeader()
 					});
-					console.log("getUserfinished");
-
-					console.log(userRes);
 
 					window.localStorage.setItem(
 						"profileUser",
@@ -581,10 +578,10 @@ export default {
 		},
 		async getTotalRevenue() {
 			const revenueRes = await this.$axios.get(
-				`${apiDomain}/auth/get-total-revenue`,
+				`${apiDomain}/analytics/get-total-revenue`,
 				{ headers: getHeader() }
 			);
-			this.user.total_revenue = revenueRes.data.total_revenue;
+			this.user.total_revenue = revenueRes.data.data.total_revenue;
 		},
 		getProductByCategory() {
 			this.dataProducts = [];
@@ -725,7 +722,6 @@ export default {
 				});
 		},
 		getBrand() {
-			console.log("getbrand()");
 
 			axios
 				.get(catalogBrandUrl, { headers: getHeader() })
