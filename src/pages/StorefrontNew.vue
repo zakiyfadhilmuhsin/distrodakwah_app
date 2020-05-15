@@ -86,19 +86,26 @@
 						style="padding-top: 15px; padding-bottom: 40px"
 					>
 						<div class="col-sm-2">
-							<div v-if="user.role.id === 8">
+							<div
+								v-if="user && user.role && user.role.id && user.role.id === 8"
+							>
 								<img
 									src="~/assets/images/components/new_silver_badge.png"
 									width="62"
 								/>
 							</div>
-							<div style="margin-top: 2px" v-if="user.role.id === 9">
+							<div
+								style="margin-top: 2px"
+								v-if="user && user.role && user.role.id && user.role.id === 9"
+							>
 								<img
 									src="~/assets/images/components/new_gold_badge.png"
 									width="62"
 								/>
 							</div>
-							<div v-if="user.role.id === 10">
+							<div
+								v-if="user && user.role && user.role.id && user.role.id === 10"
+							>
 								<img
 									src="~/assets/images/components/new_bronze_badge.png"
 									width="62"
@@ -113,7 +120,7 @@
 								{{ user.name }}
 							</p>
 							<p class="text-white" style="margin: 0 0 5px 0; font-size: 11px">
-								{{ user.role.role_name }}
+								{{ user && user.role && user.role.role_name }}
 							</p>
 							<div
 								class="bg-white shadow-2"
@@ -123,7 +130,7 @@
 									class="text-bold text-amber-9"
 									style="margin: 0; font-size: 10px"
 								>
-									Total Pendapatan : <span class="text-green">Rp0</span>
+									Total Pendapatan : <span class="text-green">Rp{{currencyFormat(this.user.total_revenue)}}</span>
 								</p>
 							</div>
 						</div>
@@ -454,6 +461,7 @@ import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import carousel from "vue-owl-carousel";
 import axios from "axios";
+import currencyFormat from "../library/currencyFormat";
 import {
 	apiDomain,
 	catalogCategoryUrl,
@@ -468,6 +476,7 @@ import {
 	orderService,
 	totalCartItemUrl
 } from "src/config";
+
 // Loading
 import { QSpinnerPuff } from "quasar";
 //components
@@ -514,7 +523,7 @@ export default {
 			// Loading
 			innerLoading: false,
 			// user
-			user: [],
+			user: {},
 			// Total Count Cart Item
 			totalCartItem: null,
 			startProduct: 1
@@ -526,7 +535,7 @@ export default {
 		}
 	},
 	async created() {
-		this.user = JSON.parse(window.localStorage.getItem("profileUser"));
+		this.getUser();
 		this.getBrand();
 		this.getSlider();
 		this.getProductByCategory();
@@ -535,6 +544,7 @@ export default {
 		this.getFeaturedProduct();
 		this.getBestSellerProduct();
 		this.getProductCustom();
+		this.getTotalRevenue();
 	},
 	async mounted() {
 		// Get Total Cart Item
@@ -549,6 +559,31 @@ export default {
 		} catch (error) {}
 	},
 	methods: {
+		async getUser() {
+			return new Promise(async resolve => {
+				try {
+					const userRes = await this.$axios.get(`${apiDomain}/auth/user`, {
+						headers: getHeader()
+					});
+
+					window.localStorage.setItem(
+						"profileUser",
+						JSON.stringify(userRes.data)
+					);
+					this.user = userRes.data;
+					return resolve();
+				} catch (error) {
+					console.log("error fetching user");
+				}
+			});
+		},
+		async getTotalRevenue() {
+			const revenueRes = await this.$axios.get(
+				`${apiDomain}/analytics/get-total-revenue`,
+				{ headers: getHeader() }
+			);
+			this.user.total_revenue = revenueRes.data.data.total_revenue;
+		},
 		getProductByCategory() {
 			this.dataProducts = [];
 
@@ -649,9 +684,8 @@ export default {
 						headers: getHeader()
 					}
 				);
-//orderIds of best seller
+				//orderIds of best seller
 				productIds = orderRes.data.data.map(order => order.product_id);
-				
 			} catch (error) {
 				console.log("error fetching best seller");
 				console.log(error.message);
@@ -689,6 +723,7 @@ export default {
 				});
 		},
 		getBrand() {
+
 			axios
 				.get(catalogBrandUrl, { headers: getHeader() })
 				.then(response => {
@@ -717,10 +752,7 @@ export default {
 					}
 				});
 		},
-		formatPrice(value) {
-			let val = (value / 1).toFixed(0).replace(".", ",");
-			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-		}
+		currencyFormat
 	}
 };
 </script>
