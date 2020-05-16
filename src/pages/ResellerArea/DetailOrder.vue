@@ -674,7 +674,7 @@ export default {
 	},
 	computed:{
 			customDesign(){
-				return this.items.some(e => [400].indexOf(e.product_id) != -1)
+				return this.items.some(e => [409,410,411,412].indexOf(e.product_id) != -1)
 			}
 	},
 	mounted() {
