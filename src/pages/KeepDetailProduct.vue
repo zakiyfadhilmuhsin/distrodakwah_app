@@ -525,11 +525,11 @@ export default {
 		this.user = JSON.parse(window.localStorage.getItem("profileUser"));
 		const doc = await googleSpreadsheetDoc();
 		let sheet;
-		if (this.dataProduct.category_id == 7) {
+		if (this.dataProduct.category_id == 7 || this.dataProduct.sku == "OS") {
 			sheet = await doc.sheetsByIndex[0];
-		} else if (this.dataProduct.category_id == 8) {
+		} else if (this.dataProduct.category_id == 8 || this.dataProduct.sku == "OT") {
 			sheet = await doc.sheetsByIndex[1];
-		} else if (this.dataProduct.category_id == 9) {
+		} else if (this.dataProduct.category_id == 9 || this.dataProduct.sku == "OU") {
 			sheet = await doc.sheetsByIndex[2];
 		}
 		await sheet.loadHeaderRow();
