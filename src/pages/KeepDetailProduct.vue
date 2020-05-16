@@ -527,26 +527,34 @@ export default {
 		let sheet;
 		if (this.dataProduct.category_id == 7 || this.dataProduct.sku == "OS") {
 			sheet = await doc.sheetsByIndex[0];
-		} else if (this.dataProduct.category_id == 8 || this.dataProduct.sku == "OT") {
+		} else if (
+			this.dataProduct.category_id == 8 ||
+			this.dataProduct.sku == "OT"
+		) {
 			sheet = await doc.sheetsByIndex[1];
-		} else if (this.dataProduct.category_id == 9 || this.dataProduct.sku == "OU") {
+		} else if (
+			this.dataProduct.category_id == 9 ||
+			this.dataProduct.sku == "OU"
+		) {
 			sheet = await doc.sheetsByIndex[2];
 		}
-		await sheet.loadHeaderRow();
-		const rows = await sheet.getRows();
-		const rowsMapSpreadsheet = [];
-		for await (const row of rows) {
-			rowsMapSpreadsheet.push({
-				Warna: row["Varian"],
-				M: row.M,
-				L: row.L,
-				XL: row.XL,
-				XXL: row.XXL
-			});
-		}
+		if (sheet) {
+			await sheet.loadHeaderRow();
+			const rows = await sheet.getRows();
+			const rowsMapSpreadsheet = [];
+			for await (const row of rows) {
+				rowsMapSpreadsheet.push({
+					Warna: row["Varian"],
+					M: row.M,
+					L: row.L,
+					XL: row.XL,
+					XXL: row.XXL
+				});
+			}
 
-		this.yaumeeSpreadsheetsTable.headers = sheet.headerValues;
-		this.yaumeeSpreadsheetsTable.rows = rowsMapSpreadsheet;
+			this.yaumeeSpreadsheetsTable.headers = sheet.headerValues;
+			this.yaumeeSpreadsheetsTable.rows = rowsMapSpreadsheet;
+		}
 	},
 	mounted() {
 		this.getProductDetail();
@@ -560,10 +568,6 @@ export default {
 				.then(response => {
 					if (response.status === 200) {
 						this.dataProduct = response.data.data;
-						console.log("fajarsidiqsalviro");
-
-						console.log(this.dataProduct);
-
 						this.category_name = this.categoryProduct(
 							this.dataProduct.category_id
 						);
