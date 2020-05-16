@@ -32,7 +32,12 @@
 		<q-page-container class="mobile-layout-on-desktop">
 			<q-page class="bg-white">
 				<div class="bg-white" style="height: 100%">
-					<div style="background-color: white;; padding: 13px 0 10px 0">
+					<div style="background-color: white; padding: 13px 0 10px 0">
+						<div class="row q-pb-sm q-px-md" v-if="customDesign">
+							<q-banner block rounded dense class="bg-primary text-white" style="width:100%">
+								Kirimkan Custom Desain Via E-mail: custom@distrodakwah.id
+							</q-banner>
+						</div>
 						<div class="row q-px-lg">
 							<div class="col">
 								<h5 class="title-text" style="font-weight: normal;">
@@ -667,6 +672,11 @@ export default {
 	created() {
 		this.user = JSON.parse(window.localStorage.getItem("profileUser"));
 	},
+	computed:{
+			customDesign(){
+				return this.items.some(e => [400].indexOf(e.product_id) != -1)
+			}
+	},
 	mounted() {
 		this.getDataBank();
 		this.getOrder();
@@ -984,5 +994,4 @@ input:checked ~ .tab-content {
 	max-height: 100vh;
 	padding: 0.4em;
 }
-
 </style>

@@ -293,9 +293,12 @@
 
 						<hr style="margin: 15px 0" />
 						<div class="row">
-							<div class="col">
-								<h4 class="price-title-small-text">Stok bahan baku:</h4>
-							</div>
+							<h4 class="price-title-small-text">
+								Stok bahan baku:
+								<span v-if="yaumeeSpreadsheetsTable.rows.length == 0"
+									>Sedang Memuat</span
+								>
+							</h4>
 							<table
 								v-if="yaumeeSpreadsheetsTable.rows.length > 0"
 								class="stocking-table"
@@ -445,7 +448,7 @@
 	border-collapse: collapse;
 	background-color: white;
 	overflow: hidden;
-	width: 500px;
+	width: 100%;
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 

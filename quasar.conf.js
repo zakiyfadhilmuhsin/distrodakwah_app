@@ -31,6 +31,7 @@ module.exports = function(ctx) {
 			components: [
 				"QAvatar",
 				"QBadge",
+				"QBanner",
 				"QBtn",
 				"QBtnDropdown",
 				"QBtnToggle",
@@ -126,7 +127,7 @@ module.exports = function(ctx) {
 		},
 
 		pwa: {
-			// workboxPluginMode: 'InjectManifest',
+			workboxPluginMode: 'InjectManifest',
 			// workboxOptions: {}, // only for NON InjectManifest
 			manifest: {
 				name: "DistroDakwah App",
