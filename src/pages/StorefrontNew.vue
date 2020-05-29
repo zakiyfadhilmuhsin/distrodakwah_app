@@ -130,7 +130,10 @@
 									class="text-bold text-amber-9"
 									style="margin: 0; font-size: 10px"
 								>
-									Total Pendapatan : <span class="text-green">Rp{{currencyFormat(this.user.total_revenue)}}</span>
+									Total Pendapatan :
+									<span class="text-green"
+										>Rp{{ currencyFormat(this.user.total_revenue) }}</span
+									>
 								</p>
 							</div>
 						</div>
@@ -243,41 +246,6 @@
 								<swiper-slide
 									v-for="(product, index) in orderBy(
 										dataNewProduct,
-										'product_name'
-									).reverse()"
-									:key="index"
-								>
-									<KeepProductCard
-										:product="product"
-										:user="user"
-										v-if="product.brand_id === 7"
-									/>
-									<VendorProductCard :product="product" :user="user" v-else />
-								</swiper-slide>
-								<div class="swiper-product-pagination" slot="pagination"></div>
-							</swiper>
-						</div>
-					</div>
-					<!------------------------------>
-					<!-- Spesial Ramadhan Section -->
-					<!------------------------------>
-					<div class="bg-grey-3" style="height: 8px"></div>
-					<div class="row q-pa-xs">
-						<div class="col-8">
-							<h5 class="promo-text">Spesial Ramadhan</h5>
-						</div>
-						<div class="col-4 text-right">
-							<!-- <router-link> -->
-							<h5 class="link-text text-orange-8">Lihat Semua</h5>
-							<!-- </router-link> -->
-						</div>
-					</div>
-					<div class="row q-px-md" style="padding: 5px 10px 10px 10px">
-						<div class="col">
-							<swiper :options="swiperProductListOption">
-								<swiper-slide
-									v-for="(product, index) in orderBy(
-										dataSpesialRamadhanProduct,
 										'product_name'
 									).reverse()"
 									:key="index"
@@ -505,7 +473,6 @@ export default {
 			// Product Section
 			dataProducts: [],
 			dataNewProduct: [],
-			dataSpesialRamadhanProduct: [],
 			dataFeaturedProduct: [],
 			dataBestSellerProduct: [],
 			dataProductCustom: [],
@@ -540,7 +507,6 @@ export default {
 		this.getSlider();
 		this.getProductByCategory();
 		this.getNewProduct();
-		this.getSpesialRamadhanProduct();
 		this.getFeaturedProduct();
 		this.getBestSellerProduct();
 		this.getProductCustom();
@@ -639,24 +605,6 @@ export default {
 					}
 				});
 		},
-		getSpesialRamadhanProduct() {
-			this.dataSpesialRamadhanProduct = [];
-
-			axios
-				.get(getProductByClassUrl + "/" + "spesial-ramadhan", {
-					headers: getHeader()
-				})
-				.then(response => {
-					if (response.status === 200) {
-						this.dataSpesialRamadhanProduct = response.data.data;
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
-				});
-		},
 		getFeaturedProduct() {
 			this.dataFeaturedProduct = [];
 
@@ -723,7 +671,6 @@ export default {
 				});
 		},
 		getBrand() {
-
 			axios
 				.get(catalogBrandUrl, { headers: getHeader() })
 				.then(response => {
