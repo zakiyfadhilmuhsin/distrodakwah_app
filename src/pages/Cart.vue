@@ -74,9 +74,6 @@
 					<div
 						style="background-color: white; margin-bottom: 5px; padding: 18px 0 15px 0"
 					>
-						<q-banner inline-actions rounded class="bg-orange text-white">
-							Orderan Kami Tutup Memperingati Hari Raya Iedul Fitr
-						</q-banner>
 						<template v-if="totalItem > 0">
 							<div
 								class="row q-px-lg q-py-sm"
@@ -604,11 +601,11 @@ export default {
 				});
 		},
 		setShippingAddress() {
-			// if (this.totalItem > 0) {
-			// 	this.$router.push("/shipping");
-			// } else {
-			// 	alert("Keranjang Belanja Masih Kosong!");
-			// }
+			if (this.totalItem > 0) {
+				this.$router.push("/shipping");
+			} else {
+				alert("Keranjang Belanja Masih Kosong!");
+			}
 		},
 		editQty(id, price, qty, product_sku_id) {
 			this.cartDetailIdEdit = id;
