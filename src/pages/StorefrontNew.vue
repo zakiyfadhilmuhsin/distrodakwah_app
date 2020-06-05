@@ -624,7 +624,7 @@ export default {
 				});
 		},
 		async getBestSellerProduct() {
-			let orderRes, catalogRes, productIds;
+			let orderRes, catalogRes, productIdArr;
 			try {
 				orderRes = await axios.get(
 					`${orderService}/get-frequently-purchased-products`,
@@ -633,18 +633,21 @@ export default {
 					}
 				);
 				//orderIds of best seller
-				productIds = orderRes.data.data.map(order => order.product_id);
+				productIdArr = orderRes.data.data.map(order => order.product_id);
 			} catch (error) {
 				console.log("error fetching best seller");
 				console.log(error.message);
 			}
+			//get products by product id arr
+			const getProductsParams = {
+				productIdArr,
+				eagerLoad : ['brand_detail', 'product_variants']
+			}
 
 			try {
-				catalogRes = await axios.get(`${catalogService}/get-products-by-id`, {
+				catalogRes = await axios.post(`${catalogService}/get-products-by-id`, getProductsParams, {
 					headers: getHeader(),
-					params: {
-						product_ids: JSON.stringify(productIds)
-					}
+
 				});
 				this.dataBestSellerProduct = catalogRes.data.data;
 			} catch (error) {
