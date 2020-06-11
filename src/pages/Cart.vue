@@ -624,14 +624,6 @@ export default {
 				: "";
 
 			if (!error) {
-				// let currentQty = this.cartDetailQtyEdit;
-				// let newQty = this.qtyForm;
-				// let cartDetailPrice = this.cartDetailPrice * currentQty;
-				// let newPrice = this.cartDetailPrice * newQty;
-				// let totalAmount = this.subTotal;
-				// let totalKurangi = totalAmount - cartDetailPrice;
-				// let totalAkhir = totalKurangi + newPrice;
-
 				let updateForm = new FormData();
 
 				updateForm.set("cart_id", this.cartData.id);

@@ -640,16 +640,22 @@ export default {
 			}
 			//get products by product id arr
 			const getProductsParams = {
+				limit: 10,
 				productIdArr,
-				eagerLoad : ['brand_detail', 'product_variants']
-			}
+				eagerLoad: {
+					brand: ["id"],
+					product_sku: ["*"]
+				}
+			};
 
 			try {
-				catalogRes = await axios.post(`${catalogService}/get-products-by-id`, getProductsParams, {
+				catalogRes = await this.$axios({
+					method: "post",
+					url: `${catalogService}/get-products-by-id`,
 					headers: getHeader(),
-
+					data: getProductsParams
 				});
-				this.dataBestSellerProduct = catalogRes.data.data;
+				this.dataBestSellerProduct = catalogRes.data.data.data;
 			} catch (error) {
 				console.log("error products");
 				console.log(error.message);
