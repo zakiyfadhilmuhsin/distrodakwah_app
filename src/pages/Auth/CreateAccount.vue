@@ -704,7 +704,7 @@ export default {
 		},
 		createAccount() {
 			console.log(this.email);
-			
+
 			if (this.email === "") {
 				this.notifForm("Email");
 			} else if (this.password === "") {
@@ -752,27 +752,21 @@ export default {
 				createForm.set("gender", this.gender);
 				createForm.set("birthday", this.birthday);
 
-				if (
-					[
-						"AM Reseller PRO",
-						"Reseller Pro", //v1
-						"KB Reseller PRO",
-						"DD Reseller PRO",
-						"MHK Reseller PRO",
-						"BB Reseller PRO"
-					].includes(this.roleName)
-				) {
+				const exclusiveRoleList = ["reseller eksklusif", "reseller exclusive"];
+				const proRoleList = ["reseller pro"];
+				let filteredRoleName = null;
+				for (let i = 0; i < exclusiveRoleList.length; i++) { // TODO IMPROVE HERE
+					if (this.roleName.toLowerCase().includes(exclusiveRoleList[i])) {
+						filteredRoleName = "reseller exclusive";
+						break;
+					}
+					if (this.roleName.toLowerCase().includes(proRoleList[i])) {
+						filteredRoleName = "reseller pro";
+					}
+				}
+				if (filteredRoleName = "reseller pro") {
 					createForm.set("role_id", 8);
-				} else if (
-					[
-						"AM Reseller EKSKLUSIF",
-						"Reseller Exclusive", //v1
-						"KB Reseller EKSKLUSIF",
-						"DD Reseller EKSLUSIF",
-						"MHK Reseller EKSLUSIF",
-						"BB Reseller EKSLUSIF"
-					].includes(this.roleName)
-				) {
+				} else if (filteredRoleName = "reseller exclusive") {
 					createForm.set("role_id", 9);
 				}
 
