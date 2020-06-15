@@ -1,5 +1,5 @@
 import router from 'src/router/routes'
-import {API, API_DEV, WEBREPLICA_DOMAIN, WEBREPLICA_DOMAIN_DEV} from '../config/default'
+import { API, API_DEV, WEBREPLICA_DOMAIN, WEBREPLICA_DOMAIN_DEV } from '../config/default'
 //export const hostDomain = 'https://api-test.needherbal.web.id'
 export const hostDomain = process.env.DEV ? API_DEV : API
 export const webReplicaDomain = process.env.DEV ? WEBREPLICA_DOMAIN_DEV : WEBREPLICA_DOMAIN;
@@ -32,6 +32,7 @@ export const getProductByClassUrl = apiDomain + '/catalog/get-products-by-produc
 export const getBestSellerProductUrl = apiDomain + '/catalog/get-newest-products'
 
 // From Cart Service
+export const cartService = `${apiDomain}/cart`
 export const getCartUrl = apiDomain + '/cart/get-cart'
 export const addToCartUrl = apiDomain + '/cart/add-to-cart'
 export const removeProductCartUrl = apiDomain + '/cart/remove-product'
@@ -84,41 +85,41 @@ export const checkCouponUrl = apiDomain + '/voucher/check-coupon'
 
 
 export const getHeader = function () {
-  // debugger
-  if (window.localStorage.getItem('authUser') === null) { return }
-  const tokenData = JSON.parse(window.localStorage.getItem('authUser'))
-  const headers = {
-    'Accept': 'application/json',
-    'Authorization': 'Bearer ' + tokenData.access_token
-  }
-  return headers
+	// debugger
+	if (window.localStorage.getItem('authUser') === null) { return }
+	const tokenData = JSON.parse(window.localStorage.getItem('authUser'))
+	const headers = {
+		'Accept': 'application/json',
+		'Authorization': 'Bearer ' + tokenData.access_token
+	}
+	return headers
 }
 
 export const getAccessToken = function () {
-  const tokenData = JSON.parse(window.localStorage.getItem('authUser'))
-  return 'access_token=' + tokenData.access_token
+	const tokenData = JSON.parse(window.localStorage.getItem('authUser'))
+	return 'access_token=' + tokenData.access_token
 }
 
 export const getAccessTokenKey = function () {
-  const tokenData = JSON.parse(window.localStorage.getItem('authUser'))
-  return tokenData.access_token
+	const tokenData = JSON.parse(window.localStorage.getItem('authUser'))
+	return tokenData.access_token
 }
 
 export const logout = function () {
-  window.localStorage.removeItem('authUser')
-  router.push('/')
+	window.localStorage.removeItem('authUser')
+	router.push('/')
 }
 
 export const getRouter = function () {
-  const routerData = JSON.parse(window.localStorage.getItem('routerUser'))
-  return routerData
+	const routerData = JSON.parse(window.localStorage.getItem('routerUser'))
+	return routerData
 }
 
 export const getMenu = function () {
-  const menuData = JSON.parse(window.localStorage.getItem('menuUser'))
-  return menuData
+	const menuData = JSON.parse(window.localStorage.getItem('menuUser'))
+	return menuData
 }
 export const getProfile = function () {
-  const profile = JSON.parse(window.localStorage.getItem('profileUser'))
-  return profile
+	const profile = JSON.parse(window.localStorage.getItem('profileUser'))
+	return profile
 }

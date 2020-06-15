@@ -382,7 +382,7 @@ import VueClipboard from "vue-clipboard2";
 import { openURL } from "quasar";
 import { googleSpreadsheetDoc } from "../../config/googleSpreadsheets";
 //vanilla.js
-import { nthIndex } from "../library/stringManipulation";
+import { nthIndex } from "../libraries/stringManipulation";
 
 Vue.use(VueClipboard);
 

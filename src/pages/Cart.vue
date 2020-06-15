@@ -1,156 +1,13 @@
 <template>
-	<q-layout view="hHh lpR fFf">
-		<q-header class="mobile-layout-on-desktop">
-			<q-toolbar class="bg-distrodakwah text-white">
-				<q-btn flat round dense to="/">
-					<q-icon name="arrow_back" color="white" />
-				</q-btn>
-				<q-toolbar-title>
-					<span style="font-size: 16px; font-weight: bold"
-						>Keranjang Belanja</span
-					>
-				</q-toolbar-title>
-			</q-toolbar>
-		</q-header>
-
-		<q-footer class="mobile-layout-on-desktop">
-			<center>
-				<q-tabs
-					dense
-					class="bg-white text-black"
-					style="border-top: 2px solid #eeeeee;"
-					animated
-					swipeable
-					align="justify"
-				>
-					<q-route-tab
-						icon="home"
-						to="/"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-					>
-						<span style="font-size: 10px;">Beranda</span>
-					</q-route-tab>
-					<q-route-tab
-						icon="receipt"
-						to="/orderList"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-					>
-						<span style="font-size: 10px;">Pesanan</span>
-					</q-route-tab>
-					<q-route-tab
-						icon="local_mall"
-						to="/cart"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-					>
-						<span style="font-size: 10px;">Keranjang</span>
-						<q-badge
-							color="red"
-							text-color="white"
-							floating
-							v-if="totalCartItem !== null"
-						>
-							<b>{{ totalCartItem }}</b>
-						</q-badge>
-					</q-route-tab>
-					<q-route-tab
-						icon="account_circle"
-						to="/dashboard"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-					>
-						<span style="font-size: 10px;">Profil</span>
-					</q-route-tab>
-					<!-- <q-route-tab
-						icon="verified_user"
-						to="/storefront"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Support</span></q-route-tab>-->
-				</q-tabs>
-			</center>
-		</q-footer>
-
-		<q-page-container class="mobile-layout-on-desktop">
+	<MainLayout :HeaderProp="'Keranjang Belanja'">
+		<template v-slot:main>
 			<q-page class="bg-white">
 				<div class="bg-grey-3" style="height: 100%">
-					<div
-						style="background-color: white; margin-bottom: 5px; padding: 18px 0 15px 0"
-					>
-						<template v-if="totalItem > 0">
-							<div
-								class="row q-px-lg q-py-sm"
-								v-for="(item, index) in items"
-								:key="index"
-							>
-								<div class="col-3">
-									<img
-										:src="item.product_image"
-										width="100%"
-										style="border: 1px solid whitesmoke"
-									/>
-								</div>
-								<div class="col-7" style="padding: 0 15px">
-									<h5
-										style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; line-height: 16px"
-									>
-										{{ item.product_name }}
-									</h5>
-									<h6
-										v-for="(opt, i) in item.options"
-										:key="i"
-										style="margin: -15px 0; font-size: 12px;"
-									>
-										{{ opt.option + ": " + opt.value }}
-									</h6>
-									<h6 style="margin: -15px 0; font-size: 12px;">
-										Qty {{ item.qty }} x Rp {{ formatPrice(item.price) }}
-									</h6>
-									<h6
-										style="margin: -15px 0; font-size: 12px;"
-										class="text-orange-8"
-									>
-										Rp {{ formatPrice(item.qty * item.price) }}
-									</h6>
-								</div>
-								<div class="col-2 text-right self-center">
-									<q-btn
-										flat
-										round
-										icon="create"
-										style="font-size: 10px"
-										@click="
-											editQty(
-												item.id,
-												item.price,
-												item.qty,
-												item.product_sku_id
-											)
-										"
-									/>
-									<q-btn
-										flat
-										color="red"
-										round
-										icon="delete_forever"
-										style="font-size: 10px"
-										@click="removeProduct(item.product_sku_id)"
-									/>
-								</div>
-							</div>
-						</template>
-						<template v-else>
-							<div class="row q-pa-lg">
-								<div class="col">
-									<center>
-										<img
-											src="http://balitakita.com/packages/yusidabcs/checkout/img/empty-cart-vector.png"
-											width="85"
-										/>
-										<div>Yah, Keranjang Masih Kosong.. Belanja Yuk!</div>
-									</center>
-								</div>
-							</div>
-						</template>
-						<!-- {{items}} -->
-					</div>
+					<ProductList
+						v-if="cartData"
+						:cartDataProp="cartData"
+						@getCartData="getCartData"
+					/>
 					<!-- Voucher -->
 					<div
 						style="background-color: white; margin-bottom: 5px"
@@ -234,7 +91,7 @@
 									style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold"
 									class="text-red"
 								>
-									Rp {{ formatPrice(subTotal) }}
+									Rp {{ formatPrice(cartData.total_amount) }}
 								</h6>
 							</div>
 						</div>
@@ -286,39 +143,7 @@
 					</div>
 				</div>
 			</q-page>
-			<q-dialog v-model="editQtyDialog">
-				<q-card style="width: 800px; max-width: 90vw;">
-					<q-card-section class="row items-center">
-						<h6 style="margin: 0; font-size: 16px">Ubah Jumlah Barang</h6>
-						<q-space />
-						<q-btn icon="close" size="sm" flat round dense v-close-popup />
-					</q-card-section>
 
-					<q-card-section>
-						<div class="row items-center">
-							<div class="col">
-								<q-input
-									type="number"
-									outlined
-									dense
-									color="orange-8"
-									label="Jumlah"
-									v-model="qtyForm"
-								/>
-							</div>
-						</div>
-					</q-card-section>
-
-					<q-card-actions class="q-px-md q-pb-md">
-						<q-btn
-							flat
-							class="bg-orange-8 text-white text-capitalize full-width"
-							@click="updateQty"
-							>Ubah</q-btn
-						>
-					</q-card-actions>
-				</q-card>
-			</q-dialog>
 			<q-dialog v-model="addCouponDialog" position="bottom">
 				<q-card style="min-width: 360px">
 					<!-- <q-card-section>
@@ -354,13 +179,16 @@
 					</q-card-actions>
 				</q-card>
 			</q-dialog>
-		</q-page-container>
-	</q-layout>
+		</template>
+	</MainLayout>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import axios from "axios";
 import {
+	cartService,
+	catalogService,
 	getCartUrl,
 	catalogProductUrl,
 	removeProductCartUrl,
@@ -373,58 +201,62 @@ import {
 } from "src/config";
 // Loading
 import { QSpinnerPuff } from "quasar";
+// components
+import MainLayout from "../layouts/MainLayout.vue";
+import ProductList from "../components/Cart/ProductList.vue";
 
 export default {
+	name: "CartPage",
+	components: { MainLayout, ProductList },
 	data() {
 		return {
 			// Data Keranjang/Cart
-			cartData: {},
-			items: [],
-			totalItem: 0,
-			subTotal: null,
+			cartData: {
+				cart_detail: [],
+				total_amount: 0
+			},
 			totalProfit: 0,
+			totalItem: 0,
+			// totalCartItem: 0,
 			// Donasi
 			donasi_act: false,
 			donasi_rq: false,
 			// User
-			user: null,
+
 			// Total Count Cart Item
-			totalCartItem: null,
-			editQtyDialog: false,
+
 			// Edit Qty
-			qtyForm: null,
-			cartDetailIdEdit: null,
-			cartDetailPrice: null,
-			cartDetailQtyEdit: null,
-			productSkuIdEdit: null,
+
 			addCouponDialog: false,
 			couponCode: null,
 			couponUse: false
 		};
 	},
-	created() {
-		this.user = JSON.parse(window.localStorage.getItem("profileUser"));
+	computed: {
+		...mapState(["globalState"])
 	},
-	mounted() {
-		this.getCartData();
-		// Get Total Cart Item
-		// axios
-		//   .get(totalCartItemUrl + "/" + this.user.id, { headers: getHeader() })
-		//   .then(response => {
-		//     console.log(response);
+	async created() {
+		await this.$store.dispatch("globalState/getUserProfile");
 
-		//     if (response.status === 200) {
-		//       this.totalCartItem = response.data.data;
-		//     }
-		//   })
-		//   .catch(error => {
-		//     if (error.response) {
-		//       console.log(error.response);
-		//     }
-		//   });
+		await this.getCartData();
 	},
+
 	methods: {
-		getCartData() {
+		calculateProfit() {
+			let tempProfit = 0;
+			this.cartData.cart_detail.forEach(cartDetail => {
+				tempProfit +=
+					(cartDetail.retail_price - cartDetail.reseller_price) *
+					cartDetail.qty;
+			});
+			this.totalProfit = tempProfit;
+		},
+		async getCartData() {
+			let tempCart,
+				tempProduct,
+				cartRes,
+				productRes,
+				tempTotalItem = 0;
 			this.$q.loading.show({
 				spinner: QSpinnerPuff,
 				spinnerColor: "black",
@@ -434,172 +266,76 @@ export default {
 				messageColor: "black"
 			});
 
-			this.cartData = [];
-			this.items = [];
-			this.totalProfit = 0;
-			this.totalItem = 0;
-
-			axios
-				.get(getCartUrl + "/" + this.user.id, { headers: getHeader() })
-				.then(response => {
-					if (response.status === 200) {
-						this.$q.loading.hide();
-
-						this.cartData = response.data.data;
-
-						if (this.cartData.voucher_id !== null) {
-							this.couponUse = true;
-							this.couponCode = this.cartData.voucher_code_name;
-						}
-
-						for (let i = 0; i < this.cartData.cart_detail.length; i++) {
-							// alert(this.cartData.cart_detail[i].product_id);
-							axios
-								.get(
-									catalogProductUrl +
-										"/" +
-										this.cartData.cart_detail[i].product_id,
-									{ headers: getHeader() }
-								)
-								.then(response => {
-									let product_name = response.data.data.product_name;
-									let product_image = response.data.data.featured_image;
-									let qty = this.cartData.cart_detail[i].qty;
-									let product_id = this.cartData.cart_detail[i].product_id;
-									let id = this.cartData.cart_detail[i].id;
-
-									if (this.cartData.cart_detail[i].product_sku_id !== null) {
-										axios
-											.get(
-												catalogProductUrl +
-													"/" +
-													this.cartData.cart_detail[i].product_id +
-													"/" +
-													this.cartData.cart_detail[i].product_sku_id,
-												{ headers: getHeader() }
-											)
-											.then(response => {
-												console.log(response.data.data);
-
-												// let options = JSON.parse(this.cartData.cart_detail[i].options);
-												// for(var opt=0; opt<options.length; opt++){
-												//   console.log(options[opt].option + 'adalah' + options[opt].value);
-												// }
-												let price = null;
-												if (this.user.role.id === 9) {
-													price = response.data.data.reseller_exclusive_price;
-												} else if (this.user.role.id === 8) {
-													price = response.data.data.reseller_pro_price;
-												} else if (this.user.role.id === 10) {
-													price = response.data.data.reseller_free_price;
-												}
-												this.items.push({
-													id: id,
-													product_id: product_id,
-													product_name: product_name,
-													product_image: product_image,
-													price,
-													options: JSON.parse(
-														this.cartData.cart_detail[i].options
-													),
-													qty: qty,
-													product_sku_id: this.cartData.cart_detail[i]
-														.product_sku_id
-												});
-
-												this.totalProfit +=
-													(response.data.data.price - price) * qty;
-												this.totalItem += qty;
-											})
-											.catch(error => {
-												if (error.response) {
-													console.log(error.response);
-												}
-											});
-									} else {
-										let price = null;
-										if (this.user.role.id === 9) {
-											price = response.data.data.reseller_exclusive_price;
-										} else if (this.user.role.id === 8) {
-											price = response.data.data.reseller_pro_price;
-										} else if (this.user.role.id === 10) {
-											price = response.data.data.reseller_free_price;
-										}
-										this.items.push({
-											id: id,
-											product_id: product_id,
-											product_name: product_name,
-											product_image: product_image,
-											price,
-											qty: qty,
-											product_sku_id: this.cartData.cart_detail[i]
-												.product_sku_id
-										});
-
-										this.totalProfit +=
-											(response.data.data.price - price) * qty;
-										this.totalItem += qty;
-									}
-								})
-								.catch(error => {
-									if (error.response) {
-										console.log(error.response);
-									}
-								});
-						}
-					}
-
-					this.subTotal = this.cartData.total_amount;
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
+			try {
+				cartRes = await this.$axios({
+					method: "get",
+					url: `${cartService}/get-cart/${this.globalState.userProfile.id}`,
+					headers: getHeader()
 				});
+			} catch (error) {
+				console.log("error fetching cart");
+				console.log(error.message);
+			}
+			tempCart = cartRes.data.data;
+			console.log(cartRes);
+			if (
+				tempCart && // cart has been created
+				tempCart.cart_detail.length > 0
+			) {
+				if (tempCart.voucher_id !== null) {
+					this.couponUse = true;
+					this.couponCode = tempCart.voucher_code_name;
+				}
+				try {
+					productRes = await this.$axios({
+						method: "post",
+						url: `${catalogService}/get-products-by-id`,
+						headers: getHeader(),
+						data: {
+							productIdArr: tempCart.cart_detail.map(e => e.product_id),
+							eagerLoad: {
+								productOptions: ["*"]
+							},
+							select: ["id", "product_name", "featured_image"]
+						}
+					});
+				} catch (error) {
+					console.log("error fetching product");
+					console.log(error.message);
+				}
+
+				tempProduct = productRes.data.data;
+
+				tempCart.cart_detail.forEach((cart_detail, index) => {
+					tempTotalItem += cart_detail.qty;
+
+					const product = tempProduct.find(
+						product => product.id === cart_detail.product_id
+					);
+					tempCart.cart_detail[index].product_name = product.product_name;
+
+					tempCart.cart_detail[index].featured_image = product.featured_image;
+					tempCart.cart_detail[index].options = JSON.parse(
+						tempCart.cart_detail[index].options
+					);
+				});
+
+				this.cartData = tempCart;
+			} else {
+				this.cartData = {
+					cart_detail: [],
+					total_amount: 0
+				};
+			}
+			this.totalItem = tempTotalItem;
+			this.calculateProfit();
+			this.$q.loading.hide();
 		},
 		formatPrice(value) {
 			let val = (value / 1).toFixed(0).replace(".", ",");
 			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 		},
-		removeProduct(product_sku_id) {
-			const removeProductParams = {
-				product_sku_id: product_sku_id
-			};
-			axios
-				.delete(removeProductCartUrl, {
-					headers: getHeader(),
-					params: removeProductParams
-				})
-				.then(response => {
-					console.log(response);
-					if (response.status === 200) {
-						this.getCartData();
 
-						// Get Total Cart Item
-						axios
-							.get(totalCartItemUrl + "/" + this.user.id, {
-								headers: getHeader()
-							})
-							.then(response => {
-								console.log(response);
-
-								if (response.status === 200) {
-									this.totalCartItem = response.data.data;
-								}
-							})
-							.catch(error => {
-								if (error.response) {
-									console.log(error.response);
-								}
-							});
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
-				});
-		},
 		setShippingAddress() {
 			if (this.totalItem > 0) {
 				this.$router.push("/shipping");
@@ -607,82 +343,7 @@ export default {
 				alert("Keranjang Belanja Masih Kosong!");
 			}
 		},
-		editQty(id, price, qty, product_sku_id) {
-			this.cartDetailIdEdit = id;
-			// this.cartDetailPrice = price;
-			this.cartDetailQtyEdit = qty;
-			this.productSkuIdEdit = product_sku_id;
-			this.qtyForm = qty;
 
-			// Load editQtyDialog
-			this.editQtyDialog = true;
-		},
-		updateQty() {
-			let error = null;
-			!/[0-9]/.test(this.qtyForm) || this.qtyForm <= 0
-				? (error = "notAllowed")
-				: "";
-
-			if (!error) {
-				let updateForm = new FormData();
-
-				updateForm.set("cart_id", this.cartData.id);
-				updateForm.set("cart_detail_id", this.cartDetailIdEdit);
-				updateForm.set("role_id", this.user.role_id);
-				updateForm.set("product_sku_id", this.productSkuIdEdit);
-				// updateData.set("current_price", cartDetailPrice);
-				// updateData.set("new_price", newPrice);
-				updateForm.set("qty", this.qtyForm);
-
-				axios
-					.post(updateCartQtyUrl, updateForm, { headers: getHeader() })
-					.then(response => {
-						console.log(response);
-
-						if (response.status === 200) {
-							console.log(response.data.data);
-							this.getCartData();
-							this.qtyForm = null;
-
-							// Get Total Cart Item
-							axios
-								.get(totalCartItemUrl + "/" + this.user.id, {
-									headers: getHeader()
-								})
-								.then(response => {
-									console.log(response);
-
-									if (response.status === 200) {
-										this.totalCartItem = response.data.data;
-									}
-								})
-								.catch(error => {
-									if (error.response) {
-										console.log(error.response);
-									}
-								});
-						}
-					})
-					.catch(error => {
-						if (error.response.data.error == "insufficientStock") {
-							this.$q.notify({
-								position: "top",
-								color: "red",
-								message: "Stock Tidak Mencukupi"
-							});
-						}
-					});
-
-				// close Dialog
-				this.editQtyDialog = false;
-			} else {
-				this.$q.notify({
-					position: "top",
-					color: "red",
-					message: "Cek Jumlah Yang Anda Masukkan"
-				});
-			}
-		},
 		addCoupon() {
 			axios
 				.get(checkCouponUrl + "/" + this.couponCode, { headers: getHeader() })

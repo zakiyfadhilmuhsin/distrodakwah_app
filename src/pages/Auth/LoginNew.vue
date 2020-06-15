@@ -11,7 +11,7 @@
                     <img src="~/assets/images/components/logo-distrodakwah.png" width="200px" />
                   </center>
                 </div>
-                
+
                 <div class="shadow-5 bg-white q-pa-lg" style="border-radius: 8px; margin-top: 30px">
                   <h5 class="text-center text-bold" style="margin: 0; font-family: 'Open Sans'">Login Reseller</h5>
                   <br/>
@@ -103,6 +103,8 @@ export default {
     };
   },
   created() {
+				console.log('asd')
+
     this.$q.loading.hide();
     if (this.$route.params.message === "createsuccess") {
       setTimeout(() => {

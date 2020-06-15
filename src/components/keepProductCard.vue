@@ -1,5 +1,4 @@
 <template>
-
 	<q-card
 		class="yaumee-catalog-card bg-white"
 		style="margin: 0 5px; cursor:pointer"
@@ -104,7 +103,7 @@
 </template>
 
 <script>
-import currencyFormat from "../library/currencyFormat";
+import { currencyFormat } from "../libraries/stringManipulation";
 
 export default {
 	name: "KeepProductCard",

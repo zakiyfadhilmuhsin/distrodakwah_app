@@ -1,61 +1,6 @@
 <template>
-	<q-layout view="lHh Lpr lFf">
-		<q-footer class="mobile-layout-on-desktop">
-			<center>
-				<q-tabs
-					dense
-					class="bg-white text-black"
-					style="border-top: 2px solid #eeeeee;"
-					animated
-					swipeable
-					align="justify"
-				>
-					<q-route-tab
-						icon="home"
-						to="/"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-					>
-						<span style="font-size: 10px;">Beranda</span>
-					</q-route-tab>
-					<q-route-tab
-						icon="receipt"
-						to="/orderList"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-					>
-						<span style="font-size: 10px;">Pesanan</span>
-					</q-route-tab>
-					<q-route-tab
-						icon="local_mall"
-						to="/cart"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-					>
-						<span style="font-size: 10px;">Keranjang</span>
-						<q-badge
-							color="red"
-							text-color="white"
-							floating
-							v-if="totalCartItem !== null"
-						>
-							<b>{{ totalCartItem }}</b>
-						</q-badge>
-					</q-route-tab>
-					<q-route-tab
-						icon="account_circle"
-						to="/dashboard"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-					>
-						<span style="font-size: 10px;">Profil</span>
-					</q-route-tab>
-					<!-- <q-route-tab
-	          icon="verified_user"
-	          to="/"
-	          style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Support</span></q-route-tab>-->
-				</q-tabs>
-			</center>
-		</q-footer>
-
-		<q-page-container class="mobile-layout-on-desktop">
+	<MainLayout :HeaderProp="'Profil'">
+		<template v-slot:main>
 			<q-page class="bg-white">
 				<div class="row dashboard-section">
 					<div class="col">
@@ -83,10 +28,10 @@
 							<h6 class="dashboard-small-text">{{ user.role.role_name }}</h6>
 							<br />
 							<!-- <div class="mb-5" style="font-size: 11px">
-            Sisa Masa Keanggotaan Anda : {{ user.expired_at ? new Date(user.expired_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'numeric', day: 'numeric' }) : '' }}
-            Sisa Masa Keanggotaan Anda : {{ user.created_at }}
-            Masa keanggotaan anda <b>{{ user.expired_at | moment("from", "now", true) }}</b> lagi
-              </div>-->
+							Sisa Masa Keanggotaan Anda : {{ user.expired_at ? new Date(user.expired_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'numeric', day: 'numeric' }) : '' }}
+							Sisa Masa Keanggotaan Anda : {{ user.created_at }}
+							Masa keanggotaan anda <b>{{ user.expired_at | moment("from", "now", true) }}</b> lagi
+								</div>-->
 							<template v-if="user.role.id === 8">
 								<q-btn
 									@click="upgrade"
@@ -124,36 +69,36 @@
 						</center>
 						<br />
 						<!-- <div class="row">
-            <div class="col">
-              <q-list dense>
-                <q-item dense clickable v-ripple>
-                  <q-item-section side>
-                    <img src="~/assets/images/components/dompet_distro.png" width="30" />
-                  </q-item-section>
+							<div class="col">
+								<q-list dense>
+									<q-item dense clickable v-ripple>
+										<q-item-section side>
+											<img src="~/assets/images/components/dompet_distro.png" width="30" />
+										</q-item-section>
 
-                  <q-item-section side><span style="font-size: 12px; color: black; line-height: 15px">DompetDistro</span><span style="font-size: 12px; line-height: 15px">Rp500.000</span></q-item-section>
-                </q-item>
-              </q-list>
-            </div>
-            <div class="col">
-              <q-list dense>
-                <q-item dense clickable v-ripple>
-                  <q-item-section side>
-                    <img src="~/assets/images/components/point_distro.png" width="20" />
-                  </q-item-section>
+										<q-item-section side><span style="font-size: 12px; color: black; line-height: 15px">DompetDistro</span><span style="font-size: 12px; line-height: 15px">Rp500.000</span></q-item-section>
+									</q-item>
+								</q-list>
+							</div>
+							<div class="col">
+								<q-list dense>
+									<q-item dense clickable v-ripple>
+										<q-item-section side>
+											<img src="~/assets/images/components/point_distro.png" width="20" />
+										</q-item-section>
 
-                  <q-item-section side><span style="font-size: 12px; color: black; line-height: 15px">PointDistro</span><span style="font-size: 12px; line-height: 15px">50 Points</span></q-item-section>
-                </q-item>
-              </q-list>
-            </div> 
-          </div>
-            <br/>-->
+										<q-item-section side><span style="font-size: 12px; color: black; line-height: 15px">PointDistro</span><span style="font-size: 12px; line-height: 15px">50 Points</span></q-item-section>
+									</q-item>
+								</q-list>
+							</div>
+						</div>
+							<br/>-->
 						<!-- <div class="row">
-            <div class="col">
-              <h4 style="font-weight: bold; font-size: 21px; font-family: 'Open Sans'; margin: 0;">Alhamdulillah!</h4>
-              <h5 style="font-size: 12px; line-height: 15px; margin: 0">Kamu telah mendapatkan untuk <b>Rp.1.450.000</b><br/>Sejak bergabung menjadi reseller distrodakwah</h5>
-            </div>
-            </div>-->
+							<div class="col">
+								<h4 style="font-weight: bold; font-size: 21px; font-family: 'Open Sans'; margin: 0;">Alhamdulillah!</h4>
+								<h5 style="font-size: 12px; line-height: 15px; margin: 0">Kamu telah mendapatkan untuk <b>Rp.1.450.000</b><br/>Sejak bergabung menjadi reseller distrodakwah</h5>
+							</div>
+							</div>-->
 						<div class="row" style="padding-top: 15px">
 							<div class="col">
 								<h5 style="font-size: 14px; font-weight: bold; margin: 10px 0">
@@ -331,18 +276,18 @@
 									<q-separator />
 
 									<!-- <q-item dense clickable v-ripple>
-                    <q-item-section avatar>
-                      <q-icon name="o_favorite" />
-                    </q-item-section>
+											<q-item-section avatar>
+												<q-icon name="o_favorite" />
+											</q-item-section>
 
-                    <q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Produk Favorit Saya</span></q-item-section>
+											<q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Produk Favorit Saya</span></q-item-section>
 
-                    <q-item-section side>
-                      <q-icon name="keyboard_arrow_right" />
-                    </q-item-section>
-                  </q-item>
+											<q-item-section side>
+												<q-icon name="keyboard_arrow_right" />
+											</q-item-section>
+										</q-item>
 
-                  <q-separator />-->
+										<q-separator />-->
 
 									<q-item dense clickable v-ripple to="/listCustomer">
 										<q-item-section avatar>
@@ -391,16 +336,16 @@
 									<q-separator />
 
 									<!-- <q-item dense clickable v-ripple to="/feedback">
-                    <q-item-section avatar>
-                      <q-icon name="insert_comment" />
-                    </q-item-section>
+											<q-item-section avatar>
+												<q-icon name="insert_comment" />
+											</q-item-section>
 
-                    <q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Kasih Masukkan</span></q-item-section>
+											<q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Kasih Masukkan</span></q-item-section>
 
-                    <q-item-section side>
-                      <q-icon name="keyboard_arrow_right" />
-                    </q-item-section>
-                  </q-item>-->
+											<q-item-section side>
+												<q-icon name="keyboard_arrow_right" />
+											</q-item-section>
+										</q-item>-->
 
 									<q-item dense clickable v-ripple to="/helpdesk">
 										<q-item-section avatar>
@@ -436,69 +381,60 @@
 										</q-item-section>
 
 										<!-- <q-item-section side>
-                      <q-icon name="keyboard_arrow_right" />
-                    </q-item-section>-->
+												<q-icon name="keyboard_arrow_right" />
+											</q-item-section>-->
 									</q-item>
 
-									<!-- 
+									<!--
 
-                  <q-separator />
+										<q-separator />
 
-                  <q-item dense clickable v-ripple>
-                    <q-item-section avatar>
-                      <q-icon name="help" />
-                    </q-item-section>
+										<q-item dense clickable v-ripple>
+											<q-item-section avatar>
+												<q-icon name="help" />
+											</q-item-section>
 
-                    <q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Panduan</span></q-item-section>
+											<q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Panduan</span></q-item-section>
 
-                    <q-item-section side>
-                      <q-icon name="keyboard_arrow_right" />
-                    </q-item-section>
-                  </q-item>
+											<q-item-section side>
+												<q-icon name="keyboard_arrow_right" />
+											</q-item-section>
+										</q-item>
 
-                  <q-separator />
+										<q-separator />
 
-                  <q-item dense clickable v-ripple>
-                    <q-item-section avatar>
-                      <q-icon name="build" />
-                    </q-item-section>
+										<q-item dense clickable v-ripple>
+											<q-item-section avatar>
+												<q-icon name="build" />
+											</q-item-section>
 
-                    <q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Pengaturan</span></q-item-section>
+											<q-item-section><span style="font-size: 12px; color: black; line-height: 15px">Pengaturan</span></q-item-section>
 
-                    <q-item-section side>
-                      <q-icon name="keyboard_arrow_right" />
-                    </q-item-section>
-                  </q-item>-->
+											<q-item-section side>
+												<q-icon name="keyboard_arrow_right" />
+											</q-item-section>
+										</q-item>-->
 								</q-list>
 							</div>
 						</div>
 					</div>
 				</div>
 			</q-page>
-		</q-page-container>
-	</q-layout>
+		</template>
+	</MainLayout>
 </template>
 
-<style>
-.dashboard-section {
-	padding: 30px;
-}
-.dashboard-small-text {
-	font-family: "Open Sans";
-	font-size: 14px;
-	margin: 0px;
-	line-height: 16px;
-}
-</style>
-
 <script>
-import { totalCartItemUrl, getHeader, logoutUrl } from "src/config";
+import Vue from "vue";
+import { getHeader, logoutUrl } from "src/config";
 import axios from "axios";
 // Loading
 import { QSpinnerPuff, openURL } from "quasar";
-import Vue from "vue";
-
 import moment from "moment";
+
+// components
+import MainLayout from "../../layouts/MainLayout.vue";
+import Navigation from "../../components/Navigation.vue";
 
 const lang = "id";
 
@@ -508,11 +444,13 @@ Vue.use(require("vue-moment"), { moment });
 
 export default {
 	name: "Dashboard",
+	components: {
+		MainLayout,
+		Navigation
+	},
 	data() {
 		return {
-      user:{},
-			// Total Count Cart Item
-			totalCartItem: null
+			user: {}
 		};
 	},
 	created() {
@@ -529,21 +467,7 @@ export default {
 			this.$q.loading.hide();
 		}, 500);
 	},
-	mounted() {
-		// Get Total Cart Item
-		axios
-			.get(totalCartItemUrl + "/" + this.user.id, { headers: getHeader() })
-			.then(response => {
-				if (response.status === 200) {
-					this.totalCartItem = response.data.data;
-				}
-			})
-			.catch(error => {
-				if (error.response) {
-					console.log(error.response);
-				}
-			});
-	},
+	mounted() {},
 	methods: {
 		async logout() {
 			try {
@@ -572,3 +496,15 @@ export default {
 	}
 };
 </script>
+
+<style>
+.dashboard-section {
+	padding: 30px;
+}
+.dashboard-small-text {
+	font-family: "Open Sans";
+	font-size: 14px;
+	margin: 0px;
+	line-height: 16px;
+}
+</style>

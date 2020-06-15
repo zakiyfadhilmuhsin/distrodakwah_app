@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import currencyFormat from "../library/currencyFormat";
+import { currencyFormat } from "../libraries/stringManipulation";
 
 export default {
 	name: "VendorProductCard",

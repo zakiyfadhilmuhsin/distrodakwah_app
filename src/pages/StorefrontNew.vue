@@ -429,7 +429,7 @@ import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import carousel from "vue-owl-carousel";
 import axios from "axios";
-import currencyFormat from "../library/currencyFormat";
+import { currencyFormat } from "../libraries/stringManipulation";
 import {
 	apiDomain,
 	catalogCategoryUrl,
