@@ -185,7 +185,6 @@
 
 <script>
 import { mapState } from "vuex";
-import axios from "axios";
 import {
 	cartService,
 	catalogService,
@@ -236,8 +235,6 @@ export default {
 		...mapState(["globalState"])
 	},
 	async created() {
-		await this.$store.dispatch("globalState/getUserProfile");
-
 		await this.getCartData();
 	},
 
@@ -345,7 +342,7 @@ export default {
 		},
 
 		addCoupon() {
-			axios
+			this.$axios
 				.get(checkCouponUrl + "/" + this.couponCode, { headers: getHeader() })
 				.then(response => {
 					console.log(response);
@@ -359,7 +356,7 @@ export default {
 						postVoucher.set("coupon_discount", response.data.coupon_discount);
 
 						// Add Coupon
-						axios
+						this.$axios
 							.post(addVoucherCartUrl, postVoucher, { headers: getHeader() })
 							.then(response => {
 								console.log(response);
@@ -394,7 +391,7 @@ export default {
 				});
 		},
 		removeCoupon() {
-			axios
+			this.$axios
 				.delete(removeVoucherCartUrl + "/" + this.cartData.voucher_id, {
 					headers: getHeader()
 				})
