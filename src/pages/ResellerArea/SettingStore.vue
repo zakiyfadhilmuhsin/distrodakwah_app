@@ -134,7 +134,7 @@
 </style>
 
 <script>
-import axios from "axios";
+import {mapState} from "vuex"
 import {
 	getStoreUrl,
 	createStoreUrl,
@@ -163,7 +163,7 @@ export default {
 		WhatsApp,
 		Email
 	},
-	name: "OrderList",
+	name: "StoreSettings",
 	data() {
 		return {
 			storeName: "",
@@ -173,16 +173,19 @@ export default {
 			url: webReplicaDomain
 		};
 	},
+	computed: {
+		...mapState(['globalState']),
+	},
 	created() {
-		this.user = JSON.parse(window.localStorage.getItem("profileUser"));
+
 	},
 	mounted() {
 		this.getStore();
 	},
 	methods: {
 		getStore() {
-			axios
-				.get(getStoreUrl + "/" + this.user.id, { headers: getHeader() })
+			this.$axios
+				.get(getStoreUrl + "/" + this.globalState.userProfile.id, { headers: getHeader() })
 				.then(response => {
 					if (response.status === 200) {
 						this.dataStore = response.data.data;
@@ -206,10 +209,10 @@ export default {
 				formData.set("store_name", this.storeName);
 				formData.set("store_slug", this.storeUrl);
 				formData.set("whatsapp_number", this.whatsappNumber.replace(/\D/g, ""));
-				formData.set("user_id", this.user.id);
+				formData.set("user_id", this.globalState.userProfile.id);
 				try {
-					const createStoreRes = await axios.post(
-						createStoreUrl + "/" + this.user.id,
+					const createStoreRes = await this.$axios.post(
+						createStoreUrl + "/" + this.globalState.userProfile.id,
 						formData,
 						{ headers: getHeader() }
 					);
@@ -243,8 +246,8 @@ export default {
 				} finally {
 					this.getStore();
 				}
-				// const createStoreRes = await axios
-				// 	.post(createStoreUrl + "/" + this.user.id, formData, {
+				// const createStoreRes = await this.$axios
+				// 	.post(createStoreUrl + "/" + this.globalState.userProfile.id, formData, {
 				// 		headers: getHeader()
 				// 	})
 				// 	.then(response => {

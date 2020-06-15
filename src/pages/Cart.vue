@@ -1,5 +1,8 @@
 <template>
-	<MainLayout :HeaderProp="'Keranjang Belanja'">
+	<MainLayout
+		:HeaderProp="'Keranjang Belanja'"
+		v-if="Object.keys(globalState.userProfile).length > 0"
+	>
 		<template v-slot:main>
 			<q-page class="bg-white">
 				<div class="bg-grey-3" style="height: 100%">
@@ -235,6 +238,10 @@ export default {
 		...mapState(["globalState"])
 	},
 	async created() {
+		if (Object.keys(this.globalState.userProfile).length === 0) {
+			await this.$store.dispatch("globalState/getUserProfile");
+		}
+
 		await this.getCartData();
 	},
 
@@ -274,7 +281,6 @@ export default {
 				console.log(error.message);
 			}
 			tempCart = cartRes.data.data;
-			console.log(cartRes);
 			if (
 				tempCart && // cart has been created
 				tempCart.cart_detail.length > 0
@@ -335,7 +341,10 @@ export default {
 
 		setShippingAddress() {
 			if (this.totalItem > 0) {
-				this.$router.push("/shipping");
+				this.$router.push({
+					name: "Shipping",
+					params: { cartData: this.cartData }
+				});
 			} else {
 				alert("Keranjang Belanja Masih Kosong!");
 			}

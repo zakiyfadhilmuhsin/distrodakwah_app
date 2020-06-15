@@ -69,7 +69,6 @@ export default {
 		// Get Total Cart Item
 		// await this.$axios
 		// 	.get(totalCartItemUrl + "/" + this.user.id, { headers: getHeader() })
-				await this.$store.dispatch("globalState/getUserProfile");
 
 		const getCartTotalItemRes = await this.$axios({
 			method: "get",

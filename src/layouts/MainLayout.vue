@@ -12,8 +12,12 @@
 				</q-toolbar-title>
 			</q-toolbar>
 		</q-header>
+
 		<Navigation />
-		<q-page-container class="mobile-layout-on-desktop">
+
+		<q-page-container
+			class="mobile-layout-on-desktop"
+		>
 			<slot name="main"></slot>
 		</q-page-container>
 	</q-layout>
@@ -29,9 +33,6 @@ export default {
 	},
 	props: {
 		HeaderProp: String
-	},
-	data() {
-		return {};
 	}
 };
 </script>

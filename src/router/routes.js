@@ -83,14 +83,16 @@ const routes = [
 		}
 	},
 	{
+		name: "Shipping",
 		path: "/shipping",
 		component: ShippingPage,
+		props: true,
 		meta: {
 			requiresAuth: true
 		}
 	},
 	{
-		name: "orderSummary",
+		name: "OrderSummary",
 		path: "/orderSummary",
 		component: OrderSummaryPage,
 		meta: {
