@@ -359,7 +359,11 @@ export default {
 			postOrder.set("customer_id", this.$attrs.cartData.customer_id);
 			postOrder.set("customer_address_id", this.$attrs.shipment.destinationId);
 			postOrder.set("shipment_fee", this.$attrs.shipment.shippingCost);
-			postOrder.set("useStoreName", this.$attrs.shipment.useStoreName);
+			postOrder.set("shipAsDropshipper", this.$attrs.shipment.shipAsDropshipper);
+			if(this.$attrs.shipment.shipAsDropshipper){
+				postOrder.set("customer_name", this.$attrs.shipment.dropshipperName);
+				postOrder.set("customer_phone", this.$attrs.shipment.dropshipperPhoneNumber);
+			}
 			if (this.$attrs.shipment.type === "resiOtomatis") {
 				postOrder.set("shipmentType", "resiOtomatis");
 				postOrder.set("awb", this.$attrs.shipment.autoReceiptNumber);
