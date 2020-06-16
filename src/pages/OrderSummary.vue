@@ -78,7 +78,9 @@
 										}}</span>
 									</h6>
 									<h6 style="margin: -5px 0 0 0; font-size: 12px;">
-										Qty {{ item.qty }} x Rp{{ formatPrice(item.reseller_price) }}
+										Qty {{ item.qty }} x Rp{{
+											formatPrice(item.reseller_price)
+										}}
 									</h6>
 								</div>
 								<div class="col-3 text-right">
@@ -231,7 +233,8 @@
 											>
 												-Rp{{
 													formatPrice(
-														(this.$attrs.cartData.grand_total * this.$attrs.cartData.voucher_discount) /
+														(this.$attrs.cartData.grand_total *
+															this.$attrs.cartData.voucher_discount) /
 															100
 													)
 												}}
@@ -277,7 +280,12 @@
 									style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold"
 									v-if="this.$attrs.cartData.voucher_id === null"
 								>
-									Rp{{ formatPrice(this.$attrs.cartData.total_amount + this.$attrs.shipment.shippingCost) }}
+									Rp{{
+										formatPrice(
+											this.$attrs.cartData.total_amount +
+												this.$attrs.shipment.shippingCost
+										)
+									}}
 								</h5>
 								<h5
 									style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold"
@@ -286,7 +294,9 @@
 									Rp{{
 										formatPrice(
 											this.$attrs.cartData.grand_total -
-												(this.$attrs.cartData.grand_total * this.$attrs.cartData.voucher_discount) / 100
+												(this.$attrs.cartData.grand_total *
+													this.$attrs.cartData.voucher_discount) /
+													100
 										)
 									}}
 								</h5>
@@ -342,6 +352,9 @@ export default {
 	created() {},
 	methods: {
 		async checkout() {
+			this.$q.loading.show({
+				message: "Mohon Tunggu"
+			});
 			let postOrder = new FormData();
 			postOrder.set("customer_id", this.$attrs.cartData.customer_id);
 			postOrder.set("customer_address_id", this.$attrs.shipment.destinationId);
@@ -356,33 +369,23 @@ export default {
 				postOrder.set("courier_name", this.$attrs.shipment.courierName);
 				postOrder.set("service_name", this.$attrs.shipment.serviceSelected);
 			}
+			let postToOrder = null;
+			try {
+				postToOrder = await this.$axios.post(postToOrderUrl, postOrder, {
+					headers: getHeader()
+				});
+				await this.$axios.delete(destroyCart + "/" + this.$attrs.cartData.id, {
+					headers: getHeader()
+				});
 
-			await this.$axios
-				.post(postToOrderUrl, postOrder, { headers: getHeader() })
-				.then(response => {
-					if (response.status === 200) {
-						this.$router.push({
-							path: "/invoice",
-							query: { orderID: response.data.data.id }
-						});
+			} catch (error) {
+				console.log("error checkout");
+			}
 
-						// Empty Cart
-						this.$axios
-							.delete(destroyCart + "/" + this.$attrs.cartData.id, {
-								headers: getHeader()
-							})
-							.then(response => {})
-							.catch(error => {
-								if (error.response) {
-									console.log(error.response);
-								}
-							});
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
+			this.$q.loading.hide();
+				this.$router.push({
+					path: "/invoice",
+					query: { orderID: postToOrder.data.data.id }
 				});
 		},
 		formatPrice(value) {

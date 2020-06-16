@@ -57,7 +57,7 @@
 
 						<!-- <div class="row q-px-md" style="padding: 15px 10px">
               <div class="col-6" style="margin-bottom: 15px" v-for="(product, index) in newProduct" :key="index">
-    
+
                 <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
                   <transition
                     appear
@@ -94,7 +94,7 @@
                   </q-card-section>
 
                 </q-card>
-      
+
               </div>
             </div>-->
 						<div class="q-pb-lg flex flex-center">
@@ -116,7 +116,7 @@
                     <li><a href="#" v-html="'<'"></a></li>
                     <li v-for="n in lastPage">
                           <a href="#" :class="'active' : n == page">{{n}}</a>
-              
+
                     </li>
                     <li><a href="#" v-html="'>'"></a></li>
                 </ul>
@@ -281,4 +281,5 @@ export default {
 .pagination-container {
 	margin: 0 10px;
 }
+
 </style>

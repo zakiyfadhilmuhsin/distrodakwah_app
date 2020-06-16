@@ -65,7 +65,7 @@
 					</div>
 					<div style="background-color: white; margin-bottom: 5px">
 						<div class="row q-pa-lg items-center">
-							<div class="col">
+							<div class="col sender-details">
 								<h6
 									style="font-size: 14px; margin: 0 0 8px 0; font-family: 'Open Sans'; line-height: 18px; font-weight: bold"
 								>
@@ -75,17 +75,22 @@
 									<div style="font-weight: bold">
 										Nama Pengirim:
 									</div>
-									<span v-if="useStoreName">{{ store.store_name }}</span>
-									<span v-else>{{ globalState.userProfile.name }}</span>
+									<q-banner class="sender-name" v-if="useStoreName">{{ store.store_name }}</q-banner>
+									<q-banner class="sender-name" v-else>{{ globalState.userProfile.name }}</q-banner>
 								</div>
 								<div>
 									<input
+										:disabled="!store"
 										v-model="useStoreName"
 										type="checkbox"
 										name="useStoreName"
 										style="margin: 5px"
 									/>
 									<label for="useStoreName">Gunakan Nama Toko</label>
+									<q-banner class="no-store-name" v-if="!store">
+										Toko anda belum memiliki nama
+										<q-btn class="to-store" to="/settingStore">Ke pengaturan toko</q-btn>
+									</q-banner>
 								</div>
 							</div>
 						</div>
@@ -98,7 +103,7 @@
 								>
 									Keterangan Penerima :
 								</h6>
-								<template v-if="dataCustomerSelected !== null">
+								<template v-if="dataCustomerSelected !== null" class="sender-name">
 									<h6
 										style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px; font-weight: bold"
 										class="text-blue-10"
@@ -800,4 +805,28 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.sender-details {
+	display: grid;
+}
+
+ .sender-name{
+	box-shadow: 0.5px 0.5px 0.5px 0.5px #0000004f;
+	background: cornflowerblue;
+	color: white;
+	border-radius: 5px;
+	font-style: italic;
+}
+
+.no-store-name {
+	background: orange;
+	min-height: 0;
+	color: white;
+	/* padding: 0; */
+}
+
+.no-store-name .to-store{
+	background: cornflowerblue;
+}
+
+</style>

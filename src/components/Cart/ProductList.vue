@@ -140,6 +140,9 @@ export default {
 	},
 	methods: {
 		async removeProduct(product_sku_id) {
+			this.$q.loading.show({
+				message: "Sedang Menghapus"
+			});
 			const removeProductParams = {
 				product_sku_id: product_sku_id
 			};
@@ -149,9 +152,8 @@ export default {
 					headers: getHeader(),
 					params: removeProductParams
 				});
-				console.log('product removed')
-				this.$emit("getCartData");
-
+				await this.$emit("getCartData");
+				this.$q.loading.false();
 				// Get Total Cart Item
 			} catch (error) {
 				console.log("error deleting product");
