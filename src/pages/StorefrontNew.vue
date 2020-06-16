@@ -425,6 +425,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import carousel from "vue-owl-carousel";
@@ -497,11 +498,17 @@ export default {
 		};
 	},
 	computed: {
+		...mapState(['globalState']),
 		newProduct() {
 			return this.dataProduct.slice().reverse();
-		}
+		},
 	},
 	async created() {
+		if (
+			Object.keys(this.globalState.userProfile).length === 0
+		) {
+			await this.$store.dispatch("globalState/getUserProfile");
+		}
 		this.getUser();
 		this.getBrand();
 		this.getSlider();

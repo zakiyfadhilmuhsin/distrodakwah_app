@@ -38,7 +38,7 @@
 				<span v-if="productVariant">
 					<h4
 						style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
-						v-if="user.role.id === 9"
+						v-if="globalState.userProfile.role.id === 9"
 					>
 						KAMU UNTUNG
 						<span class="text-green">{{
@@ -53,7 +53,7 @@
 					</h4>
 					<h4
 						style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
-						v-else-if="user.role.id === 8"
+						v-else-if="globalState.userProfile.role.id === 8"
 					>
 						KAMU UNTUNG
 						<span class="text-green">{{
@@ -67,15 +67,23 @@
 					</h4>
 					<h4
 						style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
-						v-else-if="user.role.id === 10"
+						v-else-if="globalState.userProfile.role.id === 10"
 					>
 						KAMU UNTUNG
 						<span class="text-green"></span>
 					</h4>
 				</span>
 				<q-space />
-				<q-btn flat class="bg-orange-8 text-white" @click="addToCart"
-					>Beli Sekarang</q-btn
+				<q-btn
+					flat
+					class="bg-orange-8 text-white"
+					@click="addToCart"
+					v-if="!IsCustomDesign || (IsCustomDesign && IsExclusive)"
+				>
+					Beli Sekarang
+				</q-btn>
+				<q-btn flat class="bg-green-8 text-white" v-else
+					@click="upgrade">Upgrade Untuk Mendapatkan Fitur Ini</q-btn
 				>
 			</q-toolbar>
 		</q-footer>
@@ -229,7 +237,10 @@
 										Rp{{ formatPrice(dataProduct.price * qty) }}
 									</h5>
 								</div>
-								<div class="col-xs-6" v-if="user.role.id === 9">
+								<div
+									class="col-xs-6"
+									v-if="globalState.userProfile.role.id === 9"
+								>
 									<h5
 										class="price-detail-text text-green"
 										v-if="productVariant"
@@ -244,7 +255,10 @@
 										}}
 									</h5>
 								</div>
-								<div class="col-xs-6" v-else-if="user.role.id === 8">
+								<div
+									class="col-xs-6"
+									v-else-if="globalState.userProfile.role.id === 8"
+								>
 									<h5
 										class="price-detail-text text-green"
 										v-if="productVariant"
@@ -255,7 +269,10 @@
 										Rp{{ formatPrice(dataProduct.reseller_pro_price * qty) }}
 									</h5>
 								</div>
-								<div class="col-xs-6" v-else-if="user.role.id === 10">
+								<div
+									class="col-xs-6"
+									v-else-if="globalState.userProfile.role.id === 10"
+								>
 									<h5
 										class="price-detail-text text-green"
 										v-if="productVariant"
@@ -268,7 +285,10 @@
 								</div>
 							</div>
 						</template>
-						<div class="row" v-if="user.role.id === 8 && productVariant">
+						<div
+							class="row"
+							v-if="globalState.userProfile.role.id === 8 && productVariant"
+						>
 							<div class="col">
 								<h4 class="upgrade-cta-text">
 									<span class="text-black" style="text-decoration: underline;">
@@ -469,6 +489,7 @@
 </style>
 
 <script>
+import { mapState } from "vuex";
 import Vue from "vue";
 import carousel from "vue-owl-carousel";
 import axios from "axios";
@@ -507,22 +528,28 @@ export default {
 			qty: 1,
 			productVariant: null,
 			confirmOrder: false,
-			innerLoading: [],
-			user: null
+			innerLoading: []
+
 			// skuSelected: null
 		};
 	},
 	computed: {
+		...mapState(["globalState"]),
 		stockReady: function() {
 			if (this.productVariant)
 				return (
 					this.productVariant.stock_qty - this.productVariant.keep_stock_qty
 				);
 			return null;
+		},
+		IsCustomDesign: function() {
+			return [409, 410, 411, 412].indexOf(this.dataProduct.id) !== -1;
+		},
+		IsExclusive: function() {
+			return this.globalState.userProfile.role_id === 9;
 		}
 	},
 	async created() {
-		this.user = JSON.parse(window.localStorage.getItem("profileUser"));
 		const doc = await googleSpreadsheetDoc();
 		let sheet;
 		if (this.dataProduct.category_id == 7 || this.dataProduct.sku == "OS") {
@@ -731,11 +758,11 @@ export default {
 				postData.set("product_sku", this.productVariant.sku);
 				postData.set("options", this.optionValueSelected);
 				postData.set("qty", this.qty);
-				postData.set("customer_id", this.user.id);
-				postData.set("customer_name", this.user.name);
-				postData.set("customer_email", this.user.email);
-				postData.set("customer_phone", this.user.phone);
-				postData.set("role_id", this.user.role.id);
+				postData.set("customer_id", this.globalState.userProfile.id);
+				postData.set("customer_name", this.globalState.userProfile.name);
+				postData.set("customer_email", this.globalState.userProfile.email);
+				postData.set("customer_phone", this.globalState.userProfile.phone);
+				postData.set("role_id", this.globalState.userProfile.role.id);
 
 				axios
 					.post(addToCartUrl, postData, { headers: getHeader() })
