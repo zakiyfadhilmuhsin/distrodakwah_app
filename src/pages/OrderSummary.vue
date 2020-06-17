@@ -20,11 +20,12 @@
 			<q-toolbar class="bg-white text-black">
 				<q-space />
 				<q-btn
+					:disable="!allowOrder"
 					flat
 					class="bg-orange-8 text-white full-width"
 					@click.once="checkout"
-					>Lakukan Pembayaran</q-btn
-				>
+					>Lakukan Pembayaran
+				</q-btn>
 			</q-toolbar>
 		</q-footer>
 
@@ -52,43 +53,11 @@
 						</div>
 						<br />
 						<template>
-							<div
-								class="row q-px-lg"
-								v-for="(item, index) in this.$attrs.cartData.cart_detail"
-								:key="index"
-							>
-								<div class="col-3">
-									<img
-										:src="item.featured_image"
-										width="100%"
-										style="border: 1px solid whitesmoke"
-									/>
-								</div>
-								<div class="col-6" style="padding: 0 15px">
-									<h5
-										style="margin: 0; font-size: 14px; font-weight: bold; line-height: 16px"
-									>
-										{{ item.product_name }}
-									</h5>
-									<h6
-										style="margin: 5px 0 0 0; font-size: 12px; line-height: 14px"
-									>
-										<span v-for="(opt, i) in item.options" :key="i">{{
-											opt.option + ": " + opt.value
-										}}</span>
-									</h6>
-									<h6 style="margin: -5px 0 0 0; font-size: 12px;">
-										Qty {{ item.qty }} x Rp{{
-											formatPrice(item.reseller_price)
-										}}
-									</h6>
-								</div>
-								<div class="col-3 text-right">
-									<h6 style="margin: 0; font-size: 12px;" class="text-black">
-										Rp{{ formatPrice(item.qty * item.reseller_price) }}
-									</h6>
-								</div>
-							</div>
+							<ProductList
+								v-if="cartData"
+								:cartDataProp="cartData"
+								@getCartData="getCartData"
+							/>
 						</template>
 						<!-- {{ skuProduct }} -->
 						<div class="row q-px-lg">
@@ -97,7 +66,7 @@
 							</div>
 							<div class="col text-right">
 								<h6 style="margin: 0; font-size: 12px;" class="text-black">
-									Rp{{ formatPrice(this.$attrs.cartData.total_amount) }}
+									Rp{{ formatPrice(cartData.total_amount) }}
 								</h6>
 							</div>
 						</div>
@@ -200,7 +169,7 @@
 					</div>
 					<div
 						style="background-color: white; margin-bottom: 5px; padding: 13px 0 10px 0"
-						v-if="this.$attrs.cartData.voucher_id !== null"
+						v-if="cartData.voucher_id !== null"
 					>
 						<div class="row q-px-md">
 							<div class="col">
@@ -222,7 +191,7 @@
 										<q-item-section>
 											<span style="font-size: 12px">
 												Kode Kupon
-												<b>"{{ this.$attrs.cartData.voucher_code_name }}"</b>
+												<b>"{{ cartData.voucher_code_name }}"</b>
 											</span>
 										</q-item-section>
 
@@ -233,8 +202,7 @@
 											>
 												-Rp{{
 													formatPrice(
-														(this.$attrs.cartData.grand_total *
-															this.$attrs.cartData.voucher_discount) /
+														(cartData.grand_total * cartData.voucher_discount) /
 															100
 													)
 												}}
@@ -278,25 +246,25 @@
 							<div class="col text-right">
 								<h5
 									style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold"
-									v-if="this.$attrs.cartData.voucher_id === null"
+									v-if="cartData.voucher_id === null"
 								>
 									Rp{{
 										formatPrice(
-											this.$attrs.cartData.total_amount +
-												this.$attrs.shipment.shippingCost
+											cartData.total_amount + $attrs.shipment.shippingCost
 										)
 									}}
 								</h5>
 								<h5
 									style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold"
-									v-else-if="this.$attrs.cartData.voucher_id !== null"
+									v-else-if="cartData.voucher_id !== null"
 								>
+									<!-- (grand_total-shippingCost) - discount -->
 									Rp{{
 										formatPrice(
-											this.$attrs.cartData.grand_total -
-												(this.$attrs.cartData.grand_total *
-													this.$attrs.cartData.voucher_discount) /
-													100
+											cartData.total_amount -
+												cartData.total_amount *
+													(cartData.voucher_discount / 100) +
+												$attrs.shipment.shippingCost
 										)
 									}}
 								</h5>
@@ -323,70 +291,193 @@
 <script>
 import { mapState } from "vuex";
 import {
-	getCartUrl,
-	addShippingToCart,
-	catalogProductUrl,
+	cartService,
+	catalogService,
 	postToOrderUrl,
 	destroyCart,
-	inventoryStockUrl,
 	getHeader
 } from "src/config";
 // components
 import MainLayout from "../layouts/MainLayout.vue";
-
+import ProductList from "../components/Order/ProductList.vue";
 export default {
 	name: "OrderSummary",
-	components: { MainLayout },
+	components: { MainLayout, ProductList },
 	data() {
 		return {
-			items: [],
-			subTotal: null,
-			addressSelect: true,
-			ekspedisiSelected: "",
-			skuProduct: []
+			allowOrder: false,
+			cartData: {
+				cart_detail: [],
+				total_amount: 0
+			},
+			totalItem: 0,
+			totalProfit: 0
 		};
 	},
 	computed: {
 		...mapState(["globalState"])
 	},
-	created() {},
+	async created() {
+		if (Object.keys(this.globalState.userProfile).length === 0) {
+			await this.$store.dispatch("globalState/getUserProfile");
+		}
+
+		await this.getCartData();
+	},
 	methods: {
-		async checkout() {
-			this.$q.loading.show({
-				message: "Mohon Tunggu"
+		calculateProfit() {
+			let tempProfit = 0;
+			this.cartData.cart_detail.forEach(cartDetail => {
+				tempProfit +=
+					(cartDetail.retail_price - cartDetail.reseller_price) *
+					cartDetail.qty;
 			});
-			let postOrder = new FormData();
-			postOrder.set("customer_id", this.$attrs.cartData.customer_id);
-			postOrder.set("customer_address_id", this.$attrs.shipment.destinationId);
-			postOrder.set("shipment_fee", this.$attrs.shipment.shippingCost);
-			postOrder.set("useStoreName", this.$attrs.shipment.useStoreName);
-			if (this.$attrs.shipment.type === "resiOtomatis") {
-				postOrder.set("shipmentType", "resiOtomatis");
-				postOrder.set("awb", this.$attrs.shipment.autoReceiptNumber);
-				postOrder.set("courier_name", this.$attrs.shipment.autoReceiptCourier);
-			} else if (this.$attrs.shipment.type === "courierService") {
-				postOrder.set("shipmentType", "courierService");
-				postOrder.set("courier_name", this.$attrs.shipment.courierName);
-				postOrder.set("service_name", this.$attrs.shipment.serviceSelected);
-			}
-			let postToOrder = null;
+			this.totalProfit = tempProfit;
+		},
+		async getCartData() {
+			this.$q.loading.show({
+				backgroundColor: "grey",
+				message: "<b>Mohon Tunggu..</b>",
+				messageColor: "black"
+			});
+			this.allowOrder = false;
+			let tempCart,
+				tempProduct,
+				tempProductSkuArr,
+				cartRes,
+				productRes,
+				productSkuRes,
+				tempTotalItem = 0;
+
 			try {
-				postToOrder = await this.$axios.post(postToOrderUrl, postOrder, {
+				cartRes = await this.$axios({
+					method: "get",
+					url: `${cartService}/get-cart/${this.globalState.userProfile.id}`,
 					headers: getHeader()
 				});
-				await this.$axios.delete(destroyCart + "/" + this.$attrs.cartData.id, {
-					headers: getHeader()
-				});
-
 			} catch (error) {
-				console.log("error checkout");
+				console.log("error fetching cart");
+				console.log(error.message);
 			}
+			tempCart = cartRes.data.data;
+			if (
+				tempCart && // cart has been created
+				tempCart.cart_detail.length > 0
+			) {
+				if (tempCart.voucher_id !== null) {
+					this.couponUse = true;
+					this.couponCode = tempCart.voucher_code_name;
+				}
 
+				try {
+					productSkuRes = await this.$axios({
+						method: "post",
+						url: `${catalogService}/get-product-skus-by-id`,
+						headers: getHeader(),
+						data: {
+							productSkuIdArr: tempCart.cart_detail.map(e => e.product_sku_id),
+							select: ["id", "stock_qty", "keep_stock_qty", "product_id"],
+							eagerLoad: {
+								productParent: ["id", "product_name", "featured_image"]
+							}
+						}
+					});
+				} catch (error) {}
+
+				tempProductSkuArr = productSkuRes.data.data;
+				tempCart.cart_detail.forEach((cart_detail, index) => {
+					tempTotalItem += cart_detail.qty;
+
+					const findProductSku = tempProductSkuArr.find(
+						productSku => productSku.id === cart_detail.product_sku_id
+					);
+					tempCart.cart_detail[index].product_name =
+						findProductSku.product_parent.product_name;
+
+					tempCart.cart_detail[index].featured_image =
+						findProductSku.product_parent.featured_image;
+					tempCart.cart_detail[index].options = JSON.parse(
+						tempCart.cart_detail[index].options
+					);
+
+					// findProductSku.qty - findproductSku.Keep - cart qty
+					tempCart.cart_detail[index].stock_sufficient =
+						findProductSku.stock_qty - findProductSku.keep_stock_qty <
+						cart_detail.qty
+							? false
+							: true;
+				});
+
+				this.cartData = tempCart;
+				this.allowOrder = !tempCart.cart_detail.some(
+					productSku => productSku.stock_sufficient === false
+				);
+			} else {
+				this.cartData = {
+					cart_detail: [],
+					total_amount: 0
+				};
+			}
+			this.totalItem = tempTotalItem;
+			this.calculateProfit();
 			this.$q.loading.hide();
+		},
+		async checkout() {
+			this.allowOrder = false;
+			await this.getCartData();
+			if (this.allowOrder) {
+				this.$q.loading.show({
+					message: "Mohon Tunggu"
+				});
+
+				let postOrder = new FormData();
+				postOrder.set("customer_id", this.cartData.customer_id);
+				postOrder.set(
+					"customer_address_id",
+					this.$attrs.shipment.destinationId
+				);
+				postOrder.set("shipment_fee", this.$attrs.shipment.shippingCost);
+				postOrder.set(
+					"shipAsDropshipper",
+					this.$attrs.shipment.shipAsDropshipper
+				);
+				if (this.$attrs.shipment.shipAsDropshipper) {
+					postOrder.set("customer_name", this.$attrs.shipment.dropshipperName);
+					postOrder.set(
+						"customer_phone",
+						this.$attrs.shipment.dropshipperPhoneNumber
+					);
+				}
+				if (this.$attrs.shipment.type === "resiOtomatis") {
+					postOrder.set("shipmentType", "resiOtomatis");
+					postOrder.set("awb", this.$attrs.shipment.autoReceiptNumber);
+					postOrder.set(
+						"courier_name",
+						this.$attrs.shipment.autoReceiptCourier
+					);
+				} else if (this.$attrs.shipment.type === "courierService") {
+					postOrder.set("shipmentType", "courierService");
+					postOrder.set("courier_name", this.$attrs.shipment.courierName);
+					postOrder.set("service_name", this.$attrs.shipment.serviceSelected);
+				}
+				let postToOrder = null;
+				try {
+					postToOrder = await this.$axios.post(postToOrderUrl, postOrder, {
+						headers: getHeader()
+					});
+					await this.$axios.delete(destroyCart + "/" + this.cartData.id, {
+						headers: getHeader()
+					});
+				} catch (error) {
+					console.log("error checkout");
+				}
+
+				this.$q.loading.hide();
 				this.$router.push({
 					path: "/invoice",
 					query: { orderID: postToOrder.data.data.id }
 				});
+			}
 		},
 		formatPrice(value) {
 			let val = (value / 1).toFixed(0).replace(".", ",");

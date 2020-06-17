@@ -3,62 +3,66 @@
 		style="background-color: white; margin-bottom: 5px; padding: 18px 0 15px 0"
 	>
 		<template v-if="cartDataProp.cart_detail.length > 0">
-			<div
-				class="row q-px-lg q-py-sm"
-				v-for="(item, index) in cartDataProp.cart_detail"
-				:key="index"
-			>
-				<div class="col-3">
-					<img
-						:src="item.featured_image"
-						width="100%"
-						style="border: 1px solid whitesmoke"
-					/>
-				</div>
-				<div class="col-7" style="padding: 0 15px">
-					<h5
-						style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; line-height: 16px"
-					>
-						{{ item.product_name }}
-					</h5>
-					<h6
-						v-for="(opt, i) in item.options"
-						:key="i"
-						style="margin: -15px 0; font-size: 12px;"
-					>
-						{{ opt.option + ": " + opt.value }}
-					</h6>
-					<h6 style="margin: -15px 0; font-size: 12px;">
-						Qty: {{ item.qty }} Harga: Rp
-						{{ currencyFormat(item.reseller_price) }}
-					</h6>
-					<h6 style="margin: -15px 0; font-size: 12px;" class="text-orange-8">
-						Total: Rp {{ currencyFormat(item.qty * item.reseller_price) }}
-					</h6>
-				</div>
-				<div class="col-2 text-right self-center">
-					<q-btn
-						flat
-						round
-						icon="create"
-						style="font-size: 10px"
-						@click="
-							editQty(
-								item.id,
-								item.reseller_price,
-								item.qty,
-								item.product_sku_id
-							)
-						"
-					/>
-					<q-btn
-						flat
-						color="red"
-						round
-						icon="delete_forever"
-						style="font-size: 10px"
-						@click="removeProduct(item.product_sku_id)"
-					/>
+			<div v-for="(item, index) in cartDataProp.cart_detail" :key="index">
+				<div
+					class="row q-px-lg q-py-sm"
+					:class="{ 'product-list': !item.stock_sufficient }"
+				>
+					<div class="col-3">
+						<img
+							:src="item.featured_image"
+							width="100%"
+							style="border: 1px solid whitesmoke"
+						/>
+					</div>
+					<div class="col-7" style="padding: 0 15px">
+						<h5
+							style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; line-height: 16px"
+						>
+							{{ item.product_name }}
+						</h5>
+						<h6
+							v-for="(opt, i) in item.options"
+							:key="i"
+							style="margin: -15px 0; font-size: 12px;"
+						>
+							{{ opt.option + ": " + opt.value }}
+						</h6>
+						<h6 style="margin: -15px 0; font-size: 12px;">
+							Qty: {{ item.qty }} Harga: Rp
+							{{ currencyFormat(item.reseller_price) }}
+						</h6>
+						<h6 style="margin: -15px 0; font-size: 12px;" class="text-orange-8">
+							Total: Rp {{ currencyFormat(item.qty * item.reseller_price) }}
+						</h6>
+					</div>
+					<div class="col-2 text-right self-center">
+						<q-btn :disable="!item.stock_sufficient"
+							flat
+							round
+							icon="create"
+							style="font-size: 10px"
+							@click="
+								editQty(
+									item.id,
+									item.reseller_price,
+									item.qty,
+									item.product_sku_id
+								)
+							"
+						/>
+						<q-btn
+							flat
+							color="red"
+							round
+							icon="delete_forever"
+							style="font-size: 10px"
+							@click="removeProduct(item.product_sku_id)"
+						/>
+					</div>
+					<q-banner v-if="!item.stock_sufficient" class="insufficient-stock">
+						Stok tidak tersedia, hapus produk ini untuk melanjutkan pesanan
+					</q-banner>
 				</div>
 			</div>
 		</template>
@@ -219,4 +223,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.product-list {
+	background-color: grey;
+}
+
+.insufficient-stock {
+	border-radius: 5px;
+	background: #f3ef01;
+}
+</style>

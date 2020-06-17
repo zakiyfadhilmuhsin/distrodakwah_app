@@ -71,26 +71,48 @@
 								>
 									Keterangan Pengirim :
 								</h6>
-								<div>
+								<div v-if="!shipAsDropshipper">
 									<div style="font-weight: bold">
 										Nama Pengirim:
 									</div>
-									<q-banner class="sender-name" v-if="useStoreName">{{ store.store_name }}</q-banner>
-									<q-banner class="sender-name" v-else>{{ globalState.userProfile.name }}</q-banner>
+									<q-banner dense class="sender-name">{{
+										globalState.userProfile.name
+									}}</q-banner>
+									<div style="font-weight: bold">
+										No Handphone:
+									</div>
+									<q-banner dense class="sender-name">{{
+										globalState.userProfile.phone
+									}}</q-banner>
+								</div>
+								<div v-else>
+									<q-input
+										type="text"
+										v-model="shipment.dropshipperName"
+										color="orange-8"
+										dense
+										class="bg-grey-2 q-mb-sm"
+										outlined
+										label="Nama Dropship"
+									/>
+									<q-input
+										type="text"
+										v-model="shipment.dropshipperPhoneNumber"
+										color="orange-8"
+										dense
+										class="bg-grey-2 q-mb-sm"
+										outlined
+										label="Nomor HP Dropshipper"
+									/>
 								</div>
 								<div>
 									<input
-										:disabled="!store"
-										v-model="useStoreName"
+										v-model="shipAsDropshipper"
 										type="checkbox"
 										name="useStoreName"
 										style="margin: 5px"
 									/>
-									<label for="useStoreName">Gunakan Nama Toko</label>
-									<q-banner class="no-store-name" v-if="!store">
-										Toko anda belum memiliki nama
-										<q-btn class="to-store" to="/settingStore">Ke pengaturan toko</q-btn>
-									</q-banner>
+									<label for="useStoreName">Kirim Sebagai Dropshipper</label>
 								</div>
 							</div>
 						</div>
@@ -101,9 +123,12 @@
 								<h6
 									style="font-size: 14px; margin: 0 0 8px 0; font-family: 'Open Sans'; line-height: 18px; font-weight: bold"
 								>
-									Keterangan Penerima :
+									Keterangan Penerima:
 								</h6>
-								<template v-if="dataCustomerSelected !== null" class="sender-name">
+								<template
+									v-if="dataCustomerSelected !== null"
+									class="sender-name"
+								>
 									<h6
 										style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px; font-weight: bold"
 										class="text-blue-10"
@@ -246,8 +271,8 @@
 											<div class="col-12">
 												<q-input
 													v-model="shipment.shippingCost"
-													color="orange-8"
 													type="text"
+													color="orange-8"
 													dense
 													class="bg-grey-2 q-mb-sm"
 													outlined
@@ -509,6 +534,7 @@
 <script>
 import { mapState } from "vuex";
 import {
+	cartService,
 	getCustomerUrl,
 	showCustomerUrl,
 	addNewCustomerUrl,
@@ -518,15 +544,13 @@ import {
 	getCostShippingUrl,
 	getHeader
 } from "src/config";
-import { getStoreUrl } from "../config";
 
 export default {
 	name: "Shipping",
 	data() {
 		return {
 			// user's Store
-			store: {},
-			useStoreName: false,
+			shipAsDropshipper: false,
 			// Detail Address
 			dataCustomerSelected: null,
 			courierOptions: [
@@ -546,6 +570,7 @@ export default {
 						'<div class="row"><div class="self-center" style="margin-right: 10px">POS</div> <img src="https://i.imgur.com/2VEBPMp.png" height="20" /></div>'
 				}
 			],
+
 			// Form Add New Customer
 			customerName: "",
 			customerPhone: "",
@@ -565,8 +590,14 @@ export default {
 			selectCustomerDialog: false,
 			resiOtomatis: false,
 			serviceSelectedRadio: null,
-			cartData: this.$route.params.cartData,
-			shipment: {}
+			cartData: {
+				cart_detail: [],
+				total_amount: 0
+			},
+			shipment: {
+				dropshipperName: "",
+				dropshipperPhoneNumber: ""
+			}
 		};
 	},
 	computed: {
@@ -594,25 +625,45 @@ export default {
 			return true;
 		}
 	},
-	created() {
-		this.getCustomers();
-		this.getProvince();
-		this.getStore();
+	async created() {
+		if (Object.keys(this.globalState.userProfile).length === 0) {
+			await this.$store.dispatch("globalState/getUserProfile");
+		}
+		await this.getCartData();
+		await this.getCustomers();
+		await this.getProvince();
 	},
 	mounted() {},
 	methods: {
-		async getStore() {
+		async getCartData() {
+			// set allow order to false initially
+			this.$q.loading.show({
+				backgroundColor: "grey",
+				message: "<b>Mohon Tunggu..</b>",
+				messageColor: "black"
+			});
+			let tempCart, cartRes;
+
 			try {
-				const storeRes = await this.$axios({
+				cartRes = await this.$axios({
 					method: "get",
-					url: `${getStoreUrl}/${this.globalState.userProfile.id}`,
+					url: `${cartService}/get-cart/${this.globalState.userProfile.id}`,
 					headers: getHeader()
 				});
-				this.store = storeRes.data.data;
 			} catch (error) {
-				console.log("error fetching users store data");
+				console.log("error fetching cart");
 				console.log(error.message);
 			}
+			tempCart = cartRes.data.data;
+			this.cartData =
+				tempCart && tempCart.cart_detail.length > 0
+					? tempCart
+					: {
+							cart_detail: [],
+							total_amount: 0
+					  };
+
+			this.$q.loading.hide();
 		},
 		getCustomers() {
 			this.$axios
@@ -771,6 +822,20 @@ export default {
 		},
 
 		reviewOrder() {
+			// has chosen as dropshipper but didnt fille out dropshipper form
+			if (
+				this.shipAsDropshipper &&
+				(!this.shipment.dropshipperName ||
+					!this.shipment.dropshipperPhoneNumber)
+			) {
+				this.$q.notify({
+					position: "top",
+					color: "red",
+					message: "Mohon Lengkapi Form Dropshipper"
+				});
+				return -1;
+			}
+
 			if (["resiOtomatis", "courierService"].includes(this.allowOrder)) {
 				if (this.allowOrder == "resiOtomatis") {
 					this.shipment.shippingCost -= this.shipment.shippingCostCut;
@@ -783,9 +848,8 @@ export default {
 							...this.shipment,
 							destinationId: this.dataCustomerSelected.id,
 							type: this.allowOrder,
-							useStoreName: this.useStoreName
-						},
-						cartData: this.$route.params.cartData
+							shipAsDropshipper: this.shipAsDropshipper
+						}
 					}
 				});
 			} else {
@@ -810,9 +874,8 @@ export default {
 	display: grid;
 }
 
- .sender-name{
-	box-shadow: 0.5px 0.5px 0.5px 0.5px #0000004f;
-	background: cornflowerblue;
+.sender-name {
+	background: orange;
 	color: white;
 	border-radius: 5px;
 	font-style: italic;
@@ -825,8 +888,7 @@ export default {
 	/* padding: 0; */
 }
 
-.no-store-name .to-store{
+.no-store-name .to-store {
 	background: cornflowerblue;
 }
-
 </style>
