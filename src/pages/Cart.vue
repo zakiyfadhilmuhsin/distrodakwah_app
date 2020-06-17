@@ -68,7 +68,6 @@
 						</div>
 					</div>
 					<div
-						v-if="allowOrder"
 						style="background-color: white; margin-bottom: 5px"
 					>
 						<div
@@ -84,7 +83,7 @@
 								<h6
 									style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold"
 								>
-									{{ totalItem }}
+									{{ allowOrder ? totalItem : "--" }}
 								</h6>
 							</div>
 							<div class="col">
@@ -97,13 +96,12 @@
 									style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold"
 									class="text-red"
 								>
-									Rp {{ formatPrice(cartData.total_amount) }}
+									Rp {{ allowOrder ? formatPrice(cartData.total_amount) : "--" }}
 								</h6>
 							</div>
 						</div>
 					</div>
 					<div
-						v-if="allowOrder"
 						style="background-color: white; margin-bottom: 5px"
 					>
 						<div
@@ -122,7 +120,7 @@
 								<h6
 									style="font-size: 28px; margin: 8px 0; font-family: 'Open Sans'; font-weight: bold"
 								>
-									Rp {{ formatPrice(totalProfit) }}
+									Rp {{ allowOrder ? formatPrice(totalProfit) : "--" }}
 								</h6>
 								<h6
 									style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px"
@@ -145,7 +143,7 @@
 					<div class="col">
 						<q-btn
 							flat
-							v-if="allowOrder"
+							:disable="!allowOrder"
 							class="bg-orange-8 text-white full-width"
 							@click="setShippingAddress"
 							>Atur Alamat Pengiriman</q-btn
@@ -266,13 +264,7 @@ export default {
 			this.totalProfit = tempProfit;
 		},
 		async getCartData() {
-			let tempCart,
-				tempProduct,
-				tempProductSkuArr,
-				cartRes,
-				productRes,
-				productSkuRes,
-				tempTotalItem = 0;
+			// set allow order to false initially
 			this.$q.loading.show({
 				spinner: QSpinnerPuff,
 				spinnerColor: "black",
@@ -281,6 +273,14 @@ export default {
 				message: "<b>Mohon Tunggu..</b>",
 				messageColor: "black"
 			});
+			this.allowOrder = false
+			let tempCart,
+				tempProduct,
+				tempProductSkuArr,
+				cartRes,
+				productRes,
+				productSkuRes,
+				tempTotalItem = 0;
 
 			try {
 				cartRes = await this.$axios({
@@ -301,25 +301,6 @@ export default {
 					this.couponUse = true;
 					this.couponCode = tempCart.voucher_code_name;
 				}
-				try {
-					productRes = await this.$axios({
-						method: "post",
-						url: `${catalogService}/get-products-by-id`,
-						headers: getHeader(),
-						data: {
-							productIdArr: tempCart.cart_detail.map(e => e.product_id),
-							eagerLoad: {
-								productOptions: ["*"]
-							},
-							select: ["id", "product_name", "featured_image"]
-						}
-					});
-				} catch (error) {
-					console.log("error fetching product");
-					console.log(error.message);
-				}
-
-				tempProduct = productRes.data.data;
 
 				try {
 					productSkuRes = await this.$axios({
@@ -328,28 +309,28 @@ export default {
 						headers: getHeader(),
 						data: {
 							productSkuIdArr: tempCart.cart_detail.map(e => e.product_sku_id),
-							select: ["id", "stock_qty", "keep_stock_qty"]
+							select: ["id", "stock_qty", "keep_stock_qty", "product_id"],
+							eagerLoad: {
+								productParent : ["id", "product_name", "featured_image"]
+							}
 						}
 					});
 				} catch (error) {}
 
 				tempProductSkuArr = productSkuRes.data.data;
-
 				tempCart.cart_detail.forEach((cart_detail, index) => {
 					tempTotalItem += cart_detail.qty;
 
-					const product = tempProduct.find(
-						product => product.id === cart_detail.product_id
-					);
 					const findProductSku = tempProductSkuArr.find(
 						productSku => productSku.id === cart_detail.product_sku_id
 					);
-					tempCart.cart_detail[index].product_name = product.product_name;
+					tempCart.cart_detail[index].product_name = findProductSku.product_parent.product_name;
 
-					tempCart.cart_detail[index].featured_image = product.featured_image;
+					tempCart.cart_detail[index].featured_image = findProductSku.product_parent.featured_image;
 					tempCart.cart_detail[index].options = JSON.parse(
 						tempCart.cart_detail[index].options
 					);
+
 					// findProductSku.qty - findproductSku.Keep - cart qty
 					tempCart.cart_detail[index].stock_sufficient =
 						findProductSku.stock_qty - findProductSku.keep_stock_qty <
@@ -359,7 +340,9 @@ export default {
 				});
 
 				this.cartData = tempCart;
-				this.allowOrder = !(tempCart.cart_detail.some(productSku => productSku.stock_sufficient === false))
+				this.allowOrder = !tempCart.cart_detail.some(
+					productSku => productSku.stock_sufficient === false
+				);
 			} else {
 				this.cartData = {
 					cart_detail: [],
@@ -375,8 +358,9 @@ export default {
 			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 		},
 
-		setShippingAddress() {
-			if (this.totalItem > 0) {
+		async setShippingAddress() {
+			await this.getCartData();
+			if (this.allowOrder) {
 				this.$router.push({
 					name: "Shipping",
 					params: { cartData: this.cartData }

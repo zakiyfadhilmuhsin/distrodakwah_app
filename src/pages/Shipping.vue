@@ -75,19 +75,33 @@
 									<div style="font-weight: bold">
 										Nama Pengirim:
 									</div>
-									<q-banner class="sender-name">{{
+									<q-banner dense class="sender-name">{{
 										globalState.userProfile.name
+									}}</q-banner>
+										<div style="font-weight: bold">
+										No Handphone:
+									</div>
+									<q-banner dense class="sender-name">{{
+										globalState.userProfile.phone
 									}}</q-banner>
 								</div>
 								<div v-else>
 									<q-input
 										type="text"
 										v-model="shipment.dropshipperName"
+										color="orange-8"
+										dense
+										class="bg-grey-2 q-mb-sm"
+										outlined
 										label="Nama Dropship"
 									/>
 									<q-input
 										type="text"
 										v-model="shipment.dropshipperPhoneNumber"
+										color="orange-8"
+										dense
+										class="bg-grey-2 q-mb-sm"
+										outlined
 										label="Nomor HP Dropshipper"
 									/>
 								</div>
@@ -257,8 +271,8 @@
 											<div class="col-12">
 												<q-input
 													v-model="shipment.shippingCost"
-													color="orange-8"
 													type="text"
+													color="orange-8"
 													dense
 													class="bg-grey-2 q-mb-sm"
 													outlined
@@ -771,7 +785,11 @@ export default {
 
 		reviewOrder() {
 			// has chosen as dropshipper but didnt fille out dropshipper form
-			if(this.shipAsDropshipper && (!this.shipment.dropshipperName || !this.shipment.dropshipperPhoneNumber)){
+			if (
+				this.shipAsDropshipper &&
+				(!this.shipment.dropshipperName ||
+					!this.shipment.dropshipperPhoneNumber)
+			) {
 				this.$q.notify({
 					position: "top",
 					color: "red",
@@ -792,9 +810,8 @@ export default {
 							...this.shipment,
 							destinationId: this.dataCustomerSelected.id,
 							type: this.allowOrder,
-							shipAsDropshipper: this.shipAsDropshipper,
+							shipAsDropshipper: this.shipAsDropshipper
 						},
-						cartData: this.$route.params.cartData
 					}
 				});
 			} else {
@@ -820,8 +837,7 @@ export default {
 }
 
 .sender-name {
-	box-shadow: 0.5px 0.5px 0.5px 0.5px #0000004f;
-	background: cornflowerblue;
+	background: orange;
 	color: white;
 	border-radius: 5px;
 	font-style: italic;
