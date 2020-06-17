@@ -362,8 +362,7 @@ export default {
 			await this.getCartData();
 			if (this.allowOrder) {
 				this.$router.push({
-					name: "Shipping",
-					params: { cartData: this.cartData }
+					name: "Shipping"
 				});
 			} else {
 				alert("Keranjang Belanja Masih Kosong!");

@@ -318,6 +318,10 @@ export default {
 		...mapState(["globalState"])
 	},
 	async created() {
+		if (Object.keys(this.globalState.userProfile).length === 0) {
+			await this.$store.dispatch("globalState/getUserProfile");
+		}
+
 		await this.getCartData();
 	},
 	methods: {
@@ -420,7 +424,7 @@ export default {
 		},
 		async checkout() {
 			this.allowOrder = false;
-			await this.getCartData()
+			await this.getCartData();
 			if (this.allowOrder) {
 				this.$q.loading.show({
 					message: "Mohon Tunggu"

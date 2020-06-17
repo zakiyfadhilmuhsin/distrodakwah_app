@@ -78,7 +78,7 @@
 									<q-banner dense class="sender-name">{{
 										globalState.userProfile.name
 									}}</q-banner>
-										<div style="font-weight: bold">
+									<div style="font-weight: bold">
 										No Handphone:
 									</div>
 									<q-banner dense class="sender-name">{{
@@ -534,6 +534,7 @@
 <script>
 import { mapState } from "vuex";
 import {
+	cartService,
 	getCustomerUrl,
 	showCustomerUrl,
 	addNewCustomerUrl,
@@ -589,7 +590,10 @@ export default {
 			selectCustomerDialog: false,
 			resiOtomatis: false,
 			serviceSelectedRadio: null,
-			cartData: this.$route.params.cartData,
+			cartData: {
+				cart_detail: [],
+				total_amount: 0
+			},
 			shipment: {
 				dropshipperName: "",
 				dropshipperPhoneNumber: ""
@@ -621,12 +625,46 @@ export default {
 			return true;
 		}
 	},
-	created() {
-		this.getCustomers();
-		this.getProvince();
+	async created() {
+		if (Object.keys(this.globalState.userProfile).length === 0) {
+			await this.$store.dispatch("globalState/getUserProfile");
+		}
+		await this.getCartData();
+		await this.getCustomers();
+		await this.getProvince();
 	},
 	mounted() {},
 	methods: {
+		async getCartData() {
+			// set allow order to false initially
+			this.$q.loading.show({
+				backgroundColor: "grey",
+				message: "<b>Mohon Tunggu..</b>",
+				messageColor: "black"
+			});
+			let tempCart, cartRes;
+
+			try {
+				cartRes = await this.$axios({
+					method: "get",
+					url: `${cartService}/get-cart/${this.globalState.userProfile.id}`,
+					headers: getHeader()
+				});
+			} catch (error) {
+				console.log("error fetching cart");
+				console.log(error.message);
+			}
+			tempCart = cartRes.data.data;
+			this.cartData =
+				tempCart && tempCart.cart_detail.length > 0
+					? tempCart
+					: {
+							cart_detail: [],
+							total_amount: 0
+					  };
+
+			this.$q.loading.hide();
+		},
 		getCustomers() {
 			this.$axios
 				.get(getCustomerUrl + "/" + this.globalState.userProfile.id, {
@@ -811,7 +849,7 @@ export default {
 							destinationId: this.dataCustomerSelected.id,
 							type: this.allowOrder,
 							shipAsDropshipper: this.shipAsDropshipper
-						},
+						}
 					}
 				});
 			} else {
