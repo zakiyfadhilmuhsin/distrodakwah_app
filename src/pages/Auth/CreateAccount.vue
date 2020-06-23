@@ -5,7 +5,7 @@
         <img src="~/assets/images/components/logo-distrodakwah-small.png" width="170px" />
       </center> -->
 			<q-page class="flex flex-center bg-layer-1">
-				<template v-if="dataUser.length === 0">
+				<template v-if="!email">
 					<!------------------------>
 					<!--- Form Input Email --->
 					<!------------------------>
@@ -99,15 +99,9 @@
 									icon="lock"
 									:done="step > 1"
 								>
-									<q-input
-										v-model="email"
-										color="orange-8"
-										type="text"
-										dense
-										class="bg-grey-2 q-mb-sm"
-										outlined
-										placeholder="Masukkan Email"
-									/>
+									<q-banner dense class="bg-grey-2 q-mb-sm">
+										{{ email }}
+									</q-banner>
 									<q-input
 										v-model="password"
 										color="orange-8"
@@ -348,8 +342,6 @@ import {
 	getSubdistrictNoAuthUrl,
 	getHeader
 } from "src/config";
-import { log } from "util";
-import { access } from "fs";
 
 export default {
 	name: "CreateAccount",
@@ -361,7 +353,7 @@ export default {
 			step: 1,
 			emailVerify: "",
 			dataUser: [],
-			roleName: "",
+			roleName: null,
 			// Form Create Account
 			email: "",
 			password: "",
@@ -426,7 +418,6 @@ export default {
 	computed: {},
 	mounted() {
 		this.$q.loading.hide();
-
 		this.getProvince();
 		this.generateYearsnMonth();
 	},
@@ -435,7 +426,6 @@ export default {
 			this.$axios
 				.get(getProvinceNoAuthUrl)
 				.then(response => {
-					console.log(response);
 
 					if (response.status === 200) {
 						this.dataProvince = response.data.data;
@@ -453,7 +443,6 @@ export default {
 			this.$axios
 				.get(getCityNoAuthUrl + "/" + this.provinceSelected.id)
 				.then(response => {
-					console.log(response);
 
 					if (response.status === 200) {
 						this.dataCity = response.data.data;
@@ -471,7 +460,6 @@ export default {
 			this.$axios
 				.get(getSubdistrictNoAuthUrl + "/" + this.citySelected.id)
 				.then(response => {
-					console.log(response);
 
 					if (response.status === 200) {
 						this.dataSubdistrict = response.data.data;
@@ -503,24 +491,30 @@ export default {
 			//check contains whitespaces
 			if (this.emailVerify !== "" && /\s/.test(this.emailVerify) === false) {
 				// Set Verify Email
-				let OO_GetUser;
-
+				let OO_Auth, OO_Cred, OO_GetUser, OO_AccessToken, V1User, userRes;
+				const OO_GetUserParams = {
+					limit: 1,
+					sort_by: "payment.status",
+					sort: "asc",
+					page: 1,
+					since: "2018-09-27",
+					until: this.dateNow(),
+					keyword: this.emailVerify,
+					payment_status: "paid"
+				};
 				let emailParam = { email: this.emailVerify };
-				let registeredUserV1;
+
 				try {
-					registeredUserV1 = await this.$axios.get(
-						apiDomain + "/auth/searchUser",
-						{
-							headers: getHeader(),
-							params: emailParam
-						}
-					);
+					userRes = await this.$axios.get(apiDomain + "/auth/searchUser", {
+						headers: getHeader(),
+						params: emailParam
+					});
 				} catch (error) {
 					console.log(error.response.data.error);
 				}
 				//registered/exists?
 
-				if (registeredUserV1.data !== "does not exist") {
+				if (userRes.data !== "does not exist") {
 					setTimeout(() => {
 						this.$q.notify({
 							progress: true,
@@ -532,39 +526,43 @@ export default {
 					}, 500);
 					this.preventReactivation = true;
 					this.$q.loading.hide();
-					return;
+					return -1;
 				}
 
+				try {
+					V1User = await this.$axios.get(`${apiDomain}/auth/old_user`, {
+						params: emailParam
+					});
+				} catch (error) {
+					console.log(error.response.data.error);
+					V1User = error.response.data.error;
+				}
+				if (V1User !== "not found") {
+					this.roleName =
+						V1User.data.role_name === "Reseller Exclusive"
+							? "Reseller Exclusive"
+							: "Reseller Pro";
+				}
 				// authorize
-				let OO_Cred = new FormData();
+				OO_Cred = new FormData();
 				OO_Cred.set("email", "vanprelid2@gmail.com");
 				OO_Cred.set("password", "qwerty1234");
-				let accessToken;
+
 				try {
-					const OO_Auth = await this.$axios.post(
+					OO_Auth = await this.$axios.post(
 						"https://api.orderonline.id/auth",
 						OO_Cred
 					);
-					accessToken = OO_Auth.data.data.access_token;
+					OO_AccessToken = OO_Auth.data.data.access_token;
 				} catch (error) {}
 				//findUser in orderonline
 				try {
-					const OO_user = {
-						limit: 1,
-						sort_by: "payment.status",
-						sort: "asc",
-						page: 1,
-						since: "2018-09-27",
-						until: this.dateNow(),
-						keyword: this.emailVerify,
-						payment_status: "paid"
-					};
 					let config = {
 						headers: {
 							Accept: "application/json",
-							Authorization: "Bearer " + accessToken
+							Authorization: "Bearer " + OO_AccessToken
 						},
-						params: OO_user
+						params: OO_GetUserParams
 					};
 
 					OO_GetUser = await this.$axios.get(
@@ -574,38 +572,26 @@ export default {
 				} catch (error) {}
 				//empty means not found
 				// find on another account
-
-				if (OO_GetUser.data.data.length == 0) {
-					let OO_Cred = new FormData();
+				if (OO_GetUser.data.data.length === 0) {
+					OO_Cred = new FormData();
 					OO_Cred.set("email", "kangdesu97@gmail.com");
 					OO_Cred.set("password", "dd1234");
 
-					let accessToken;
 					try {
-						const OO_Auth = await this.$axios.post(
+						OO_Auth = await this.$axios.post(
 							"https://api.orderonline.id/auth",
 							OO_Cred
 						);
-						accessToken = OO_Auth.data.data.access_token;
+						OO_AccessToken = OO_Auth.data.data.access_token;
 					} catch (error) {}
 
 					try {
-						const OO_user = {
-							limit: 1,
-							sort_by: "payment.status",
-							sort: "asc",
-							page: 1,
-							since: "2018-09-27",
-							until: this.dateNow(),
-							keyword: this.emailVerify,
-							payment_status: "paid"
-						};
-						let config = {
+						const config = {
 							headers: {
 								Accept: "application/json",
-								Authorization: "Bearer " + accessToken
+								Authorization: "Bearer " + OO_AccessToken
 							},
-							params: OO_user
+							params: OO_GetUserParams
 						};
 
 						OO_GetUser = await this.$axios.get(
@@ -613,79 +599,48 @@ export default {
 							config
 						);
 					} catch (error) {}
-					if (OO_GetUser.data.data.length == 0) {
-						try {
-							const DBV1User = await this.$axios.get(
-								apiDomain + "/auth/old_user",
-								{
-									params: emailParam
-								}
-							);
-							this.dataUser = DBV1User.data;
-							this.email = this.dataUser.email;
-							this.roleName = this.dataUser.role_name;
+				}
 
-							this.phone = this.dataUser.phone;
-						} catch (error) {
-							this.preventReactivation = false;
-							setTimeout(() => {
-								this.$q.notify({
-									progress: true,
-									position: "bottom",
-									color: "red-8",
-									message: "<b>Email</b> Belum Terdaftar!",
-									html: true
-								});
-							}, 500);
-						}
+				if (OO_GetUser.data.data.length > 0) {
+					if (V1User === "not found") {
+						this.roleName = OO_GetUser.data.data[0].product_name; // get OO role
+					} else if(V1User.data.role_name === "Reseller Exclusive"){ // get old role (exclusive)
+						this.roleName = "Reseller Exclusive"
 					} else {
-						this.dataUser = OO_GetUser.data.data;
-						let DBV1User;
-						try {
-							DBV1User = await this.$axios.get(apiDomain + "/auth/old_user", {
-								params: emailParam
-							});
-						} catch (error) {
-							this.roleName = this.dataUser[0].product_name;
-							this.email = this.dataUser[0].customer_data.email;
-							this.name = "";
-							this.phone = this.dataUser[0].customer_data.phone.replace(
-								"+62",
-								""
-							);
-						}
-						if (typeof DBV1User != "undefined") {
-							this.roleName = DBV1User.data.role_name;
-						}
-						this.email = this.dataUser[0].customer_data.email;
-						this.name = "";
-						this.phone = this.dataUser[0].customer_data.phone.replace(
-							"+62",
-							""
-						);
+						this.roleName = OO_GetUser.data.data[0].product_name; // get OO Role
 					}
+
+					this.email = OO_GetUser.data.data[0].customer_data.email;
+					this.phone = OO_GetUser.data.data[0].customer_data.phone.replace(
+						"+62",
+						""
+					);
 				} else {
-					this.dataUser = OO_GetUser.data.data;
-					let DBV1User;
 					try {
-						DBV1User = await this.$axios.get(apiDomain + "/auth/old_user", {
-							params: emailParam
-						});
-					} catch (error) {
-						this.roleName = this.dataUser[0].product_name;
-						this.email = this.dataUser[0].customer_data.email;
-						this.name = "";
-						this.phone = this.dataUser[0].customer_data.phone.replace(
-							"+62",
-							""
+						console.log('asssssssssssssssss');
+						const DBV1User = await this.$axios.get(
+							apiDomain + "/auth/old_user",
+							{
+								params: emailParam
+							}
 						);
+						this.dataUser = DBV1User.data;
+						this.email = this.dataUser.email;
+						this.roleName = this.dataUser.role_name;
+
+						this.phone = this.dataUser.phone;
+					} catch (error) {
+						this.preventReactivation = false;
+						setTimeout(() => {
+							this.$q.notify({
+								progress: true,
+								position: "bottom",
+								color: "red-8",
+								message: "<b>Email</b> Belum Terdaftar!",
+								html: true
+							});
+						}, 500);
 					}
-					if (typeof DBV1User != "undefined") {
-						this.roleName = DBV1User.data.role_name;
-					}
-					this.email = this.dataUser[0].customer_data.email;
-					this.name = "";
-					this.phone = this.dataUser[0].customer_data.phone.replace("+62", "");
 				}
 
 				this.$q.loading.hide();
@@ -703,7 +658,6 @@ export default {
 			this.$q.loading.hide();
 		},
 		createAccount() {
-			console.log(this.email);
 
 			if (this.email === "") {
 				this.notifForm("Email");
@@ -755,7 +709,8 @@ export default {
 				const exclusiveRoleList = ["reseller eksklusif", "reseller exclusive"];
 				const proRoleList = ["reseller pro"];
 				let filteredRoleName = null;
-				for (let i = 0; i < exclusiveRoleList.length; i++) { // TODO IMPROVE HERE
+				for (let i = 0; i < exclusiveRoleList.length; i++) {
+					// TODO IMPROVE HERE
 					if (this.roleName.toLowerCase().includes(exclusiveRoleList[i])) {
 						filteredRoleName = "reseller exclusive";
 						break;
@@ -764,12 +719,12 @@ export default {
 						filteredRoleName = "reseller pro";
 					}
 				}
-				if (filteredRoleName = "reseller pro") {
+
+				if (filteredRoleName === "reseller pro") {
 					createForm.set("role_id", 8);
-				} else if (filteredRoleName = "reseller exclusive") {
+				} else if (filteredRoleName === "reseller exclusive") {
 					createForm.set("role_id", 9);
 				}
-
 				this.$axios
 					.post(createAccountUrl, createForm)
 					.then(response => {
