@@ -32,7 +32,7 @@
         <span v-if="productVariant">
           <h4
             style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
-            v-if="user.role.id === 9"
+            v-if="globalState.userProfile.role.id === 9"
           >
             KAMU UNTUNG
             <span
@@ -41,7 +41,7 @@
           </h4>
           <h4
             style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
-            v-else-if="user.role.id === 8"
+            v-else-if="globalState.userProfile.role.id === 8"
           >
             KAMU UNTUNG
             <span
@@ -50,7 +50,7 @@
           </h4>
           <h4
             style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
-            v-else-if="user.role.id === 10"
+            v-else-if="globalState.userProfile.role.id === 10"
           >
             KAMU UNTUNG
             <span class="text-green"></span>
@@ -204,7 +204,7 @@
 
                   <h5 class="price-detail-text" v-else>Rp{{formatPrice(dataProduct.price * qty)}}</h5>
                 </div>
-                <div class="col-xs-6" v-if="user.role.id === 9">
+                <div class="col-xs-6" v-if="globalState.userProfile.role.id === 9">
                   <h5
                     class="price-detail-text text-green"
                     v-if="productVariant"
@@ -214,7 +214,7 @@
                     v-else
                   >Rp{{formatPrice(dataProduct.reseller_exclusive_price * qty)}}</h5>
                 </div>
-                <div class="col-xs-6" v-else-if="user.role.id === 8">
+                <div class="col-xs-6" v-else-if="globalState.userProfile.role.id === 8">
                   <h5
                     class="price-detail-text text-green"
                     v-if="productVariant"
@@ -224,7 +224,7 @@
                     v-else
                   >Rp{{formatPrice(dataProduct.reseller_pro_price * qty)}}</h5>
                 </div>
-                <div class="col-xs-6" v-else-if="user.role.id === 10">
+                <div class="col-xs-6" v-else-if="globalState.userProfile.role.id === 10">
                   <h5
                     class="price-detail-text text-green"
                     v-if="productVariant"
@@ -236,7 +236,7 @@
                 </div>
               </div>
             </template>
-            <div class="row" v-if="user.role.id === 8 && productVariant">
+            <div class="row" v-if="globalState.userProfile.role.id === 8 && productVariant">
               <div class="col">
                 <h4 class="upgrade-cta-text">
                   <span class="text-black" style="text-decoration: underline;">
@@ -367,6 +367,7 @@
 
 <script>
 import Vue from "vue";
+import {mapState} from 'vuex'
 import carousel from "vue-owl-carousel";
 import axios from "axios";
 import {
@@ -444,6 +445,7 @@ export default {
     };
   },
   computed: {
+		...mapState(['globalState']),
     stockReady: function() {
       if (this.productVariant)
         return (
@@ -453,7 +455,6 @@ export default {
     }
   },
   async created() {
-    this.user = JSON.parse(window.localStorage.getItem("profileUser"));
     const doc = await googleSpreadsheetDoc();
     const sheet = await doc.sheetsByIndex[0];
     const rows = await sheet.getRows();
@@ -645,11 +646,11 @@ export default {
         postData.set("product_sku", this.productVariant.sku);
         postData.set("options", this.optionValueSelected);
         postData.set("qty", this.qty);
-        postData.set("customer_id", this.user.id);
-        postData.set("customer_name", this.user.name);
-        postData.set("customer_email", this.user.email);
-        postData.set("customer_phone", this.user.phone);
-        postData.set("role_id", this.user.role.id);
+        postData.set("customer_id", this.globalState.userProfile.id);
+        postData.set("customer_name", this.globalState.userProfile.name);
+        postData.set("customer_email", this.globalState.userProfile.email);
+        postData.set("customer_phone", this.globalState.userProfile.phone);
+        postData.set("role_id", this.globalState.userProfile.role.id);
 
         axios
           .post(addToCartUrl, postData, { headers: getHeader() })
