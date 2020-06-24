@@ -157,12 +157,12 @@ export default {
 					params: removeProductParams
 				});
 				await this.$emit("getCartData");
-				this.$q.loading.false();
+
 				// Get Total Cart Item
 			} catch (error) {
 				console.log("error deleting product");
-				console.log(error.message);
 			}
+				this.$q.loading.hide();
 		},
 		editQty(id, price, qty, product_sku_id) {
 			this.cartDetailIdEdit = id;
