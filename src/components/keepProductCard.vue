@@ -35,7 +35,7 @@
 				<div
 					style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px; height: 35px"
 				>
-					{{ product.product_name }}
+					{{ productNameFormat(product.product_name) }}
 				</div>
 				<template v-if="product.status !== 'coming-soon'">
 					<div class="text-black" style="font-size: 10px;">
@@ -118,6 +118,12 @@ export default {
 		onCardClick() {
 			if (this.product.status !== "coming-soon")
 				this.$router.push(`/detail/keep/${this.product.id}`);
+		},
+		productNameFormat(str){
+			if(str.length >= 30){
+				return str.substring(0, 30) + '...'
+			}
+			return str;
 		},
 		currencyFormat
 	}
