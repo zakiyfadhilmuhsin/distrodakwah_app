@@ -140,7 +140,7 @@
 						<div class="col-sm-3">
 							<router-link to="/orderList/" style="text-decoration: none;">
 								<div
-									class="bg-white shadow-2"
+									class="bg-white shadow-2 float-right"
 									style="border-radius: 15px; width: max-content; padding: 4px 6px"
 								>
 									<p
@@ -213,12 +213,16 @@
 												'/' +
 												category.id
 										"
-										style="text-decoration: none; color: black !important"
+										style="text-decoration: none; color: black !important;"
 									>
 										<center>
-											<img :src="category.image_url" width="40" />
+											<div style="background-color: #f4e1cb; padding-top: 12px; padding-bottom: 10px; border-radius: 8px; margin: 6px">
+												<center>
+													<img :src="category.image_url" width="35" />
+												</center>
+											</div>
 										</center>
-										<p style="margin: 0; font-size: 10px; text-align: center">
+										<p style="margin: 0; font-size: 10px; text-align: center; font-weight: bold">
 											{{ category.category_name }}
 										</p>
 									</router-link>
@@ -724,7 +728,7 @@ export default {
 .promo-text {
 	font-family: "Poppins" !important;
 	font-size: 13px;
-	font-weight: 300 !important;
+	font-weight: 500 !important;
 	margin: 0;
 	padding-left: 12px;
 }

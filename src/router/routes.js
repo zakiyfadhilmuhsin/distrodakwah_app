@@ -4,7 +4,7 @@ import FreeAccountPage from "pages/Auth/RegisterFreeMember";
 import StorefrontPage from "pages/StorefrontNew";
 import DetailProductPage from "pages/DetailProduct";
 import KeepDetailProductPage from "pages/KeepDetailProduct";
-import DashboardPage from "pages/ResellerArea/Dashboard";
+import DashboardPage from "pages/ResellerArea/DashboardNew";
 import ListCustomerPage from "pages/ResellerArea/ListCustomer";
 import ShippingPage from "pages/Shipping";
 import OrderSummaryPage from "pages/OrderSummary";
