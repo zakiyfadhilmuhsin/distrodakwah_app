@@ -9,7 +9,7 @@
           dense
           to="/"
         >
-          <q-icon name="arrow_back" color="white" /> 
+          <q-icon name="arrow_back" color="white" />
         </q-btn>
         <q-toolbar-title><span style="font-size: 16px; font-weight: bold">Pesanan Saya</span></q-toolbar-title>
       </q-toolbar>
@@ -200,7 +200,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="row q-pa-md">
                 <div class="col">
                   <template v-if="orderData.length !== 0">
@@ -343,7 +343,7 @@ export default {
       .then(response => {
         console.log(response)
 
-        if (response.status === 200) {
+        if (response.data.data === 'Cart_is_empty') {
           this.totalCartItem = response.data.data;
         }
 
@@ -356,7 +356,7 @@ export default {
   },
   methods: {
     getOrder () {
-      
+
       this.$q.loading.show({
         spinner: QSpinnerPuff,
         spinnerColor: 'black',
@@ -388,7 +388,7 @@ export default {
       // if(this.status !== ''){
       //   formatUrl = `${formatUrl}&orderStatus=${this.orderStatus}`;
       // }
-      if(this.searchInvoice !== '' && this.orderStatus !== '' && this.dateFilter !== ''){ // 8. Filter Tanggal & Search dari Status Tertentu 
+      if(this.searchInvoice !== '' && this.orderStatus !== '' && this.dateFilter !== ''){ // 8. Filter Tanggal & Search dari Status Tertentu
         formatUrl = getOrderUrl + '/' + this.user.id + '?orderStatus=' + this.orderStatus + '&dateFilter=' + this.dateFilter + '&searchInvoice=' + this.searchInvoice;
       }else if(this.searchInvoice !== '' && this.orderStatus !== ''){// 7. Filter Search dari  Status Tertentu
         formatUrl = getOrderUrl + '/' + this.user.id + '?orderStatus=' + this.orderStatus + '&searchInvoice=' + this.searchInvoice;
@@ -403,7 +403,7 @@ export default {
       }else if(this.dateFilter !== ''){ // 2.Filter Tanggal dari Semua Pesanan v
         formatUrl = getOrderUrl + '/' + this.user.id + '?dateFilter=' + this.dateFilter;
       }else{ // 1.Lihat Semua Pesanan v
-        formatUrl = getOrderUrl + '/' + this.user.id; 
+        formatUrl = getOrderUrl + '/' + this.user.id;
       }
 
       axios.get( formatUrl, { headers: getHeader() } )
@@ -413,7 +413,7 @@ export default {
           if (response.status === 200) {
 
             this.$q.loading.hide()
-            
+
             //this.orderData = response.data.data;
             for(let i=0; i<response.data.data.length; i++){
               this.orderData.push({
@@ -426,7 +426,7 @@ export default {
               });
 
               axios.get(showCustomerUrl + '/' + response.data.data[i].customer_address_id, { headers: getHeader() }).then(response => {
-                
+
                 this.orderData[i].detail_customer.push({
                   customer_name: response.data.data.customer_name,
                 });

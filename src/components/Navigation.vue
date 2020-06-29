@@ -76,7 +76,9 @@ export default {
 			headers: getHeader()
 		});
 
-		this.totalCartItem = getCartTotalItemRes.data.data;
+		if (getCartTotalItemRes.data.data !== "cart_is_empty") {
+			this.totalCartItem = getCartTotalItemRes.data.data;
+		}
 	}
 };
 </script>

@@ -14,7 +14,7 @@
 					<!-- Voucher -->
 					<div
 						style="background-color: white; margin-bottom: 5px"
-						v-if="couponUse === false"
+						v-if="couponUse === false && cartData.cart_detail.length > 0"
 					>
 						<div class="row q-pa-xs items-center">
 							<div class="col">
@@ -34,9 +34,10 @@
 							</div>
 						</div>
 					</div>
+
 					<div
 						style="background-color: white; margin-bottom: 5px"
-						v-else-if="couponUse === true"
+						v-else-if="couponUse === true && cartData.cart_detail.length > 0"
 					>
 						<div class="row q-pa-xs items-center">
 							<div class="col">
@@ -67,8 +68,10 @@
 							</div>
 						</div>
 					</div>
+
 					<div
 						style="background-color: white; margin-bottom: 5px"
+						v-if="cartData.cart_detail.length > 0"
 					>
 						<div
 							class="row q-px-lg items-center"
@@ -83,7 +86,7 @@
 								<h6
 									style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold"
 								>
-									{{ allowOrder ? totalItem : "--" }}
+									{{ allowOrder ? totalItem : 0 }}
 								</h6>
 							</div>
 							<div class="col">
@@ -96,13 +99,14 @@
 									style="font-size: 21px; margin: -5px 0 0 0; font-family: 'Open Sans'; font-weight: bold"
 									class="text-red"
 								>
-									Rp {{ allowOrder ? formatPrice(cartData.total_amount) : "--" }}
+									Rp {{ allowOrder ? formatPrice(cartData.total_amount) : 0 }}
 								</h6>
 							</div>
 						</div>
 					</div>
 					<div
 						style="background-color: white; margin-bottom: 5px"
+						v-if="cartData.cart_detail.length > 0"
 					>
 						<div
 							class="row q-px-lg items-center"
@@ -120,7 +124,7 @@
 								<h6
 									style="font-size: 28px; margin: 8px 0; font-family: 'Open Sans'; font-weight: bold"
 								>
-									Rp {{ allowOrder ? formatPrice(totalProfit) : "--" }}
+									Rp {{ allowOrder ? formatPrice(totalProfit) : 0 }}
 								</h6>
 								<h6
 									style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px"
@@ -139,7 +143,7 @@
 						</div>
           </div>-->
 				</div>
-				<div class="row bg-white q-pa-md">
+				<div class="row bg-white q-pa-md" v-if="cartData.cart_detail.length > 0">
 					<div class="col">
 						<q-btn
 							flat

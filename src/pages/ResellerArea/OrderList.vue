@@ -9,7 +9,7 @@
           dense
           @click="goBack"
         >
-          <q-icon name="arrow_back" color="white" /> 
+          <q-icon name="arrow_back" color="white" />
         </q-btn>
         <q-toolbar-title><span style="font-size: 16px; font-weight: bold">Pesanan Saya</span></q-toolbar-title>
       </q-toolbar>
@@ -105,7 +105,7 @@
                 </q-input> -->
               </div>
             </div>
-            
+
             <div class="row q-pa-md">
               <div class="col">
                 <template v-if="orderData.length !== 0">
@@ -201,9 +201,9 @@ export default {
     // Get Total Cart Item
     axios.get( totalCartItemUrl + '/' + this.user.id, { headers: getHeader() } )
       .then(response => {
-        console.log(response)
 
         if (response.status === 200) {
+					console.log(123)
           this.totalCartItem = response.data.data;
         }
 
@@ -216,7 +216,7 @@ export default {
   },
   methods: {
     getOrder () {
-      
+
       this.$q.loading.show({
         spinner: QSpinnerPuff,
         spinnerColor: 'black',
@@ -245,7 +245,7 @@ export default {
           if (response.status === 200) {
 
             this.$q.loading.hide()
-            
+
             //this.orderData = response.data.data;
             for(let i=0; i<response.data.data.length; i++){
               this.orderData.push({
@@ -258,7 +258,7 @@ export default {
               });
 
               axios.get(showCustomerUrl + '/' + response.data.data[i].customer_address_id, { headers: getHeader() }).then(response => {
-                
+
                 this.orderData[i].detail_customer.push({
                   customer_name: response.data.data.customer_name,
                 });
