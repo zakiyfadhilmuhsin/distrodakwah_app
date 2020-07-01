@@ -10,7 +10,7 @@ import ShippingPage from "pages/Shipping";
 import OrderSummaryPage from "pages/OrderSummary";
 import CartPage from "pages/Cart";
 import InvoicePage from "pages/Invoice";
-import OrderListPage from "pages/ResellerArea/OrderListNew";
+import OrderListPage from "pages/ResellerArea/OrderList";
 import DetailOrderPage from "pages/ResellerArea/DetailOrder";
 import SettingStorePage from "pages/ResellerArea/SettingStore";
 import AllProductBrandPage from "pages/AllProductBrand";
@@ -62,14 +62,14 @@ const routes = [
 	},
 
 	{
-		path: "/detail/:id",
+		path: "/detail/:product_id",
 		component: DetailProductPage,
 		meta: {
 			requiresAuth: true
 		}
 	},
 	{
-		path: "/detail/keep/:id",
+		path: "/detail/keep/:product_id",
 		component : KeepDetailProductPage,
 		meta: {
 			requiresAuth : true
