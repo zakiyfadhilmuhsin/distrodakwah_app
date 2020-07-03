@@ -726,6 +726,7 @@ export default {
 </script>
 
 <style>
+.abc{ background: #000;}
 .promo-text {
 	font-family: "Poppins" !important;
 	font-size: 13px;
