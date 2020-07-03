@@ -95,28 +95,25 @@
 				<!-------------------------->
 				<!-- Product Image Slider -->
 				<!-------------------------->
-				<template v-if="productData && productData.length > 0">
+				<template v-if="!isEmpty(productData)">
 					<div
 						style="margin-bottom: 10px; margin-top: -50px"
-						v-if="dataProduct.product_variants.length !== 0"
+						v-if="productData.product_variants.length !== 0"
 					>
 						<carousel :items="1" :nav="false" :loop="true" :autoplay="true">
 							<img
 								:src="images.image"
-								v-for="(images, i) in dataProduct.image_gallery"
+								v-for="(images, i) in productData.image_gallery"
 								:key="i"
 							/>
 						</carousel>
-					</div>
-					<div style="margin-bottom: 10px; margin-top: -50px" v-else>
-						<img :src="dataProduct.featured_image" width="100%" />
 					</div>
 				</template>
 				<!------------------------->
 				<!-- Information Section -->
 				<!------------------------->
 				<div class="row q-px-md">
-					<div class="col">
+					<div class="col" v-if="!isEmpty(productData)">
 						<!-- Informasi Umum -->
 						<h5 class="category-text">
 							Kategori :
@@ -126,9 +123,11 @@
 						</h5>
 						<h5 class="category-text">
 							Brand :
-							<span class="text-red">{{ dataBrand.brand_name }}</span>
+							<span class="text-red">{{
+								productData.brand_detail.brand_name
+							}}</span>
 						</h5>
-						<h4 class="product-title-text">{{ dataProduct.product_name }}</h4>
+						<h4 class="product-title-text">{{ productData.product_name }}</h4>
 						<div
 							style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold"
 						>
@@ -139,9 +138,8 @@
 						</div>
 
 						<hr style="margin: 15px 0" />
-
-						<template v-if="dataProduct.product_type === 'Variant Product'">
-							<!-- Pilih Warna & Ukuran -->
+						<!-- Pilih Warna & Ukuran -->
+						<template v-if="isOptionsAllowed">
 							<div
 								class="row"
 								style="margin-bottom: 7px"
@@ -149,39 +147,34 @@
 								:key="index"
 							>
 								<div class="col-xs-4">
-									<h5 class="options-title">Pilih {{ opt.optionTitle }}</h5>
+									<h5 class="options-title">Pilih {{ opt.option_name }}:</h5>
 								</div>
 								<div class="col-xs-8">
-									<template v-if="opt.optionValue.length > 3">
-										<q-select
-											dense
-											outlined
-											color="orange-8"
-											options-dense
-											v-model="opt.selectedOption"
-											:options="opt.optionValue"
-											option-value="value"
-											option-label="label"
-											emit-value
-											map-options
-											@input="getProductVariant"
-										/>
-									</template>
-									<template v-else-if="opt.optionValue.length <= 3">
-										<q-btn-toggle
-											v-model="opt.selectedOption"
-											unelevated
-											toggle-color="orange-8"
-											color="white"
-											text-color="orange-8"
-											:options="opt.optionValue"
-											style="border: 1px solid #f57c00"
-											@input="getProductVariant"
-										/>
-									</template>
+									<select
+										:name="opt.option_name"
+										id=""
+										@change="constructSKU($event)"
+									>
+										<option value="" selected disabled></option>
+										<option
+											:value="value"
+											v-for="(value, i) in opt.option_value"
+											:key="i"
+											>{{ value }}</option
+										>
+									</select>
+									<!-- <q-select
+										dense
+										outlined
+										color="orange-8"
+										options-dense
+										:options="opt.option_value"
+										@change="constructSKU($event)"
+									/> -->
 								</div>
 							</div>
-							<!-- <div class="row" style="margin-bottom: 7px">
+						</template>
+						<!-- <div class="row" style="margin-bottom: 7px">
                 <div class="col-xs-4">
                   <h5 class="options-title">Pilih Ukuran</h5>
                 </div>
@@ -189,7 +182,6 @@
                   <q-select dense outlined color="orange-8" options-dense v-model="sizeSelected" :options="sizeOptions" />
                 </div>
               </div>-->
-						</template>
 						<div class="row">
 							<div class="col-xs-4">
 								<h5 class="options-title">Qty</h5>
@@ -210,78 +202,64 @@
 						</div>
 						<br />
 						<!-- Informasi Harga -->
-						<template
-							v-if="
-								dataProduct.product_type === 'Simple Product' ||
-									(productVariant !== null && productVariant !== '')
-							"
-						>
-							<div class="row">
-								<div class="col-xs-6">
-									<h5 class="price-title-small-text">Harga Konsumen</h5>
-								</div>
-								<div class="col-xs-6">
-									<h5 class="price-title-small-text">Harga Reseller</h5>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xs-6">
-									<h5 class="price-detail-text" v-if="productVariant">
-										Rp{{ formatPrice(productVariant.price * qty) }}
-									</h5>
 
-									<h5 class="price-detail-text" v-else>
-										Rp{{ formatPrice(dataProduct.price * qty) }}
-									</h5>
-								</div>
-								<div
-									class="col-xs-6"
-									v-if="globalState.userProfile.role.id === 9"
-								>
-									<h5
-										class="price-detail-text text-green"
-										v-if="productVariant"
-									>
-										Rp{{
-											formatPrice(productVariant.reseller_exclusive_price * qty)
-										}}
-									</h5>
-									<h5 class="price-detail-text text-green" v-else>
-										Rp{{
-											formatPrice(dataProduct.reseller_exclusive_price * qty)
-										}}
-									</h5>
-								</div>
-								<div
-									class="col-xs-6"
-									v-else-if="globalState.userProfile.role.id === 8"
-								>
-									<h5
-										class="price-detail-text text-green"
-										v-if="productVariant"
-									>
-										Rp{{ formatPrice(productVariant.reseller_pro_price * qty) }}
-									</h5>
-									<h5 class="price-detail-text text-green" v-else>
-										Rp{{ formatPrice(dataProduct.reseller_pro_price * qty) }}
-									</h5>
-								</div>
-								<div
-									class="col-xs-6"
-									v-else-if="globalState.userProfile.role.id === 10"
-								>
-									<h5
-										class="price-detail-text text-green"
-										v-if="productVariant"
-									>
-										Rp{{ formatPrice(productVariant.price) }}
-									</h5>
-									<h5 class="price-detail-text text-green" v-else>
-										Rp{{ formatPrice(dataProduct.price) }}
-									</h5>
-								</div>
+						<div class="row">
+							<div class="col-xs-6">
+								<h5 class="price-title-small-text">Harga Konsumen</h5>
 							</div>
-						</template>
+							<div class="col-xs-6">
+								<h5 class="price-title-small-text">Harga Reseller</h5>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-6">
+								<h5 class="price-detail-text" v-if="productVariant">
+									Rp{{ formatPrice(productVariant.price * qty) }}
+								</h5>
+
+								<h5 class="price-detail-text" v-else>
+									Rp{{ formatPrice(dataProduct.price * qty) }}
+								</h5>
+							</div>
+							<div
+								class="col-xs-6"
+								v-if="globalState.userProfile.role.id === 9"
+							>
+								<h5 class="price-detail-text text-green" v-if="productVariant">
+									Rp{{
+										formatPrice(productVariant.reseller_exclusive_price * qty)
+									}}
+								</h5>
+								<h5 class="price-detail-text text-green" v-else>
+									Rp{{
+										formatPrice(dataProduct.reseller_exclusive_price * qty)
+									}}
+								</h5>
+							</div>
+							<div
+								class="col-xs-6"
+								v-else-if="globalState.userProfile.role.id === 8"
+							>
+								<h5 class="price-detail-text text-green" v-if="productVariant">
+									Rp{{ formatPrice(productVariant.reseller_pro_price * qty) }}
+								</h5>
+								<h5 class="price-detail-text text-green" v-else>
+									Rp{{ formatPrice(dataProduct.reseller_pro_price * qty) }}
+								</h5>
+							</div>
+							<div
+								class="col-xs-6"
+								v-else-if="globalState.userProfile.role.id === 10"
+							>
+								<h5 class="price-detail-text text-green" v-if="productVariant">
+									Rp{{ formatPrice(productVariant.price) }}
+								</h5>
+								<h5 class="price-detail-text text-green" v-else>
+									Rp{{ formatPrice(dataProduct.price) }}
+								</h5>
+							</div>
+						</div>
+
 						<div
 							class="row"
 							v-if="globalState.userProfile.role.id === 8 && productVariant"
@@ -438,7 +416,7 @@
 <script>
 import Vue from "vue";
 import { mapState } from "vuex";
-import carousel from "vue-owl-carousel";
+import { cloneDeep, isEmpty } from "lodash";
 import axios from "axios";
 import {
 	apiDomain,
@@ -453,6 +431,7 @@ import {
 import VueClipboard from "vue-clipboard2";
 import { openURL } from "quasar";
 import { googleSpreadsheetDoc } from "../../config/googleSpreadsheets";
+import carousel from "vue-owl-carousel";
 //vanilla.js
 import { nthIndex } from "../libraries/stringManipulation";
 
@@ -462,11 +441,14 @@ export default {
 	name: "DetailProduct",
 	data() {
 		return {
-			productData: [],
+			productData: {},
 			dataCategory: [],
 			brandData: [],
 			productDesc: null,
-			inputOptions: [],
+			selectedSku: "",
+			selectedOption: {},
+			inputOptions: {},
+
 			optionValueSelected: [],
 			qty: 1,
 			productVariant: null,
@@ -487,22 +469,41 @@ export default {
 					this.productVariant.stock_qty - this.productVariant.keep_stock_qty
 				);
 			return null;
+		},
+		isOptionsAllowed: function() {
+			return this.inputOptions.length > 0;
+			// return !isEmpty(this.inputOptions) ? true: false;
 		}
 	},
 	async created() {
 		await this.getProductData();
+		await this.getInputOptions();
 	},
 	mounted() {
-		this.getProductDetail();
+		// this.getProductDetail();
 	},
 	methods: {
 		async getProductData() {
 			const getProductParams = {
 				productIdArr: [this.$route.params.product_id],
-				select: ["id", "product_name", "brand_id", "category_id"],
+				select: [
+					"id",
+					"product_name",
+					"brand_id",
+					"category_id",
+					"featured_image"
+				],
 				eagerLoad: {
 					brand: ["id", "brand_name"],
-					category_detail: ["id", "category_name"]
+					category_detail: ["id", "category_name"],
+					product_sku: [
+						"id",
+						"product_id",
+						"sku",
+						"stock_qty",
+						"keep_stock_qty"
+					],
+					image_gallery: ["id", "image", "product_id"]
 				}
 			};
 			const _productData = await this.$axios({
@@ -511,26 +512,38 @@ export default {
 				headers: getHeader(),
 				data: getProductParams
 			});
-			console.log(_productData.data.data, "product_data");
-			this.productData = _productData.data.data[0];
 
-			console.log("~~~~~~~~~~~~~Testing");
-			var foo = { a: 1, b: 2, c: 3 };
-			foo.clone = function() {
-				var newObj = this instanceof Array ? [] : {};
-				for (let i in this) {
-					if (i == "clone") continue;
-					if (this[i] && typeof this[i] == "object") {
-						newObj[i] = this[i].clone();
-					} else newObj[i] = this[i];
+			this.productData = cloneDeep(_productData.data.data[0]);
+			this.selectedSku = this.productData.product_variants[0].id;
+		},
+
+		async getInputOptions() {
+			const optionParams = {
+				productIdArr: [this.productData.id],
+				eagerLoad: {
+					sku_values: ["*"]
 				}
-				return newObj;
 			};
-			var bar = foo.clone();
-			bar.b = 5;
-			console.log(foo.b)
-			console.log(bar.b)
-			console.log(123123)
+
+			const optionRes = await this.$axios({
+				method: "post",
+				url: `${catalogService}/options/get-options-by-product-id`,
+				headers: getHeader(),
+				data: optionParams
+			});
+
+			this.productData.options = cloneDeep(optionRes.data.data);
+			const _inputOptions = [];
+			optionRes.data.data.forEach(option => {
+				_inputOptions.push({
+					option_name: option.option_name,
+					option_value: [
+						...new Set(option.sku_values.map(sku_value => sku_value.value))
+					]
+				});
+			});
+
+			this.inputOptions = cloneDeep(_inputOptions);
 		},
 		async getBrandData() {
 			const _brandData = await this.$axios({
@@ -538,153 +551,43 @@ export default {
 				url: `${catalogBrandUrl}/`
 			});
 		},
-		getProductDetail() {
-			axios
-				.get(catalogProductUrl + "/" + this.$route.params.product_id, {
-					headers: getHeader()
-				})
-				.then(response => {
-					if (response.status === 200) {
-						this.dataProduct = response.data.data;
+		constructSKU(event) {
+			this.selectedOption = {
+				...this.selectedOption,
+				[event.target.name]: event.target.value
+			};
+			let allOptionSelected = true;
 
-						this.category_name = this.categoryProduct(
-							this.dataProduct.category_id
-						);
-						this.brand_name = this.brandProduct(this.dataProduct.brand_id);
+			this.inputOptions.forEach(opt => {
+				if (!this.selectedOption.hasOwnProperty(opt.option_name))
+					allOptionSelected = false;
+			});
 
-						this.productDesc = this.dataProduct.product_description;
-
-						if (this.dataProduct.product_type === "Variant Product") {
-							this.getInputOptions();
-						}
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
+			if (allOptionSelected == false) return;
+			const selectedOptionsAllVariants = [];
+			this.productData.options.forEach(opt => {
+				selectedOptionsAllVariants.push({
+					option_name: opt.option_name,
+					option_values: opt.sku_values.filter(
+						sku_value =>
+							sku_value.value === this.selectedOption[opt.option_name]
+					)
 				});
-		},
-		categoryProduct(id) {
-			axios
-				.get(catalogCategoryUrl + "/" + id, { headers: getHeader() })
-				.then(response => {
-					if (response.status === 200) {
-						this.dataCategory = response.data.data;
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
-				});
-		},
-		brandProduct(id) {
-			axios
-				.get(catalogBrandUrl + "/" + id, { headers: getHeader() })
-				.then(response => {
-					if (response.status === 200) {
-						this.dataBrand = response.data.data;
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
-				});
-		},
-		getInputOptions() {
-			const productVariantsLength = this.dataProduct.product_variants.length;
-			let initialIndex = 0;
+			});
+			let matchedSKU = "";
+			console.log(selectedOptionsAllVariants)
+			const allOptionsLength = selectedOptionsAllVariants.length;
 
-			this.inputOptions = this.dataProduct.product_options.map(
-				(option, optionIndex) => {
-					let optionValueSet = new Set();
+			for (let allVariantsIndex = 0; allVariantsIndex < allOptionsLength-1; allVariantsIndex++) {
+				const _1comparison = selectedOptionsAllVariants[allVariantsIndex]
+				console.log(_1comparison, 'hello')
+				for (let index = 0; index < array.length; index++) {
+					const element = array[index];
 
-					for (let index = 0; index < productVariantsLength; index++) {
-						const variant = this.dataProduct.product_variants[index];
-						const fromIndex = nthIndex(variant.sku, "~", optionIndex + 1) + 1; // ~ and move +1 index
-						const toIndex = nthIndex(variant.sku, "~", optionIndex + 2); //next ~(+2) and move +1 index
-
-						const result = variant.sku.substring(
-							fromIndex,
-							toIndex != -1 ? toIndex : variant.sku.length
-						);
-						optionValueSet.add(result);
-					}
-
-					const optionValueArr = [...optionValueSet];
-					const optionValue = optionValueArr.map(optionValue => {
-						return {
-							label: optionValue,
-							value: optionValue
-						};
-					});
-					return {
-						optionTitle: option.option_name,
-						selectedOption: "",
-						optionValue
-					};
-				}
-			);
-
-			// return;
-			// for (var i = 0; i < productOptions.length; i++) {
-			//   //alert(productOptions[i].option_name);
-			//   this.inputOptions.push({
-			//     optionTitle: productOptions[i].option_name,
-			//     selectedOption: "",
-			//     optionValue: []
-			//   });
-
-			//   for (var val = 0; val < productOptions[i].values.length; val++) {
-			//     this.inputOptions[i].optionValue.push({
-			//       label: productOptions[i].values[val].value_name,
-			//       value: productOptions[i].values[val].value_name
-			//     });
-			//   }
-			// }
-		},
-		getProductVariant() {
-			// Get option value
-			let val = [];
-			let productOptionSelected = [];
-
-			for (var key in this.inputOptions) {
-				productOptionSelected.push({
-					option: this.inputOptions[key].optionTitle,
-					value: this.inputOptions[key].selectedOption
-				});
-				val.push(this.inputOptions[key].selectedOption);
-			}
-
-			let optionSelected = String(this.dataProduct.sku) + "~" + val.join("~");
-
-			this.optionValueSelected = JSON.stringify(productOptionSelected);
-
-			// Check product sku with option value
-			let varPro = JSON.parse(
-				JSON.stringify(this.dataProduct.product_variants)
-			);
-
-			this.productVariant = "";
-			//let storeVar = [];
-			for (var i = 0, l = varPro.length; i < l; i++) {
-				if (optionSelected.toUpperCase() === varPro[i].sku) {
-					// store product variant
-
-					this.productVariant = {
-						id: varPro[i].id,
-						product_id: varPro[i].product_id,
-						sku: varPro[i].sku,
-						price: varPro[i].price,
-						reseller_pro_price: varPro[i].reseller_pro_price,
-						reseller_exclusive_price: varPro[i].reseller_exclusive_price,
-						stock_qty: varPro[i].stock_qty,
-						keep_stock_qty: varPro[i].keep_stock_qty
-					};
 				}
 			}
+
+			// selectedOptionAllVariants[0].option_values.filter(value=> .indexOf(value.product_sku_id))
 		},
 		addToCart() {
 			// this.getInputOptions();
@@ -777,7 +680,8 @@ export default {
 		},
 		upgrade() {
 			openURL("https://serbalaris.orderonline.id/upgrade-eksklusif");
-		}
+		},
+		isEmpty
 	},
 	components: { carousel, openURL }
 };
