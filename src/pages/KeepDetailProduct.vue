@@ -589,7 +589,7 @@ export default {
 	methods: {
 		getProductDetail() {
 			axios
-				.get(catalogProductUrl + "/" + this.$route.params.id, {
+				.get(catalogProductUrl + "/" + this.$route.params.product_id, {
 					headers: getHeader()
 				})
 				.then(response => {
