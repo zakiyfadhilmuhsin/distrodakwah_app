@@ -95,21 +95,21 @@
 				<!-------------------------->
 				<!-- Product Image Slider -->
 				<!-------------------------->
-				<template v-if="productData && productData.length > 0">
+				<template v-if="productData && productData.image_gallery.length > 0">
 					<div
 						style="margin-bottom: 10px; margin-top: -50px"
-						v-if="dataProduct.product_variants.length !== 0"
+						v-if="productData.image_gallery.length !== 0"
 					>
 						<carousel :items="1" :nav="false" :loop="true" :autoplay="true">
 							<img
-								:src="images.image"
-								v-for="(images, i) in dataProduct.image_gallery"
+								:src="item.image"
+								v-for="(item, i) in productData.image_gallery"
 								:key="i"
 							/>
 						</carousel>
 					</div>
 					<div style="margin-bottom: 10px; margin-top: -50px" v-else>
-						<img :src="dataProduct.featured_image" width="100%" />
+						<img :src="productData.featured_image" width="100%" />
 					</div>
 				</template>
 				<!------------------------->
@@ -502,35 +502,19 @@ export default {
 				select: ["id", "product_name", "brand_id", "category_id"],
 				eagerLoad: {
 					brand: ["id", "brand_name"],
-					category_detail: ["id", "category_name"]
+					category_detail: ["id", "category_name"],
+					image_gallery: ["id", "image", "product_id"]
 				}
 			};
+
 			const _productData = await this.$axios({
 				method: "post",
 				url: `${catalogService}/get-products-by-id`,
 				headers: getHeader(),
 				data: getProductParams
 			});
-			console.log(_productData.data.data, "product_data");
-			this.productData = _productData.data.data[0];
 
-			console.log("~~~~~~~~~~~~~Testing");
-			var foo = { a: 1, b: 2, c: 3 };
-			foo.clone = function() {
-				var newObj = this instanceof Array ? [] : {};
-				for (let i in this) {
-					if (i == "clone") continue;
-					if (this[i] && typeof this[i] == "object") {
-						newObj[i] = this[i].clone();
-					} else newObj[i] = this[i];
-				}
-				return newObj;
-			};
-			var bar = foo.clone();
-			bar.b = 5;
-			console.log(foo.b)
-			console.log(bar.b)
-			console.log(123123)
+			this.productData = _productData.data.data[0];
 		},
 		async getBrandData() {
 			const _brandData = await this.$axios({
