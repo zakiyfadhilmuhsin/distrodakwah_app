@@ -74,7 +74,7 @@
 							src="http://balitakita.com/packages/yusidabcs/checkout/img/empty-cart-vector.png"
 							width="85"
 						/>
-						<div>Yah, Keranjang Masih Kosong.. Belanja Yuk!</div>
+						<div>Yah, Keranjang Masih Kosong. Belanja Yuk!</div>
 					</center>
 				</div>
 			</div>
