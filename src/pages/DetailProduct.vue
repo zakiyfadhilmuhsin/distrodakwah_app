@@ -1,19 +1,18 @@
 <template>
-  <q-layout view="hHh lpR fFf">
-
-    <q-header reveal class="mobile-layout-on-desktop transparent no-shadow">
-      <q-toolbar>
-        <q-btn
-          flat
-          round
-          dense
-          to="/"
-          style="background-color: rgba(0, 0, 0, 0.15)"
-        >
-          <q-icon name="arrow_back" color="white" /> 
-        </q-btn>
-        <q-space />
-        <!-- <q-btn
+	<q-layout view="hHh lpR fFf">
+		<q-header reveal class="mobile-layout-on-desktop transparent no-shadow">
+			<q-toolbar>
+				<q-btn
+					flat
+					round
+					dense
+					to="/"
+					style="background-color: rgba(0, 0, 0, 0.15)"
+				>
+					<q-icon name="arrow_back" color="white" />
+				</q-btn>
+				<q-space />
+				<!-- <q-btn
           flat
           dense
           round
@@ -27,562 +26,743 @@
           round
         >
           <q-icon name="share" color="white" />
-        </q-btn> -->
-      </q-toolbar>
-    </q-header>
+        </q-btn>-->
+			</q-toolbar>
+		</q-header>
 
-    <q-footer class="bg-white text-black mobile-layout-on-desktop" style="border-top: 2px solid #eee">
-      <q-toolbar class="bg-white text-black">
-        <span v-if="dataProduct.length !== 0">
-          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-if="user.role.id === 9">KAMU UNTUNG 
-            <span class="text-green" v-if="this.productVariant.length > 0">{{'Rp' + formatPrice( Number(productVariant[0].price * dataProduct.reseller_exclusive_price / 100) * Number(this.qty) )}}</span>
-            <span class="text-green" v-else>{{'Rp' + formatPrice( Number(dataProduct.price * dataProduct.reseller_exclusive_price / 100) * Number(this.qty) )}}</span>
-          </h4>
-          <h4 style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold" v-else-if="user.role.id === 8">KAMU UNTUNG 
-            <span class="text-green" v-if="this.productVariant.length > 0">{{'Rp' + formatPrice( Number(productVariant[0].price * dataProduct.reseller_pro_price / 100) * Number(this.qty) )}}</span>
-            <span class="text-green" v-else>{{'Rp' + formatPrice( Number(dataProduct.price * dataProduct.reseller_pro_price / 100) * Number(this.qty) )}}</span>
-          </h4>
-        </span>
-        <q-space />
-        <q-btn
-          flat
-          class="bg-orange-8 text-white"
-          @click="addToCart"
-        >
-          Beli Sekarang
-        </q-btn>
-      </q-toolbar>
-    </q-footer>
+		<q-footer
+			class="bg-white text-black mobile-layout-on-desktop"
+			style="border-top: 2px solid #eee"
+		>
+			<q-toolbar class="bg-white text-black">
+				<span v-if="productVariant">
+					<h4
+						style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
+						v-if="globalState.userProfile.role.id === 9"
+					>
+						KAMU UNTUNG
+						<span class="text-green">{{
+							"Rp" +
+								formatPrice(
+									Number(
+										productVariant.price -
+											productVariant.reseller_exclusive_price
+									) * Number(this.qty)
+								)
+						}}</span>
+					</h4>
+					<h4
+						style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
+						v-else-if="globalState.userProfile.role.id === 8"
+					>
+						KAMU UNTUNG
+						<span class="text-green">{{
+							"Rp" +
+								formatPrice(
+									Number(
+										productVariant.price - productVariant.reseller_pro_price
+									) * Number(this.qty)
+								)
+						}}</span>
+					</h4>
+					<h4
+						style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
+						v-else-if="globalState.userProfile.role.id === 10"
+					>
+						KAMU UNTUNG
+						<span class="text-green"></span>
+					</h4>
+				</span>
+				<q-space />
+				<q-btn flat class="bg-orange-8 text-white" @click="addToCart"
+					>Beli Sekarang</q-btn
+				>
+			</q-toolbar>
+		</q-footer>
 
-    <q-page-container class="mobile-layout-on-desktop bg-white">
-      <q-page>
-        <!-- <swiper :options="swiperOptionDetail">
-          <swiper-slide>
-            <img src="~/assets/images/product/247merah-square.png" width="100%" />
-          </swiper-slide>
-          <swiper-slide>
-            <img src="~/assets/images/product/247merah-square.png" width="100%" />
-          </swiper-slide>
-          <swiper-slide>
-            <img src="~/assets/images/product/247merah-square.png" width="100%" />
-          </swiper-slide>
-          <div class="swiper-pagination-detail" slot="pagination"></div>
-        </swiper> -->
-        <img :src="dataProduct.featured_image" width="100%" style="margin-top: -50px" />
-        <div class="row q-px-md">
-          <div class="col">
-            <h5 class="category-text">Kategori : <span class="text-red">{{dataCategory.category_name}}</span></h5>
-            <h5 class="category-text">Brand : <span class="text-red">{{dataBrand.brand_name}}</span></h5>
-            <h4 class="product-title-text">{{dataProduct.product_name}}</h4>
-            <div style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold" v-if="stockReady !== null">Stok Tersedia : {{ stockReady }}</div>
+		<q-page-container class="mobile-layout-on-desktop bg-white">
+			<q-page>
+				<!-- <template v-if="dataProduct.length !== 0">
+          <div style="margin-bottom: 10px; margin-top: -50px" v-if="dataProduct.image_gallery.length !== 0">
+            <carousel :items="1" :nav="false" :loop="true" :autoplay="true">
+                <img :src="gallery.image" v-for="(gallery, i) in dataProduct.image_gallery" :key="i">
+            </carousel>
+          </div>
+          <div style="margin-bottom: 10px; margin-top: -50px" v-else>
+            <img :src="dataProduct.featured_image" width="100%" />
+          </div>
+        </template>-->
+				<!-------------------------->
+				<!-- Product Image Slider -->
+				<!-------------------------->
+				<template v-if="productData && productData.image_gallery.length > 0">
+					<div
+						style="margin-bottom: 10px; margin-top: -50px"
+						v-if="productData.image_gallery.length !== 0"
+					>
+						<carousel :items="1" :nav="false" :loop="true" :autoplay="true">
+							<img
+								:src="item.image"
+								v-for="(item, i) in productData.image_gallery"
+								:key="i"
+							/>
+						</carousel>
+					</div>
+					<div style="margin-bottom: 10px; margin-top: -50px" v-else>
+						<img :src="productData.featured_image" width="100%" />
+					</div>
+				</template>
+				<!------------------------->
+				<!-- Information Section -->
+				<!------------------------->
+				<div class="row q-px-md">
+					<div class="col">
+						<!-- Informasi Umum -->
+						<h5 class="category-text">
+							Kategori :
+							<span class="text-red">{{
+								productData.category_detail.category_name
+							}}</span>
+						</h5>
+						<h5 class="category-text">
+							Brand :
+							<span class="text-red">{{ dataBrand.brand_name }}</span>
+						</h5>
+						<h4 class="product-title-text">{{ dataProduct.product_name }}</h4>
+						<div
+							style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold"
+						>
+							<span class="text-red" v-if="stockReady == null"
+								>Pilih Varian Untuk Melihat Jumlah Stok</span
+							>
+							<span v-else>Stok Tersedia: {{ stockReady }}</span>
+						</div>
 
-            <hr style="margin: 15px 0" />
-            
-            <template v-if="dataProduct.product_type === 'Variant Product'">
-              <!-- Pilih Warna & Ukuran -->
-              <div class="row" style="margin-bottom: 7px" v-for="(opt, index) in inputOptions" :key="index">
-                <div class="col-xs-4">
-                  <h5 class="options-title">Pilih {{opt.optionTitle}}</h5>
-                </div>
-                <div class="col-xs-8">
-                  <template v-if="opt.optionValue.length > 3">
-                    <q-select 
-                      dense
-                      outlined 
-                      color="orange-8" 
-                      options-dense
-                      v-model="opt.optionModel"
-                      :options="opt.optionValue"
-                      option-value="value"
-                      option-label="label"
-                      emit-value
-                      map-options
-                      @input="getProductVariant"
-                    />
-                  </template>
-                  <template v-else-if="opt.optionValue.length <= 3">
-                    <q-btn-toggle
-                      v-model="opt.optionModel"
-                      unelevated
-                      toggle-color="orange-8"
-                      color="white"
-                      text-color="orange-8"
-                      :options="opt.optionValue"
-                      style="border: 1px solid #f57c00"
-                      @input="getProductVariant"
-                    />
-                  </template>
-                </div>
-              </div>
-              <!-- <div class="row" style="margin-bottom: 7px">
+						<hr style="margin: 15px 0" />
+
+						<template v-if="dataProduct.product_type === 'Variant Product'">
+							<!-- Pilih Warna & Ukuran -->
+							<div
+								class="row"
+								style="margin-bottom: 7px"
+								v-for="(opt, index) in inputOptions"
+								:key="index"
+							>
+								<div class="col-xs-4">
+									<h5 class="options-title">Pilih {{ opt.optionTitle }}</h5>
+								</div>
+								<div class="col-xs-8">
+									<template v-if="opt.optionValue.length > 3">
+										<q-select
+											dense
+											outlined
+											color="orange-8"
+											options-dense
+											v-model="opt.selectedOption"
+											:options="opt.optionValue"
+											option-value="value"
+											option-label="label"
+											emit-value
+											map-options
+											@input="getProductVariant"
+										/>
+									</template>
+									<template v-else-if="opt.optionValue.length <= 3">
+										<q-btn-toggle
+											v-model="opt.selectedOption"
+											unelevated
+											toggle-color="orange-8"
+											color="white"
+											text-color="orange-8"
+											:options="opt.optionValue"
+											style="border: 1px solid #f57c00"
+											@input="getProductVariant"
+										/>
+									</template>
+								</div>
+							</div>
+							<!-- <div class="row" style="margin-bottom: 7px">
                 <div class="col-xs-4">
                   <h5 class="options-title">Pilih Ukuran</h5>
                 </div>
                 <div class="col-xs-8">
                   <q-select dense outlined color="orange-8" options-dense v-model="sizeSelected" :options="sizeOptions" />
                 </div>
-              </div> -->
-            </template>
-            <div class="row">
-              <div class="col-xs-4">
-                <h5 class="options-title">Qty</h5>
-              </div>
-              <div class="col-xs-8">
-                <q-input type="number" dense outlined color="orange-8" options-dense v-model="qty" style="width: 85px" :rules="[ val => val > 0 || 'Minimum 1 pcs' ]" lazy-rules />
-              </div>
-            </div>
-            <br/>
+              </div>-->
+						</template>
+						<div class="row">
+							<div class="col-xs-4">
+								<h5 class="options-title">Qty</h5>
+							</div>
+							<div class="col-xs-8">
+								<q-input
+									type="number"
+									dense
+									outlined
+									color="orange-8"
+									options-dense
+									v-model="qty"
+									style="width: 85px"
+									:rules="[val => val > 0 || 'Minimum 1 pcs']"
+									lazy-rules
+								/>
+							</div>
+						</div>
+						<br />
+						<!-- Informasi Harga -->
+						<template
+							v-if="
+								dataProduct.product_type === 'Simple Product' ||
+									(productVariant !== null && productVariant !== '')
+							"
+						>
+							<div class="row">
+								<div class="col-xs-6">
+									<h5 class="price-title-small-text">Harga Konsumen</h5>
+								</div>
+								<div class="col-xs-6">
+									<h5 class="price-title-small-text">Harga Reseller</h5>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-6">
+									<h5 class="price-detail-text" v-if="productVariant">
+										Rp{{ formatPrice(productVariant.price * qty) }}
+									</h5>
 
-            <!-- Informasi Harga -->
-            <template v-if="this.dataProduct.product_type === 'Simple Product' || this.productVariant.length > 0">
-              <div class="row">
-                <div class="col-xs-6">
-                  <h5 class="price-title-small-text">Harga Konsumen</h5>
-                </div>
-                <div class="col-xs-6">
-                  <h5 class="price-title-small-text">Harga Reseller</h5>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-6">
-                  <h5 class="price-detail-text" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price)}}</h5>
-                  <h5 class="price-detail-text" v-else>Rp{{formatPrice(dataProduct.price)}}</h5>
-                </div>
-                <div class="col-xs-6" v-if="user.role.id === 9">
-                  <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - (productVariant[0].price * dataProduct.reseller_exclusive_price / 100))}}</h5>
-                  <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_exclusive_price / 100) )}}</h5>
-                </div>
-                <div class="col-xs-6" v-else-if="user.role.id === 8">
-                  <h5 class="price-detail-text text-green" v-if="this.productVariant.length > 0">Rp{{formatPrice(productVariant[0].price - (productVariant[0].price * dataProduct.reseller_pro_price / 100) )}}</h5>
-                  <h5 class="price-detail-text text-green" v-else>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_pro_price / 100) )}}</h5>
-                </div>
-              </div>
-            </template>
-            <div class="row" v-if="user.role.id === 8 && dataProduct.length !== 0">
-              <div class="col">
-                <h4 class="upgrade-cta-text"><span class="text-black" style="text-decoration: underline;">Upgrade Dulu Aja!</span> Agar Dapat Harga <b>Rp{{formatPrice(dataProduct.price - (dataProduct.price * dataProduct.reseller_exclusive_price / 100) )}}</b></h4>
-              </div>
-            </div>
+									<h5 class="price-detail-text" v-else>
+										Rp{{ formatPrice(dataProduct.price * qty) }}
+									</h5>
+								</div>
+								<div
+									class="col-xs-6"
+									v-if="globalState.userProfile.role.id === 9"
+								>
+									<h5
+										class="price-detail-text text-green"
+										v-if="productVariant"
+									>
+										Rp{{
+											formatPrice(productVariant.reseller_exclusive_price * qty)
+										}}
+									</h5>
+									<h5 class="price-detail-text text-green" v-else>
+										Rp{{
+											formatPrice(dataProduct.reseller_exclusive_price * qty)
+										}}
+									</h5>
+								</div>
+								<div
+									class="col-xs-6"
+									v-else-if="globalState.userProfile.role.id === 8"
+								>
+									<h5
+										class="price-detail-text text-green"
+										v-if="productVariant"
+									>
+										Rp{{ formatPrice(productVariant.reseller_pro_price * qty) }}
+									</h5>
+									<h5 class="price-detail-text text-green" v-else>
+										Rp{{ formatPrice(dataProduct.reseller_pro_price * qty) }}
+									</h5>
+								</div>
+								<div
+									class="col-xs-6"
+									v-else-if="globalState.userProfile.role.id === 10"
+								>
+									<h5
+										class="price-detail-text text-green"
+										v-if="productVariant"
+									>
+										Rp{{ formatPrice(productVariant.price) }}
+									</h5>
+									<h5 class="price-detail-text text-green" v-else>
+										Rp{{ formatPrice(dataProduct.price) }}
+									</h5>
+								</div>
+							</div>
+						</template>
+						<div
+							class="row"
+							v-if="globalState.userProfile.role.id === 8 && productVariant"
+						>
+							<div class="col">
+								<h4 class="upgrade-cta-text">
+									<span class="text-black" style="text-decoration: underline;">
+										<q-btn
+											@click="upgrade"
+											flat
+											rounded
+											size="sm"
+											class="bg-green text-white"
+											>Upgrade Dulu Aja!</q-btn
+										>
+									</span>
+									Agar Dapat Harga
+									<b
+										>Rp{{
+											formatPrice(productVariant.reseller_exclusive_price)
+										}}</b
+									>
+								</h4>
+							</div>
+						</div>
 
-            <hr style="margin: 15px 0" />
+						<hr style="margin: 15px 0" />
 
-            <div class="row">
-              <div class="col">
-                <div class="row" style="margin-bottom: 5px">
-                  <div class="col">
-                    <h4 class="price-title-small-text">Rincian Produk</h4>
-                  </div>
-                  <div class="col text-right" style="padding-top: 5px">
-                    <q-btn flat class="bg-red text-white" size="sm" label="Salin" @click="doCopy" />
-                  </div>
-                </div>
-                <p v-html="dataProduct.product_description"></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </q-page>
-      <q-dialog v-model="confirmOrder">
-        <q-card style="width: 800px; max-width: 90vw;">
-          <!-- <q-card-section class="row items-center">
+						<div class="row">
+							<div class="col">
+								<div class="row" style="margin-bottom: 5px">
+									<div class="col">
+										<h4 class="price-title-small-text">Rincian Produk</h4>
+									</div>
+
+									<div class="col text-right" style="padding-top: 5px">
+										<q-btn
+											flat
+											class="bg-red text-white"
+											size="sm"
+											label="Salin"
+											@click="doCopy"
+										/>
+									</div>
+								</div>
+								<p v-html="dataProduct.product_description"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</q-page>
+			<q-dialog v-model="confirmOrder">
+				<q-card style="width: 800px; max-width: 90vw;">
+					<!-- <q-card-section class="row items-center">
             <h6 style="margin: 0; font-size: 16px">Berhasil Masuk Keranjang</h6>
             <q-space />
             <q-btn icon="close" size="sm" flat round dense v-close-popup />
-          </q-card-section> -->
+          </q-card-section>-->
 
-          <q-card-section>
-            <div class="row items-center">
-              <div class="col">
-                <center>
-                  <img src="~/assets/images/components/shopping-cart.svg" width="80" />
-                </center>
-              </div>
-            </div>
-            <br/>
-            <div class="row">
-              <div class="col text-center">
-                <h5 style="font-size: 18px; margin: 0; line-height: 24px"><b>{{ dataProduct.product_name }}</b><br/> telah dimasukkan ke keranjang belanja Anda</h5>
-              </div>
-            </div>
-            <br/>
-            <div class="row">
-              <div class="col">
-                <q-btn to="/cart" flat class="bg-orange-8 text-white full-width"><b>Cek Keranjang</b></q-btn>
-                <h5 style="font-size: 10px; margin: 0; text-align: center;">Atau</h5>
-                <q-btn to="/" outline color="black" class="full-width"><b>Lanjut Belanja</b></q-btn>
-              </div>
-            </div>
-          </q-card-section>
-        </q-card>
-      </q-dialog>
-    </q-page-container>
-
-  </q-layout>
+					<q-card-section>
+						<div class="row items-center">
+							<div class="col">
+								<center>
+									<img
+										src="~/assets/images/components/shopping-cart.svg"
+										width="80"
+									/>
+								</center>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col text-center">
+								<h5 style="font-size: 18px; margin: 0; line-height: 24px">
+									<b>{{ dataProduct.product_name }}</b>
+									<br />telah dimasukkan ke keranjang belanja Anda
+								</h5>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col">
+								<q-btn
+									to="/cart"
+									flat
+									class="bg-orange-8 text-white full-width"
+								>
+									<b>Cek Keranjang</b>
+								</q-btn>
+								<h5 style="font-size: 10px; margin: 0; text-align: center;">
+									Atau
+								</h5>
+								<q-btn to="/" outline color="black" class="full-width">
+									<b>Lanjut Belanja</b>
+								</q-btn>
+							</div>
+						</div>
+					</q-card-section>
+				</q-card>
+			</q-dialog>
+		</q-page-container>
+	</q-layout>
 </template>
 
 <style>
-  .category-text {
-    font-size: 13px;
-    font-family: 'Open Sans';
-    color: black;
-    margin: 0;
-    line-height: 15px;
-  }
-  .product-title-text {
-    font-size: 21px;
-    font-family: 'Open Sans';
-    color: black;
-    font-weight: bold;
-    margin: 2px 0 15px 0;
-  }
-  .options-title {
-    font-size: 14px;
-    font-family: 'Open Sans';
-    color: black;
-    font-weight: bold;
-    margin: 2px 0;
-  }
-  .price-title-small-text {
-    font-size: 14px;
-    font-family: 'Open Sans';
-    color: black;
-    font-weight: bold;
-    margin: 0;
-  }
-  .price-detail-text {
-    font-size: 21px;
-    font-family: 'Open Sans';
-    color: black;
-    font-weight: bold;
-    margin-top: -5px;
-    margin-bottom: 10px;
-  }
-  .upgrade-cta-text {
-    background-color: #ffca28;
-    padding: 5px;
-    font-size: 12px;
-    font-family: 'Open Sans';
-    color: black;
-    margin: 2px 0;
-    text-align: center;
-    border-radius: 5px;
-  }
+.category-text {
+	font-size: 13px;
+	font-family: "Open Sans";
+	color: black;
+	margin: 0;
+	line-height: 15px;
+}
+.product-title-text {
+	font-size: 21px;
+	font-family: "Open Sans";
+	color: black;
+	font-weight: bold;
+	margin: 2px 0 15px 0;
+}
+.options-title {
+	font-size: 14px;
+	font-family: "Open Sans";
+	color: black;
+	font-weight: bold;
+	margin: 2px 0;
+}
+.price-title-small-text {
+	font-size: 14px;
+	font-family: "Open Sans";
+	color: black;
+	font-weight: bold;
+	margin: 0;
+}
+.price-detail-text {
+	font-size: 21px;
+	font-family: "Open Sans";
+	color: black;
+	font-weight: bold;
+	margin-top: -5px;
+	margin-bottom: 10px;
+}
+.upgrade-cta-text {
+	background-color: #ffca28;
+	padding: 5px;
+	font-size: 12px;
+	font-family: "Open Sans";
+	color: black;
+	margin: 2px 0;
+	text-align: center;
+	border-radius: 5px;
+}
 </style>
 
 <script>
-import Vue from 'vue'
-import "swiper/dist/css/swiper.css"
-import { swiper, swiperSlide } from "vue-awesome-swiper"
-import axios from 'axios';
-import {apiDomain, catalogCategoryUrl, catalogBrandUrl, catalogProductUrl, addToCartUrl, inventoryStockUrl, getHeader} from 'src/config';
-import VueClipboard from 'vue-clipboard2'
+import Vue from "vue";
+import { mapState } from "vuex";
+import carousel from "vue-owl-carousel";
+import axios from "axios";
+import {
+	apiDomain,
+	catalogService,
+	catalogCategoryUrl,
+	catalogBrandUrl,
+	catalogProductUrl,
+	addToCartUrl,
+	inventoryStockUrl,
+	getHeader
+} from "src/config";
+import VueClipboard from "vue-clipboard2";
+import { openURL } from "quasar";
+import { googleSpreadsheetDoc } from "../../config/googleSpreadsheets";
+//vanilla.js
+import { nthIndex } from "../libraries/stringManipulation";
 
 Vue.use(VueClipboard);
 
 export default {
-  name: 'DetailProduct',
-  data () { 
-    return {
-      // Image Gallery
-      // swiperOptionDetail: {
-      //   pagination: {
-      //     // slidesPerView: 'auto',
-      //     centeredSlides: false,
-      //     spaceBetween: 10,
-      //     pagination: {
-      //       el: '.swiper-pagination-detail',
-      //       clickable: true
-      //     }
-      //   }
-      // },
-      // Product
-      dataProduct: [],
-      dataCategory: [],
-      dataBrand: [],
-      productDesc: null,
-      // Product Option
-      inputOptions: [],
-      optionValueSelected: [],
-      qty: 1,
-      // Product Variant
-      productVariant: [],
-      // Extra
-      confirmOrder: false,
-      user: null,
-      stockReady: null,
-      skuSelected: null,
-    } 
-  },
-  created () {
-    this.user = JSON.parse(window.localStorage.getItem('profileUser'));
-  },
-  mounted () {
-    this.getProductDetail();
-  },
-  methods: {
-    getProductDetail () {
+	name: "DetailProduct",
+	data() {
+		return {
+			productData: [],
+			dataCategory: [],
+			brandData: [],
+			productDesc: null,
+			inputOptions: [],
+			optionValueSelected: [],
+			qty: 1,
+			productVariant: null,
+			confirmOrder: false,
+			innerLoading: [],
+			user: null,
+			// skuSelected: null
 
-        axios.get( catalogProductUrl + '/' + this.$route.params.id, { headers: getHeader() } )
-          .then(response => {
-            console.log(response)
+			dataProduct: [],
+			dataBrand: []
+		};
+	},
+	computed: {
+		...mapState(["globalState"]),
+		stockReady: function() {
+			if (this.productVariant)
+				return (
+					this.productVariant.stock_qty - this.productVariant.keep_stock_qty
+				);
+			return null;
+		}
+	},
+	async created() {
+		await this.getProductData();
+	},
+	mounted() {
+		this.getProductDetail();
+	},
+	methods: {
+		async getProductData() {
+			const getProductParams = {
+				productIdArr: [this.$route.params.product_id],
+				select: ["id", "product_name", "brand_id", "category_id"],
+				eagerLoad: {
+					brand: ["id", "brand_name"],
+					category_detail: ["id", "category_name"],
+					image_gallery: ["id", "image", "product_id"]
+				}
+			};
 
-            if (response.status === 200) {
-              this.dataProduct = response.data.data;
+			const _productData = await this.$axios({
+				method: "post",
+				url: `${catalogService}/get-products-by-id`,
+				headers: getHeader(),
+				data: getProductParams
+			});
 
-              this.category_name = this.categoryProduct(this.dataProduct.category_id);
-              this.brand_name = this.brandProduct(this.dataProduct.brand_id);
+			this.productData = _productData.data.data[0];
+		},
+		async getBrandData() {
+			const _brandData = await this.$axios({
+				method: "get",
+				url: `${catalogBrandUrl}/`
+			});
+		},
+		getProductDetail() {
+			axios
+				.get(catalogProductUrl + "/" + this.$route.params.product_id, {
+					headers: getHeader()
+				})
+				.then(response => {
+					if (response.status === 200) {
+						this.dataProduct = response.data.data;
 
-              this.productDesc = this.dataProduct.product_description;
+						this.category_name = this.categoryProduct(
+							this.dataProduct.category_id
+						);
+						this.brand_name = this.brandProduct(this.dataProduct.brand_id);
 
-              if(this.dataProduct.product_type === 'Variant Product'){
-                this.getInputOptions();
-              }else{
+						this.productDesc = this.dataProduct.product_description;
 
-                  axios.get(inventoryStockUrl + '/' + this.dataProduct.sku, {headers: getHeader()}).then(response => {
+						if (this.dataProduct.product_type === "Variant Product") {
+							this.getInputOptions();
+						}
+					}
+				})
+				.catch(error => {
+					if (error.response) {
+						console.log(error.response);
+					}
+				});
+		},
+		categoryProduct(id) {
+			axios
+				.get(catalogCategoryUrl + "/" + id, { headers: getHeader() })
+				.then(response => {
+					if (response.status === 200) {
+						this.dataCategory = response.data.data;
+					}
+				})
+				.catch(error => {
+					if (error.response) {
+						console.log(error.response);
+					}
+				});
+		},
+		brandProduct(id) {
+			axios
+				.get(catalogBrandUrl + "/" + id, { headers: getHeader() })
+				.then(response => {
+					if (response.status === 200) {
+						this.dataBrand = response.data.data;
+					}
+				})
+				.catch(error => {
+					if (error.response) {
+						console.log(error.response);
+					}
+				});
+		},
+		getInputOptions() {
+			const productVariantsLength = this.dataProduct.product_variants.length;
+			let initialIndex = 0;
 
-                      if(response.status === 200){
-                        this.stockReady = response.data.data.stock_qty - response.data.data.keep_stock_qty;
-                        this.skuSelected = response.data.data.sku;
-                      }
+			this.inputOptions = this.dataProduct.product_options.map(
+				(option, optionIndex) => {
+					let optionValueSet = new Set();
 
-                    }).catch(error => {
-                      
-                      if (error.response) {
-                        console.log(error.response)
-                      }
-                    
-                    })
+					for (let index = 0; index < productVariantsLength; index++) {
+						const variant = this.dataProduct.product_variants[index];
+						const fromIndex = nthIndex(variant.sku, "~", optionIndex + 1) + 1; // ~ and move +1 index
+						const toIndex = nthIndex(variant.sku, "~", optionIndex + 2); //next ~(+2) and move +1 index
 
-              }
-            }
+						const result = variant.sku.substring(
+							fromIndex,
+							toIndex != -1 ? toIndex : variant.sku.length
+						);
+						optionValueSet.add(result);
+					}
 
-          })
-          .catch(error => {
-            if (error.response) {
-              console.log(error.response)
-            }
-          })
+					const optionValueArr = [...optionValueSet];
+					const optionValue = optionValueArr.map(optionValue => {
+						return {
+							label: optionValue,
+							value: optionValue
+						};
+					});
+					return {
+						optionTitle: option.option_name,
+						selectedOption: "",
+						optionValue
+					};
+				}
+			);
 
-    },
-    categoryProduct(id){
+			// return;
+			// for (var i = 0; i < productOptions.length; i++) {
+			//   //alert(productOptions[i].option_name);
+			//   this.inputOptions.push({
+			//     optionTitle: productOptions[i].option_name,
+			//     selectedOption: "",
+			//     optionValue: []
+			//   });
 
-        axios.get( catalogCategoryUrl + '/' + id, { headers: getHeader() } )
-          .then(response => {
-            console.log(response)
+			//   for (var val = 0; val < productOptions[i].values.length; val++) {
+			//     this.inputOptions[i].optionValue.push({
+			//       label: productOptions[i].values[val].value_name,
+			//       value: productOptions[i].values[val].value_name
+			//     });
+			//   }
+			// }
+		},
+		getProductVariant() {
+			// Get option value
+			let val = [];
+			let productOptionSelected = [];
 
-            if (response.status === 200) {
-              this.dataCategory = response.data.data;
-            }
+			for (var key in this.inputOptions) {
+				productOptionSelected.push({
+					option: this.inputOptions[key].optionTitle,
+					value: this.inputOptions[key].selectedOption
+				});
+				val.push(this.inputOptions[key].selectedOption);
+			}
 
-          })
-          .catch(error => {
-            if (error.response) {
-              console.log(error.response)
-            }
-          })
+			let optionSelected = String(this.dataProduct.sku) + "~" + val.join("~");
 
-    },
-    brandProduct(id){
+			this.optionValueSelected = JSON.stringify(productOptionSelected);
 
-        axios.get( catalogBrandUrl + '/' + id, { headers: getHeader() } )
-          .then(response => {
-            console.log(response)
+			// Check product sku with option value
+			let varPro = JSON.parse(
+				JSON.stringify(this.dataProduct.product_variants)
+			);
 
-            if (response.status === 200) {
-              this.dataBrand = response.data.data;
-            }
+			this.productVariant = "";
+			//let storeVar = [];
+			for (var i = 0, l = varPro.length; i < l; i++) {
+				if (optionSelected.toUpperCase() === varPro[i].sku) {
+					// store product variant
 
-          })
-          .catch(error => {
-            if (error.response) {
-              console.log(error.response)
-            }
-          })
+					this.productVariant = {
+						id: varPro[i].id,
+						product_id: varPro[i].product_id,
+						sku: varPro[i].sku,
+						price: varPro[i].price,
+						reseller_pro_price: varPro[i].reseller_pro_price,
+						reseller_exclusive_price: varPro[i].reseller_exclusive_price,
+						stock_qty: varPro[i].stock_qty,
+						keep_stock_qty: varPro[i].keep_stock_qty
+					};
+				}
+			}
+		},
+		addToCart() {
+			// this.getInputOptions();
+			// return;
+			// Cek stok dulu
+			let error = null;
+			if (!/[0-9]/.test(this.qty) || this.qty <= 0) {
+				error = "notAllowed";
+			}
+			if (this.qty > this.stockReady || this.stockReady <= 0) {
+				error = "insufficientStock";
+			}
+			if (this.stockReady == null) {
+				error = "variantNotSelected";
+			}
 
-    },
-    getInputOptions() {
+			if (!error) {
+				let postData = new FormData();
 
-        let productOptions = this.dataProduct.product_options;
+				postData.set("product_id", this.dataProduct.id);
+				// Post Data Product Variant
+				postData.set("product_sku_id", this.productVariant.id);
+				postData.set("product_sku", this.productVariant.sku);
+				postData.set("options", this.optionValueSelected);
+				postData.set("qty", this.qty);
+				postData.set("customer_id", this.globalState.userProfile.id);
+				postData.set("customer_name", this.globalState.userProfile.name);
+				postData.set("customer_email", this.globalState.userProfile.email);
+				postData.set("customer_phone", this.globalState.userProfile.phone);
+				postData.set("role_id", this.globalState.userProfile.role.id);
 
-        for(var i=0; i<productOptions.length; i++){
+				axios
+					.post(addToCartUrl, postData, { headers: getHeader() })
+					.then(response => {
+						if (response.status === 200) {
+							//this.$q.notify({position: 'top', color: 'dark', message: 'Produk Ditambahkan ke Keranjang'});
+							this.confirmOrder = true;
+						}
+					})
+					.catch(error => {
+						if (error.response.data.error == "insufficientStock") {
+							this.$q.notify({
+								position: "top",
+								color: "red",
+								message: "Keranjang anda melebihi stok yang tersedia"
+							});
+						} else {
+							this.$q.notify({
+								position: "top",
+								color: "red",
+								message: "Periksa Kembali Keranjang Anda"
+							});
+						}
+					});
+			} else if (error == "notAllowed") {
+				this.$q.notify({
+					position: "top",
+					color: "red",
+					message: "Cek Jumlah Yang Anda Masukkan"
+				});
+			} else if (error == "insufficientStock") {
+				this.$q.notify({
+					position: "top",
+					color: "red",
+					message: "Stock Belum Tersedia"
+				});
+			} else {
+				this.$q.notify({
+					position: "top",
+					color: "red",
+					message: "Silahkan Pilih Varian Terlebih Dahulu"
+				});
+			}
+		},
+		formatPrice(value) {
+			let val = (value / 1).toFixed(0).replace(".", ",");
+			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+		},
+		doCopy: function() {
+			var h2p = require("html2plaintext");
 
-          //alert(productOptions[i].option_name);
-          this.inputOptions.push({
-            optionTitle: productOptions[i].option_name,
-            optionModel: '',
-            optionValue: [],
-          });
-
-          for(var val=0; val<productOptions[i].values.length; val++){
-
-            this.inputOptions[i].optionValue.push({label: productOptions[i].values[val].value_name, value: productOptions[i].values[val].value_name});
-
-          }
-
-        }
-
-    },
-    getProductVariant () {
-
-      // Get option value
-      let val = [];
-      let productOptionSelected = [];
-
-      for(var key in this.inputOptions){
-
-        productOptionSelected.push({
-          option: this.inputOptions[key].optionTitle,
-          value: this.inputOptions[key].optionModel,
-        });
-        val.push(this.inputOptions[key].optionModel);
-
-      }
-
-      let optionSelected = val.join('');
-
-      this.optionValueSelected = JSON.stringify(productOptionSelected);
-
-      // Check product sku with option value     
-      let varPro = JSON.parse(JSON.stringify(this.dataProduct.product_variants));
-
-      this.productVariant = [];
-      //let storeVar = [];
-      for (var i = 0, l = varPro.length; i < l; i++) {
-          
-          if(optionSelected.toUpperCase() === varPro[i].sku.replace(this.dataProduct.sku,'')){
-            
-            // store product variant
-            this.productVariant.push({
-              id: varPro[i].id,
-              product_id: varPro[i].product_id,
-              sku: varPro[i].sku,
-              price: varPro[i].price,
-              stock: varPro[i].stock,
-            })
-
-            axios.get(inventoryStockUrl + '/' + varPro[i].sku, {headers: getHeader()}).then(response => {
-
-                if(response.status === 200){
-                  this.stockReady = response.data.data.stock_qty - response.data.data.keep_stock_qty;
-                  this.skuSelected = response.data.data.sku;
-                }
-
-              }).catch(error => {
-                
-                if (error.response) {
-                  console.log(error.response)
-                }
-              
-              })
-
-          }
-
-      }
-    },
-    addToCart () {
-
-        // Cek stok dulu
-        if(this.stockReady > 0 && this.qty <= this.stockReady){
-
-            let postData = new FormData();
-
-            if(this.dataProduct.product_type === 'Variant Product'){
-              postData.set('product_id', this.dataProduct.id);
-              // Post Data Product Variant
-              postData.set('product_sku_id', this.productVariant[0].id);
-              postData.set('product_sku', this.skuSelected);
-              postData.set('product_sku_price', this.productVariant[0].price);
-              postData.set('options', this.optionValueSelected);
-              postData.set('qty', this.qty);
-              postData.set('customer_id', this.user.id);
-              postData.set('customer_name', this.user.name);
-              postData.set('customer_email', this.user.email);
-              postData.set('customer_phone', this.user.phone);
-              if(this.user.role.id === 9){
-                postData.set('reseller_discount', this.productVariant[0].price * this.dataProduct.reseller_exclusive_price / 100);
-                postData.set('reseller_discount_rate', this.dataProduct.reseller_exclusive_price);
-              }else if(this.user.role.id === 8){
-                postData.set('reseller_discount', this.productVariant[0].price * this.dataProduct.reseller_pro_price / 100);
-                postData.set('reseller_discount_rate', this.dataProduct.reseller_pro_price);
-              }
-            }else{
-              postData.set('product_id', this.dataProduct.id);
-              postData.set('product_sku_id', 0);
-              postData.set('product_sku', this.skuSelected);
-              postData.set('qty', this.qty);
-              postData.set('customer_id', this.user.id);
-              postData.set('customer_name', this.user.name);
-              postData.set('customer_email', this.user.email);
-              postData.set('customer_phone', this.user.phone);
-              if(this.user.role.id === 9){
-                postData.set('reseller_discount', this.dataProduct.price * this.dataProduct.reseller_exclusive_price / 100);
-                postData.set('reseller_discount_rate', this.dataProduct.reseller_exclusive_price);
-              }else if(this.user.role.id === 8){
-                postData.set('reseller_discount', this.dataProduct.price * this.dataProduct.reseller_pro_price / 100);
-                postData.set('reseller_discount_rate', this.dataProduct.reseller_pro_price);
-              }
-            }
-
-            axios.post(addToCartUrl, postData, {headers: getHeader()}).then(response => {
-
-              if(response.status === 200){
-                //this.$q.notify({position: 'top', color: 'dark', message: 'Produk Ditambahkan ke Keranjang'});
-                this.confirmOrder = true;
-              }
-
-            }).catch(error => {
-              
-              if (error.response) {
-                console.log(error.response)
-              }
-            
-            })
-        
-        }else{
-
-            this.$q.notify({position: 'top', color: 'red', message: 'Maaf, Stok Belum Ada!'});
-
-        }
-
-    },
-    // checkStock () {
-    //     //this.stockReady = null;
-        
-    //     if(this.productVariant.length > 0){
-
-    //         axios.get(inventoryStockUrl + '/' + this.productVariant[0].sku, {headers: getHeader()}).then(response => {
-
-    //             if(response.status === 200){
-    //               this.stockReady = response.data.data.stock_qty;
-    //             }
-
-    //           }).catch(error => {
-                
-    //             if (error.response) {
-    //               console.log(error.response)
-    //             }
-              
-    //           })
-
-    //     }
-        
-    // },
-    formatPrice(value) {
-        let val = (value/1).toFixed(0).replace('.', ',')
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-    },
-    doCopy: function () {
-      var h2p = require('html2plaintext');
-
-      this.$copyText(h2p(this.productDesc)).then(function (e) {
-        alert('Copied')
-        console.log(e)
-      }, function (e) {
-        alert('Can not copy')
-        console.log(e)
-      })
-    }
-  },
-  components: { swiper, swiperSlide }
-}
+			this.$copyText(h2p(this.productDesc)).then(
+				function(e) {
+					alert("Copied");
+				},
+				function(e) {
+					alert("Can not copy");
+				}
+			);
+		},
+		upgrade() {
+			openURL("https://serbalaris.orderonline.id/upgrade-eksklusif");
+		}
+	},
+	components: { carousel, openURL }
+};
 </script>
