@@ -6,7 +6,7 @@
           <div class="col">
             <img src="~/assets/images/components/logo-distrodakwah-small.png" width="170px" />
             <br/>
-            <h1 class="login-text">LOGIN</h1>
+            <h1 class="login-text">Sign In</h1>
             <p class="login-small-text">Untuk dapatkan berbagai macam<br/>keuntungan di Distrodakwah.id</p>
             <q-input v-model="email" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Email" />
             <!-- <q-input v-model="password" color="orange-8" type="password" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Kata Sandi" /> -->
