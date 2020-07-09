@@ -300,7 +300,7 @@
 								>
 									-Rp{{
 										formatPrice(
-											((dataOrder.total_amount + dataOrder.shipment_fee) *
+											(dataOrder.total_amount *
 												dataOrder.voucher_discount) /
 												100
 										)
