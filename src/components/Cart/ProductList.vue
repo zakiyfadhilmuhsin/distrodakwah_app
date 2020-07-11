@@ -22,11 +22,11 @@
 							{{ item.product_name }}
 						</h5>
 						<h6
-							v-for="(opt, i) in item.options"
+							v-for="(opt, i) in Object.keys(item.options)"
 							:key="i"
 							style="margin: -15px 0; font-size: 12px;"
 						>
-							{{ opt.option + ": " + opt.value }}
+							{{ opt + ": " + item.options[opt] }}
 						</h6>
 						<h6 style="margin: -15px 0; font-size: 12px;">
 							Qty: {{ item.qty }} Harga: Rp

@@ -74,17 +74,6 @@
 					</h4>
 				</span>
 				<q-space />
-				<q-btn
-					flat
-					class="bg-orange-8 text-white"
-					@click="addToCart"
-					v-if="!IsCustomDesign || (IsCustomDesign && IsExclusive)"
-				>
-					Beli Sekarang
-				</q-btn>
-				<q-btn flat class="bg-green-8 text-white" v-else @click="upgrade"
-					>Upgrade Untuk Mendapatkan Fitur Ini</q-btn
-				>
 			</q-toolbar>
 		</q-footer>
 
@@ -139,13 +128,22 @@
 						<div
 							style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold"
 						>
-							<span class="text">Stok Tersedia</span>
+							<span class="text-red" v-if="stockReady == null"
+								>Pilih Varian Untuk Melihat Jumlah Stok</span
+							>
+							<span v-else
+								>Stok Tersedia:
+								{{
+									stockReady === "not_available"
+										? "Varian Tidak ada"
+										: stockReady
+								}}</span
+							>
 						</div>
 
 						<hr style="margin: 15px 0" />
-
+						<!-- Pilih Warna & Ukuran -->
 						<template v-if="isOptionsAllowed">
-							<!-- Pilih Warna & Ukuran -->
 							<div
 								class="row"
 								style="margin-bottom: 7px"
@@ -153,7 +151,7 @@
 								:key="index"
 							>
 								<div class="col-xs-4">
-									<h5 class="options-title">Pilih {{ opt.option_name }}</h5>
+									<h5 class="options-title">Pilih {{ opt.option_name }}:</h5>
 								</div>
 								<div class="col-xs-8">
 									<select
@@ -169,9 +167,25 @@
 											>{{ value }}</option
 										>
 									</select>
+									<!-- <q-select
+										dense
+										outlined
+										color="orange-8"
+										options-dense
+										:options="opt.option_value"
+										@change="constructSKU($event)"
+									/> -->
 								</div>
 							</div>
 						</template>
+						<!-- <div class="row" style="margin-bottom: 7px">
+                <div class="col-xs-4">
+                  <h5 class="options-title">Pilih Ukuran</h5>
+                </div>
+                <div class="col-xs-8">
+                  <q-select dense outlined color="orange-8" options-dense v-model="sizeSelected" :options="sizeOptions" />
+                </div>
+              </div>-->
 						<div class="row">
 							<div class="col-xs-4">
 								<h5 class="options-title">Qty</h5>
@@ -192,6 +206,7 @@
 						</div>
 						<br />
 						<!-- Informasi Harga -->
+
 						<div class="row">
 							<div class="col-xs-6">
 								<h5 class="price-title-small-text">Harga Konsumen</h5>
@@ -261,54 +276,27 @@
 						</div>
 
 						<hr style="margin: 15px 0" />
+
 						<div class="row">
-							<h4 class="price-title-small-text">
-								Stok bahan baku:
-								<span v-if="yaumeeSpreadsheetsTable.rows.length == 0"
-									>Sedang Memuat</span
-								>
-							</h4>
-							<table
-								v-if="yaumeeSpreadsheetsTable.rows.length > 0"
-								class="stocking-table"
-							>
-								<thead>
-									<tr>
-										<th
-											v-for="(header, i) in yaumeeSpreadsheetsTable.headers"
-											:key="i"
-										>
-											{{ header }}
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr v-for="(row, i) in yaumeeSpreadsheetsTable.rows" :key="i">
-										<td>{{ row.Warna }}</td>
-										<td>{{ row.M }}</td>
-										<td>{{ row.L }}</td>
-										<td>{{ row.XL }}</td>
-										<td>{{ row.XXL }}</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<hr style="margin: 15px 0" />
-						<div class="row" style="margin-bottom: 5px">
 							<div class="col">
-								<h4 class="price-title-small-text">Rincian Produk</h4>
-							</div>
-							<div class="col text-right" style="padding-top: 5px">
-								<q-btn
-									flat
-									class="bg-red text-white"
-									size="sm"
-									label="Salin"
-									@click="doCopy"
-								/>
+								<div class="row" style="margin-bottom: 5px">
+									<div class="col">
+										<h4 class="price-title-small-text">Rincian Produk</h4>
+									</div>
+
+									<div class="col text-right" style="padding-top: 5px">
+										<q-btn
+											flat
+											class="bg-red text-white"
+											size="sm"
+											label="Salin"
+											@click="doCopy"
+										/>
+									</div>
+								</div>
+								<p v-html="productData.product_description"></p>
 							</div>
 						</div>
-						<p v-html="productData.product_description"></p>
 					</div>
 				</div>
 			</q-page>
@@ -412,35 +400,11 @@
 	text-align: center;
 	border-radius: 5px;
 }
-
-.stocking-table {
-	border-collapse: collapse;
-	background-color: white;
-	overflow: hidden;
-	width: 100%;
-	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-}
-
-.stocking-table th,
-.stocking-table td {
-	font-family: "Motnserrat", sans-serif;
-	text-align: left;
-	font-size: 12px;
-	padding: 10px;
-
-	border: 1px solid #7691ab;
-}
-.stocking-table thead {
-	background-color: #7691ab;
-	color: white;
-	border-radius: 3px;
-}
 </style>
 
 <script>
-import { mapState } from "vuex";
 import Vue from "vue";
-import carousel from "vue-owl-carousel";
+import { mapState } from "vuex";
 import { cloneDeep, isEmpty } from "lodash";
 import axios from "axios";
 import {
@@ -455,13 +419,13 @@ import {
 } from "src/config";
 import VueClipboard from "vue-clipboard2";
 import { openURL } from "quasar";
-import { googleSpreadsheetDoc } from "../../config/googleSpreadsheets";
+import carousel from "vue-owl-carousel";
 //vanilla.js
 
 Vue.use(VueClipboard);
 
 export default {
-	name: "KeepDetailProduct",
+	name: "DetailProduct",
 	data() {
 		return {
 			productData: {},
@@ -470,34 +434,27 @@ export default {
 			selectedVariant: null,
 			inputOptions: {},
 
-			yaumeeSpreadsheetsTable: {
-				headers: [],
-				rows: []
-			},
-
 			optionValueSelected: [],
 			qty: 1,
 			productVariant: null,
 			confirmOrder: false,
-			innerLoading: []
-
+			innerLoading: [],
+			user: null
 			// skuSelected: null
 		};
 	},
 	computed: {
 		...mapState(["globalState"]),
 		stockReady: function() {
-			if (this.selectedVariant)
-				return (
-					this.selectedVariant.stock_qty - this.selectedVariant.keep_stock_qty
+			if (this.selectedSkuId) {
+				const productSku = this.productData.product_variants.find(
+					e => e.id == this.selectedSkuId
 				);
-			return null;
-		},
-		IsCustomDesign: function() {
-			return [409, 410, 411, 412].indexOf(this.productData.id) !== -1;
-		},
-		IsExclusive: function() {
-			return this.globalState.userProfile.role_id === 9;
+
+				return productSku.stock_qty - productSku.keep_stock_qty;
+			}
+
+			return "not_available";
 		},
 		isOptionsAllowed: function() {
 			return this.inputOptions.length > 0;
@@ -507,39 +464,9 @@ export default {
 	async created() {
 		await this.getProductData();
 		await this.getInputOptions();
-
-		const doc = await googleSpreadsheetDoc();
-		let sheet;
-		if (this.productData.category_id == 7 || this.productData.sku == "OS") {
-			sheet = await doc.sheetsByIndex[0];
-		} else if (
-			this.productData.category_id == 8 ||
-			this.productData.sku == "OT"
-		) {
-			sheet = await doc.sheetsByIndex[1];
-		} else if (
-			this.productData.category_id == 9 ||
-			this.productData.sku == "OU"
-		) {
-			sheet = await doc.sheetsByIndex[2];
-		}
-		if (sheet) {
-			await sheet.loadHeaderRow();
-			const rows = await sheet.getRows();
-			const rowsMapSpreadsheet = [];
-			for await (const row of rows) {
-				rowsMapSpreadsheet.push({
-					Warna: row["Varian"],
-					M: row.M,
-					L: row.L,
-					XL: row.XL,
-					XXL: row.XXL
-				});
-			}
-
-			this.yaumeeSpreadsheetsTable.headers = sheet.headerValues;
-			this.yaumeeSpreadsheetsTable.rows = rowsMapSpreadsheet;
-		}
+	},
+	mounted() {
+		// this.getProductDetail();
 	},
 	methods: {
 		async getProductData() {
@@ -572,7 +499,7 @@ export default {
 			};
 			const _productData = await this.$axios({
 				method: "post",
-				url: `${catalogService}/get-products-by-id`,
+				url: `${catalogService}/get-only-trashed-products-by-id`,
 				headers: getHeader(),
 				data: getProductParams
 			});
@@ -608,7 +535,6 @@ export default {
 
 			this.inputOptions = cloneDeep(_inputOptions);
 		},
-
 		constructSKU(event) {
 			this.selectedOption = {
 				...this.selectedOption,
@@ -644,6 +570,7 @@ export default {
 				this.selectedVariant = this.productData.product_variants.find(
 					e => e.id == this.selectedSkuId
 				);
+
 				return 0;
 			} else {
 				for (
@@ -676,7 +603,6 @@ export default {
 				this.selectedSkuId = null;
 			}
 		},
-
 		addToCart() {
 			// this.getInputOptions();
 			// return;
@@ -697,7 +623,7 @@ export default {
 
 				postData.set("product_id", this.productData.id);
 				// Post Data Product Variant
-				postData.set("product_sku_id", this.selectedVariant.id);
+				postData.set("product_sku_id", this.selectedSkuId);
 				postData.set("product_sku", this.selectedVariant.sku);
 				postData.set("options", JSON.stringify(this.selectedOption));
 				postData.set("qty", this.qty);

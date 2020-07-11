@@ -26,7 +26,6 @@ export default function(/* { store, ssrContext } */) {
 	Router.beforeEach((to, from, next) => {
 		if (to.matched.some(item => item.meta.requiresAuth)) {
 			// const authUser = JSON.parse(window.localStorage.getItem('authUser'))
-
 			if (LocalStorage.has("authUser")) {
 				if (JSON.parse(LocalStorage.getItem("authUser")) !== null) {
 					if (LocalStorage.getItem("authUser").access_token !== "undefined") {
