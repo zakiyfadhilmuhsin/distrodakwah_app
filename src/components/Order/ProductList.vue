@@ -21,10 +21,12 @@
 						>
 							{{ item.product_name }}
 						</h5>
-						<h6 style="margin: 5px 0 0 0; font-size: 12px; line-height: 14px">
-							<span v-for="(opt, i) in item.options" :key="i">{{
-								opt.option + ": " + opt.value
-							}}</span>
+						<h6
+							v-for="(opt, i) in Object.keys(item.options)"
+							:key="i"
+							style="margin: -15px 0; font-size: 12px;"
+						>
+							{{ opt + ": " + item.options[opt] }}
 						</h6>
 						<h6 style="margin: -5px 0 0 0; font-size: 12px;">
 							Qty {{ item.qty }} x Rp{{ currencyFormat(item.reseller_price) }}
@@ -36,7 +38,8 @@
 						</h6>
 					</div>
 					<q-banner v-if="!item.stock_sufficient" class="insufficient-stock">
-						Stok tidak tersedia, silahkan kembali ke Keranjang Belanjan dan hapus produk ini dari keranjang
+						Stok tidak tersedia, silahkan kembali ke Keranjang Belanjan dan
+						hapus produk ini dari keranjang
 					</q-banner>
 				</div>
 			</div>

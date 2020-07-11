@@ -2,8 +2,12 @@ import LoginPage from "pages/Auth/Login";
 import CreateAccountPage from "pages/Auth/CreateAccount";
 import FreeAccountPage from "pages/Auth/RegisterFreeMember";
 import StorefrontPage from "pages/StorefrontNew";
+
+import ProductReviewDetailPage from '../pages/Products/ProductReviewDetail.vue';
 import DetailProductPage from "pages/DetailProduct";
 import KeepDetailProductPage from "pages/KeepDetailProduct";
+import ProductReviewPage from '../pages/Products/ProductReview.vue';
+
 import DashboardPage from "pages/ResellerArea/DashboardNew";
 import ListCustomerPage from "pages/ResellerArea/ListCustomer";
 import ShippingPage from "pages/Shipping";
@@ -32,6 +36,13 @@ const routes = [
 			requiresAuth: true
 		},
 		component: StorefrontPage
+	},
+	{
+		path: "/productReview",
+		meta: {
+			requiresAuth: true
+		},
+		component: ProductReviewPage
 	},
 	{
 		path: "/activation",
@@ -70,9 +81,16 @@ const routes = [
 	},
 	{
 		path: "/detail/keep/:product_id",
-		component : KeepDetailProductPage,
+		component: KeepDetailProductPage,
 		meta: {
-			requiresAuth : true
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/prodouctReviewDetails/:product_id",
+		component: ProductReviewDetailPage,
+		meta: {
+			requiresAuth: true
 		}
 	},
 	{

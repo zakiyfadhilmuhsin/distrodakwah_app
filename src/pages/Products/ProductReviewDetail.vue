@@ -74,9 +74,6 @@
 					</h4>
 				</span>
 				<q-space />
-				<q-btn flat class="bg-orange-8 text-white" @click="addToCart"
-					>Beli Sekarang</q-btn
-				>
 			</q-toolbar>
 		</q-footer>
 
@@ -502,7 +499,7 @@ export default {
 			};
 			const _productData = await this.$axios({
 				method: "post",
-				url: `${catalogService}/get-products-by-id`,
+				url: `${catalogService}/get-only-trashed-products-by-id`,
 				headers: getHeader(),
 				data: getProductParams
 			});
@@ -573,6 +570,7 @@ export default {
 				this.selectedVariant = this.productData.product_variants.find(
 					e => e.id == this.selectedSkuId
 				);
+
 				return 0;
 			} else {
 				for (

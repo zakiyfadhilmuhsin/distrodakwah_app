@@ -35,7 +35,7 @@
 			style="border-top: 2px solid #eee"
 		>
 			<q-toolbar class="bg-white text-black">
-				<span v-if="productVariant">
+				<span v-if="selectedVariant">
 					<h4
 						style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
 						v-if="globalState.userProfile.role.id === 9"
@@ -45,8 +45,8 @@
 							"Rp" +
 								formatPrice(
 									Number(
-										productVariant.price -
-											productVariant.reseller_exclusive_price
+										selectedVariant.price -
+											selectedVariant.reseller_exclusive_price
 									) * Number(this.qty)
 								)
 						}}</span>
@@ -60,7 +60,7 @@
 							"Rp" +
 								formatPrice(
 									Number(
-										productVariant.price - productVariant.reseller_pro_price
+										selectedVariant.price - selectedVariant.reseller_pro_price
 									) * Number(this.qty)
 								)
 						}}</span>
@@ -82,8 +82,8 @@
 				>
 					Beli Sekarang
 				</q-btn>
-				<q-btn flat class="bg-green-8 text-white" v-else
-					@click="upgrade">Upgrade Untuk Mendapatkan Fitur Ini</q-btn
+				<q-btn flat class="bg-green-8 text-white" v-else @click="upgrade"
+					>Upgrade Untuk Mendapatkan Fitur Ini</q-btn
 				>
 			</q-toolbar>
 		</q-footer>
@@ -103,38 +103,39 @@
 				<!-------------------------->
 				<!-- Product Image Slider -->
 				<!-------------------------->
-				<template v-if="dataProduct.length !== 0">
+				<template v-if="!isEmpty(productData)">
 					<div
 						style="margin-bottom: 10px; margin-top: -50px"
-						v-if="dataProduct.product_variants.length !== 0"
+						v-if="productData.product_variants.length !== 0"
 					>
 						<carousel :items="1" :nav="false" :loop="true" :autoplay="true">
 							<img
 								:src="images.image"
-								v-for="(images, i) in dataProduct.image_gallery"
+								v-for="(images, i) in productData.image_gallery"
 								:key="i"
 							/>
 						</carousel>
-					</div>
-					<div style="margin-bottom: 10px; margin-top: -50px" v-else>
-						<img :src="dataProduct.featured_image" width="100%" />
 					</div>
 				</template>
 				<!------------------------->
 				<!-- Information Section -->
 				<!------------------------->
 				<div class="row q-px-md">
-					<div class="col">
+					<div class="col" v-if="!isEmpty(productData)">
 						<!-- Informasi Umum -->
 						<h5 class="category-text">
 							Kategori :
-							<span class="text-red">{{ dataCategory.category_name }}</span>
+							<span class="text-red">{{
+								productData.category_detail.category_name
+							}}</span>
 						</h5>
 						<h5 class="category-text">
 							Brand :
-							<span class="text-red">{{ dataBrand.brand_name }}</span>
+							<span class="text-red">{{
+								productData.brand_detail.brand_name
+							}}</span>
 						</h5>
-						<h4 class="product-title-text">{{ dataProduct.product_name }}</h4>
+						<h4 class="product-title-text">{{ productData.product_name }}</h4>
 						<div
 							style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold"
 						>
@@ -143,7 +144,7 @@
 
 						<hr style="margin: 15px 0" />
 
-						<template v-if="dataProduct.product_type === 'Variant Product'">
+						<template v-if="isOptionsAllowed">
 							<!-- Pilih Warna & Ukuran -->
 							<div
 								class="row"
@@ -152,46 +153,24 @@
 								:key="index"
 							>
 								<div class="col-xs-4">
-									<h5 class="options-title">Pilih {{ opt.optionTitle }}</h5>
+									<h5 class="options-title">Pilih {{ opt.option_name }}</h5>
 								</div>
 								<div class="col-xs-8">
-									<template v-if="opt.optionValue.length > 3">
-										<q-select
-											dense
-											outlined
-											color="orange-8"
-											options-dense
-											v-model="opt.selectedOption"
-											:options="opt.optionValue"
-											option-value="value"
-											option-label="label"
-											emit-value
-											map-options
-											@input="getProductVariant"
-										/>
-									</template>
-									<template v-else-if="opt.optionValue.length <= 3">
-										<q-btn-toggle
-											v-model="opt.selectedOption"
-											unelevated
-											toggle-color="orange-8"
-											color="white"
-											text-color="orange-8"
-											:options="opt.optionValue"
-											style="border: 1px solid #f57c00"
-											@input="getProductVariant"
-										/>
-									</template>
+									<select
+										:name="opt.option_name"
+										id=""
+										@change="constructSKU($event)"
+									>
+										<option value="" selected disabled></option>
+										<option
+											:value="value"
+											v-for="(value, i) in opt.option_value"
+											:key="i"
+											>{{ value }}</option
+										>
+									</select>
 								</div>
 							</div>
-							<!-- <div class="row" style="margin-bottom: 7px">
-                <div class="col-xs-4">
-                  <h5 class="options-title">Pilih Ukuran</h5>
-                </div>
-                <div class="col-xs-8">
-                  <q-select dense outlined color="orange-8" options-dense v-model="sizeSelected" :options="sizeOptions" />
-                </div>
-              </div>-->
 						</template>
 						<div class="row">
 							<div class="col-xs-4">
@@ -213,81 +192,51 @@
 						</div>
 						<br />
 						<!-- Informasi Harga -->
-						<template
-							v-if="
-								dataProduct.product_type === 'Simple Product' ||
-									(productVariant !== null && productVariant !== '')
-							"
-						>
-							<div class="row">
-								<div class="col-xs-6">
-									<h5 class="price-title-small-text">Harga Konsumen</h5>
-								</div>
-								<div class="col-xs-6">
-									<h5 class="price-title-small-text">Harga Reseller</h5>
-								</div>
+						<div class="row">
+							<div class="col-xs-6">
+								<h5 class="price-title-small-text">Harga Konsumen</h5>
 							</div>
-							<div class="row">
-								<div class="col-xs-6">
-									<h5 class="price-detail-text" v-if="productVariant">
-										Rp{{ formatPrice(productVariant.price * qty) }}
-									</h5>
+							<div class="col-xs-6">
+								<h5 class="price-title-small-text">Harga Reseller</h5>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-6">
+								<h5 class="price-detail-text" v-if="selectedVariant">
+									Rp{{ formatPrice(selectedVariant.price * qty) }}
+								</h5>
+							</div>
+							<div
+								class="col-xs-6"
+								v-if="globalState.userProfile.role.id === 9"
+							>
+								<h5 class="price-detail-text text-green" v-if="selectedVariant">
+									Rp{{
+										formatPrice(selectedVariant.reseller_exclusive_price * qty)
+									}}
+								</h5>
+							</div>
+							<div
+								class="col-xs-6"
+								v-else-if="globalState.userProfile.role.id === 8"
+							>
+								<h5 class="price-detail-text text-green" v-if="selectedVariant">
+									Rp{{ formatPrice(selectedVariant.reseller_pro_price * qty) }}
+								</h5>
+							</div>
+							<div
+								class="col-xs-6"
+								v-else-if="globalState.userProfile.role.id === 10"
+							>
+								<h5 class="price-detail-text text-green" v-if="selectedVariant">
+									Rp{{ formatPrice(selectedVariant.price) }}
+								</h5>
+							</div>
+						</div>
 
-									<h5 class="price-detail-text" v-else>
-										Rp{{ formatPrice(dataProduct.price * qty) }}
-									</h5>
-								</div>
-								<div
-									class="col-xs-6"
-									v-if="globalState.userProfile.role.id === 9"
-								>
-									<h5
-										class="price-detail-text text-green"
-										v-if="productVariant"
-									>
-										Rp{{
-											formatPrice(productVariant.reseller_exclusive_price * qty)
-										}}
-									</h5>
-									<h5 class="price-detail-text text-green" v-else>
-										Rp{{
-											formatPrice(dataProduct.reseller_exclusive_price * qty)
-										}}
-									</h5>
-								</div>
-								<div
-									class="col-xs-6"
-									v-else-if="globalState.userProfile.role.id === 8"
-								>
-									<h5
-										class="price-detail-text text-green"
-										v-if="productVariant"
-									>
-										Rp{{ formatPrice(productVariant.reseller_pro_price * qty) }}
-									</h5>
-									<h5 class="price-detail-text text-green" v-else>
-										Rp{{ formatPrice(dataProduct.reseller_pro_price * qty) }}
-									</h5>
-								</div>
-								<div
-									class="col-xs-6"
-									v-else-if="globalState.userProfile.role.id === 10"
-								>
-									<h5
-										class="price-detail-text text-green"
-										v-if="productVariant"
-									>
-										Rp{{ formatPrice(productVariant.price) }}
-									</h5>
-									<h5 class="price-detail-text text-green" v-else>
-										Rp{{ formatPrice(dataProduct.price) }}
-									</h5>
-								</div>
-							</div>
-						</template>
 						<div
 							class="row"
-							v-if="globalState.userProfile.role.id === 8 && productVariant"
+							v-if="globalState.userProfile.role.id === 8 && selectedVariant"
 						>
 							<div class="col">
 								<h4 class="upgrade-cta-text">
@@ -304,7 +253,7 @@
 									Agar Dapat Harga
 									<b
 										>Rp{{
-											formatPrice(productVariant.reseller_exclusive_price)
+											formatPrice(selectedVariant.reseller_exclusive_price)
 										}}</b
 									>
 								</h4>
@@ -359,7 +308,7 @@
 								/>
 							</div>
 						</div>
-						<p v-html="dataProduct.product_description"></p>
+						<p v-html="productData.product_description"></p>
 					</div>
 				</div>
 			</q-page>
@@ -386,7 +335,7 @@
 						<div class="row">
 							<div class="col text-center">
 								<h5 style="font-size: 18px; margin: 0; line-height: 24px">
-									<b>{{ dataProduct.product_name }}</b>
+									<b>{{ productData.product_name }}</b>
 									<br />telah dimasukkan ke keranjang belanja Anda
 								</h5>
 							</div>
@@ -492,9 +441,11 @@
 import { mapState } from "vuex";
 import Vue from "vue";
 import carousel from "vue-owl-carousel";
+import { cloneDeep, isEmpty } from "lodash";
 import axios from "axios";
 import {
 	apiDomain,
+	catalogService,
 	catalogCategoryUrl,
 	catalogBrandUrl,
 	catalogProductUrl,
@@ -506,7 +457,6 @@ import VueClipboard from "vue-clipboard2";
 import { openURL } from "quasar";
 import { googleSpreadsheetDoc } from "../../config/googleSpreadsheets";
 //vanilla.js
-import { nthIndex } from "../libraries/stringManipulation";
 
 Vue.use(VueClipboard);
 
@@ -514,16 +464,17 @@ export default {
 	name: "KeepDetailProduct",
 	data() {
 		return {
-			dataProduct: [],
-			dataCategory: [],
-			dataBrand: [],
-			productDesc: null,
+			productData: {},
+			selectedSkuId: null,
+			selectedOption: {},
+			selectedVariant: null,
+			inputOptions: {},
+
 			yaumeeSpreadsheetsTable: {
 				headers: [],
 				rows: []
 			},
 
-			inputOptions: [],
 			optionValueSelected: [],
 			qty: 1,
 			productVariant: null,
@@ -536,32 +487,39 @@ export default {
 	computed: {
 		...mapState(["globalState"]),
 		stockReady: function() {
-			if (this.productVariant)
+			if (this.selectedVariant)
 				return (
-					this.productVariant.stock_qty - this.productVariant.keep_stock_qty
+					this.selectedVariant.stock_qty - this.selectedVariant.keep_stock_qty
 				);
 			return null;
 		},
 		IsCustomDesign: function() {
-			return [409, 410, 411, 412].indexOf(this.dataProduct.id) !== -1;
+			return [409, 410, 411, 412].indexOf(this.productData.id) !== -1;
 		},
 		IsExclusive: function() {
 			return this.globalState.userProfile.role_id === 9;
+		},
+		isOptionsAllowed: function() {
+			return this.inputOptions.length > 0;
+			// return !isEmpty(this.inputOptions) ? true: false;
 		}
 	},
 	async created() {
+		await this.getProductData();
+		await this.getInputOptions();
+
 		const doc = await googleSpreadsheetDoc();
 		let sheet;
-		if (this.dataProduct.category_id == 7 || this.dataProduct.sku == "OS") {
+		if (this.productData.category_id == 7 || this.productData.sku == "OS") {
 			sheet = await doc.sheetsByIndex[0];
 		} else if (
-			this.dataProduct.category_id == 8 ||
-			this.dataProduct.sku == "OT"
+			this.productData.category_id == 8 ||
+			this.productData.sku == "OT"
 		) {
 			sheet = await doc.sheetsByIndex[1];
 		} else if (
-			this.dataProduct.category_id == 9 ||
-			this.dataProduct.sku == "OU"
+			this.productData.category_id == 9 ||
+			this.productData.sku == "OU"
 		) {
 			sheet = await doc.sheetsByIndex[2];
 		}
@@ -583,157 +541,142 @@ export default {
 			this.yaumeeSpreadsheetsTable.rows = rowsMapSpreadsheet;
 		}
 	},
-	mounted() {
-		this.getProductDetail();
-	},
 	methods: {
-		getProductDetail() {
-			axios
-				.get(catalogProductUrl + "/" + this.$route.params.id, {
-					headers: getHeader()
-				})
-				.then(response => {
-					if (response.status === 200) {
-						this.dataProduct = response.data.data;
-						this.category_name = this.categoryProduct(
-							this.dataProduct.category_id
-						);
-						this.brand_name = this.brandProduct(this.dataProduct.brand_id);
+		async getProductData() {
+			const getProductParams = {
+				productIdArr: [this.$route.params.product_id],
+				select: [
+					"id",
+					"product_name",
+					"product_description",
+					"brand_id",
+					"category_id",
+					"featured_image"
+				],
+				eagerLoad: {
+					brand: ["id", "brand_name"],
+					category_detail: ["id", "category_name"],
+					product_sku: [
+						"id",
+						"product_id",
+						"sku",
+						"stock_qty",
+						"keep_stock_qty",
+						"price",
+						"cogs",
+						"reseller_pro_price",
+						"reseller_exclusive_price"
+					],
+					image_gallery: ["id", "image", "product_id"]
+				}
+			};
+			const _productData = await this.$axios({
+				method: "post",
+				url: `${catalogService}/get-products-by-id`,
+				headers: getHeader(),
+				data: getProductParams
+			});
 
-						this.productDesc = this.dataProduct.product_description;
+			this.productData = cloneDeep(_productData.data.data[0]);
+		},
 
-						if (this.dataProduct.product_type === "Variant Product") {
-							this.getInputOptions();
+		async getInputOptions() {
+			const optionParams = {
+				productIdArr: [this.productData.id],
+				eagerLoad: {
+					sku_values: ["*"]
+				}
+			};
+
+			const optionRes = await this.$axios({
+				method: "post",
+				url: `${catalogService}/options/get-options-by-product-id`,
+				headers: getHeader(),
+				data: optionParams
+			});
+
+			this.productData.options = cloneDeep(optionRes.data.data);
+			const _inputOptions = [];
+			optionRes.data.data.forEach(option => {
+				_inputOptions.push({
+					option_name: option.option_name,
+					option_value: [
+						...new Set(option.sku_values.map(sku_value => sku_value.value))
+					]
+				});
+			});
+
+			this.inputOptions = cloneDeep(_inputOptions);
+		},
+
+		constructSKU(event) {
+			this.selectedOption = {
+				...this.selectedOption,
+				[event.target.name]: event.target.value
+			};
+			let allOptionSelected = true;
+			const allSku = [];
+
+			this.inputOptions.forEach(opt => {
+				if (!this.selectedOption.hasOwnProperty(opt.option_name))
+					allOptionSelected = false;
+			});
+
+			if (allOptionSelected == false) return;
+
+			this.productData.options.forEach(opt => {
+				allSku.push(
+					opt.sku_values
+						.filter(
+							sku_value =>
+								sku_value.value === this.selectedOption[opt.option_name]
+						)
+						.map(sku_value => sku_value.product_sku_id)
+				);
+			});
+
+			const allSkuLength = allSku.length;
+			const firstLength = allSku[0].length;
+
+			if (allSku.length === 1) {
+				// success
+				this.selectedSkuId = parseInt(allSku[0][0]);
+				this.selectedVariant = this.productData.product_variants.find(
+					e => e.id == this.selectedSkuId
+				);
+				return 0;
+			} else {
+				for (
+					let compareIndex = 1;
+					compareIndex < allSkuLength;
+					compareIndex++
+				) {
+					let totalFound = 0;
+
+					for (let sourceIndex = 0; sourceIndex < firstLength; sourceIndex++) {
+						const found = allSku[compareIndex].indexOf(allSku[0][sourceIndex]);
+
+						if (found !== -1) {
+							totalFound++;
+
+							if (totalFound === allSkuLength - 1) {
+								//success
+								this.selectedSkuId = parseInt(allSku[0][sourceIndex]);
+								this.selectedVariant = this.productData.product_variants.find(
+									e => e.id == this.selectedSkuId
+								);
+								return 0;
+							}
+
+							break;
 						}
 					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
-				});
-		},
-		categoryProduct(id) {
-			axios
-				.get(catalogCategoryUrl + "/" + id, { headers: getHeader() })
-				.then(response => {
-					if (response.status === 200) {
-						this.dataCategory = response.data.data;
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
-				});
-		},
-		brandProduct(id) {
-			axios
-				.get(catalogBrandUrl + "/" + id, { headers: getHeader() })
-				.then(response => {
-					if (response.status === 200) {
-						this.dataBrand = response.data.data;
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
-				});
-		},
-		getInputOptions() {
-			const productVariantsLength = this.dataProduct.product_variants.length;
-			let initialIndex = 0;
-
-			this.inputOptions = this.dataProduct.product_options.map(
-				(option, optionIndex) => {
-					let optionValueSet = new Set();
-
-					for (let index = 0; index < productVariantsLength; index++) {
-						const variant = this.dataProduct.product_variants[index];
-						const fromIndex = nthIndex(variant.sku, "~", optionIndex + 1) + 1; // ~ and move +1 index
-						const toIndex = nthIndex(variant.sku, "~", optionIndex + 2); //next ~(+2) and move +1 index
-
-						const result = variant.sku.substring(
-							fromIndex,
-							toIndex != -1 ? toIndex : variant.sku.length
-						);
-						optionValueSet.add(result);
-					}
-
-					const optionValueArr = [...optionValueSet];
-					const optionValue = optionValueArr.map(optionValue => {
-						return {
-							label: optionValue,
-							value: optionValue
-						};
-					});
-					return {
-						optionTitle: option.option_name,
-						selectedOption: "",
-						optionValue
-					};
 				}
-			);
 
-			// return;
-			// for (var i = 0; i < productOptions.length; i++) {
-			//   //alert(productOptions[i].option_name);
-			//   this.inputOptions.push({
-			//     optionTitle: productOptions[i].option_name,
-			//     selectedOption: "",
-			//     optionValue: []
-			//   });
-
-			//   for (var val = 0; val < productOptions[i].values.length; val++) {
-			//     this.inputOptions[i].optionValue.push({
-			//       label: productOptions[i].values[val].value_name,
-			//       value: productOptions[i].values[val].value_name
-			//     });
-			//   }
-			// }
-		},
-		getProductVariant() {
-			// Get option value
-			let val = [];
-			let productOptionSelected = [];
-
-			for (var key in this.inputOptions) {
-				productOptionSelected.push({
-					option: this.inputOptions[key].optionTitle,
-					value: this.inputOptions[key].selectedOption
-				});
-				val.push(this.inputOptions[key].selectedOption);
-			}
-
-			let optionSelected = String(this.dataProduct.sku) + "~" + val.join("~");
-
-			this.optionValueSelected = JSON.stringify(productOptionSelected);
-
-			// Check product sku with option value
-			let varPro = JSON.parse(
-				JSON.stringify(this.dataProduct.product_variants)
-			);
-
-			this.productVariant = "";
-			//let storeVar = [];
-			for (var i = 0, l = varPro.length; i < l; i++) {
-				if (optionSelected.toUpperCase() === varPro[i].sku) {
-					// store product variant
-
-					this.productVariant = {
-						id: varPro[i].id,
-						product_id: varPro[i].product_id,
-						sku: varPro[i].sku,
-						price: varPro[i].price,
-						reseller_pro_price: varPro[i].reseller_pro_price,
-						reseller_exclusive_price: varPro[i].reseller_exclusive_price,
-						stock_qty: varPro[i].stock_qty,
-						keep_stock_qty: varPro[i].keep_stock_qty
-					};
-				}
+				this.selectedSkuId = null;
 			}
 		},
+
 		addToCart() {
 			// this.getInputOptions();
 			// return;
@@ -752,11 +695,11 @@ export default {
 			if (!error) {
 				let postData = new FormData();
 
-				postData.set("product_id", this.dataProduct.id);
+				postData.set("product_id", this.productData.id);
 				// Post Data Product Variant
-				postData.set("product_sku_id", this.productVariant.id);
-				postData.set("product_sku", this.productVariant.sku);
-				postData.set("options", this.optionValueSelected);
+				postData.set("product_sku_id", this.selectedVariant.id);
+				postData.set("product_sku", this.selectedVariant.sku);
+				postData.set("options", JSON.stringify(this.selectedOption));
 				postData.set("qty", this.qty);
 				postData.set("customer_id", this.globalState.userProfile.id);
 				postData.set("customer_name", this.globalState.userProfile.name);
@@ -825,7 +768,8 @@ export default {
 		},
 		upgrade() {
 			openURL("https://serbalaris.orderonline.id/upgrade-eksklusif");
-		}
+		},
+		isEmpty
 	},
 	components: { carousel, openURL }
 };
