@@ -27,7 +27,7 @@
 			/>
 		</center>
 
-		<q-card-section style="padding: 10px 16px 16px 16px">
+		<q-card-section style="padding: 10px 16px 16px 16px" @click="onCardClick">
 			<center>
 				<div
 					style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px; height: 35px"
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { openURL } from "quasar";
 import { currencyFormat } from "../../libraries/stringManipulation";
 
 export default {
@@ -68,7 +69,10 @@ export default {
 		};
 	},
 	methods: {
-		onCardClick() {},
+		onCardClick() {
+			openURL("https://distrodakwah.id/upgrade");
+
+		},
 		productNameFormat(str) {
 			if (str.length >= 30) {
 				return str.substring(0, 30) + "...";
@@ -76,7 +80,8 @@ export default {
 			return str;
 		},
 
-		currencyFormat
+		currencyFormat,
+		openURL
 	}
 };
 </script>
@@ -93,6 +98,6 @@ export default {
 	border-radius: 5px;
 	color: white;
 	font-weight: bolder;
-	background-color: #4CAF50;
+	background-color: #ff9800;
 }
 </style>
