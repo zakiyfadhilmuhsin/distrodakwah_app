@@ -34,10 +34,7 @@
 				>
 					{{ productNameFormat(product.product_name) }}
 				</div>
-				<div class="text-black" style="font-size: 10px;">
-					Keuntungan Anda :
-				</div>
-				<div class="q-px-sm q-py-xs bg-green">
+				<div class="product-detail-button">
 					Silakan Upgrade
 				</div>
 			</center>
@@ -84,11 +81,18 @@ export default {
 };
 </script>
 
-<style>
+<style scope>
 .vendor-catalog-card {
 	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
 		0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
 	border: 1px solid #e5e3e3;
 	border-radius: 5px;
+}
+.product-detail-button{
+	padding: 5px;
+	border-radius: 5px;
+	color: white;
+	font-weight: bolder;
+	background-color: #4CAF50;
 }
 </style>
