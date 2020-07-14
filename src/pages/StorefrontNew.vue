@@ -87,7 +87,7 @@
 					>
 						<div class="col-sm-2">
 							<div
-								v-if="user && user.role && user.role.id && user.role.id === 8"
+								v-if="user && globalState.userProfile.role && globalState.userProfile.role.id && globalState.userProfile.role.id === 8"
 							>
 								<img
 									src="~/assets/images/components/new_silver_badge.png"
@@ -96,7 +96,7 @@
 							</div>
 							<div
 								style="margin-top: 2px"
-								v-if="user && user.role && user.role.id && user.role.id === 9"
+								v-if="user && globalState.userProfile.role && globalState.userProfile.role.id && globalState.userProfile.role.id === 9"
 							>
 								<img
 									src="~/assets/images/components/new_gold_badge.png"
@@ -104,7 +104,7 @@
 								/>
 							</div>
 							<div
-								v-if="user && user.role && user.role.id && user.role.id === 10"
+								v-if="user && globalState.userProfile.role && globalState.userProfile.role.id && globalState.userProfile.role.id === 10"
 							>
 								<img
 									src="~/assets/images/components/new_bronze_badge.png"
@@ -117,10 +117,10 @@
 								class="text-white text-bold"
 								style="margin: 0; font-family:'Open Sans'; font-size: 14px"
 							>
-								{{ user.name }}
+								{{ globalState.userProfile.name }}
 							</p>
 							<p class="text-white" style="margin: 0 0 5px 0; font-size: 11px">
-								{{ user && user.role && user.role.role_name }}
+								{{ user && globalState.userProfile.role && globalState.userProfile.role.role_name }}
 							</p>
 							<div
 								class="bg-white shadow-2"
@@ -132,7 +132,7 @@
 								>
 									Total Pendapatan :
 									<span class="text-green"
-										>Rp{{ currencyFormat(this.user.total_revenue) }}</span
+										>Rp{{ currencyFormat(this.globalState.userProfile.total_revenue) }}</span
 									>
 								</p>
 							</div>
@@ -187,7 +187,7 @@
 							</carousel>
 						</div>
 					</div>
-					<br/>
+					<br />
 					<!--------------------->
 					<!-- Kategori Produk -->
 					<!--------------------->
@@ -217,13 +217,17 @@
 										style="text-decoration: none; color: black !important;"
 									>
 										<center>
-											<div style="background-color: #f4e1cb; padding-top: 12px; padding-bottom: 10px; border-radius: 8px; margin: 6px">
+											<div
+												style="background-color: #f4e1cb; padding-top: 12px; padding-bottom: 10px; border-radius: 8px; margin: 6px"
+											>
 												<center>
 													<img :src="category.image_url" width="35" />
 												</center>
 											</div>
 										</center>
-										<p style="margin: 0; font-size: 10px; text-align: center; font-weight: bold">
+										<p
+											style="margin: 0; font-size: 10px; text-align: center; font-weight: bold"
+										>
 											{{ category.category_name }}
 										</p>
 									</router-link>
@@ -255,12 +259,23 @@
 									).reverse()"
 									:key="index"
 								>
-									<KeepProductCard
-										:product="product"
-										:user="user"
-										v-if="product.brand_id === 7"
-									/>
-									<VendorProductCard :product="product" :user="user" v-else />
+									<template v-if="product.brand_id === 7">
+										<FreePlanKeepProductCard
+											:product="product"
+											:user="user"
+											v-if="globalState.userProfile.role_id === 10"
+										/>
+										<KeepProductCard :product="product" :user="user" v-else />
+									</template>
+									<template v-else>
+										<FreePlanVendorProductCard
+											:product="product"
+											:user="user"
+											v-if="globalState.userProfile.role_id === 10"
+										/>
+
+										<VendorProductCard :product="product" :user="user" v-else />
+									</template>
 								</swiper-slide>
 								<div class="swiper-product-pagination" slot="pagination"></div>
 							</swiper>
@@ -290,11 +305,23 @@
 									).reverse()"
 									:key="index"
 								>
-									<KeepProductCard
-										:product="product"
-										:user="user"
-										v-if="product.brand_id === 7"
-									/>
+									<template v-if="product.brand_id === 7">
+										<FreePlanKeepProductCard
+											:product="product"
+											:user="user"
+											v-if="globalState.userProfile.role_id === 10"
+										/>
+										<KeepProductCard :product="product" :user="user" v-else />
+									</template>
+									<template v-else>
+										<FreePlanVendorProductCard
+											:product="product"
+											:user="user"
+											v-if="globalState.userProfile.role_id === 10"
+										/>
+
+										<VendorProductCard :product="product" :user="user" v-else />
+									</template>
 									<VendorProductCard :product="product" :user="user" v-else />
 								</swiper-slide>
 								<div class="swiper-product-pagination" slot="pagination"></div>
@@ -325,12 +352,23 @@
 									).reverse()"
 									:key="index"
 								>
-									<KeepProductCard
-										:product="product"
-										:user="user"
-										v-if="product.brand_id === 7"
-									/>
-									<VendorProductCard :product="product" :user="user" v-else />
+									<template v-if="product.brand_id === 7">
+										<FreePlanKeepProductCard
+											:product="product"
+											:user="user"
+											v-if="globalState.userProfile.role_id === 10"
+										/>
+										<KeepProductCard :product="product" :user="user" v-else />
+									</template>
+									<template v-else>
+										<FreePlanVendorProductCard
+											:product="product"
+											:user="user"
+											v-if="globalState.userProfile.role_id === 10"
+										/>
+
+										<VendorProductCard :product="product" :user="user" v-else />
+									</template>
 								</swiper-slide>
 								<div class="swiper-product-pagination" slot="pagination"></div>
 							</swiper>
@@ -360,12 +398,23 @@
 									).reverse()"
 									:key="index"
 								>
-									<KeepProductCard
-										:product="product"
-										:user="user"
-										v-if="product.brand_id === 7"
-									/>
-									<VendorProductCard :product="product" :user="user" v-else />
+									<template v-if="product.brand_id === 7">
+										<FreePlanKeepProductCard
+											:product="product"
+											:user="user"
+											v-if="globalState.userProfile.role_id === 10"
+										/>
+										<KeepProductCard :product="product" :user="user" v-else />
+									</template>
+									<template v-else>
+										<FreePlanVendorProductCard
+											:product="product"
+											:user="user"
+											v-if="globalState.userProfile.role_id === 10"
+										/>
+
+										<VendorProductCard :product="product" :user="user" v-else />
+									</template>
 								</swiper-slide>
 								<div class="swiper-product-pagination" slot="pagination"></div>
 							</swiper>
@@ -434,7 +483,6 @@ import { mapState } from "vuex";
 import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import carousel from "vue-owl-carousel";
-import axios from "axios";
 import { currencyFormat } from "../libraries/stringManipulation";
 import {
 	apiDomain,
@@ -456,12 +504,16 @@ import { QSpinnerPuff } from "quasar";
 //components
 import VendorProductCard from "../components/vendorProductCard.vue";
 import KeepProductCard from "../components/keepProductCard.vue";
+import FreePlanKeepProductCard from "../components/ProductCard/FreePlanKeepProductCard.vue";
+import FreePlanVendorProductCard from "../components/ProductCard/FreePlanVendorProductCard.vue";
 import Vue2Filters from "vue2-filters";
 export default {
 	components: {
 		swiper,
 		swiperSlide,
 		carousel,
+		FreePlanKeepProductCard,
+		FreePlanVendorProductCard,
 		VendorProductCard,
 		KeepProductCard
 	},
@@ -503,15 +555,13 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(['globalState']),
+		...mapState(["globalState"]),
 		newProduct() {
 			return this.dataProduct.slice().reverse();
-		},
+		}
 	},
 	async created() {
-		if (
-			Object.keys(this.globalState.userProfile).length === 0
-		) {
+		if (Object.keys(this.globalState.userProfile).length === 0) {
 			await this.$store.dispatch("globalState/getUserProfile");
 		}
 		this.getUser();
@@ -527,8 +577,8 @@ export default {
 	async mounted() {
 		// Get Total Cart Item
 		try {
-			const totalCartItems = await axios.get(
-				totalCartItemUrl + "/" + this.user.id,
+			const totalCartItems = await this.$axios.get(
+				totalCartItemUrl + "/" + this.globalState.userProfile.id,
 				{ headers: getHeader() }
 			);
 			if (totalCartItems.data.data !== "cart_is_empty") {
@@ -560,19 +610,19 @@ export default {
 				`${apiDomain}/analytics/get-total-revenue`,
 				{ headers: getHeader() }
 			);
-			this.user.total_revenue = revenueRes.data.data.total_revenue;
+			this.globalState.userProfile.total_revenue = revenueRes.data.data.total_revenue;
 		},
 		getProductByCategory() {
 			this.dataProducts = [];
 
-			axios
+			this.$axios
 				.get(catalogCategoryUrl, { headers: getHeader() })
 				.then(response => {
 					if (response.status === 200) {
 						this.dataCategory = response.data.data;
 
 						for (let i = 0; i < this.dataCategory.length; i++) {
-							axios
+							this.$axios
 								.get(getProductByCategoryUrl + "/" + this.dataCategory[i].id, {
 									headers: getHeader()
 								})
@@ -602,7 +652,7 @@ export default {
 		getNewProduct() {
 			this.dataNewProduct = [];
 
-			axios
+			this.$axios
 				.get(getProductByClassUrl + "/" + "new", {
 					headers: getHeader()
 				})
@@ -620,7 +670,7 @@ export default {
 		getFeaturedProduct() {
 			this.dataFeaturedProduct = [];
 
-			axios
+			this.$axios
 				.get(getProductByClassUrl + "/" + "produk-unggulan", {
 					headers: getHeader()
 				})
@@ -638,7 +688,7 @@ export default {
 		async getBestSellerProduct() {
 			let orderRes, catalogRes, productIdArr;
 			try {
-				orderRes = await axios.get(
+				orderRes = await this.$axios.get(
 					`${orderService}/get-frequently-purchased-products`,
 					{
 						headers: getHeader()
@@ -676,7 +726,7 @@ export default {
 		getProductCustom() {
 			this.dataProductCustom = [];
 
-			axios
+			this.$axios
 				.get(getProductByClassUrl + "/" + "product-custom", {
 					headers: getHeader()
 				})
@@ -692,7 +742,7 @@ export default {
 				});
 		},
 		getBrand() {
-			axios
+			this.$axios
 				.get(catalogBrandUrl, { headers: getHeader() })
 				.then(response => {
 					if (response.status === 200) {
@@ -707,7 +757,7 @@ export default {
 		},
 
 		getSlider() {
-			axios
+			this.$axios
 				.get(identitySliderUrl, { headers: getHeader() })
 				.then(response => {
 					if (response.status === 200) {
@@ -726,7 +776,9 @@ export default {
 </script>
 
 <style>
-.abc{ background: #000;}
+.abc {
+	background: #000;
+}
 .promo-text {
 	font-family: "Poppins" !important;
 	font-size: 13px;

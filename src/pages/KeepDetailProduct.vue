@@ -70,7 +70,13 @@
 						v-else-if="globalState.userProfile.role.id === 10"
 					>
 						KAMU UNTUNG
-						<span class="text-green"></span>
+						<span class="text-green">{{
+							`Rp${formatPrice(
+								Number(
+									selectedVariant.price - selectedVariant.reseller_free_price
+								) * Number(this.qty)
+							)}`
+						}}</span>
 					</h4>
 				</span>
 				<q-space />
@@ -229,7 +235,7 @@
 								v-else-if="globalState.userProfile.role.id === 10"
 							>
 								<h5 class="price-detail-text text-green" v-if="selectedVariant">
-									Rp{{ formatPrice(selectedVariant.price) }}
+									Rp{{ formatPrice(selectedVariant.reseller_free_price) }}
 								</h5>
 							</div>
 						</div>
@@ -565,7 +571,8 @@ export default {
 						"price",
 						"cogs",
 						"reseller_pro_price",
-						"reseller_exclusive_price"
+						"reseller_exclusive_price",
+						"reseller_free_price"
 					],
 					image_gallery: ["id", "image", "product_id"]
 				}

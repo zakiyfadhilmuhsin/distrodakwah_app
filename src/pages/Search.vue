@@ -39,12 +39,30 @@
 								v-for="(product, index) in newProduct"
 								:key="index"
 							>
-								<KeepProductCard
-									:product="product"
-									:user="user"
-									v-if="product.brand_id === 7"
-								/>
-								<VendorProductCard :product="product" :user="user" v-else />
+								<template v-if="product.brand_id === 7">
+									<FreePlanKeepProductCard
+										:product="product"
+										:user="globalState.userProfile"
+										v-if="globalState.userProfile.role_id === 10"
+									/>
+									<KeepProductCard
+										:product="product"
+										:user="globalState.userProfile"
+										v-else
+									/>
+								</template>
+								<template v-else>
+									<FreePlanVendorProductCard
+										:product="product"
+										:user="globalState.userProfile"
+										v-if="globalState.userProfile.role_id === 10"
+									/>
+									<VendorProductCard
+										:product="product"
+										:user="globalState.userProfile"
+										v-else
+									/>
+								</template>
 							</div>
 						</div>
 					</div>
@@ -55,7 +73,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapState } from "vuex";
 import {
 	apiDomain,
 	catalogProductUrl,
@@ -67,11 +85,15 @@ import { QSpinnerPuff } from "quasar";
 //components
 import VendorProductCard from "../components/vendorProductCard.vue";
 import KeepProductCard from "../components/keepProductCard.vue";
+import FreePlanKeepProductCard from "../components/ProductCard/FreePlanKeepProductCard.vue";
+import FreePlanVendorProductCard from "../components/ProductCard/FreePlanVendorProductCard.vue";
 
 export default {
 	components: {
 		VendorProductCard,
-		KeepProductCard
+		KeepProductCard,
+		FreePlanKeepProductCard,
+		FreePlanVendorProductCard
 	},
 	data() {
 		return {
@@ -86,12 +108,15 @@ export default {
 		};
 	},
 	computed: {
+		...mapState(["globalState"]),
 		newProduct() {
 			return this.dataProduct.slice().reverse();
 		}
 	},
-	created() {
-		this.user = JSON.parse(window.localStorage.getItem("profileUser"));
+	async created() {
+		if (Object.keys(this.globalState.userProfile).length === 0) {
+			await this.$store.dispatch("globalState/getUserProfile");
+		}
 		this.brandName = this.$route.params.brand;
 		this.brandID = this.$route.params.brand_id;
 		this.$q.loading.show({
@@ -122,7 +147,7 @@ export default {
 
 				formData.set("search", this.search);
 
-				axios
+				this.$axios
 					.post(searchProductUrl, formData, { headers: getHeader() })
 					.then(response => {
 						console.log(response);
