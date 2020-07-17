@@ -375,7 +375,7 @@ export default {
 			}
 		},
 		upgrade() {
-			openURL("https://serbalaris.orderonline.id/upgrade-eksklusif");
+			openURL("https://distrodakwah.id/upgrade");
 		},
 		onCourseClick() {
 			if (this.user.role_id == 8) {
