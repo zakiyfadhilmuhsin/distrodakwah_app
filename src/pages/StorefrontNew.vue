@@ -398,7 +398,9 @@
 									).reverse()"
 									:key="index"
 								>
-									<template v-if="product.brand_id === 7">
+								<!--  7 = yaumee
+								412 = cap -->
+									<template v-if="product.brand_id === 7 && product.id !== 412">
 										<FreePlanKeepProductCard
 											:product="product"
 											:user="user"
