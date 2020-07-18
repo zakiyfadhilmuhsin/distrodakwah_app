@@ -8,7 +8,7 @@
 				<div class="bg-grey-3" style="height: 100%">
 					<ProductList
 						v-if="cartData"
-						:cartDataProp="cartData"
+						:productDataProp="cartData"
 						@getCartData="getCartData"
 					/>
 					<!-- Voucher -->

@@ -2,8 +2,8 @@
 	<div
 		style="background-color: white; margin-bottom: 5px; padding: 18px 0 15px 0"
 	>
-		<template v-if="cartDataProp.cart_detail.length > 0">
-			<div v-for="(item, index) in cartDataProp.cart_detail" :key="index">
+		<template v-if="productDataProp.cart_detail.length > 0">
+			<div v-for="(item, index) in productDataProp.cart_detail" :key="index">
 				<div
 					class="row q-px-lg q-py-sm"
 					:class="{ 'product-list': !item.stock_sufficient }"
@@ -127,7 +127,7 @@ import { currencyFormat } from "../../libraries/stringManipulation";
 
 export default {
 	name: "ProductList",
-	props: { cartDataProp: Object },
+	props: { productDataProp: Object },
 	data() {
 		return {
 			editQtyDialog: false,
@@ -183,7 +183,7 @@ export default {
 			if (!error) {
 				let updateForm = new FormData();
 
-				updateForm.set("cart_id", this.cartDataProp.id);
+				updateForm.set("cart_id", this.productDataProp.id);
 				updateForm.set("cart_detail_id", this.cartDetailIdEdit);
 				updateForm.set("role_id", this.globalState.userProfile.role_id);
 				updateForm.set("product_sku_id", this.productSkuIdEdit);

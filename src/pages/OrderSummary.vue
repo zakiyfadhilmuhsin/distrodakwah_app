@@ -55,8 +55,7 @@
 						<template>
 							<ProductList
 								v-if="cartData"
-								:cartDataProp="cartData"
-								@getCartData="getCartData"
+								:productDataProp="cartData"
 							/>
 						</template>
 						<!-- {{ skuProduct }} -->

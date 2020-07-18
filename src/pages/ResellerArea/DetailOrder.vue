@@ -34,7 +34,13 @@
 				<div class="bg-white" style="height: 100%">
 					<div style="background-color: white; padding: 13px 0 10px 0">
 						<div class="row q-pb-sm q-px-md" v-if="customDesign">
-							<q-banner block rounded dense class="bg-primary text-white" style="width:100%">
+							<q-banner
+								block
+								rounded
+								dense
+								class="bg-primary text-white"
+								style="width:100%"
+							>
 								Kirimkan Custom Desain Via E-mail: custom@distrodakwah.id
 							</q-banner>
 						</div>
@@ -211,43 +217,15 @@
 							</div>
 						</div>
 						<br />
-						<template v-if="totalItem > 0">
-							<div
-								class="row q-px-lg"
-								v-for="(item, index) in items"
-								:key="index"
-							>
-								<div class="col-3">
-									<img
-										:src="item.product_image"
-										width="100%"
-										style="border: 1px solid whitesmoke"
-									/>
-								</div>
-								<div class="col-6" style="padding: 0 15px">
-									<h5
-										style="margin: 0; font-size: 14px; font-weight: bold; line-height: 16px"
-									>
-										{{ item.product_name }}
-									</h5>
-									<h6
-										style="margin: 5px 0 0 0; font-size: 12px; line-height: 14px"
-									>
-										<span v-for="(opt, i) in item.options" :key="i">{{
-											opt.option + ": " + opt.value
-										}}</span>
-									</h6>
-									<h6 style="margin: -5px 0 0 0; font-size: 12px;">
-										Qty {{ item.qty }} x Rp{{ formatPrice(item.price) }}
-									</h6>
-								</div>
-								<div class="col-3 text-right">
-									<h6 style="margin: 0; font-size: 12px;" class="text-black">
-										Rp{{ formatPrice(item.qty * item.price) }}
-									</h6>
-								</div>
-							</div>
-						</template>
+						<ProductList
+							v-if="
+								!(
+									Object.keys(orderData).length === 0 &&
+									orderData.constructor === Object
+								)
+							"
+							:productDataProp="orderData"
+						/>
 						<br />
 						<div class="row q-pl-lg q-pr-md">
 							<div class="col">
@@ -300,8 +278,7 @@
 								>
 									-Rp{{
 										formatPrice(
-											(dataOrder.total_amount *
-												dataOrder.voucher_discount) /
+											(dataOrder.total_amount * dataOrder.voucher_discount) /
 												100
 										)
 									}}
@@ -628,7 +605,6 @@
 
 <script>
 import Vue from "vue";
-import Notes from "../../components/Invoice/Notes.vue";
 import {
 	showOrderUrl,
 	identityBankUrl,
@@ -642,11 +618,15 @@ import VueClipboard from "vue-clipboard2";
 import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import { openURL } from "quasar";
+//components
+import Notes from "../../components/Invoice/Notes.vue";
+import ProductList from "../../components/Order/OrderDetailProductList.vue";
 
 export default {
 	components: {
 		flatPickr,
-		Notes
+		Notes,
+		ProductList
 	},
 	data() {
 		return {
@@ -663,7 +643,7 @@ export default {
 			dataTracking: [],
 			// Detail Order
 			items: [],
-			orderData: [],
+			orderData: {},
 			totalItem: 0,
 			subTotal: 0
 			//components
@@ -672,10 +652,12 @@ export default {
 	created() {
 		this.user = JSON.parse(window.localStorage.getItem("profileUser"));
 	},
-	computed:{
-			customDesign(){
-				return this.items.some(e => [409,410,411,412].indexOf(e.product_id) != -1)
-			}
+	computed: {
+		customDesign() {
+			return this.items.some(
+				e => [409, 410, 411, 412].indexOf(e.product_id) != -1
+			);
+		}
 	},
 	mounted() {
 		this.getDataBank();
@@ -702,7 +684,7 @@ export default {
 				});
 		},
 		getOrderDetail() {
-			this.orderData = [];
+			this.orderData = {};
 			this.items = [];
 
 			this.$axios
@@ -864,7 +846,7 @@ export default {
 		copyTotalTransfer: function() {
 			this.$copyText(this.dataOrder.grand_total).then(
 				function(e) {
-					alert("Berhasil Disalin!");
+					alert("Berhasil Disalisn!");
 					console.log(e);
 				},
 				function(e) {

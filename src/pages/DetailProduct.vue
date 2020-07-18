@@ -540,6 +540,8 @@ export default {
 			this.inputOptions = cloneDeep(_inputOptions);
 		},
 		constructSKU(event) {
+			this.selectedSkuId = null,
+			this.selectedVariant = null,
 			this.selectedOption = {
 				...this.selectedOption,
 				[event.target.name]: event.target.value
@@ -617,9 +619,11 @@ export default {
 			if (this.qty > this.stockReady || this.stockReady <= 0) {
 				error = "insufficientStock";
 			}
-			if (this.stockReady == null) {
+			if (this.stockReady == null ) {
 				error = "variantNotSelected";
 			}
+
+			if(this.stockReady === "not_available") error = "variant_not_available"
 
 			if (!error) {
 				let postData = new FormData();
@@ -671,7 +675,14 @@ export default {
 					color: "red",
 					message: "Stock Belum Tersedia"
 				});
-			} else {
+			} else if (error == "variant_not_available") {
+				this.$q.notify({
+					position: "top",
+					color: "red",
+					message: "Varian tidak tersedia, pilih varian yang lain"
+				})
+			}
+				else {
 				this.$q.notify({
 					position: "top",
 					color: "red",
