@@ -15,17 +15,18 @@
 					>
 						<div class="col">
 							<h6 style="margin: 0px; font-weight: normal">
-								<b>Buat Akun</b> dengan Email Pendaftaran Anda
+								<b>Buat Akun</b> Dengan nomor invoice anda
 							</h6>
 							<br />
+							<label for="" style="font-weight: bolder">Invoice</label>
 							<q-input
-								v-model="emailVerify"
+								v-model="invoice"
 								color="orange-8"
 								type="text"
 								dense
 								class="bg-grey-2 q-mb-sm"
 								outlined
-								placeholder="Masukkan Email"
+								placeholder="Masukkan Invoice"
 							/>
 							<q-btn
 								@click="verifyEmail"
@@ -351,7 +352,7 @@ export default {
 	data() {
 		return {
 			step: 1,
-			emailVerify: "",
+			invoice: "",
 			dataUser: [],
 			roleName: null,
 			// Form Create Account
@@ -489,7 +490,7 @@ export default {
 				messageColor: "black"
 			});
 			//check contains whitespaces
-			if (this.emailVerify !== "" && /\s/.test(this.emailVerify) === false) {
+			if (this.invoice !== "" && /\s/.test(this.invoice) === false) {
 				// Set Verify Email
 				let OO_Auth, OO_Cred, OO_GetUser, OO_AccessToken, V1User, userRes;
 				const OO_GetUserParams = {
@@ -499,10 +500,10 @@ export default {
 					page: 1,
 					since: "2018-09-27",
 					until: this.dateNow(),
-					keyword: this.emailVerify,
+					keyword: this.invoice,
 					payment_status: "paid"
 				};
-				let emailParam = { email: this.emailVerify };
+				let emailParam = { email: this.invoice };
 
 				try {
 					userRes = await this.$axios.get(apiDomain + "/auth/searchUser", {
