@@ -352,7 +352,13 @@
 											<q-icon name="contact_support" />
 										</q-item-section>
 
-										<q-item-section>
+										<q-item-section
+											@click="
+												openURL(
+													'https://tawk.to/chat/5f101bf55b59f94722bad5d5/default'
+												)
+											"
+										>
 											<span
 												style="font-size: 12px; color: black; line-height: 15px"
 											>
@@ -492,7 +498,8 @@ export default {
 			} else if (this.user.role_id == 9) {
 				openURL("https://penjualhebat.com/mgwnv57tsntpwvau-eksklusif/");
 			}
-		}
+		},
+		openURL
 	}
 };
 </script>

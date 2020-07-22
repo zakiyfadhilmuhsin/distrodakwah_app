@@ -64,6 +64,15 @@
 							<b>{{ totalCartItem }}</b>
 						</q-badge>
 					</q-route-tab>
+					<q-tab
+						icon="fa fa-comments"
+						@click="
+							openURL('https://tawk.to/chat/5f101bf55b59f94722bad5d5/default')
+						"
+						style="text-transform: capitalize; font-family: 'Open Sans'"
+					>
+						<span style="font-size: 10px;">Live Chat</span>
+					</q-tab>
 					<q-route-tab
 						icon="account_circle"
 						to="/dashboard"
@@ -87,7 +96,12 @@
 					>
 						<div class="col-sm-2">
 							<div
-								v-if="user && globalState.userProfile.role && globalState.userProfile.role.id && globalState.userProfile.role.id === 8"
+								v-if="
+									user &&
+										globalState.userProfile.role &&
+										globalState.userProfile.role.id &&
+										globalState.userProfile.role.id === 8
+								"
 							>
 								<img
 									src="~/assets/images/components/new_silver_badge.png"
@@ -96,7 +110,12 @@
 							</div>
 							<div
 								style="margin-top: 2px"
-								v-if="user && globalState.userProfile.role && globalState.userProfile.role.id && globalState.userProfile.role.id === 9"
+								v-if="
+									user &&
+										globalState.userProfile.role &&
+										globalState.userProfile.role.id &&
+										globalState.userProfile.role.id === 9
+								"
 							>
 								<img
 									src="~/assets/images/components/new_gold_badge.png"
@@ -104,7 +123,12 @@
 								/>
 							</div>
 							<div
-								v-if="user && globalState.userProfile.role && globalState.userProfile.role.id && globalState.userProfile.role.id === 10"
+								v-if="
+									user &&
+										globalState.userProfile.role &&
+										globalState.userProfile.role.id &&
+										globalState.userProfile.role.id === 10
+								"
 							>
 								<img
 									src="~/assets/images/components/new_bronze_badge.png"
@@ -120,7 +144,11 @@
 								{{ globalState.userProfile.name }}
 							</p>
 							<p class="text-white" style="margin: 0 0 5px 0; font-size: 11px">
-								{{ user && globalState.userProfile.role && globalState.userProfile.role.role_name }}
+								{{
+									user &&
+										globalState.userProfile.role &&
+										globalState.userProfile.role.role_name
+								}}
 							</p>
 							<div
 								class="bg-white shadow-2"
@@ -132,7 +160,9 @@
 								>
 									Total Pendapatan :
 									<span class="text-green"
-										>Rp{{ currencyFormat(this.globalState.userProfile.total_revenue) }}</span
+										>Rp{{
+											currencyFormat(this.globalState.userProfile.total_revenue)
+										}}</span
 									>
 								</p>
 							</div>
@@ -398,7 +428,7 @@
 									).reverse()"
 									:key="index"
 								>
-								<!--  7 = yaumee
+									<!--  7 = yaumee
 								412 = cap -->
 									<template v-if="product.brand_id === 7 && product.id !== 412">
 										<FreePlanKeepProductCard
@@ -509,6 +539,8 @@ import KeepProductCard from "../components/keepProductCard.vue";
 import FreePlanKeepProductCard from "../components/ProductCard/FreePlanKeepProductCard.vue";
 import FreePlanVendorProductCard from "../components/ProductCard/FreePlanVendorProductCard.vue";
 import Vue2Filters from "vue2-filters";
+//methods
+import { openURL } from "quasar";
 export default {
 	components: {
 		swiper,
@@ -612,7 +644,8 @@ export default {
 				`${apiDomain}/analytics/get-total-revenue`,
 				{ headers: getHeader() }
 			);
-			this.globalState.userProfile.total_revenue = revenueRes.data.data.total_revenue;
+			this.globalState.userProfile.total_revenue =
+				revenueRes.data.data.total_revenue;
 		},
 		getProductByCategory() {
 			this.dataProducts = [];
@@ -772,7 +805,8 @@ export default {
 					}
 				});
 		},
-		currencyFormat
+		currencyFormat,
+		openURL
 	}
 };
 </script>

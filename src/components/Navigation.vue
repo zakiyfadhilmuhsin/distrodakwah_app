@@ -38,6 +38,16 @@
 						<b>{{ totalCartItem }}</b>
 					</q-badge>
 				</q-route-tab>
+				<q-tab
+					icon="fa fa-comments"
+					@click="
+						openURL('https://tawk.to/chat/5f101bf55b59f94722bad5d5/default')
+					"
+					style="text-transform: capitalize; font-family: 'Open Sans'"
+				>
+					<span style="font-size: 10px;">Live Chat</span>
+				</q-tab>
+
 				<q-route-tab
 					icon="account_circle"
 					to="/dashboard"
@@ -53,6 +63,9 @@
 <script>
 import { mapState } from "vuex";
 import { totalCartItemUrl, getHeader } from "../config";
+
+// components
+import { openURL } from "quasar";
 
 export default {
 	name: "Navigation",
@@ -79,6 +92,9 @@ export default {
 		if (getCartTotalItemRes.data.data !== "cart_is_empty") {
 			this.totalCartItem = getCartTotalItemRes.data.data;
 		}
+	},
+	methods: {
+		openURL
 	}
 };
 </script>

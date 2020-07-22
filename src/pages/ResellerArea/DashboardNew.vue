@@ -238,7 +238,7 @@
 											</q-item-section>
 										</q-item>-->
 
-									<q-item dense clickable v-ripple to="/helpdesk">
+									<q-item dense clickable v-ripple @click="openURL('https://tawk.to/chat/5f101bf55b59f94722bad5d5/default')">
 										<q-item-section avatar>
 											<q-icon name="contact_support" />
 										</q-item-section>
@@ -383,7 +383,8 @@ export default {
 			} else if (this.user.role_id == 9) {
 				openURL("https://penjualhebat.com/mgwnv57tsntpwvau-eksklusif/");
 			}
-		}
+		},
+		openURL,
 	}
 };
 </script>
