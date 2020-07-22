@@ -490,7 +490,7 @@ export default {
 			}
 		},
 		upgrade() {
-			openURL("https://serbalaris.orderonline.id/upgrade-eksklusif");
+			openURL("https://kayaberkah.orderonline.id/upgrade-eksklusif");
 		},
 		onCourseClick() {
 			if (this.user.role_id == 8) {

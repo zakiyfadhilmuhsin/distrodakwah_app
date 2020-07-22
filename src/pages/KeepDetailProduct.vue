@@ -774,7 +774,7 @@ export default {
 			);
 		},
 		upgrade() {
-			openURL("https://serbalaris.orderonline.id/upgrade-eksklusif");
+			openURL("https://kayaberkah.orderonline.id/upgrade-eksklusif");
 		},
 		isEmpty
 	},

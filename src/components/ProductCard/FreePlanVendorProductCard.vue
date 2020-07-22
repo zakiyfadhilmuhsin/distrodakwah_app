@@ -70,7 +70,7 @@ export default {
 	},
 	methods: {
 		onCardClick() {
-			openURL("https://distrodakwah.id/upgrade");
+			openURL("https://kayaberkah.orderonline.id/upgrade-eksklusif");
 
 		},
 		productNameFormat(str) {

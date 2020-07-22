@@ -707,7 +707,7 @@ export default {
 			);
 		},
 		upgrade() {
-			openURL("https://distrodakwah.id/upgrade");
+			openURL("https://kayaberkah.orderonline.id/upgrade-eksklusif");
 		},
 		isEmpty
 	},

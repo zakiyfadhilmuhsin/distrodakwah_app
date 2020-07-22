@@ -375,7 +375,7 @@ export default {
 			}
 		},
 		upgrade() {
-			openURL("https://distrodakwah.id/upgrade");
+			openURL("https://kayaberkah.orderonline.id/upgrade-eksklusif");
 		},
 		onCourseClick() {
 			if (this.user.role_id == 8) {
