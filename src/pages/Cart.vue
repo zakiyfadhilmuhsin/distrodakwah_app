@@ -11,63 +11,6 @@
 						:productDataProp="cartData"
 						@getCartData="getCartData"
 					/>
-					<!-- Voucher -->
-					<div
-						style="background-color: white; margin-bottom: 5px"
-						v-if="couponUse === false && cartData.cart_detail.length > 0"
-					>
-						<div class="row q-pa-xs items-center">
-							<div class="col">
-								<q-list dense>
-									<q-item clickable v-ripple @click="addCouponDialog = true">
-										<q-item-section avatar>
-											<img
-												src="~/assets/images/components/coupon.png"
-												width="30"
-												class="self-center"
-											/>
-										</q-item-section>
-
-										<q-item-section>Punya kode voucher?</q-item-section>
-									</q-item>
-								</q-list>
-							</div>
-						</div>
-					</div>
-
-					<div
-						style="background-color: white; margin-bottom: 5px"
-						v-else-if="couponUse === true && cartData.cart_detail.length > 0"
-					>
-						<div class="row q-pa-xs items-center">
-							<div class="col">
-								<q-list dense>
-									<q-item dense>
-										<q-item-section avatar style="margin-right: -20px">
-											<q-icon color="green" name="check_circle" />
-										</q-item-section>
-
-										<q-item-section>
-											<span>
-												Kode
-												<b>"{{ couponCode }}"</b> Terpasang..
-											</span>
-										</q-item-section>
-
-										<q-item-section side>
-											<q-btn
-												flat
-												dense
-												icon="backspace"
-												color="red"
-												@click="removeCoupon"
-											/>
-										</q-item-section>
-									</q-item>
-								</q-list>
-							</div>
-						</div>
-					</div>
 
 					<div
 						style="background-color: white; margin-bottom: 5px"
@@ -143,7 +86,10 @@
 						</div>
           </div>-->
 				</div>
-				<div class="row bg-white q-pa-md" v-if="cartData.cart_detail.length > 0">
+				<div
+					class="row bg-white q-pa-md"
+					v-if="cartData.cart_detail.length > 0"
+				>
 					<div class="col">
 						<q-btn
 							flat
@@ -155,42 +101,6 @@
 					</div>
 				</div>
 			</q-page>
-
-			<q-dialog v-model="addCouponDialog" position="bottom">
-				<q-card style="min-width: 360px">
-					<!-- <q-card-section>
-						<div class="text-h6">Tambah Pelanggan</div>
-          </q-card-section>-->
-
-					<q-card-section>
-						<q-input
-							type="text"
-							outlined
-							dense
-							color="orange-8"
-							label="Kode Voucher"
-							v-model="couponCode"
-							placeholder="Silahkan masukkan kode voucher disini.."
-							@input="
-								val => {
-									couponCode = val.toUpperCase();
-								}
-							"
-						/>
-					</q-card-section>
-
-					<q-card-actions class="q-px-md q-pb-md q-pt-xs">
-						<q-btn
-							flat
-							label="Pasang Voucher"
-							color="white"
-							class="bg-orange-8 text-capitalize full-width"
-							@click="addCoupon"
-							v-close-popup
-						/>
-					</q-card-actions>
-				</q-card>
-			</q-dialog>
 		</template>
 	</MainLayout>
 </template>
@@ -205,9 +115,6 @@ import {
 	removeProductCartUrl,
 	totalCartItemUrl,
 	updateCartQtyUrl,
-	checkCouponUrl,
-	addVoucherCartUrl,
-	removeVoucherCartUrl,
 	getHeader
 } from "src/config";
 // Loading
@@ -232,15 +139,6 @@ export default {
 			// Donasi
 			donasi_act: false,
 			donasi_rq: false,
-			// User
-
-			// Total Count Cart Item
-
-			// Edit Qty
-
-			addCouponDialog: false,
-			couponCode: null,
-			couponUse: false,
 
 			//guard
 			allowOrder: false
@@ -256,7 +154,6 @@ export default {
 
 		await this.getCartData();
 	},
-
 	methods: {
 		calculateProfit() {
 			let tempProfit = 0;
@@ -277,7 +174,8 @@ export default {
 				message: "<b>Mohon Tunggu..</b>",
 				messageColor: "black"
 			});
-			this.allowOrder = false
+			this.allowOrder = false;
+
 			let tempCart,
 				tempProduct,
 				tempProductSkuArr,
@@ -297,6 +195,7 @@ export default {
 				console.log(error.message);
 			}
 			tempCart = cartRes.data.data;
+
 			if (
 				tempCart && // cart has been created
 				tempCart.cart_detail.length > 0
@@ -315,22 +214,25 @@ export default {
 							productSkuIdArr: tempCart.cart_detail.map(e => e.product_sku_id),
 							select: ["id", "stock_qty", "keep_stock_qty", "product_id"],
 							eagerLoad: {
-								productParent : ["id", "product_name", "featured_image"]
+								productParent: ["id", "product_name", "featured_image"]
 							}
 						}
 					});
 				} catch (error) {}
 
 				tempProductSkuArr = productSkuRes.data.data;
+
 				tempCart.cart_detail.forEach((cart_detail, index) => {
 					tempTotalItem += cart_detail.qty;
 
 					const findProductSku = tempProductSkuArr.find(
 						productSku => productSku.id === cart_detail.product_sku_id
 					);
-					tempCart.cart_detail[index].product_name = findProductSku.product_parent.product_name;
+					tempCart.cart_detail[index].product_name =
+						findProductSku.product_parent.product_name;
 
-					tempCart.cart_detail[index].featured_image = findProductSku.product_parent.featured_image;
+					tempCart.cart_detail[index].featured_image =
+						findProductSku.product_parent.featured_image;
 					tempCart.cart_detail[index].options = JSON.parse(
 						tempCart.cart_detail[index].options
 					);
@@ -371,78 +273,6 @@ export default {
 			} else {
 				alert("Keranjang Belanja Masih Kosong!");
 			}
-		},
-
-		addCoupon() {
-			this.$axios
-				.get(checkCouponUrl + "/" + this.couponCode, { headers: getHeader() })
-				.then(response => {
-					console.log(response);
-
-					if (response.status === 200 && response.data.length !== 0) {
-						let postVoucher = new FormData();
-
-						postVoucher.set("cart_id", this.cartData.id);
-						postVoucher.set("coupon_id", response.data.id);
-						postVoucher.set("coupon_code", response.data.coupon_code);
-						postVoucher.set("coupon_discount", response.data.coupon_discount);
-
-						// Add Coupon
-						this.$axios
-							.post(addVoucherCartUrl, postVoucher, { headers: getHeader() })
-							.then(response => {
-								console.log(response);
-
-								if (response.status === 200) {
-									this.getCartData();
-									this.couponUse = true;
-								}
-							})
-							.catch(error => {
-								if (error.response) {
-									console.log(error.response);
-								}
-							});
-					} else {
-						this.$q.notify({
-							position: "top",
-							color: "red",
-							message: "Kupon tidak tersedia!"
-						});
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-						this.$q.notify({
-							position: "top",
-							color: "red",
-							message: "Kupon tidak tersedia!"
-						});
-					}
-				});
-		},
-		removeCoupon() {
-			this.$axios
-				.delete(removeVoucherCartUrl + "/" + this.cartData.voucher_id, {
-					headers: getHeader()
-				})
-				.then(response => {
-					console.log(response);
-
-					if (response.status === 200) {
-						setTimeout(() => {
-							this.getCartData();
-							this.couponUse = false;
-							this.couponCode = null;
-						}, 500);
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
-				});
 		}
 	}
 };

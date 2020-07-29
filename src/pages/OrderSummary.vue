@@ -70,6 +70,9 @@
 							</div>
 						</div>
 					</div>
+
+					<VoucherInputCard :voucherDataResult.sync="voucherDataResult"/>
+
 					<div
 						style="background-color: white; margin-bottom: 5px; padding: 13px 0 10px 0"
 					>
@@ -242,32 +245,7 @@
 									Total
 								</h5>
 							</div>
-							<div class="col text-right">
-								<h5
-									style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold"
-									v-if="cartData.voucher_id === null"
-								>
-									Rp{{
-										formatPrice(
-											cartData.total_amount + $attrs.shipment.shippingCost
-										)
-									}}
-								</h5>
-								<h5
-									style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold"
-									v-else-if="cartData.voucher_id !== null"
-								>
-									<!-- (grand_total-shippingCost) - discount -->
-									Rp{{
-										formatPrice(
-											cartData.total_amount -
-												cartData.total_amount *
-													(cartData.voucher_discount / 100) +
-												$attrs.shipment.shippingCost
-										)
-									}}
-								</h5>
-							</div>
+							<OrderTotal :cartData.sync="cartData" :voucherDataResult.sync="voucherDataResult" :shipment="$attrs.shipment"/>
 						</div>
 						<hr style="border: none; height: 30px" />
 						<div class="row q-px-lg">
@@ -299,9 +277,13 @@ import {
 // components
 import MainLayout from "../layouts/MainLayout.vue";
 import ProductList from "../components/Order/ProductList.vue";
+import VoucherInputCard from '../components/Voucher/VoucherInputCard.vue';
+import OrderTotal from '../components/Order/OrderTotal.vue';
+import { colors } from 'quasar';
+
 export default {
 	name: "OrderSummary",
-	components: { MainLayout, ProductList },
+	components: { MainLayout, OrderTotal,ProductList, VoucherInputCard },
 	data() {
 		return {
 			allowOrder: false,
@@ -310,7 +292,8 @@ export default {
 				total_amount: 0
 			},
 			totalItem: 0,
-			totalProfit: 0
+			totalProfit: 0,
+			voucherDataResult: {},
 		};
 	},
 	computed: {
@@ -363,10 +346,6 @@ export default {
 				tempCart && // cart has been created
 				tempCart.cart_detail.length > 0
 			) {
-				if (tempCart.voucher_id !== null) {
-					this.couponUse = true;
-					this.couponCode = tempCart.voucher_code_name;
-				}
 
 				try {
 					productSkuRes = await this.$axios({
@@ -425,11 +404,12 @@ export default {
 			this.allowOrder = false;
 			await this.getCartData();
 			if (this.allowOrder) {
-				this.$q.loading.show({
-					message: "Mohon Tunggu"
-				});
+				// this.$q.loading.show({
+				// 	message: "Mohon Tunggu"
+				// });
 
 				let postOrder = new FormData();
+
 				postOrder.set("customer_id", this.cartData.customer_id);
 				postOrder.set(
 					"customer_address_id",
@@ -459,18 +439,26 @@ export default {
 					postOrder.set("courier_name", this.$attrs.shipment.courierName);
 					postOrder.set("service_name", this.$attrs.shipment.serviceSelected);
 				}
+
+				if(!(Object.keys(this.voucherDataResult).length === 0 && this.voucherDataResult.constructor === Object))
+					postOrder.set("voucherId", this.voucherDataResult.id);
+
 				let postToOrder = null;
 				try {
 					postToOrder = await this.$axios.post(postToOrderUrl, postOrder, {
 						headers: getHeader()
 					});
-					await this.$axios.delete(destroyCart + "/" + this.cartData.id, {
-						headers: getHeader()
-					});
+					// ! await this.$axios.delete(destroyCart + "/" + this.cartData.id, {
+					// 	headers: getHeader()
+					// });
 				} catch (error) {
-					console.log("error checkout");
+					this.$q.notify({
+						message: "voucher tidak bisa digunakan",
+						color: 'red',
+						position: 'top'
+					})
 				}
-
+return -1; // ! hey
 				this.$q.loading.hide();
 				this.$router.push({
 					path: "/invoice",
