@@ -2,7 +2,10 @@
 	<div>
 		<div
 			style="background-color: white; margin-bottom: 5px"
-			v-if="Object.keys(voucherDataResult).length === 0 && voucherDataResult.constructor === Object"
+			v-if="
+				Object.keys(voucherDataResult).length === 0 &&
+					voucherDataResult.constructor === Object
+			"
 		>
 			<div class="row q-pa-xs items-center">
 				<div class="col">
@@ -23,10 +26,7 @@
 			</div>
 		</div>
 
-		<div
-			style="background-color: white; margin-bottom: 5px"
-			v-else
-		>
+		<div style="background-color: white; margin-bottom: 5px" v-else>
 			<div class="row q-pa-xs items-center">
 				<div class="col">
 					<q-list dense>
@@ -52,6 +52,15 @@
 								/>
 							</q-item-section>
 						</q-item>
+						<template v-if="voucherDataResult.type_id">
+							<p>
+								Kode Kupon <b>"{{ voucherDataResult.code }}"</b>
+							</p>
+							<p>
+								Nilai Diskon {{ voucherDataResult.voucher_percentage.value }}%
+							</p>
+							<p>Jumlah Potongan -{{ discount }}</p>
+						</template>
 					</q-list>
 				</div>
 			</div>
@@ -91,18 +100,28 @@ import { getVoucherByCode } from "../../libraries/vouchers";
 
 export default {
 	name: "VoucherInputCard",
-	props: ['voucherDataResult'],
+	props: ["voucherDataResult", "cartData"],
 	data() {
 		return {
 			useVoucher: false,
 			addVoucherDialog: false,
-			voucherCodeInput: null,
-
+			voucherCodeInput: null
 		};
+	},
+	computed: {
+		discount: function() {
+			if (this.voucherDataResult.type_id === 1) {
+				return (
+					(this.cartData.total_amount *
+						this.voucherDataResult.voucher_percentage.value) /
+					100
+				);
+			}
+		}
 	},
 	methods: {
 		removeVoucher() {
-			this.$emit('update:voucherDataResult', {});
+			this.$emit("update:voucherDataResult", {});
 		},
 		async addVoucher() {
 			let error = null;
@@ -118,7 +137,7 @@ export default {
 
 			try {
 				const voucherRes = await getVoucherByCode(getVoucherForm);
-				this.$emit('update:voucherDataResult', voucherRes.data.data)
+				this.$emit("update:voucherDataResult", voucherRes.data.data);
 			} catch (error) {
 				this.$q.notify({
 					message: "Kesalahan Saat Menginput Voucher",

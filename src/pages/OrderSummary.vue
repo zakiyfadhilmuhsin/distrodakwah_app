@@ -53,10 +53,7 @@
 						</div>
 						<br />
 						<template>
-							<ProductList
-								v-if="cartData"
-								:productDataProp="cartData"
-							/>
+							<ProductList v-if="cartData" :productDataProp="cartData" />
 						</template>
 						<!-- {{ skuProduct }} -->
 						<div class="row q-px-lg">
@@ -71,7 +68,10 @@
 						</div>
 					</div>
 
-					<VoucherInputCard :voucherDataResult.sync="voucherDataResult"/>
+					<VoucherInputCard
+						:voucherDataResult.sync="voucherDataResult"
+						:cartData="cartData"
+					/>
 
 					<div
 						style="background-color: white; margin-bottom: 5px; padding: 13px 0 10px 0"
@@ -245,7 +245,11 @@
 									Total
 								</h5>
 							</div>
-							<OrderTotal :cartData.sync="cartData" :voucherDataResult.sync="voucherDataResult" :shipment="$attrs.shipment"/>
+							<OrderTotal
+								:cartData.sync="cartData"
+								:voucherDataResult.sync="voucherDataResult"
+								:shipment="$attrs.shipment"
+							/>
 						</div>
 						<hr style="border: none; height: 30px" />
 						<div class="row q-px-lg">
@@ -277,13 +281,13 @@ import {
 // components
 import MainLayout from "../layouts/MainLayout.vue";
 import ProductList from "../components/Order/ProductList.vue";
-import VoucherInputCard from '../components/Voucher/VoucherInputCard.vue';
-import OrderTotal from '../components/Order/OrderTotal.vue';
-import { colors } from 'quasar';
+import VoucherInputCard from "../components/Voucher/VoucherInputCard.vue";
+import OrderTotal from "../components/Order/OrderTotal.vue";
+import { colors } from "quasar";
 
 export default {
 	name: "OrderSummary",
-	components: { MainLayout, OrderTotal,ProductList, VoucherInputCard },
+	components: { MainLayout, OrderTotal, ProductList, VoucherInputCard },
 	data() {
 		return {
 			allowOrder: false,
@@ -293,7 +297,7 @@ export default {
 			},
 			totalItem: 0,
 			totalProfit: 0,
-			voucherDataResult: {},
+			voucherDataResult: {}
 		};
 	},
 	computed: {
@@ -346,7 +350,6 @@ export default {
 				tempCart && // cart has been created
 				tempCart.cart_detail.length > 0
 			) {
-
 				try {
 					productSkuRes = await this.$axios({
 						method: "post",
@@ -440,7 +443,12 @@ export default {
 					postOrder.set("service_name", this.$attrs.shipment.serviceSelected);
 				}
 
-				if(!(Object.keys(this.voucherDataResult).length === 0 && this.voucherDataResult.constructor === Object))
+				if (
+					!(
+						Object.keys(this.voucherDataResult).length === 0 &&
+						this.voucherDataResult.constructor === Object
+					)
+				)
 					postOrder.set("voucherId", this.voucherDataResult.id);
 
 				let postToOrder = null;
@@ -454,11 +462,11 @@ export default {
 				} catch (error) {
 					this.$q.notify({
 						message: "voucher tidak bisa digunakan",
-						color: 'red',
-						position: 'top'
-					})
+						color: "red",
+						position: "top"
+					});
 				}
-return -1; // ! hey
+				return -1; // ! hey
 				this.$q.loading.hide();
 				this.$router.push({
 					path: "/invoice",
