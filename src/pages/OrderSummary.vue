@@ -466,7 +466,8 @@ export default {
 						position: "top"
 					});
 				}
-				return -1; // ! hey
+
+
 				this.$q.loading.hide();
 				this.$router.push({
 					path: "/invoice",

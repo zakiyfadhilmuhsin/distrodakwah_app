@@ -52,15 +52,13 @@
 								/>
 							</q-item-section>
 						</q-item>
-						<template v-if="voucherDataResult.type_id">
-							<p>
-								Kode Kupon <b>"{{ voucherDataResult.code }}"</b>
-							</p>
-							<p>
+						<div v-if="voucherDataResult.type_id" class="grid-voucher">
+							<img src="~/assets/images/components/coupon.png" alt="" />
+							<span>
 								Nilai Diskon {{ voucherDataResult.voucher_percentage.value }}%
-							</p>
-							<p>Jumlah Potongan -{{ discount }}</p>
-						</template>
+							</span>
+							<span class="value"> -Rp.{{ currencyFormat(discount) }}</span>
+						</div>
 					</q-list>
 				</div>
 			</div>
@@ -97,7 +95,7 @@
 
 <script>
 import { getVoucherByCode } from "../../libraries/vouchers";
-
+import { currencyFormat } from "../../libraries/stringManipulation";
 export default {
 	name: "VoucherInputCard",
 	props: ["voucherDataResult", "cartData"],
@@ -145,9 +143,29 @@ export default {
 					color: "red"
 				});
 			}
-		}
+		},
+		currencyFormat
 	}
 };
 </script>
 
-<style></style>
+<style scoped>
+.grid-voucher {
+	display: grid;
+	grid-template-columns: 1fr 4fr 2fr;
+	grid-gap: 5px;
+	justify-items: center;
+	align-items: center;
+	margin: 0 20px;
+}
+
+.grid-voucher img {
+	/* margin: 5px; */
+	width: 100%;
+}
+
+.grid-voucher .value {
+	justify-self: end;
+	color: red;
+}
+</style>
