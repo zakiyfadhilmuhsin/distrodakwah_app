@@ -265,6 +265,49 @@
 							</div>
 						</div>
 					</div>
+					<div class="row q-pa-xs orange-background">
+						<div class="col-8">
+							<h5 class="promo-text text-white">Produk Mofast</h5>
+						</div>
+						<div class="col-4 text-right">
+							<!-- <router-link> -->
+							<h5 class="link-text text-white">Lihat Semua</h5>
+							<!-- </router-link> -->
+						</div>
+					</div>
+					<div class="row q-px-md orange-background" style="padding: 5px 10px 10px 10px">
+						<div class="col">
+							<swiper :options="swiperProductListOption">
+								<swiper-slide
+									v-for="(product, index) in orderBy(
+										dataMofastProduct,
+										'product_name'
+									).reverse()"
+									:key="index"
+								>
+									<template v-if="product.brand_id === 7">
+										<FreePlanKeepProductCard
+											:product="product"
+											:user="user"
+											v-if="globalState.userProfile.role_id === 10"
+										/>
+										<KeepProductCard :product="product" :user="user" v-else />
+									</template>
+									<template v-else>
+										<FreePlanVendorProductCard
+											:product="product"
+											:user="user"
+											v-if="globalState.userProfile.role_id === 10"
+										/>
+
+										<VendorProductCard :product="product" :user="user" v-else />
+									</template>
+								</swiper-slide>
+								<div class="swiper-product-pagination" slot="pagination"></div>
+							</swiper>
+						</div>
+					</div>
+
 					<!------------------------->
 					<!-- New Product Section -->
 					<!------------------------->
@@ -279,6 +322,8 @@
 							<!-- </router-link> -->
 						</div>
 					</div>
+
+
 					<div class="row q-px-md" style="padding: 5px 10px 10px 10px">
 						<div class="col">
 							<swiper :options="swiperProductListOption">
@@ -565,6 +610,7 @@ export default {
 			// Product Section
 			dataProducts: [],
 			dataNewProduct: [],
+			dataMofastProduct: [],
 			dataFeaturedProduct: [],
 			dataBestSellerProduct: [],
 			dataProductCustom: [],
@@ -602,6 +648,7 @@ export default {
 		this.getBrand();
 		this.getSlider();
 		this.getProductByCategory();
+		this.getMofastProduct();
 		this.getNewProduct();
 		this.getFeaturedProduct();
 		this.getBestSellerProduct();
@@ -701,6 +748,24 @@ export default {
 						console.log(error.response);
 					}
 				});
+		},
+		async getMofastProduct() {
+			const formParams = {
+				brandIdArr: [24],
+				limit: 6,
+				eagerLoad: {
+					brand: ["*"],
+					product_sku: ["*"]
+				}
+			};
+			const productRes = await this.$axios({
+				method: "post",
+				url: `${catalogService}/get-products-by-brand-id`,
+				data: formParams,
+				headers: getHeader()
+			});
+
+			this.dataMofastProduct = [...productRes.data.data.data];
 		},
 		getFeaturedProduct() {
 			this.dataFeaturedProduct = [];
@@ -812,8 +877,8 @@ export default {
 </script>
 
 <style>
-.abc {
-	background: #000;
+.orange-background {
+	background: #fea500;
 }
 .promo-text {
 	font-family: "Poppins" !important;
