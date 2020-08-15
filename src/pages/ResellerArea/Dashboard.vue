@@ -178,17 +178,25 @@
 										<q-item-section avatar>
 											<q-icon name="local_activity" />
 										</q-item-section>
+<q-item-section>
+											<span
+												style="font-size: 12px; color: black; line-height: 15px"
+											>
+												Custom Design
+												<span
+													class="bg-yellow-8 text-black"
+													style="padding: 3px 5px; border-radius: 5px; font-size: 10px"
+													>soon</span
+												>
+											</span>
+										</q-item-section>
 
 										<q-item-section>
 											<span
 												style="font-size: 12px; color: black; line-height: 15px"
 											>
 												Promo & Voucher Saya
-												<span
-													class="bg-yellow-8 text-black"
-													style="padding: 3px 5px; border-radius: 5px; font-size: 10px"
-													>soon</span
-												>
+
 											</span>
 										</q-item-section>
 

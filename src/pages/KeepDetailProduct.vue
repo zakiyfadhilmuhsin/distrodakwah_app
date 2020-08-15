@@ -83,14 +83,28 @@
 				<q-btn
 					flat
 					class="bg-orange-8 text-white"
+					@click="openURL('https://distrodakwah.id/custom-eks')"
+					v-if="IsCustomDesign && IsExclusive"
+				>
+					Buat Design Sekarang
+				</q-btn>
+								<q-btn
+					flat
+					class="bg-orange-8 text-white"
+					@click="openURL('https://distrodakwah.id/custom-pro')"
+					v-if="IsCustomDesign && IsPro"
+				>
+					Buat Design Sekarang
+				</q-btn>
+
+				<q-btn
+					flat
+					class="bg-orange-8 text-white"
 					@click="addToCart"
-					v-if="!IsCustomDesign || (IsCustomDesign && IsExclusive)"
+					v-if="IsExclusive || IsPro && !IsCustomDesign"
 				>
 					Beli Sekarang
 				</q-btn>
-				<q-btn flat class="bg-green-8 text-white" v-else @click="upgrade"
-					>Upgrade Untuk Mendapatkan Fitur Ini</q-btn
-				>
 			</q-toolbar>
 		</q-footer>
 
@@ -502,6 +516,9 @@ export default {
 		IsCustomDesign: function() {
 			return [409, 410, 411, 412].indexOf(this.productData.id) !== -1;
 		},
+		IsPro: function(){
+			return this.globalState.userProfile.role_id === 8;
+		},
 		IsExclusive: function() {
 			return this.globalState.userProfile.role_id === 9;
 		},
@@ -776,8 +793,9 @@ export default {
 		upgrade() {
 			openURL("https://kayaberkah.orderonline.id/upgrade-eksklusif");
 		},
-		isEmpty
+		isEmpty,
+		openURL
 	},
-	components: { carousel, openURL }
+	components: { carousel }
 };
 </script>

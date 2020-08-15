@@ -43,28 +43,45 @@
 						<div class="row">
 							<div class="col">
 								<q-list bordered class="bg-white">
-                                    <template v-if="user.role.id === 8">
-                                        <q-item dense clickable v-ripple @click="upgrade">
-                                            <q-item-section avatar>
-                                                <q-icon name="backup" />
-                                            </q-item-section>
+									<template v-if="user.role.id === 8">
+										<q-item dense clickable v-ripple @click="upgrade">
+											<q-item-section avatar>
+												<q-icon name="backup" />
+											</q-item-section>
 
-                                            <q-item-section>
-                                                <span
-                                                    style="font-size: 12px; color: black; line-height: 15px"
-                                                >
-                                                    Upgrade Membership
-                                                </span>
-                                            </q-item-section>
+											<q-item-section>
+												<span
+													style="font-size: 12px; color: black; line-height: 15px"
+												>
+													Upgrade Membership
+												</span>
+											</q-item-section>
 
-                                            <q-item-section side>
-                                                <q-icon name="keyboard_arrow_right" />
-                                            </q-item-section>
-                                        </q-item>
+											<q-item-section side>
+												<q-icon name="keyboard_arrow_right" />
+											</q-item-section>
+										</q-item>
 
-                                        <q-separator />
-                                    </template>
+										<q-separator />
+									</template>
+									<q-separator />
+									<q-item dense clickable v-ripple @click="onCustomDesign">
+										<q-item-section avatar>
+											<q-icon name="link" />
+										</q-item-section>
 
+										<q-item-section>
+											<span
+												style="font-size: 12px; color: black; line-height: 15px"
+											>
+												Custom Design Kaos
+											</span>
+										</q-item-section>
+
+										<q-item-section side>
+											<q-icon name="keyboard_arrow_right" />
+										</q-item-section>
+									</q-item>
 									<q-item dense clickable v-ripple>
 										<q-item-section avatar>
 											<q-icon name="local_activity" />
@@ -238,7 +255,16 @@
 											</q-item-section>
 										</q-item>-->
 
-									<q-item dense clickable v-ripple @click="openURL('https://tawk.to/chat/5f101bf55b59f94722bad5d5/default')">
+									<q-item
+										dense
+										clickable
+										v-ripple
+										@click="
+											openURL(
+												'https://tawk.to/chat/5f101bf55b59f94722bad5d5/default'
+											)
+										"
+									>
 										<q-item-section avatar>
 											<q-icon name="contact_support" />
 										</q-item-section>
@@ -384,7 +410,14 @@ export default {
 				openURL("https://penjualhebat.com/mgwnv57tsntpwvau-eksklusif/");
 			}
 		},
-		openURL,
+		onCustomDesign(){
+			if (this.user.role_id == 8) {
+				openURL("https://distrodakwah.id/custom-pro");
+			} else if (this.user.role_id == 9) {
+				openURL("https://distrodakwah.id/custom-eks");
+			}
+		},
+		openURL
 	}
 };
 </script>
