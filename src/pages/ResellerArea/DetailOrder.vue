@@ -235,60 +235,13 @@
                 <h5 class="link-text text-red">Lihat Detail</h5>
               </div>-->
 						</div>
-						<div
-							class="row q-px-lg items-center"
-							style="padding-top: 15px; padding-bottom: 15px"
-						>
-							<div class="col-xs-8">
-								<h6
-									style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px"
-								>
-									Total Harga Barang
-								</h6>
-								<h6
-									style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px"
-								>
-									Ongkos Kirim
-								</h6>
-								<h6
-									style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px"
-									v-if="dataOrder.voucher_id !== null"
-								>
-									Potongan Harga
-								</h6>
-								<!-- <h6 style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px">Donasi</h6> -->
-							</div>
-							<div class="col-xs-4 text-right">
-								<h6
-									style="margin: 0; font-size: 12px; line-height: 18px"
-									class="text-black"
-								>
-									Rp{{ formatPrice(dataOrder.total_amount) }}
-								</h6>
-								<h6
-									style="margin: 0; font-size: 12px; line-height: 18px"
-									class="text-black"
-								>
-									Rp{{ formatPrice(dataOrder.shipment_fee) }}
-								</h6>
-								<h6
-									style="margin: 0; font-size: 12px; line-height: 18px"
-									class="text-red"
-									v-if="dataOrder.voucher_id !== null"
-								>
-									-Rp{{
-										formatPrice(
-											(dataOrder.total_amount * dataOrder.voucher_discount) /
-												100
-										)
-									}}
-								</h6>
-								<!-- <h6 style="margin: 0; font-size: 12px; line-height: 18px" class="text-black">Rp600</h6> -->
-							</div>
-						</div>
-						<center>
-							<hr style="border: 1px solid #eee; width: 90%;" />
-						</center>
+						<PriceDetails :orderData="orderData" />
+
+						<VoucherDetails
+							v-if="orderData.voucher_id"
+							:orderData="orderData"
+						/>
+
 						<div class="row q-px-lg">
 							<div class="col">
 								<h5
@@ -615,18 +568,20 @@ import {
 	getHeader
 } from "src/config";
 import VueClipboard from "vue-clipboard2";
-import flatPickr from "vue-flatpickr-component";
-import "flatpickr/dist/flatpickr.css";
+
 import { openURL } from "quasar";
 //components
 import Notes from "../../components/Invoice/Notes.vue";
 import ProductList from "../../components/Order/OrderDetailProductList.vue";
+import PriceDetails from "../../components/Invoice/PriceDetails.vue";
+import VoucherDetails from "../../components/Voucher/VoucherDetails.vue";
 
 export default {
 	components: {
-		flatPickr,
 		Notes,
-		ProductList
+		ProductList,
+		PriceDetails,
+		VoucherDetails
 	},
 	data() {
 		return {

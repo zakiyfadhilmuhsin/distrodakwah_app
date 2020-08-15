@@ -10,7 +10,7 @@
 					<br/> -->
 					<h1 class="create-account-text">Buat Akun Gratis</h1>
 					<p class="create-account-small-text text-center">Satu akun untuk dapatkan berbagai macam<br/>keuntungan di Distrodakwah.id</p>
-					
+
 					<!-- <q-btn flat class="bg-amber-8 full-width"><span class="text-white" style="font-weight: bolder; font-family: 'Open Sans'">Buat Akun</span></q-btn> -->
 					<q-stepper
 						v-model="step"
@@ -83,7 +83,7 @@
 							<!-- <q-input v-model="subdistrict" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Kecamatan" />
 							<q-input v-model="city" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Kabupaten/Kota" />
 							<q-input v-model="province" color="orange-8" type="text" dense class="bg-grey-2 q-mb-sm" outlined placeholder="Masukkan Provinsi" /> -->
-							<q-select 
+							<q-select
 				              color="orange-8"
 				              dense
 				              outlined
@@ -97,7 +97,7 @@
 				              @input="getCity"
 				              style="margin-bottom: 5px"
 				            />
-				            <q-select 
+				            <q-select
 				              color="orange-8"
 				              dense
 				              outlined
@@ -111,7 +111,7 @@
 				              @input="getSubdistrict"
 				              style="margin-bottom: 5px"
 				            />
-				            <q-select 
+				            <q-select
 				              color="orange-8"
 				              dense
 				              outlined
@@ -247,7 +247,7 @@ export default {
     getSubdistrict () {
 
       this.subdistrictSelected = null;
-      
+
       axios.get( getSubdistrictNoAuthUrl + '/' + this.citySelected.id )
         .then(response => {
           console.log(response)
@@ -311,7 +311,7 @@ export default {
 			this.$q.notify({position: 'top', color: 'red-4', message: '<b>Konfirmasi Password</b> Tidak Sama!', html: true});
 		}
 		else{
-			
+
 			let createForm = new FormData();
 
 			createForm.set('name', this.name);
@@ -334,7 +334,7 @@ export default {
 				}
 
 			}).catch(error => {
-				
+
 				if (error.response) {
 					console.log(error.response)
 					console.log(error.response.data.error.email[0])
@@ -342,7 +342,7 @@ export default {
 						this.$q.notify({position: 'top', color: 'red-4', message: 'Mohon maaf! Email Sudah Terdaftar!', html: true});
 					}
 				}
-			
+
 			})
 
 		}
@@ -358,10 +358,10 @@ export default {
 		var yyyy = today.getFullYear();
 		if (dd < 10) {
 		dd = '0' + dd;
-		} 
+		}
 		if (mm < 10) {
 		mm = '0' + mm;
-		} 
+		}
 		var today = yyyy + '-' + mm + '-' + dd;
 		return today;
 	}
