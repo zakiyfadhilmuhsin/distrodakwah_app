@@ -456,9 +456,9 @@ export default {
 					postToOrder = await this.$axios.post(postToOrderUrl, postOrder, {
 						headers: getHeader()
 					});
-					// ! await this.$axios.delete(destroyCart + "/" + this.cartData.id, {
-					// 	headers: getHeader()
-					// });
+					 await this.$axios.delete(destroyCart + "/" + this.cartData.id, {
+						headers: getHeader()
+					});
 				} catch (error) {
 					this.$q.notify({
 						message: "voucher tidak bisa digunakan",
