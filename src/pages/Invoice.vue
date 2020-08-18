@@ -370,11 +370,14 @@ import { openURL } from "quasar";
 // components
 import PriceDetails from "../components/Invoice/PriceDetails.vue";
 import VoucherDetails from "../components/Voucher/VoucherDetails.vue";
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
 
 Vue.use(VueClipboard);
 
 export default {
 	components: {
+		flatPickr,
 		PriceDetails,
 		VoucherDetails
 	},
@@ -544,8 +547,7 @@ export default {
 	-webkit-box-flex: 1;
 	flex: 1;
 }
-.row-accordion .col-accordion:last-child {
-}
+
 
 /* Accordion styles */
 .tabs {

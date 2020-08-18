@@ -275,7 +275,10 @@
 							<!-- </router-link> -->
 						</div>
 					</div>
-					<div class="row q-px-md orange-background" style="padding: 5px 10px 10px 10px">
+					<div
+						class="row q-px-md orange-background"
+						style="padding: 5px 10px 10px 10px"
+					>
 						<div class="col">
 							<swiper :options="swiperProductListOption">
 								<swiper-slide
@@ -285,22 +288,11 @@
 									).reverse()"
 									:key="index"
 								>
-									<template v-if="product.brand_id === 7">
-										<FreePlanKeepProductCard
-											:product="product"
-											:user="user"
-											v-if="globalState.userProfile.role_id === 10"
-										/>
-										<KeepProductCard :product="product" :user="user" v-else />
+									<template v-if="product.brand_id === 7 && product.id !== 412">
+										<KeepProductCard :product="product" :user="user" />
 									</template>
 									<template v-else>
-										<FreePlanVendorProductCard
-											:product="product"
-											:user="user"
-											v-if="globalState.userProfile.role_id === 10"
-										/>
-
-										<VendorProductCard :product="product" :user="user" v-else />
+										<VendorProductCard :product="product" :user="user" />
 									</template>
 								</swiper-slide>
 								<div class="swiper-product-pagination" slot="pagination"></div>
@@ -323,7 +315,6 @@
 						</div>
 					</div>
 
-
 					<div class="row q-px-md" style="padding: 5px 10px 10px 10px">
 						<div class="col">
 							<swiper :options="swiperProductListOption">
@@ -334,22 +325,11 @@
 									).reverse()"
 									:key="index"
 								>
-									<template v-if="product.brand_id === 7">
-										<FreePlanKeepProductCard
-											:product="product"
-											:user="user"
-											v-if="globalState.userProfile.role_id === 10"
-										/>
-										<KeepProductCard :product="product" :user="user" v-else />
+									<template v-if="product.brand_id === 7 && product.id !== 412">
+										<KeepProductCard :product="product" :user="user" />
 									</template>
 									<template v-else>
-										<FreePlanVendorProductCard
-											:product="product"
-											:user="user"
-											v-if="globalState.userProfile.role_id === 10"
-										/>
-
-										<VendorProductCard :product="product" :user="user" v-else />
+										<VendorProductCard :product="product" :user="user" />
 									</template>
 								</swiper-slide>
 								<div class="swiper-product-pagination" slot="pagination"></div>
@@ -380,24 +360,12 @@
 									).reverse()"
 									:key="index"
 								>
-									<template v-if="product.brand_id === 7">
-										<FreePlanKeepProductCard
-											:product="product"
-											:user="user"
-											v-if="globalState.userProfile.role_id === 10"
-										/>
-										<KeepProductCard :product="product" :user="user" v-else />
+									<template v-if="product.brand_id === 7 && product.id !== 412">
+										<KeepProductCard :product="product" :user="user" />
 									</template>
 									<template v-else>
-										<FreePlanVendorProductCard
-											:product="product"
-											:user="user"
-											v-if="globalState.userProfile.role_id === 10"
-										/>
-
-										<VendorProductCard :product="product" :user="user" v-else />
+										<VendorProductCard :product="product" :user="user" />
 									</template>
-									<VendorProductCard :product="product" :user="user" v-else />
 								</swiper-slide>
 								<div class="swiper-product-pagination" slot="pagination"></div>
 							</swiper>
@@ -427,22 +395,11 @@
 									).reverse()"
 									:key="index"
 								>
-									<template v-if="product.brand_id === 7">
-										<FreePlanKeepProductCard
-											:product="product"
-											:user="user"
-											v-if="globalState.userProfile.role_id === 10"
-										/>
-										<KeepProductCard :product="product" :user="user" v-else />
+									<template v-if="product.brand_id === 7 && product.id !== 412">
+										<KeepProductCard :product="product" :user="user" />
 									</template>
 									<template v-else>
-										<FreePlanVendorProductCard
-											:product="product"
-											:user="user"
-											v-if="globalState.userProfile.role_id === 10"
-										/>
-
-										<VendorProductCard :product="product" :user="user" v-else />
+										<VendorProductCard :product="product" :user="user" />
 									</template>
 								</swiper-slide>
 								<div class="swiper-product-pagination" slot="pagination"></div>
@@ -476,79 +433,16 @@
 									<!--  7 = yaumee
 								412 = cap -->
 									<template v-if="product.brand_id === 7 && product.id !== 412">
-										<FreePlanKeepProductCard
-											:product="product"
-											:user="user"
-											v-if="globalState.userProfile.role_id === 10"
-										/>
-										<KeepProductCard :product="product" :user="user" v-else />
+										<KeepProductCard :product="product" :user="user" />
 									</template>
 									<template v-else>
-										<FreePlanVendorProductCard
-											:product="product"
-											:user="user"
-											v-if="globalState.userProfile.role_id === 10"
-										/>
-
-										<VendorProductCard :product="product" :user="user" v-else />
+										<VendorProductCard :product="product" :user="user" />
 									</template>
 								</swiper-slide>
 								<div class="swiper-product-pagination" slot="pagination"></div>
 							</swiper>
 						</div>
 					</div>
-					<!----------------->
-					<!-- Produk List -->
-					<!----------------->
-					<!-- <div
-						style="background-color: #FAFAFA;"
-						v-for="(category, i) in dataProducts"
-						:key="i"
-					>
-						<div class="bg-grey-3" style="height: 8px"></div>
-						<div class="row q-pa-xs">
-							<div class="col-8">
-								<h5 class="promo-text">{{ category.category_name }}</h5>
-							</div>
-							<div class="col-4 text-right">
-								<router-link
-									:to="
-										'/allProductBrand/' +
-											category.category_name +
-											'/' +
-											category.id
-									"
-									style="text-decoration: none;"
-								>
-									<h5 class="link-text text-orange-8">Lihat Semua</h5>
-								</router-link>
-							</div>
-						</div>
-						<div class="row q-px-md" style="padding: 5px 10px 10px 10px">
-							<div class="col">
-								<swiper :options="swiperProductListOption">
-									<swiper-slide
-										v-for="(product, index) in category.products"
-										:key="index"
-									>
-										<KeepProductCard
-											:product="product"
-											:user="user"
-											v-if="product.brand_id === 7"
-										/>
-										<VendorProductCard :product="product" :user="user" v-else />
-									</swiper-slide>
-									<div
-										class="swiper-product-pagination"
-										slot="pagination"
-									></div>
-								</swiper>
-							</div>
-						</div>
-					</div> -->
-					<!-------------------->
-					<!-- End Storefront -->
-					<!-------------------->
 				</div>
 			</q-page>
 		</q-page-container>
@@ -579,11 +473,10 @@ import {
 // Loading
 import { QSpinnerPuff } from "quasar";
 //components
-import VendorProductCard from "../components/vendorProductCard.vue";
-import KeepProductCard from "../components/keepProductCard.vue";
-import FreePlanKeepProductCard from "../components/ProductCard/FreePlanKeepProductCard.vue";
-import FreePlanVendorProductCard from "../components/ProductCard/FreePlanVendorProductCard.vue";
+import VendorProductCard from "../components/ProductCard/vendorProductCard.vue";
+import KeepProductCard from "../components/ProductCard/keepProductCard.vue";
 import Vue2Filters from "vue2-filters";
+
 //methods
 import { openURL } from "quasar";
 export default {
@@ -591,12 +484,11 @@ export default {
 		swiper,
 		swiperSlide,
 		carousel,
-		FreePlanKeepProductCard,
-		FreePlanVendorProductCard,
 		VendorProductCard,
 		KeepProductCard
 	},
 	mixins: [Vue2Filters.mixin],
+
 	data() {
 		return {
 			// Slider Section

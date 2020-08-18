@@ -5,9 +5,7 @@
 				<q-btn flat round dense to="/" style="margin-right: 15px">
 					<q-icon name="arrow_back" color="white" />
 				</q-btn>
-
 				<q-space />
-
 				<q-input
 					v-model="search"
 					outlined
@@ -39,28 +37,16 @@
 								v-for="(product, index) in newProduct"
 								:key="index"
 							>
-								<template v-if="product.brand_id === 7">
-									<FreePlanKeepProductCard
-										:product="product"
-										:user="globalState.userProfile"
-										v-if="globalState.userProfile.role_id === 10"
-									/>
+								<template v-if="product.brand_id === 7 && product.id !== 412">
 									<KeepProductCard
 										:product="product"
 										:user="globalState.userProfile"
-										v-else
 									/>
 								</template>
 								<template v-else>
-									<FreePlanVendorProductCard
-										:product="product"
-										:user="globalState.userProfile"
-										v-if="globalState.userProfile.role_id === 10"
-									/>
 									<VendorProductCard
 										:product="product"
 										:user="globalState.userProfile"
-										v-else
 									/>
 								</template>
 							</div>
@@ -83,17 +69,13 @@ import {
 // Loading
 import { QSpinnerPuff } from "quasar";
 //components
-import VendorProductCard from "../components/vendorProductCard.vue";
-import KeepProductCard from "../components/keepProductCard.vue";
-import FreePlanKeepProductCard from "../components/ProductCard/FreePlanKeepProductCard.vue";
-import FreePlanVendorProductCard from "../components/ProductCard/FreePlanVendorProductCard.vue";
+import VendorProductCard from "../components/ProductCard/vendorProductCard.vue";
+import KeepProductCard from "../components/ProductCard/keepProductCard.vue";
 
 export default {
 	components: {
 		VendorProductCard,
-		KeepProductCard,
-		FreePlanKeepProductCard,
-		FreePlanVendorProductCard
+		KeepProductCard
 	},
 	data() {
 		return {

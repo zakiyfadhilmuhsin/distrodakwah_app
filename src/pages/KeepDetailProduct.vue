@@ -88,7 +88,7 @@
 				>
 					Buat Design Sekarang
 				</q-btn>
-								<q-btn
+				<q-btn
 					flat
 					class="bg-orange-8 text-white"
 					@click="openURL('https://distrodakwah.id/custom-pro')"
@@ -101,7 +101,7 @@
 					flat
 					class="bg-orange-8 text-white"
 					@click="addToCart"
-					v-if="IsExclusive || IsPro && !IsCustomDesign"
+					v-if="!IsCustomDesign"
 				>
 					Beli Sekarang
 				</q-btn>
@@ -516,7 +516,7 @@ export default {
 		IsCustomDesign: function() {
 			return [409, 410, 411, 412].indexOf(this.productData.id) !== -1;
 		},
-		IsPro: function(){
+		IsPro: function() {
 			return this.globalState.userProfile.role_id === 8;
 		},
 		IsExclusive: function() {

@@ -575,9 +575,12 @@ import Notes from "../../components/Invoice/Notes.vue";
 import ProductList from "../../components/Order/OrderDetailProductList.vue";
 import PriceDetails from "../../components/Invoice/PriceDetails.vue";
 import VoucherDetails from "../../components/Voucher/VoucherDetails.vue";
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
 
 export default {
 	components: {
+		flatPickr,
 		Notes,
 		ProductList,
 		PriceDetails,

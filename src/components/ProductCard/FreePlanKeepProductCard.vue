@@ -42,11 +42,13 @@
 						Keuntungan Anda :
 					</div>
 					<div class="q-px-sm q-py-xs bg-green" style="border-radius: 5px">
-						<div
-							class="text-white"
-							style="font-weight: bolder; margin-top:0"
-						>
-							{{`Rp${currencyFormat(product.product_variants[0].price - product.product_variants[0].reseller_free_price)}`}}
+						<div class="text-white" style="font-weight: bolder; margin-top:0">
+							{{
+								`Rp${currencyFormat(
+									product.product_variants[0].price -
+										product.product_variants[0].reseller_free_price
+								)}`
+							}}
 						</div>
 					</div>
 				</template>
@@ -77,9 +79,10 @@
 
 <script>
 import { currencyFormat } from "../../libraries/stringManipulation";
+import { openURL } from "quasar";
 
 export default {
-	name: "KeepProductCard",
+	name: "FreePlanKeepProductCard",
 	props: ["product", "user"],
 	data() {
 		return {
@@ -87,14 +90,37 @@ export default {
 			innerLoading: false
 		};
 	},
+	computed: {
+		IsCustomDesign: function() {
+			return [409, 410, 411, 412].indexOf(this.product.id) !== -1;
+		},
+		IsPro: function() {
+			return this.user.role_id === 8;
+		},
+		IsExclusive: function() {
+			return this.user.role_id === 9;
+		}
+	},
 	methods: {
 		onCardClick() {
-			if (this.product.status !== "coming-soon")
-				this.$router.push(`/detail/keep/${this.product.id}`);
+			console.log(this.IsCustomDesign);
+			if (this.product.status !== "coming-soon") return;
+			if (this.IsCustomDesign) {
+				console.log('asd')
+				if (this.IsPro) {
+					openURL("https://distrodakwah.id/custom-pro");
+					return;
+				}
+				if (this.IsExclusive) {
+					openURL("https://distrodakwah.id/custom-pro");
+					return;
+				}
+			}
+			this.$router.push(`/detail/keep/${this.product.id}`);
 		},
-		productNameFormat(str){
-			if(str.length >= 30){
-				return str.substring(0, 30) + '...'
+		productNameFormat(str) {
+			if (str.length >= 30) {
+				return str.substring(0, 30) + "...";
 			}
 			return str;
 		},

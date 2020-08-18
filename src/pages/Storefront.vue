@@ -17,7 +17,7 @@
 				/>
 				<!-- <div class="row no-wrap">
           <center>
-            
+
             <q-input type="text" dense outlined color="amber-8" bg-color="white" placeholder="Mau Belanja Apa Hari Ini?" style=" margin: 8px 0px">
               <template v-slot:prepend>
                 <q-icon name="search" />
@@ -261,6 +261,7 @@ import { QSpinnerPuff } from "quasar";
 //components
 import VendorProductCard from "../components/vendorProductCard.vue";
 import KeepProductCard from "../components/keepProductCard.vue";
+
 export default {
 	components: {
 		swiper,
