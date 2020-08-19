@@ -137,7 +137,7 @@ export default {
 				openURL("https://distrodakwah.id/custom-pro");
 				return;
 			} else if (this.IsCustomDesign && this.IsExclusive) {
-				openURL("https://distrodakwah.id/custom-pro");
+				openURL("https://distrodakwah.id/custom-eks");
 				return;
 			}
 			this.$router.push(`/detail/keep/${this.product.id}`);

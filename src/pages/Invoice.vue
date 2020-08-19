@@ -21,7 +21,7 @@
 				<q-btn
 					flat
 					class="bg-orange-8 text-white full-width"
-					@click="paymentConfirmation = true"
+					@click="$refs.PaymentConfirmationDialog.toggle"
 					>Konfirmasi Pembayaran</q-btn
 				>
 			</q-toolbar>
@@ -137,6 +137,12 @@
 											: ""
 									}}
 									WIB (1x24 jam)
+								</h6>
+								<h6
+									style="font-size: 12px; margin: 10px 0; font-family: 'Open Sans'; text-align: center; line-height: 16px"
+								>
+									Pembayaran di luar jam kerja (08:00 - 15:00) insya Allah akan
+									diproses keesokan harinya.
 								</h6>
 							</div>
 						</div>
@@ -261,97 +267,12 @@
 					</div>
 				</div>
 			</q-page>
-			<q-dialog v-model="paymentConfirmation" position="bottom">
-				<q-card style="min-width: 360px">
-					<q-card-section>
-						<div class="text-h6">Konfirmasi Pembayaran</div>
-					</q-card-section>
-
-					<q-card-section>
-						<q-select
-							color="orange-8"
-							dense
-							outlined
-							v-model="bankReceiver"
-							:options="dataBank"
-							option-value="bank_name_tmp"
-							option-label="bank_name_tmp"
-							label="Bank Tujuan"
-							emit-value
-							map-options
-							style="margin-bottom: 5px"
-						/>
-						<q-input
-							type="text"
-							color="orange-8"
-							v-model="bankSender"
-							label="Transfer Dari Bank"
-							dense
-							outlined
-							style="margin-bottom: 5px"
-						/>
-						<q-input
-							type="text"
-							color="orange-8"
-							v-model="senderName"
-							label="Nama Pengirim"
-							dense
-							outlined
-							style="margin-bottom: 5px"
-						/>
-						<q-input
-							type="number"
-							color="orange-8"
-							v-model="totalTransfer"
-							label="Total Transfer"
-							dense
-							outlined
-							style="margin-bottom: 5px"
-						/>
-						<div
-							class="q-field row no-wrap items-start bg-grey-2 q-mb-sm q-input q-field--outlined q-field--float q-field--dense"
-						>
-							<div
-								class="q-field__inner relative-position col self-stretch column justify-center"
-							>
-								<div
-									class="q-field__control relative-position row no-wrap text-orange-8"
-								>
-									<div
-										class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
-									>
-										<flat-pickr
-											v-model="transferDate"
-											class="q-field__native"
-											placeholder="Tanggal Transfer"
-										></flat-pickr>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- <q-input dense outlined v-model="transferDate" color="orange-8" placeholder="Tanggal Transfer">
-              <template v-slot:append>
-                <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                    <q-date v-model="transferDate" mask="YYYY-MM-DD" color="orange-8" />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>-->
-					</q-card-section>
-
-					<q-card-actions class="q-px-md">
-						<q-btn
-							flat
-							label="Konfirmasi Sekarang"
-							color="white"
-							class="bg-orange-8 text-capitalize full-width"
-							@click="postPaymentConfirmation"
-							v-close-popup
-						/>
-					</q-card-actions>
-				</q-card>
-			</q-dialog>
+			<PaymentConfirmation
+				ref="PaymentConfirmationDialog"
+				:order="dataOrder"
+				:bankData="dataBank"
+				@payment-confirm-succeed="PaymentConfirmSucceed"
+			/>
 		</q-page-container>
 	</q-layout>
 </template>
@@ -368,34 +289,32 @@ import {
 import VueClipboard from "vue-clipboard2";
 import { openURL } from "quasar";
 // components
+import PaymentConfirmation from "../components/Invoice/PaymentConfirmation.vue";
 import PriceDetails from "../components/Invoice/PriceDetails.vue";
 import VoucherDetails from "../components/Voucher/VoucherDetails.vue";
-import flatPickr from "vue-flatpickr-component";
-import "flatpickr/dist/flatpickr.css";
 
 Vue.use(VueClipboard);
 
 export default {
 	components: {
-		flatPickr,
+		PaymentConfirmation,
 		PriceDetails,
 		VoucherDetails
 	},
 	data() {
 		return {
 			dataBank: [],
-			dataOrder: [],
+			dataOrder: {},
 			// Payment Confirmation
 			bankReceiver: "",
 			bankSender: "",
 			senderName: "",
 			totalTransfer: 0,
-			transferDate: "",
+			transferDate: ""
 			// Toggle
-			paymentConfirmation: false
 		};
 	},
-	mounted() {
+	created() {
 		this.getDataBank();
 		this.getOrder();
 	},
@@ -439,54 +358,10 @@ export default {
 					}
 				});
 		},
-		postPaymentConfirmation() {
-			let paymentConfirm = new FormData();
-
-			paymentConfirm.set("invoice", this.dataOrder.invoice);
-			paymentConfirm.set("bank_receiver", this.bankReceiver);
-			paymentConfirm.set("bank_sender", this.bankSender);
-			paymentConfirm.set("sender_name", this.senderName);
-			paymentConfirm.set("total_transfer", this.totalTransfer);
-			paymentConfirm.set("transfer_date", this.transferDate);
-			paymentConfirm.set("order_id", this.dataOrder.id);
-
-			this.$axios
-				.post(paymentConfirmationUrl, paymentConfirm, { headers: getHeader() })
-				.then(response => {
-					if (response.status === 200) {
-						this.getDataBank();
-						this.getOrder();
-
-						openURL(
-							"https://wa.me/628170090597?text=Konfirmasi%20Pembayaran%0A" +
-								"%0ANo%20Invoice:%20" +
-								this.dataOrder.invoice +
-								"%0ABank%20Penerima:%20" +
-								this.bankReceiver +
-								"%0ABank%20Pengirim:%20" +
-								this.bankSender +
-								"%0ANama%20Pengirim:%20" +
-								this.senderName +
-								"%0ATotal%20Transfer:%20" +
-								this.totalTransfer +
-								"%0ATanggal%20Transfer:%20" +
-								this.transferDate +
-								"%0A%0A*Jangan%20Lupa%20Kirim%20Bukti%20Pembayaran*"
-						);
-
-						this.bankReceiver = "";
-						this.bankSender = "";
-						this.senderName = "";
-						this.totalTransfer = "";
-						this.transferDate = "";
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
-				});
+		PaymentConfirmSucceed() {
+			this.getOrder();
 		},
+
 		formatPrice(value) {
 			let val = (value / 1).toFixed(0).replace(".", ",");
 			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -547,7 +422,6 @@ export default {
 	-webkit-box-flex: 1;
 	flex: 1;
 }
-
 
 /* Accordion styles */
 .tabs {
