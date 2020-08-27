@@ -16,7 +16,7 @@
 				</q-badge>
 
 				<q-space />
-				<q-btn flat dense round>
+				<q-btn flat dense round to="/inbox">
 					<q-icon name="notifications" />
 				</q-btn>
 				<q-btn flat dense round dropdown to="/search">

@@ -1,9 +1,9 @@
 import router from 'src/router/routes'
-import { API, API_DEV, WEBREPLICA_DOMAIN, WEBREPLICA_DOMAIN_DEV } from '../config/default'
+import { API, API_DEV, SOCKETIO, SOCKETIO_DEV, WEBREPLICA_DOMAIN, WEBREPLICA_DOMAIN_DEV } from '../config/default'
 //export const hostDomain = 'https://api-test.needherbal.web.id'
 export const hostDomain = process.env.DEV ? API_DEV : API
 export const webReplicaDomain = process.env.DEV ? WEBREPLICA_DOMAIN_DEV : WEBREPLICA_DOMAIN;
-
+export const socketIoEndpoint = process.env.DEV ? SOCKETIO_DEV : SOCKETIO;
 export const apiDomain = hostDomain
 
 export const loginUrl = apiDomain + '/auth/login'

@@ -1,3 +1,5 @@
+import MainLayout from '../layouts/MainLayout.vue';
+
 import LoginPage from "pages/Auth/Login";
 import CreateAccountPage from "pages/Auth/CreateAccount";
 import FreeAccountPage from "pages/Auth/RegisterFreeMember";
@@ -13,6 +15,7 @@ import ListCustomerPage from "pages/ResellerArea/ListCustomer";
 import ShippingPage from "pages/Shipping";
 import OrderSummaryPage from "pages/OrderSummary";
 import CartPage from "pages/Cart";
+import InboxPage from "../pages/Inbox.vue";
 import InvoicePage from "pages/Invoice";
 import OrderListPage from "pages/ResellerArea/OrderList";
 import DetailOrderPage from "pages/ResellerArea/DetailOrder";
@@ -30,6 +33,13 @@ import UpdatePasswordHasToken from "pages/Auth/UpdatePasswordHasToken";
 // import LoginTesting from "pages/Auth/LoginTesting";
 
 const routes = [
+	{
+		path: "/inbox",
+		meta: {
+			requiresAuth: true
+		},
+		component: InboxPage,
+	},
 	{
 		path: "/",
 		meta: {
