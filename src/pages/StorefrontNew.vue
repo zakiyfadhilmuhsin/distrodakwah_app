@@ -18,6 +18,7 @@
 				<q-space />
 				<q-btn flat dense round to="/inbox">
 					<q-icon name="notifications" />
+					<span v-if="newMessage" class="notify-bubble"></span>
 				</q-btn>
 				<q-btn flat dense round dropdown to="/search">
 					<q-icon name="search" />
@@ -451,6 +452,7 @@
 
 <script>
 import { mapState } from "vuex";
+import io from "socket.io-client";
 import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import carousel from "vue-owl-carousel";
@@ -467,8 +469,11 @@ import {
 	getProductByClassUrl,
 	identitySliderUrl,
 	orderService,
-	totalCartItemUrl
+	totalCartItemUrl,
+	socketIoEndpoint
 } from "src/config";
+
+let socket;
 
 // Loading
 import { QSpinnerPuff } from "quasar";
@@ -523,7 +528,8 @@ export default {
 			user: {},
 			// Total Count Cart Item
 			totalCartItem: null,
-			startProduct: 1
+			startProduct: 1,
+			newMessage: false
 		};
 	},
 	computed: {
@@ -546,6 +552,7 @@ export default {
 		this.getBestSellerProduct();
 		this.getProductCustom();
 		this.getTotalRevenue();
+		this.initiateSocketIO();
 	},
 	async mounted() {
 		// Get Total Cart Item
@@ -559,7 +566,19 @@ export default {
 			}
 		} catch (error) {}
 	},
+	async destroyed() {
+		console.log("wawa");
+		socket.disconnect();
+	},
+
 	methods: {
+		initiateSocketIO() {
+			socket = io(socketIoEndpoint);
+			socket.on("notify", message => {
+				console.log("asdasd");
+				this.newMessage = true;
+			});
+		},
 		async getUser() {
 			return new Promise(async resolve => {
 				try {
@@ -813,5 +832,17 @@ export default {
 }
 .q-btn__wrapper {
 	width: auto;
+}
+
+.notify-bubble {
+	background: lightseagreen;
+	position: absolute;
+	right: 5px;
+	top: -1px;
+	padding: 2px 6px;
+	color: #fff;
+	font: bold 0.6em Tahoma, Arial, Helvetica;
+	height: 30%;
+	border-radius: 3px;
 }
 </style>

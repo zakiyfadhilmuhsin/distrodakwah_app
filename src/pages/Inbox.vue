@@ -2,7 +2,9 @@
 	<MainLayout Header="Inbox">
 		<template v-slot:main>
 			<div class="chat-container">
-				<div v-if="newMessage">Ada Pesan Baru<button @click="loadMessage()">more</button></div>
+				<div v-if="newMessage">
+					Ada Pesan Baru<button @click="loadMessage()">more</button>
+				</div>
 				<div
 					class="message-container"
 					v-for="message in messages"
@@ -55,6 +57,8 @@ import { cloneDeep } from "lodash";
 import { apiDomain, socketIoEndpoint, getHeader } from "../config";
 import io from "socket.io-client";
 
+let socket;
+
 export default {
 	components: {
 		MainLayout
@@ -71,12 +75,18 @@ export default {
 		this.loadMessage();
 		this.initiateSocketIO();
 	},
+	async destroyed() {
+		console.log("wawa");
+		socket.disconnect();
+	},
 	methods: {
-		initiateSocketIO() {
-			let socket = io(socketIoEndpoint);
+		checkInboxState() {
 
+		},
+		initiateSocketIO() {
+			socket = io (socketIoEndpoint);
 			socket.on("notify", message => {
-				console.log("asdasdasd");
+				console.log('asdasd');
 				this.newMessage = true;
 			});
 		},
@@ -170,8 +180,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .chat-container {
 	display: flex;
 	flex-direction: column;

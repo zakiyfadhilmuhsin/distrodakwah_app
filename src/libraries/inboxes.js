@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {apiDomain, getHeader} from '../config';
+import { apiDomain, getHeader } from '../config';
 
 const getBroadcastMessage = async (form) => {
 	return new Promise(async (resolve, reject) => {
@@ -19,6 +19,23 @@ const getBroadcastMessage = async (form) => {
 	})
 }
 
+const inboxStateCheck = async () => {
+	return new Promise((resolve, reject) => {
+		axios
+			.get(`${apiDomain}/identity/inbox/inbox-state`,
+				{
+					headers: getHeader()
+				})
+			.then((response) => {
+
+				resolve(response)
+			}
+			).catch();
+
+	})
+}
+
 export {
+	inboxStateCheck,
 	getBroadcastMessage
 }
