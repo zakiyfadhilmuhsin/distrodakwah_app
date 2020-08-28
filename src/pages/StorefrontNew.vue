@@ -208,7 +208,7 @@
 									0: { items: 1, nav: false },
 									600: { items: 1, nav: false }
 								}"
-								style="width: 100%"
+
 							>
 								<img
 									v-for="(slider, index) in dataSlider"

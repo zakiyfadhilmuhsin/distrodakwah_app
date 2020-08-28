@@ -3,7 +3,7 @@ import MainLayout from '../layouts/MainLayout.vue';
 import LoginPage from "pages/Auth/Login";
 import CreateAccountPage from "pages/Auth/CreateAccount";
 import FreeAccountPage from "pages/Auth/RegisterFreeMember";
-import StorefrontPage from "pages/StorefrontNew";
+import StorefrontPage from "pages/Storefront";
 
 import ProductReviewDetailPage from '../pages/Products/ProductReviewDetail.vue';
 import DetailProductPage from "pages/DetailProduct";

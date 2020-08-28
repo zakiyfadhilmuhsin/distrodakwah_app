@@ -41,7 +41,10 @@
 					<div class="text-black" style="font-size: 10px;">
 						Keuntungan Anda :
 					</div>
-					<div class="profit-button" v-if="user.role.id === 9">
+					<div
+						class="profit-button"
+						v-if="globalState.userProfile.role.id === 9"
+					>
 						{{
 							"Rp" +
 								currencyFormat(
@@ -50,7 +53,10 @@
 								)
 						}}
 					</div>
-					<div class="profit-button" v-else-if="user.role.id === 8">
+					<div
+						class="profit-button"
+						v-else-if="globalState.userProfile.role.id === 8"
+					>
 						{{
 							"Rp" +
 								currencyFormat(
@@ -59,7 +65,7 @@
 								)
 						}}
 					</div>
-					<template v-else-if="user.role.id === 10">
+					<template v-else-if="globalState.userProfile.role.id === 10">
 						<div class="upgrade-button" v-if="IsCustomDesign">
 							Silakan Upgrade
 						</div>
@@ -84,29 +90,17 @@
 				</template>
 			</center>
 		</q-card-section>
-
-		<!-- <q-card-section>
-      <center>
-        <q-btn
-          :to="'/detail/keep/' + product.id"
-          flat
-          class="bg-orange-8 text-white centered-text"
-          style
-        >
-          <span style="text-transform: capitalize;">Beli Sekarang</span>
-        </q-btn>
-      </center>
-    </q-card-section> -->
 	</q-card>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { openURL } from "quasar";
 import { currencyFormat } from "../../libraries/stringManipulation";
 
 export default {
 	name: "KeepProductCard",
-	props: ["product", "user"],
+	props: ["product"],
 	data() {
 		return {
 			featuredImageShow: true,
@@ -114,17 +108,23 @@ export default {
 		};
 	},
 	computed: {
+		...mapState(["globalState"]),
 		IsCustomDesign: function() {
 			return [409, 410, 411, 412].indexOf(this.product.id) !== -1;
 		},
 		IsPro: function() {
-			return this.user.role_id === 8;
+			return this.globalState.userProfile.role_id === 8;
 		},
 		IsExclusive: function() {
-			return this.user.role_id === 9;
+			return this.globalState.userProfile.role_id === 9;
 		},
 		isFree: function() {
-			return this.user.role_id === 10;
+			return this.globalState.userProfile.role_id === 10;
+		}
+	},
+	async created() {
+		if (Object.keys(this.globalState.userProfile).length === 0) {
+			await this.$store.dispatch("globalState/getUserProfile");
 		}
 	},
 	methods: {

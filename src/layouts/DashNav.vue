@@ -1,6 +1,5 @@
 <template>
-	<q-layout view="lHh Lpr lFf">
-		<q-footer class="mobile-layout-on-desktop">
+
 			<center>
 				<q-tabs
 					dense
@@ -28,12 +27,6 @@
 						style="text-transform: capitalize; font-family: 'Open Sans'"
 						><span style="font-size: 10px;">Cart</span></q-route-tab
 					>
-					<q-route-tab
-						icon="account_circle"
-						to="/dashboard"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-						><span style="font-size: 10px;">Profile</span></q-route-tab
-					>
 					<q-tab
 						icon="fa fa-comments"
 						@click="
@@ -45,26 +38,23 @@
 					</q-tab>
 
 					<q-route-tab
-						icon="verified_user"
-						to="/"
+						icon="account_circle"
+						to="/dashboard"
 						style="text-transform: capitalize; font-family: 'Open Sans'"
-						><span style="font-size: 10px;">Support</span></q-route-tab
 					>
+						<span style="font-size: 10px;">Profil</span>
+					</q-route-tab>
 				</q-tabs>
 			</center>
-		</q-footer>
 
-		<q-page-container class="mobile-layout-on-desktop">
-			<router-view />
-		</q-page-container>
-	</q-layout>
+
 </template>
 
 <script>
 import { openURL } from "quasar";
 
 export default {
-	name: "Dashboard",
+	name: "DashNav",
 	data() {
 		return {};
 	},
