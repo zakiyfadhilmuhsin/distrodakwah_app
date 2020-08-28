@@ -27,11 +27,9 @@ const inboxStateCheck = async () => {
 					headers: getHeader()
 				})
 			.then((response) => {
-
 				resolve(response)
 			}
 			).catch();
-
 	})
 }
 

@@ -39,7 +39,7 @@ export default {
 <style scoped>
 .grid-layout{
 	display: grid;
-
+	grid-template-columns: 360px;
 }
 
 </style>
