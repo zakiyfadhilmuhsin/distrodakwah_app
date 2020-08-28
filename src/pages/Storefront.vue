@@ -1,285 +1,171 @@
 <template>
-	<q-layout view="lHh Lpr lFf">
-		<q-header class="mobile-layout-on-desktop">
-			<q-toolbar class="bg-distrodakwah text-white">
-				<!-- <q-toolbar-title>
-          Distrodakwah
-        </q-toolbar-title>-->
-				<q-btn flat dense round>
-					<q-icon name="notifications" />
-				</q-btn>
-
-				<q-space />
-
-				<img
-					src="~/assets/images/components/logo-distrodakwah.png"
-					width="50%"
-				/>
-				<!-- <div class="row no-wrap">
-          <center>
-
-            <q-input type="text" dense outlined color="amber-8" bg-color="white" placeholder="Mau Belanja Apa Hari Ini?" style=" margin: 8px 0px">
-              <template v-slot:prepend>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-          </center>
-        </div>-->
-
-				<q-space />
-
-				<q-btn flat dense round dropdown to="/search">
-					<q-icon name="search" />
-				</q-btn>
-			</q-toolbar>
-		</q-header>
-
-		<q-footer class="mobile-layout-on-desktop">
-			<center>
-				<q-tabs
-					dense
-					class="bg-white text-black"
-					style="border-top: 2px solid #eeeeee;"
-					animated
-					swipeable
-					align="justify"
-				>
-					<q-route-tab
-						icon="home"
-						to="/"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-					>
-						<span style="font-size: 10px;">Beranda</span>
-					</q-route-tab>
-					<q-route-tab
-						icon="receipt"
-						to="/orderList"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-					>
-						<span style="font-size: 10px;">Pesanan</span>
-					</q-route-tab>
-					<q-route-tab
-						icon="local_mall"
-						to="/cart"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-					>
-						<span style="font-size: 10px;">Keranjang</span>
-						<q-badge
-							color="red"
-							text-color="white"
-							floating
-							v-if="totalCartItem !== null"
-						>
-							<b>{{ totalCartItem }}</b>
-						</q-badge>
-					</q-route-tab>
-					<q-route-tab
-						icon="account_circle"
-						to="/dashboard"
-						style="text-transform: capitalize; font-family: 'Open Sans'"
-					>
-						<span style="font-size: 10px;">Profil</span>
-					</q-route-tab>
-					<!-- <q-route-tab
-            icon="verified_user"
-            to="/storefront"
-            style="text-transform: capitalize; font-family: 'Open Sans'"
-          ><span style="font-size: 10px;">Support</span></q-route-tab>-->
-				</q-tabs>
-			</center>
-		</q-footer>
-
-		<q-page-container class="mobile-layout-on-desktop">
-			<q-page>
-				<div class="bg-grey-3" style="height: 100%">
-					<!-- Slider Promo -->
-					<!-- <div style="background-color: white; margin-bottom: 10px" v-if="dataSlider.length !== 0">
-            <div class="q-pt-md q-pb-xs">
-              <carousel
-                :autoplay="true"
-                :nav="false"
-                :items="1"
-                :center="true"
-                :loop="true"
-                :stagePadding="40"
-                :margin="10"
-                :responsive="{0:{items:1,nav:false},600:{items:1,nav:false}}"
-                :autoWidth="false"
-              >
-                <img v-for="(slider, index) in dataSlider" :key="index" :src="slider.slider_image" />
-              </carousel>
-            </div>
-             <div class="row q-pa-xs">
-              <div class="col">
-                <h5 class="promo-text">Promo</h5>
-              </div>
-              <div class="col text-right">
-                <h5 class="link-text text-orange-9" style="margin-bottom: 0">Lihat Semua</h5>
-              </div>
-            </div>  should be commented
-          </div>-->
-					<!-- <div style="background-color: white; margin-bottom: 10px">
-            <div class="row q-pa-xs">
-              <div class="col">
-                <h5 class="promo-text">Kategori</h5>
-              </div>
-              <div class="col text-right">
-                <h5 class="link-text text-orange-8">Lihat Semua</h5>
-              </div>
-            </div>
-            <div class="row" style="padding: 0px 10px 15px 10px">
-              <div class="col-4" v-for="(category, index) in dataCategory" :key="index">
-                <div style="background-color: white; border: 2px solid #e0e0e0; border-radius: 10px; margin: 5px">
-                  <h4 class="category-title">{{category.category_name}}</h4>
-                </div>
-              </div>
-            </div>
-          </div>-->
+	<HomeLayout>
+		<div class="page-content">
+			<div
+				class="bg-distrodakwah q-px-md row"
+				style="padding-top: 15px; padding-bottom: 40px"
+			>
+				<div class="col-sm-2">
 					<div
-						style="background-color: white; margin-bottom: 10px; padding-bottom: 15px"
-						v-for="(category, i) in dataProducts"
-						:key="i"
+						v-if="
+							user &&
+								globalState.userProfile.role &&
+								globalState.userProfile.role.id &&
+								globalState.userProfile.role.id === 8
+						"
 					>
-						<div class="row q-pa-xs">
-							<div class="col">
-								<h5 class="promo-text">{{ category.category_name }}</h5>
-							</div>
-							<div class="col text-right">
-								<router-link
-									:to="
-										'/allProductBrand/' +
-											category.category_name +
-											'/' +
-											category.id
-									"
-									style="text-decoration: none;"
-								>
-									<h5 class="link-text text-orange-8">Lihat Semua</h5>
-								</router-link>
-							</div>
-						</div>
-						<div class="row q-px-md" style="padding: 5px 10px 10px 10px">
-							<div class="col">
-								<swiper :options="swiperProductListOption">
-									<swiper-slide
-										v-for="(product, index) in category.products"
-										:key="index"
-									>
-										<KeepProductCard
-											:product="product"
-											:user="user"
-											v-if="product.brand_id === 7"
-										/>
-										<VendorProductCard :product="product" :user="user" v-else />
-									</swiper-slide>
-									<div
-										class="swiper-product-pagination"
-										slot="pagination"
-									></div>
-								</swiper>
-							</div>
-						</div>
+						<img
+							src="~/assets/images/components/new_silver_badge.png"
+							width="62"
+						/>
 					</div>
-					<!-- <div style="background-color: white; margin-bottom: 10px; padding-bottom: 15px">
-            <div class="row q-pa-xs">
-              <div class="col">
-                <h5 class="promo-text">Produk Laris</h5>
-              </div>
-              <div class="col text-right">
-                <h5 class="link-text text-orange-8">Lihat Semua</h5>
-              </div>
-            </div>
-            <div class="row q-px-md" style="padding: 5px 10px 15px 10px">
-              <div class="col">
-                <swiper :options="swiperProductListOption">
-                  <swiper-slide v-for="(product, index) in dataProduct" :key="index">
-                    <q-card class="my-card bg-grey-2" style="margin: 0 5px" flat bordered>
-                      <transition
-                        appear
-                        enter-active-class="animated fadeIn"
-                        leave-active-class="animated fadeOut"
-                      >
-                        <img :src="product.featured_image" style="width: 100%" v-show="featuredImageShow == true">
-                      </transition>
-
-                      <center>
-                        <q-spinner
-                          color="dark"
-                          size="2em"
-                          v-show="innerLoading == true"
-                          style="margin: 10px 0"
-                        />
-                      </center>
-
-                      <q-card-section style="padding: 10px 16px 16px 16px">
-                        <center>
-                          <div style="font-family: 'Open Sans';font-size: 12px; font-weight: bold; margin-bottom: 5px">{{product.product_name}}</div>
-                          <div class="text-black" style="font-size: 10px;">Keuntungan Anda :</div>
-                          <div class="q-px-sm q-py-xs bg-green">
-                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-if="user.role.id === 9">{{'Rp' + formatPrice(product.price * product.reseller_exclusive_price / 100)}}</div>
-                            <div class="text-white" style="font-weight: bolder; margin-top:0" v-else-if="user.role.id === 8">{{'Rp' + formatPrice(product.price * product.reseller_pro_price / 100)}}</div>
-                          </div>
-                        </center>
-                      </q-card-section>
-
-                      <q-card-section>
-                        <center>
-                          <q-btn :to="'/detail/' + product.id" flat class="bg-orange-8 text-white" style="padding-top: 0px; padding-bottom: 0px"><span style="text-transform: capitalize;">Beli Sekarang</span></q-btn>
-                        </center>
-                      </q-card-section>
-
-                    </q-card>
-                  </swiper-slide>
-                  <div class="swiper-product-pagination" slot="pagination"></div>
-                </swiper>
-              </div>
-            </div>
-          </div>-->
+					<div
+						style="margin-top: 2px"
+						v-if="
+							user &&
+								globalState.userProfile.role &&
+								globalState.userProfile.role.id &&
+								globalState.userProfile.role.id === 9
+						"
+					>
+						<img
+							src="~/assets/images/components/new_gold_badge.png"
+							width="62"
+						/>
+					</div>
+					<div
+						v-if="
+							user &&
+								globalState.userProfile.role &&
+								globalState.userProfile.role.id &&
+								globalState.userProfile.role.id === 10
+						"
+					>
+						<img
+							src="~/assets/images/components/new_bronze_badge.png"
+							width="62"
+						/>
+					</div>
 				</div>
-			</q-page>
-		</q-page-container>
-	</q-layout>
+				<div class="col-sm-7 q-px-md">
+					<p
+						class="text-white text-bold"
+						style="margin: 0; font-family:'Open Sans'; font-size: 14px"
+					>
+						{{ globalState.userProfile.name }}
+					</p>
+					<p class="text-white" style="margin: 0 0 5px 0; font-size: 11px">
+						{{
+							user &&
+								globalState.userProfile.role &&
+								globalState.userProfile.role.role_name
+						}}
+					</p>
+					<div
+						class="bg-white shadow-2"
+						style="border-radius: 5px; width: max-content; padding: 2px 5px"
+					>
+						<p
+							class="text-bold text-amber-9"
+							style="margin: 0; font-size: 10px"
+						>
+							Total Pendapatan :
+							<span class="text-green"
+								>Rp{{
+									currencyFormat(this.globalState.userProfile.total_revenue)
+								}}</span
+							>
+						</p>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<router-link to="/orderList/" style="text-decoration: none;">
+						<div
+							class="bg-white shadow-2 float-right"
+							style="border-radius: 15px; width: max-content; padding: 4px 6px"
+						>
+							<p
+								class="text-bold text-grey-9"
+								style="margin: 0; font-size: 11px; font-family: 'Poppins'"
+							>
+								<q-icon name="style" style="font-size: 13px; color: #db5959" />
+								Pesanan
+							</p>
+						</div>
+					</router-link>
+				</div>
+			</div>
+
+			<Slider class="slider" />
+			<CategoryGrid
+				v-if="categoryData.length > 0"
+				:categoryData="categoryData"
+			/>
+			<Showcase class="showcase" title="Mofast" :productArr="mofastProductData"/>
+			<Showcase class="showcase" title="Produk Terbaru" :productArr="newProductData"/>
+			<Showcase class="showcase" title="Produk Unggulan" :productArr="featuredProductData"/>
+			<Showcase class="showcase" title="Produk Best Seller" :productArr="bestSellerProductData"/>
+			<Showcase class="showcase" title="Produk Custom" :productArr="customProductData"/>
+
+		</div>
+	</HomeLayout>
 </template>
 
 <script>
-import "swiper/dist/css/swiper.css";
-import { swiper, swiperSlide } from "vue-awesome-swiper";
-import carousel from "vue-owl-carousel";
-import axios from "axios";
+import { mapState } from "vuex";
+
+//plugins
+
+// helpers
+import { currencyFormat } from "../libraries/stringManipulation";
 import {
 	apiDomain,
 	catalogCategoryUrl,
 	catalogBrandUrl,
 	catalogProductUrl,
-	identitySliderUrl,
-	totalCartItemUrl,
+	catalogService,
 	getHeader,
-	getProductByCategoryUrl
+	getProductByCategoryUrl,
+	getNewProductUrl,
+	getProductByClassUrl,
+	identitySliderUrl,
+	orderService,
+	totalCartItemUrl
 } from "src/config";
-// Loading
-import { QSpinnerPuff } from "quasar";
-//components
-import VendorProductCard from "../components/vendorProductCard.vue";
-import KeepProductCard from "../components/keepProductCard.vue";
+import { openURL } from "quasar";
 
+//components
+import CategoryGrid from "../components/Storefront/Categories/CategoryGrid.vue";
+import HomeLayout from "../layouts/HomeLayout.vue";
+import Showcase from "../components/Storefront/Showcase.vue";
+import Slider from "../components/Storefront/Sliders/Slider";
+//methods
 export default {
 	components: {
-		swiper,
-		swiperSlide,
-		carousel,
-		VendorProductCard,
-		KeepProductCard
+		CategoryGrid,
+		HomeLayout,
+		Showcase,
+		Slider,
 	},
+
 	data() {
 		return {
 			// Slider Section
 			dataSlider: [],
+			slide: "style",
+			lorem: "Lorem ipsum dolor, sit amet consectetur ",
 			// Category Section
-			dataCategory: [],
+			categoryData: [],
 			// Brand Section
 			dataBrand: [],
 			// Product Section
 			dataProducts: [],
+			newProductData: [],
+			mofastProductData: [],
+			featuredProductData: [],
+			bestSellerProductData: [],
+			customProductData: [],
+			dataProductByBrand: [],
 			// Slider Section
 			swiperProductListOption: {
 				slidesPerView: 2,
@@ -293,28 +179,39 @@ export default {
 			// Loading
 			innerLoading: false,
 			// user
-			user: [],
+			user: {},
 			// Total Count Cart Item
 			totalCartItem: null,
 			startProduct: 1
 		};
 	},
 	computed: {
+		...mapState(["globalState"]),
 		newProduct() {
 			return this.dataProduct.slice().reverse();
 		}
 	},
 	async created() {
-		this.user = JSON.parse(window.localStorage.getItem("profileUser"));
-		this.getBrand();
-		this.getSlider();
-		this.getProductByCategory();
+		if (Object.keys(this.globalState.userProfile).length === 0) {
+			await this.$store.dispatch("globalState/getUserProfile");
+		}
+		await this.getCategories();
+		await this.getMofastProducts();
+		await this.getNewProducts()
+		await this.getFeaturedProducts();
+		await this.getBestSellerProducts();
+		// this.getBrand();
+		// this.getSlider();
+		// this.getProductByCategory();
+		// this.getNewProduct();
+		this.getCustomProducts();
+		// this.getTotalRevenue();
 	},
 	async mounted() {
 		// Get Total Cart Item
 		try {
-			const totalCartItems = await axios.get(
-				totalCartItemUrl + "/" + this.user.id,
+			const totalCartItems = await this.$axios.get(
+				totalCartItemUrl + "/" + this.globalState.userProfile.id,
 				{ headers: getHeader() }
 			);
 			if (totalCartItems.data.data !== "cart_is_empty") {
@@ -323,25 +220,61 @@ export default {
 		} catch (error) {}
 	},
 	methods: {
+		async getUser() {
+			return new Promise(async resolve => {
+				try {
+					const userRes = await this.$axios.get(`${apiDomain}/auth/user`, {
+						headers: getHeader()
+					});
+
+					window.localStorage.setItem(
+						"profileUser",
+						JSON.stringify(userRes.data)
+					);
+					this.user = userRes.data;
+					return resolve();
+				} catch (error) {
+					console.log("error fetching user");
+				}
+			});
+		},
+		async getTotalRevenue() {
+			const revenueRes = await this.$axios.get(
+				`${apiDomain}/analytics/get-total-revenue`,
+				{ headers: getHeader() }
+			);
+			this.globalState.userProfile.total_revenue =
+				revenueRes.data.data.total_revenue;
+		},
+		getCategories() {
+			return new Promise(async (resolve, reject) => {
+				const categoryRes = await this.$axios.get(catalogCategoryUrl, {
+					headers: getHeader()
+				});
+
+				this.categoryData = categoryRes.data.data;
+				resolve();
+			});
+		},
 		getProductByCategory() {
 			this.dataProducts = [];
 
-			axios
+			this.$axios
 				.get(catalogCategoryUrl, { headers: getHeader() })
 				.then(response => {
 					if (response.status === 200) {
-						this.dataCategory = response.data.data;
+						this.categoryData = response.data.data;
 
-						for (let i = 0; i < this.dataCategory.length; i++) {
-							axios
-								.get(getProductByCategoryUrl + "/" + this.dataCategory[i].id, {
+						for (let i = 0; i < this.categoryData.length; i++) {
+							this.$axios
+								.get(getProductByCategoryUrl + "/" + this.categoryData[i].id, {
 									headers: getHeader()
 								})
 								.then(response => {
 									if (response.status === 200) {
 										this.dataProducts.push({
-											id: this.dataCategory[i].id,
-											category_name: this.dataCategory[i].category_name,
+											id: this.categoryData[i].id,
+											category_name: this.categoryData[i].category_name,
 											products: response.data.data
 										});
 									}
@@ -360,8 +293,118 @@ export default {
 					}
 				});
 		},
+		getNewProducts() {
+			this.newProductData = [];
+
+			this.$axios
+				.get(getProductByClassUrl + "/" + "new", {
+					headers: getHeader()
+				})
+				.then(response => {
+					if (response.status === 200) {
+						this.newProductData = response.data.data;
+					}
+				})
+				.catch(error => {
+					if (error.response) {
+						console.log(error.response);
+					}
+				});
+		},
+		async getMofastProducts() {
+			const formParams = {
+				brandIdArr: [24],
+				limit: 6,
+				eagerLoad: {
+					brand: ["*"],
+					product_sku: ["*"]
+				}
+			};
+			const productRes = await this.$axios({
+				method: "post",
+				url: `${catalogService}/get-products-by-brand-id`,
+				data: formParams,
+				headers: getHeader()
+			});
+
+			this.mofastProductData = [...productRes.data.data.data];
+		},
+		getFeaturedProducts() {
+			this.featuredProductData = [];
+
+			this.$axios
+				.get(getProductByClassUrl + "/" + "produk-unggulan", {
+					headers: getHeader()
+				})
+				.then(response => {
+					if (response.status === 200) {
+						this.featuredProductData = response.data.data;
+					}
+				})
+				.catch(error => {
+					if (error.response) {
+						console.log(error.response);
+					}
+				});
+		},
+		async getBestSellerProducts() {
+			let orderRes, catalogRes, productIdArr;
+			try {
+				orderRes = await this.$axios.get(
+					`${orderService}/get-frequently-purchased-products`,
+					{
+						headers: getHeader()
+					}
+				);
+				//orderIds of best seller
+				productIdArr = orderRes.data.data.map(order => order.product_id);
+			} catch (error) {
+				console.log("error fetching best seller");
+				console.log(error.message);
+			}
+			//get products by product id arr
+			const getProductsParams = {
+				limit: 10,
+				productIdArr,
+				eagerLoad: {
+					brand: ["id"],
+					product_sku: ["*"]
+				}
+			};
+
+			try {
+				catalogRes = await this.$axios({
+					method: "post",
+					url: `${catalogService}/get-products-by-id`,
+					headers: getHeader(),
+					data: getProductsParams
+				});
+				this.bestSellerProductData = catalogRes.data.data.data;
+			} catch (error) {
+				console.log("error products");
+				console.log(error.message);
+			}
+		},
+		getCustomProducts() {
+			this.customProductData = [];
+
+			this.$axios
+				.get(getProductByClassUrl + "/" + "product-custom", {
+					headers: getHeader()
+				})
+				.then(response => {
+					if (response.status === 200) {
+						this.customProductData = response.data.data;
+					}
+				})
+				.catch(error => {
+					if (error.response) {
+						console.log(error.response);
+					}
+				});
+		},
 		getBrand() {
-			axios
+			this.$axios
 				.get(catalogBrandUrl, { headers: getHeader() })
 				.then(response => {
 					if (response.status === 200) {
@@ -376,7 +419,7 @@ export default {
 		},
 
 		getSlider() {
-			axios
+			this.$axios
 				.get(identitySliderUrl, { headers: getHeader() })
 				.then(response => {
 					if (response.status === 200) {
@@ -389,50 +432,32 @@ export default {
 					}
 				});
 		},
-		formatPrice(value) {
-			let val = (value / 1).toFixed(0).replace(".", ",");
-			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-		}
+		currencyFormat,
+		openURL
 	}
 };
 </script>
 
 <style>
-.promo-text {
-	font-family: "Open Sans";
-	font-size: 13px;
-	font-weight: bold;
-	margin: 0;
-	padding-left: 12px;
+
+.page-content {
+	display: grid;
+	grid-template-columns: 100%;
+	/* align-items: center; */
+	/* justify-items: center; */
+	/* flex-direction: column; */
 }
-.link-text {
-	font-family: "Open Sans";
-	font-size: 13px;
-	margin: 0;
-	padding-right: 10px;
+
+/* .class */
+
+.slider{
+	/* width: 85%; */
+	margin-top: -30px;
+	justify-self: center;
+
 }
-.swiper-slide {
-	width: 85%;
+.orange-background {
+	background: #fea500;
 }
-.category-title {
-	font-size: 13px;
-	margin: 0;
-	text-align: center;
-	text-transform: capitalize;
-	line-height: 15px;
-	font-weight: 400;
-	padding: 10px 0px;
-}
-.owl-carousel .owl-item img {
-	width: 100%;
-	border-radius: 10px;
-	float: left;
-	height: auto;
-}
-.owl-theme .owl-dots .owl-dot.active span {
-	background: #fea500 !important;
-}
-.q-btn__wrapper {
-	width: auto;
-}
+
 </style>

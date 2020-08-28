@@ -37,7 +37,7 @@
 				<div class="text-black" style="font-size: 10px;">
 					Keuntungan Anda :
 				</div>
-				<div class="profit-button" v-if="user.role.id === 9">
+				<div class="profit-button" v-if="globalState.userProfile.role.id === 9">
 					{{
 						"Rp" +
 							currencyFormat(
@@ -48,7 +48,7 @@
 				</div>
 				<div
 					class="profit-button"
-					v-else-if="user.role.id === 8 && product.id !== 412"
+					v-else-if="globalState.userProfile.role.id === 8 && product.id !== 412"
 				>
 					{{
 						"Rp" +
@@ -62,7 +62,7 @@
 				<div
 					class="upgrade-button"
 					v-else-if="
-						user.role.id === 10 || (product.id === 412 && user.role_id === 8)
+						globalState.userProfile.role.id === 10 || (product.id === 412 && globalState.userProfile.role_id === 8)
 					"
 				>
 					Silakan Upgrade
@@ -86,24 +86,33 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { openURL } from "quasar";
 import { currencyFormat } from "../../libraries/stringManipulation";
 
 export default {
 	name: "VendorProductCard",
-	props: ["product", "user"],
+	props: ["product"],
 	data() {
 		return {
 			featuredImageShow: true,
 			innerLoading: false
 		};
 	},
+	computed: {
+		...mapState(["globalState"])
+	},
+	async created() {
+		if (Object.keys(this.globalState.userProfile).length === 0) {
+			await this.$store.dispatch("globalState/getUserProfile");
+		}
+	},
 	methods: {
 		onCardClick() {
 			if (this.product.status === "coming-soon") return;
 			if (
-				this.user.role_id === 10 ||
-				(this.user.role_id === 8 && this.product.id === 412)
+				this.globalState.userProfile.role_id === 10 ||
+				(this.globalState.userProfile.role_id === 8 && this.product.id === 412)
 			) {
 				openURL("https://kayaberkah.orderonline.id/upgrade-eksklusif");
 				return;
