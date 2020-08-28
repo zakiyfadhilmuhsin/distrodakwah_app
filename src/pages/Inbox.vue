@@ -9,6 +9,7 @@
 					class="message-container"
 					v-for="message in messages"
 					:key="message.id"
+					@click="openMessage(message.id)"
 				>
 					<div
 						class="content-area"
@@ -26,25 +27,24 @@
 					</div>
 				</div>
 				<div>
-					More ({{ unreadMessageCount }})
+					More ({{ unreadMessageCount === 5 ? "5+" : unreadMessageCount }})
 					<button @click="fetchOldMessage">more</button>
 				</div>
-				<!-- <div class="chat active-chat">
-					<div class="conversation-start">
-						<span>Today. 5:83</span>
-					</div>
+				<q-dialog v-model="open">
+					<q-card style="width: 700px; max-width: 80vw;">
+						<q-card-section>
+							<div class="text-h6">{{openedMessage.subject}}</div>
+						</q-card-section>
 
-					<div v-for="message in messages" :key="message.id" class="bubble you">
-						<span>{{ message.subject }}</span>
-						<span>
-							{{ message.body }}
-						</span>
-					</div>
-					<div>
-						More ({{ unreadMessageCount }})
-						<button @click="fetchOldMessage">more</button>
-					</div>
-				</div> -->
+						<q-card-section class="q-pt-none">
+							{{openedMessage.body}}
+						</q-card-section>
+
+						<q-card-actions align="right" class="bg-white text-teal">
+							<q-btn flat label="OK" v-close-popup />
+						</q-card-actions>
+					</q-card>
+				</q-dialog>
 			</div>
 		</template>
 	</MainLayout>
@@ -68,7 +68,10 @@ export default {
 			messages: [],
 			unreadMessageCount: 0,
 			inboxState: null,
-			newMessage: false
+			newMessage: false,
+			//toggle
+			open: false,
+			openedMessage: {}
 		};
 	},
 	async created() {
@@ -76,17 +79,12 @@ export default {
 		this.initiateSocketIO();
 	},
 	async destroyed() {
-		console.log("wawa");
 		socket.disconnect();
 	},
 	methods: {
-		checkInboxState() {
-
-		},
 		initiateSocketIO() {
-			socket = io (socketIoEndpoint);
+			socket = io(socketIoEndpoint);
 			socket.on("notify", message => {
-				console.log('asdasd');
 				this.newMessage = true;
 			});
 		},
@@ -94,6 +92,10 @@ export default {
 			const countResponse = await getBroadcastMessage({
 				options: "countOnly"
 			});
+		},
+		openMessage(id) {
+			this.open = true;
+			this.openedMessage = this.messages.find(message => message.id === id);
 		},
 		// async fetchMessage() {
 		// 	let messages = cloneDeep(this.messages);
@@ -119,7 +121,6 @@ export default {
 		// 	localStorage.setItem("broadcast_messages", JSON.stringify(messages));
 		// 	this.unreadMessageCount = fetchResponse.data.count;
 		// },
-
 		async fetchOldMessage() {
 			let messages = cloneDeep(this.messages);
 			const mLength = messages.length;
@@ -199,7 +200,7 @@ export default {
 	background-color: rgba(0, 0, 0, 0.5);
 	position: relative;
 	overflow: hidden;
-	height: 116px;
+	/* height: 116px; */
 	padding: 16px;
 	border-radius: 16px;
 }

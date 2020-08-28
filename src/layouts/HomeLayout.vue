@@ -11,10 +11,7 @@
 			</q-badge>
 
 			<q-space />
-			<q-btn flat dense round>
-				<q-icon name="notifications" />
-				<span class="bubble">pesan masuk</span>
-			</q-btn>
+			<Notification />
 			<q-btn flat dense round dropdown to="/search">
 				<q-icon name="search" />
 			</q-btn>
@@ -27,15 +24,14 @@
 
 <script>
 import { openURL } from "quasar";
-import DashNav from "./DashNav.vue";
 
+import DashNav from "./DashNav.vue";
+import Notification from "../components/Storefront/notification.vue";
 export default {
 	name: "HomeLayout",
 	components: {
-		DashNav
-	},
-	data() {
-		return {};
+		DashNav,
+		Notification
 	},
 	methods: {
 		openURL
@@ -64,17 +60,5 @@ export default {
 	bottom: 0px;
 	width: 360px;
 	z-index: 99;
-}
-
-.bubble {
-	background: #e02424;
-	position: absolute;
-	right: 5px;
-	top: -5px;
-	/* height: 15px; */
-	padding: 1px 6px;
-	color: #fff;
-	font: bold 0.4em Tahoma, Arial, Helvetica;
-	border-radius: 3px;
 }
 </style>
