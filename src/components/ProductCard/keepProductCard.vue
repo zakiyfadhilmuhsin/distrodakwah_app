@@ -43,7 +43,7 @@
 					</div>
 					<div
 						class="profit-button"
-						v-if="globalState.userProfile.role.id === 9"
+						v-if="user.role.id === 9"
 					>
 						{{
 							"Rp" +
@@ -55,7 +55,7 @@
 					</div>
 					<div
 						class="profit-button"
-						v-else-if="globalState.userProfile.role.id === 8"
+						v-else-if="user.role.id === 8"
 					>
 						{{
 							"Rp" +
@@ -65,7 +65,7 @@
 								)
 						}}
 					</div>
-					<template v-else-if="globalState.userProfile.role.id === 10">
+					<template v-else-if="user.role.id === 10">
 						<div class="upgrade-button" v-if="IsCustomDesign">
 							Silakan Upgrade
 						</div>
@@ -94,13 +94,12 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import { openURL } from "quasar";
 import { currencyFormat } from "../../libraries/stringManipulation";
 
 export default {
 	name: "KeepProductCard",
-	props: ["product"],
+	props: ["product", "user"],
 	data() {
 		return {
 			featuredImageShow: true,
@@ -108,23 +107,17 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(["globalState"]),
 		IsCustomDesign: function() {
 			return [409, 410, 411, 412].indexOf(this.product.id) !== -1;
 		},
 		IsPro: function() {
-			return this.globalState.userProfile.role_id === 8;
+			return this.user.role_id === 8;
 		},
 		IsExclusive: function() {
-			return this.globalState.userProfile.role_id === 9;
+			return this.user.role_id === 9;
 		},
 		isFree: function() {
-			return this.globalState.userProfile.role_id === 10;
-		}
-	},
-	async created() {
-		if (Object.keys(this.globalState.userProfile).length === 0) {
-			await this.$store.dispatch("globalState/getUserProfile");
+			return this.user.role_id === 10;
 		}
 	},
 	methods: {

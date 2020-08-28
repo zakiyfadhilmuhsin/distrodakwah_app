@@ -528,6 +528,9 @@ export default {
 		}
 	},
 	async created() {
+		if (Object.keys(this.globalState.userProfile).length === 0) {
+			await this.$store.dispatch("globalState/getUserProfile");
+		}
 		await this.getProductData();
 		await this.getInputOptions();
 

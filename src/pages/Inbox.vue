@@ -33,11 +33,11 @@
 				<q-dialog v-model="open">
 					<q-card style="width: 700px; max-width: 80vw;">
 						<q-card-section>
-							<div class="text-h6">{{openedMessage.subject}}</div>
+							<div class="text-h6">{{ openedMessage.subject }}</div>
 						</q-card-section>
 
 						<q-card-section class="q-pt-none">
-							{{openedMessage.body}}
+							<span v-html="openedMessage.body"></span>
 						</q-card-section>
 
 						<q-card-actions align="right" class="bg-white text-teal">
@@ -52,9 +52,11 @@
 
 <script>
 import MainLayout from "../layouts/MainLayout.vue";
-import { getBroadcastMessage } from "../libraries/inboxes";
-import { cloneDeep } from "lodash";
 import { apiDomain, socketIoEndpoint, getHeader } from "../config";
+
+import { getBroadcastMessage } from "../libraries/inboxes";
+import { plainToLinks } from "../libraries/stringManipulation";
+import { cloneDeep } from "lodash";
 import io from "socket.io-client";
 
 let socket;
@@ -95,7 +97,10 @@ export default {
 		},
 		openMessage(id) {
 			this.open = true;
-			this.openedMessage = this.messages.find(message => message.id === id);
+			const message = cloneDeep(this.messages.find(message => message.id === id));
+			const temp = plainToLinks(message.body);
+			message.body = temp;
+			this.openedMessage = message;
 		},
 		// async fetchMessage() {
 		// 	let messages = cloneDeep(this.messages);

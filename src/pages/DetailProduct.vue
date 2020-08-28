@@ -465,6 +465,9 @@ export default {
 		}
 	},
 	async created() {
+		if (Object.keys(this.globalState.userProfile).length === 0) {
+			await this.$store.dispatch("globalState/getUserProfile");
+		}
 		await this.getProductData();
 		await this.getInputOptions();
 	},
@@ -540,12 +543,12 @@ export default {
 			this.inputOptions = cloneDeep(_inputOptions);
 		},
 		constructSKU(event) {
-			this.selectedSkuId = null,
-			this.selectedVariant = null,
-			this.selectedOption = {
-				...this.selectedOption,
-				[event.target.name]: event.target.value
-			};
+			(this.selectedSkuId = null),
+				(this.selectedVariant = null),
+				(this.selectedOption = {
+					...this.selectedOption,
+					[event.target.name]: event.target.value
+				});
 			let allOptionSelected = true;
 			const allSku = [];
 
@@ -619,11 +622,11 @@ export default {
 			if (this.qty > this.stockReady || this.stockReady <= 0) {
 				error = "insufficientStock";
 			}
-			if (this.stockReady == null ) {
+			if (this.stockReady == null) {
 				error = "variantNotSelected";
 			}
 
-			if(this.stockReady === "not_available") error = "variant_not_available"
+			if (this.stockReady === "not_available") error = "variant_not_available";
 
 			if (!error) {
 				let postData = new FormData();
@@ -680,9 +683,8 @@ export default {
 					position: "top",
 					color: "red",
 					message: "Varian tidak tersedia, pilih varian yang lain"
-				})
-			}
-				else {
+				});
+			} else {
 				this.$q.notify({
 					position: "top",
 					color: "red",

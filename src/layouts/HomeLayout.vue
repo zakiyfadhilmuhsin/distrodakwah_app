@@ -26,7 +26,7 @@
 import { openURL } from "quasar";
 
 import DashNav from "./DashNav.vue";
-import Notification from "../components/Storefront/notification.vue";
+import Notification from '../components/Storefront/Notification'
 export default {
 	name: "HomeLayout",
 	components: {

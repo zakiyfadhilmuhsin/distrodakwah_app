@@ -8,8 +8,7 @@
 				<div class="col-sm-2">
 					<div
 						v-if="
-							user &&
-								globalState.userProfile.role &&
+							globalState.userProfile.role &&
 								globalState.userProfile.role.id &&
 								globalState.userProfile.role.id === 8
 						"
@@ -22,8 +21,7 @@
 					<div
 						style="margin-top: 2px"
 						v-if="
-							user &&
-								globalState.userProfile.role &&
+							globalState.userProfile.role &&
 								globalState.userProfile.role.id &&
 								globalState.userProfile.role.id === 9
 						"
@@ -35,8 +33,7 @@
 					</div>
 					<div
 						v-if="
-							user &&
-								globalState.userProfile.role &&
+							globalState.userProfile.role &&
 								globalState.userProfile.role.id &&
 								globalState.userProfile.role.id === 10
 						"
@@ -56,8 +53,7 @@
 					</p>
 					<p class="text-white" style="margin: 0 0 5px 0; font-size: 11px">
 						{{
-							user &&
-								globalState.userProfile.role &&
+							globalState.userProfile.role &&
 								globalState.userProfile.role.role_name
 						}}
 					</p>
@@ -95,18 +91,41 @@
 					</router-link>
 				</div>
 			</div>
-
 			<Slider class="slider" />
 			<CategoryGrid
 				v-if="categoryData.length > 0"
 				:categoryData="categoryData"
 			/>
-			<Showcase class="showcase" title="Mofast" :productArr="mofastProductData"/>
-			<Showcase class="showcase" title="Produk Terbaru" :productArr="newProductData"/>
-			<Showcase class="showcase" title="Produk Unggulan" :productArr="featuredProductData"/>
-			<Showcase class="showcase" title="Produk Best Seller" :productArr="bestSellerProductData"/>
-			<Showcase class="showcase" title="Produk Custom" :productArr="customProductData"/>
-
+			<Showcase
+				class="showcase"
+				title="Mofast"
+				:productArr="mofastProductData"
+				:user="globalState.userProfile"
+			/>
+			<Showcase
+				class="showcase"
+				title="Produk Terbaru"
+				:productArr="newProductData"
+				:user="globalState.userProfile"
+			/>
+			<Showcase
+				class="showcase"
+				title="Produk Unggulan"
+				:productArr="featuredProductData"
+				:user="globalState.userProfile"
+			/>
+			<Showcase
+				class="showcase"
+				title="Produk Best Seller"
+				:productArr="bestSellerProductData"
+				:user="globalState.userProfile"
+			/>
+			<Showcase
+				class="showcase"
+				title="Produk Custom"
+				:productArr="customProductData"
+				:user="globalState.userProfile"
+			/>
 		</div>
 	</HomeLayout>
 </template>
@@ -145,7 +164,7 @@ export default {
 		CategoryGrid,
 		HomeLayout,
 		Showcase,
-		Slider,
+		Slider
 	},
 
 	data() {
@@ -178,8 +197,6 @@ export default {
 			},
 			// Loading
 			innerLoading: false,
-			// user
-			user: {},
 			// Total Count Cart Item
 			totalCartItem: null,
 			startProduct: 1
@@ -189,26 +206,19 @@ export default {
 		...mapState(["globalState"]),
 		newProduct() {
 			return this.dataProduct.slice().reverse();
-		}
+		},
+
 	},
+
 	async created() {
 		if (Object.keys(this.globalState.userProfile).length === 0) {
 			await this.$store.dispatch("globalState/getUserProfile");
 		}
 		await this.getCategories();
 		await this.getMofastProducts();
-		await this.getNewProducts()
+		await this.getNewProducts();
 		await this.getFeaturedProducts();
 		await this.getBestSellerProducts();
-		// this.getBrand();
-		// this.getSlider();
-		// this.getProductByCategory();
-		// this.getNewProduct();
-		this.getCustomProducts();
-		// this.getTotalRevenue();
-	},
-	async mounted() {
-		// Get Total Cart Item
 		try {
 			const totalCartItems = await this.$axios.get(
 				totalCartItemUrl + "/" + this.globalState.userProfile.id,
@@ -218,26 +228,15 @@ export default {
 				this.totalCartItem = totalCartItems.data.data;
 			}
 		} catch (error) {}
+		// this.getBrand();
+		// this.getSlider();
+		// this.getProductByCategory();
+		// this.getNewProduct();
+		this.getCustomProducts();
+		// this.getTotalRevenue();
 	},
-	methods: {
-		async getUser() {
-			return new Promise(async resolve => {
-				try {
-					const userRes = await this.$axios.get(`${apiDomain}/auth/user`, {
-						headers: getHeader()
-					});
 
-					window.localStorage.setItem(
-						"profileUser",
-						JSON.stringify(userRes.data)
-					);
-					this.user = userRes.data;
-					return resolve();
-				} catch (error) {
-					console.log("error fetching user");
-				}
-			});
-		},
+	methods: {
 		async getTotalRevenue() {
 			const revenueRes = await this.$axios.get(
 				`${apiDomain}/analytics/get-total-revenue`,
@@ -439,7 +438,6 @@ export default {
 </script>
 
 <style>
-
 .page-content {
 	display: grid;
 	grid-template-columns: 100%;
@@ -450,14 +448,12 @@ export default {
 
 /* .class */
 
-.slider{
+.slider {
 	/* width: 85%; */
 	margin-top: -30px;
 	justify-self: center;
-
 }
 .orange-background {
 	background: #fea500;
 }
-
 </style>
