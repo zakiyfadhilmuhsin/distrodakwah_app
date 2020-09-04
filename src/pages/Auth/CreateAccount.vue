@@ -707,7 +707,7 @@ export default {
 				createForm.set("gender", this.gender);
 				createForm.set("birthday", this.birthday);
 
-				const exclusiveRoleList = ["reseller eksklusif", "reseller exclusive"];
+				const exclusiveRoleList = ["reseller eksklusif", "reseller exclusive", "ekslusif"];
 				const proRoleList = ["reseller pro"];
 				let filteredRoleName = null;
 				for (let i = 0; i < exclusiveRoleList.length; i++) {
