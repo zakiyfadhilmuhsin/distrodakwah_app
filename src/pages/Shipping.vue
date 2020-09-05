@@ -201,36 +201,7 @@
 												/>
 											</div>
 										</center>
-										<!-- <q-btn-toggle
-                      v-model="courierSelected"
-                      unelevated
-                      toggle-color="blue-grey-1"
-                      @input="getCostShipping"
-                      :options="[
-                        {value: 'jne', slot: 'jne'},
-                        {value: 'jnt', slot: 'jnt'},
-                        {value: 'pos', slot: 'pos'}
-                      ]"
-                    >
-                      <template v-slot:jne>
-                        <div class="row items-center no-wrap">
-                          <img src="~/assets/images/components/ekspedisi/jne.png" width="65" />
-                        </div>
-                      </template>
 
-                      <template v-slot:jnt>
-                        <div class="row items-center no-wrap">
-                          <img src="~/assets/images/components/ekspedisi/jnt.png" width="65" />
-                        </div>
-                      </template>
-
-                      <template v-slot:pos>
-                        <div class="row items-center no-wrap">
-                          <img src="~/assets/images/components/ekspedisi/pos.png" width="65" />
-                        </div>
-                      </template>
-                    </q-btn-toggle>-->
-										<!-- {{ dataCost.results[0].costs }} -->
 										<br />
 										<h6
 											style="font-size: 14px; margin: 0; padding: 0 20px 10px 20px; font-family: 'Open Sans'; line-height: 18px; font-weight: bold"
@@ -564,11 +535,11 @@ export default {
 					label:
 						'<div class="row"><div class="self-center" style="margin-right: 10px">J&T</div> <img src="https://i.imgur.com/TNdagJs.png" height="20" /></div>'
 				},
-				{
-					value: "pos",
-					label:
-						'<div class="row"><div class="self-center" style="margin-right: 10px">POS</div> <img src="https://i.imgur.com/2VEBPMp.png" height="20" /></div>'
-				}
+				// {
+				// 	value: "pos",
+				// 	label:
+				// 		'<div class="row"><div class="self-center" style="margin-right: 10px">POS</div> <img src="https://i.imgur.com/2VEBPMp.png" height="20" /></div>'
+				// }
 			],
 
 			// Form Add New Customer
