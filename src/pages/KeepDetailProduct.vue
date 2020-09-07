@@ -462,7 +462,7 @@ import { mapState } from "vuex";
 import Vue from "vue";
 import carousel from "vue-owl-carousel";
 import { cloneDeep, isEmpty } from "lodash";
-import axios from "axios";
+import h2p from "html2plaintext";
 import {
 	apiDomain,
 	catalogService,
@@ -734,7 +734,7 @@ export default {
 				postData.set("customer_phone", this.globalState.userProfile.phone);
 				postData.set("role_id", this.globalState.userProfile.role.id);
 
-				axios
+				this.$axios
 					.post(addToCartUrl, postData, { headers: getHeader() })
 					.then(response => {
 						if (response.status === 200) {
@@ -782,16 +782,7 @@ export default {
 			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 		},
 		doCopy: function() {
-			var h2p = require("html2plaintext");
-
-			this.$copyText(h2p(this.productDesc)).then(
-				function(e) {
-					alert("Copied");
-				},
-				function(e) {
-					alert("Can not copy");
-				}
-			);
+			this.$copyText(h2p(this.productData.product_description))
 		},
 		upgrade() {
 			openURL("https://kayaberkah.orderonline.id/upgrade-eksklusif");
