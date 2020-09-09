@@ -693,7 +693,7 @@ export default {
 			);
 		},
 		upgrade() {
-			openURL('https://distrodakwah.id/upgrade');
+			openURL("https://kayaberkah.orderonline.id/upgrade-Reseller");
 		},
 		isEmpty
 	},

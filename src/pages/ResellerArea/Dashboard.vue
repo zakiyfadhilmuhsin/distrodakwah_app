@@ -498,7 +498,7 @@ export default {
 			}
 		},
 		upgrade() {
-			openURL("https://kayaberkah.orderonline.id/upgrade-eksklusif");
+			openURL("https://kayaberkah.orderonline.id/upgrade-Reseller");
 		},
 		onCourseClick() {
 			if (this.user.role_id == 8) {

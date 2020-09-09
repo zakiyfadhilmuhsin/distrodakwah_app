@@ -785,7 +785,7 @@ export default {
 			this.$copyText(h2p(this.productData.product_description))
 		},
 		upgrade() {
-			openURL("https://kayaberkah.orderonline.id/upgrade-eksklusif");
+			openURL("https://kayaberkah.orderonline.id/upgrade-Reseller");
 		},
 		isEmpty,
 		openURL

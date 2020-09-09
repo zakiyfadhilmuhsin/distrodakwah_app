@@ -114,7 +114,7 @@ export default {
 				this.globalState.userProfile.role_id === 10 ||
 				(this.globalState.userProfile.role_id === 8 && this.product.id === 412)
 			) {
-				openURL("https://kayaberkah.orderonline.id/upgrade-eksklusif");
+				openURL("https://kayaberkah.orderonline.id/upgrade-Reseller");
 				return;
 			}
 			this.$router.push(`/detail/${this.product.id}`);

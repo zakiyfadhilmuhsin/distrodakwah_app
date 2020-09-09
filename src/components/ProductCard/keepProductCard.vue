@@ -124,7 +124,7 @@ export default {
 		onCardClick() {
 			if (this.product.status === "coming-soon") return;
 			if (this.isFree && this.IsCustomDesign) {
-				openURL("https://kayaberkah.orderonline.id/upgrade-eksklusif");
+				openURL("https://kayaberkah.orderonline.id/upgrade-Reseller");
 				return;
 			} else if (this.IsCustomDesign && this.IsPro) {
 				openURL("https://distrodakwah.id/custom-pro");

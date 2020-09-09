@@ -1,31 +1,36 @@
 <template>
-		<carousel
-			v-if="sliderData.length !== 0"
-			class="swiper-slide"
-			:autoplay="true"
-			:nav="false"
-			:items="1"
-			:center="true"
-			:loop="true"
-			:stagePadding="0"
-			:margin="0"
-			:responsive="{
-				0: { items: 1, nav: false },
-				600: { items: 1, nav: false }
-			}"
-		>
-			<img
-				v-for="(slider, index) in sliderData"
-				:key="index"
-				:src="slider.slider_image"
-			/>
-		</carousel>
+	<carousel
+		v-if="sliderData.length !== 0"
+		class="swiper-slide"
+		:autoplay="true"
+		:nav="false"
+		:items="1"
+		:center="true"
+		:loop="true"
+		:stagePadding="0"
+		:margin="0"
+		:responsive="{
+			0: { items: 1, nav: false },
+			600: { items: 1, nav: false }
+		}"
+	>
+		<img
+			v-for="(slider, index) in sliderData"
+			:key="index"
+			:src="slider.slider_image"
+			@click="
+				() => {
+					openURL(slider.slider_url);
+				}
+			"
+		/>
+	</carousel>
 </template>
 
 <script>
 import { identitySliderUrl, getHeader } from "../../../config";
 import carousel from "vue-owl-carousel";
-
+import { openURL } from "quasar";
 export default {
 	name: "Slider",
 	components: { carousel },
@@ -39,12 +44,14 @@ export default {
 			headers: getHeader()
 		});
 		this.sliderData = sliderRes.data.data;
+	},
+	methods: {
+		openURL
 	}
 };
 </script>
 
 <style>
-
 .owl-carousel .owl-item img {
 	/* //! important width: 100%; */
 	border-radius: 10px;
