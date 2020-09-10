@@ -70,7 +70,7 @@
 						v-else-if="globalState.userProfile.role.id === 10"
 					>
 						KAMU UNTUNG
-						<span class="text-green">{{ resellerFreePrice }}</span>
+						<span class="text-green">{{ resellerFreeProfit }}</span>
 					</h4>
 				</span>
 				<q-space />
@@ -454,13 +454,18 @@ export default {
 				.map(variant => variant.reseller_free_price)
 				.some(price => price === null);
 		},
-		resellerFreePrice: function() {
+		resellerFreeProfit: function() {
 			return this.isFreeNotReady
 				? "Belum Siap"
 				: `Rp${currencyFormat(
 						this.selectedVariant.price -
 							this.selectedVariant.reseller_free_price
 				  )}`;
+		},
+		resellerFreePrice: function() {
+			return this.isFreeNotReady
+				? "Belum Siap"
+				: `Rp${currencyFormat(this.selectedVariant.reseller_free_price)}`;
 		},
 		stockReady: function() {
 			if (this.selectedSkuId) {
@@ -631,9 +636,9 @@ export default {
 			// return;
 			// Cek stok dulu
 			let error = null;
-			if (this.globalState.userProfile.role.id === 10 && this.isFreeNotReady) {
-				error = "notReady"; // product is not ready for free reseller
-			}
+			// if (this.globalState.userProfile.role.id === 10 && this.isFreeNotReady) {
+			// 	error = "notReady"; // product is not ready for free reseller
+			// }
 
 			if (!/[0-9]/.test(this.qty) || this.qty <= 0) {
 				error = "notAllowed";
