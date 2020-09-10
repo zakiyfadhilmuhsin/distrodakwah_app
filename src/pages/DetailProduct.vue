@@ -70,7 +70,7 @@
 						v-else-if="globalState.userProfile.role.id === 10"
 					>
 						KAMU UNTUNG
-						<span class="text-green"></span>
+						<span class="text-green">{{ resellerFreePrice }}</span>
 					</h4>
 				</span>
 				<q-space />
@@ -247,7 +247,7 @@
 								v-else-if="globalState.userProfile.role.id === 10"
 							>
 								<h5 class="price-detail-text text-green" v-if="selectedVariant">
-									Rp{{ formatPrice(selectedVariant.price) }}
+									{{ resellerFreePrice }}
 								</h5>
 							</div>
 						</div>
@@ -424,6 +424,7 @@ import VueClipboard from "vue-clipboard2";
 import { openURL } from "quasar";
 import carousel from "vue-owl-carousel";
 //vanilla.js
+import { currencyFormat } from "../libraries/stringManipulation";
 
 Vue.use(VueClipboard);
 
@@ -448,6 +449,19 @@ export default {
 	},
 	computed: {
 		...mapState(["globalState"]),
+		isFreeNotReady: function() {
+			return cloneDeep(this.productData.product_variants)
+				.map(variant => variant.reseller_free_price)
+				.some(price => price === null);
+		},
+		resellerFreePrice: function() {
+			return this.isFreeNotReady
+				? "Belum Siap"
+				: `Rp${currencyFormat(
+						this.selectedVariant.price -
+							this.selectedVariant.reseller_free_price
+				  )}`;
+		},
 		stockReady: function() {
 			if (this.selectedSkuId) {
 				const productSku = this.productData.product_variants.find(
@@ -498,7 +512,8 @@ export default {
 						"price",
 						"cogs",
 						"reseller_pro_price",
-						"reseller_exclusive_price"
+						"reseller_exclusive_price",
+						"reseller_free_price"
 					],
 					image_gallery: ["id", "image", "product_id"]
 				}
@@ -616,6 +631,10 @@ export default {
 			// return;
 			// Cek stok dulu
 			let error = null;
+			if (this.globalState.userProfile.role.id === 10 && this.isFreeNotReady) {
+				error = "notReady"; // product is not ready for free reseller
+			}
+
 			if (!/[0-9]/.test(this.qty) || this.qty <= 0) {
 				error = "notAllowed";
 			}
@@ -671,6 +690,12 @@ export default {
 					position: "top",
 					color: "red",
 					message: "Cek Jumlah Yang Anda Masukkan"
+				});
+			} else if (error == "notReady") {
+				this.$q.notify({
+					position: "top",
+					color: "red",
+					message: "Produk Belum Siap"
 				});
 			} else if (error == "insufficientStock") {
 				this.$q.notify({

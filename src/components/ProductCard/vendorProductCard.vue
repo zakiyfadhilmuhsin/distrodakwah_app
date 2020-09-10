@@ -48,7 +48,9 @@
 				</div>
 				<div
 					class="profit-button"
-					v-else-if="globalState.userProfile.role.id === 8 && product.id !== 412"
+					v-else-if="
+						globalState.userProfile.role.id === 8 && product.id !== 412
+					"
 				>
 					{{
 						"Rp" +
@@ -58,11 +60,20 @@
 							)
 					}}
 				</div>
-
+				<div
+					class="profit-button"
+					v-else-if="
+						globalState.userProfile.role.id === 10 && product.id !== 412
+					"
+				>
+					{{ resellerFreePrice }}
+				</div>
 				<div
 					class="upgrade-button"
 					v-else-if="
-						globalState.userProfile.role.id === 10 || (product.id === 412 && globalState.userProfile.role_id === 8)
+						(this.globalState.userProfile.role_id === 10 &&
+							this.product.id === 412) ||
+							(product.id === 412 && globalState.userProfile.role_id === 8)
 					"
 				>
 					Silakan Upgrade
@@ -87,6 +98,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { cloneDeep } from "lodash";
 import { openURL } from "quasar";
 import { currencyFormat } from "../../libraries/stringManipulation";
 
@@ -100,7 +112,20 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(["globalState"])
+		...mapState(["globalState"]),
+		isFreeNotReady: function() {
+			return cloneDeep(this.product.product_variants)
+				.map(variant => variant.reseller_free_price)
+				.some(price => price === null);
+		},
+		resellerFreePrice: function() {
+			return this.isFreeNotReady
+				? "belum siap"
+				: `Rp${currencyFormat(
+						this.product.product_variants[0].price -
+							this.product.product_variants[0].reseller_free_price
+				  )}`;
+		}
 	},
 	async created() {
 		if (Object.keys(this.globalState.userProfile).length === 0) {
@@ -111,8 +136,10 @@ export default {
 		onCardClick() {
 			if (this.product.status === "coming-soon") return;
 			if (
-				this.globalState.userProfile.role_id === 10 ||
-				(this.globalState.userProfile.role_id === 8 && this.product.id === 412)
+				// this.globalState.userProfile.role_id === 10 || // reseller_free
+				(this.globalState.userProfile.role_id === 10 &&
+					this.product.id === 412) || // reseller free and custom cap
+				(this.globalState.userProfile.role_id === 8 && this.product.id === 412) //reseller pro and custom cap
 			) {
 				openURL("https://kayaberkah.orderonline.id/upgrade-Reseller");
 				return;
