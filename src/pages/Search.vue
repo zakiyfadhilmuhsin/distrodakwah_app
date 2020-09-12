@@ -159,7 +159,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .promo-text {
 	font-family: "Open Sans";
 	font-size: 13px;

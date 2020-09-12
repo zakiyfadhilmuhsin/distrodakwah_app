@@ -53,7 +53,7 @@ export default {
 
 <style>
 .owl-carousel .owl-item img {
-	/* //! important width: 100%; */
+	width: 100%;
 	border-radius: 10px;
 	height: auto;
 }

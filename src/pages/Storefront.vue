@@ -98,6 +98,13 @@
 			/>
 			<Showcase
 				class="showcase"
+				title="Best Outdoor Wear for Moslem"
+				:productArr="adzzumarProductData"
+				:user="globalState.userProfile"
+				showcaseBackground="#fea500"
+			/>
+			<Showcase
+				class="showcase"
 				title="Mofast"
 				:productArr="mofastProductData"
 				:user="globalState.userProfile"
@@ -179,6 +186,7 @@ export default {
 			dataBrand: [],
 			// Product Section
 			dataProducts: [],
+			adzzumarProductData: [],
 			newProductData: [],
 			mofastProductData: [],
 			featuredProductData: [],
@@ -214,6 +222,7 @@ export default {
 			await this.$store.dispatch("globalState/getUserProfile");
 		}
 		await this.getCategories();
+		await this.getAdzzumarProducts();
 		await this.getMofastProducts();
 		await this.getNewProducts();
 		await this.getFeaturedProducts();
@@ -261,6 +270,29 @@ export default {
 				)
 			);
 		},
+		// non paginated
+		async getAdzzumarProducts() {
+			const formParams = {
+				brandIdArr: [30],
+				eagerLoad: {
+					brand: ["*"],
+					product_sku: ["*"]
+				}
+			};
+			const productRes = await this.$axios({
+				method: "post",
+				url: `${catalogService}/get-products-by-brand-id`,
+				data: formParams,
+				headers: getHeader()
+			});
+
+			const p = productRes.data.data.filter(product =>
+				product.product_variants.some(
+					variant => variant.stock_qty - variant.keep_stock_qty > 0
+				)
+			);
+			this.adzzumarProductData = p;
+		},
 		async getMofastProducts() {
 			const formParams = {
 				brandIdArr: [24],
@@ -277,11 +309,13 @@ export default {
 				headers: getHeader()
 			});
 
-			this.mofastProductData = productRes.data.data.data.filter(product =>
+			const p = productRes.data.data.data.filter(product =>
 				product.product_variants.some(
 					variant => variant.stock_qty - variant.keep_stock_qty > 0
 				)
 			);
+
+			this.mofastProductData = p
 		},
 		getFeaturedProducts() {
 			this.featuredProductData = [];
@@ -412,7 +446,8 @@ export default {
 /* .class */
 
 .slider {
-	/* width: 85%; */
+	padding: 0 15px;
+	width: 100%;
 	margin-top: -30px;
 	justify-self: center;
 }

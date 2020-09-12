@@ -1,31 +1,38 @@
 <template>
-	<div>
+	<div
+		class="showcase"
+		:style="[showcaseBackground ? { background: showcaseBackground } : {}]"
+	>
 		<div class="bg-grey-3" style="height: 8px"></div>
+		<center>
+			<img
+				v-if="productArr[0].brand_id == 30"
+				src="https://ik.imagekit.io/kurakurahijau/logo_putih_m0UMvIWLJV.png"
+			/>
+		</center>
 		<div class="row q-pa-xs">
 			<div class="col-8">
-				<h5 class="promo-text">{{title}}</h5>
+				<h5 :class="promoText">{{ title }}</h5>
 			</div>
 			<div class="col-4 text-right">
 				<!-- <router-link> -->
-				<h5 class="link-text text-orange-8">Lihat Semua</h5>
+				<h5 :class="textLink">Lihat Semua</h5>
 				<!-- </router-link> -->
 			</div>
 		</div>
 
-		<div class="row q-px-md" style="padding: 5px 10px 10px 10px">
-			<div class="col">
-				<swiper :options="swiperProductListOption">
-					<swiper-slide v-for="(product, index) in productArr" :key="index">
-						<template v-if="product.brand_id === 7 && product.id !== 412">
-							<KeepProductCard :product="product" :user="user" />
-						</template>
-						<template v-else>
-							<VendorProductCard :product="product" :user="user" />
-						</template>
-					</swiper-slide>
-					<div class="swiper-product-pagination" slot="pagination"></div>
-				</swiper>
-			</div>
+		<div class="row q-px-md swiper-content">
+			<swiper :options="swiperProductListOption">
+				<swiper-slide v-for="(product, index) in productArr" :key="index">
+					<template v-if="product.brand_id === 7 && product.id !== 412">
+						<KeepProductCard :product="product" :user="user" />
+					</template>
+					<template v-else>
+						<VendorProductCard :product="product" :user="user" />
+					</template>
+				</swiper-slide>
+				<div class="swiper-product-pagination" slot="pagination"></div>
+			</swiper>
 		</div>
 	</div>
 </template>
@@ -50,7 +57,8 @@ export default {
 	props: {
 		productArr: Array,
 		title: String,
-		user: Object
+		user: Object,
+		showcaseBackground: String
 	},
 	data() {
 		return {
@@ -64,12 +72,40 @@ export default {
 				}
 			}
 		};
+	},
+	computed: {
+		textLink: function() {
+			return this.productArr[0].brand_id == 30
+				? { "link-text": true, "text-white": true }
+				: { "link-text": true, "text-orange-8": true };
+		},
+		promoText: function() {
+			return this.productArr[0].brand_id == 30
+				? { "promo-text": true, "text-white": true }
+				: { "promo-text": true, "text-black-8": true };
+		}
+
 	}
 };
 </script>
 
-<style>
-.swiper-slide {
-	width: 10px;
+<style scoped>
+.dd-background {
+	background: #fea500;
+}
+
+.swiper-content {
+	padding: 5px 10px 10px 10px;
+}
+
+.showcase img {
+	width: 85px;
+	margin-top: 20px;
+	margin-bottom: 5px;
+}
+
+.swiper-container{
+	display: flex;
+	flex-direction: column;
 }
 </style>

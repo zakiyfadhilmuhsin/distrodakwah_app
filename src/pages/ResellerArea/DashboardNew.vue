@@ -223,7 +223,6 @@
 										clickable
 										v-ripple
 										to="settingStore"
-										v-if="user.role.id === 8 || user.role.id === 9"
 									>
 										<q-item-section avatar>
 											<q-icon name="store_mall_directory" />

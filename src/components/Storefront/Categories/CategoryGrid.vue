@@ -1,5 +1,5 @@
 <template>
-	<div style="background-color: #FAFAFA;">
+	<div>
 		<div class="row q-pa-xs">
 			<div class="col">
 				<h5 class="promo-text">Kategori Produk</h5>

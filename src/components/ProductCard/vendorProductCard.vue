@@ -63,7 +63,9 @@
 				<div
 					class="profit-button"
 					v-else-if="
-						globalState.userProfile.role.id === 10 && product.id !== 412
+						globalState.userProfile.role.id === 10 &&
+							product.id !== 412 &&
+							!this.isFreeNotReady
 					"
 				>
 					{{ resellerFreePrice }}
@@ -73,7 +75,8 @@
 					v-else-if="
 						(this.globalState.userProfile.role_id === 10 &&
 							this.product.id === 412) ||
-							(product.id === 412 && globalState.userProfile.role_id === 8)
+							(product.id === 412 && globalState.userProfile.role_id === 8) ||
+							this.isFreeNotReady
 					"
 				>
 					Silakan Upgrade
@@ -120,7 +123,7 @@ export default {
 		},
 		resellerFreePrice: function() {
 			return this.isFreeNotReady
-				? "belum siap"
+				? "Upgrade"
 				: `Rp${currencyFormat(
 						this.product.product_variants[0].price -
 							this.product.product_variants[0].reseller_free_price
@@ -136,6 +139,7 @@ export default {
 		onCardClick() {
 			if (this.product.status === "coming-soon") return;
 			if (
+				(this.globalState.userProfile.role_id === 10 && this.isFreeNotReady) ||
 				// this.globalState.userProfile.role_id === 10 || // reseller_free
 				(this.globalState.userProfile.role_id === 10 &&
 					this.product.id === 412) || // reseller free and custom cap
