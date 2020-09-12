@@ -206,8 +206,7 @@ export default {
 		...mapState(["globalState"]),
 		newProduct() {
 			return this.dataProduct.slice().reverse();
-		},
-
+		}
 	},
 
 	async created() {
@@ -219,6 +218,7 @@ export default {
 		await this.getNewProducts();
 		await this.getFeaturedProducts();
 		await this.getBestSellerProducts();
+		this.getCustomProducts();
 		try {
 			const totalCartItems = await this.$axios.get(
 				totalCartItemUrl + "/" + this.globalState.userProfile.id,
@@ -228,12 +228,6 @@ export default {
 				this.totalCartItem = totalCartItems.data.data;
 			}
 		} catch (error) {}
-		// this.getBrand();
-		// this.getSlider();
-		// this.getProductByCategory();
-		// this.getNewProduct();
-		this.getCustomProducts();
-		// this.getTotalRevenue();
 	},
 
 	methods: {
@@ -255,60 +249,17 @@ export default {
 				resolve();
 			});
 		},
-		getProductByCategory() {
-			this.dataProducts = [];
-
-			this.$axios
-				.get(catalogCategoryUrl, { headers: getHeader() })
-				.then(response => {
-					if (response.status === 200) {
-						this.categoryData = response.data.data;
-
-						for (let i = 0; i < this.categoryData.length; i++) {
-							this.$axios
-								.get(getProductByCategoryUrl + "/" + this.categoryData[i].id, {
-									headers: getHeader()
-								})
-								.then(response => {
-									if (response.status === 200) {
-										this.dataProducts.push({
-											id: this.categoryData[i].id,
-											category_name: this.categoryData[i].category_name,
-											products: response.data.data
-										});
-									}
-								})
-								.catch(error => {
-									if (error.response) {
-										console.log(error.response);
-									}
-								});
-						}
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
-				});
-		},
-		getNewProducts() {
-			this.newProductData = [];
-
-			this.$axios
-				.get(getProductByClassUrl + "/" + "new", {
-					headers: getHeader()
-				})
-				.then(response => {
-					if (response.status === 200) {
-						this.newProductData = response.data.data;
-					}
-				})
-				.catch(error => {
-					if (error.response) {
-						console.log(error.response);
-					}
-				});
+		async getNewProducts() {
+			const products = await this.$axios({
+				method: "get",
+				url: `${getProductByClassUrl}/new`,
+				headers: getHeader()
+			});
+			this.newProductData = products.data.data.filter(product =>
+				product.product_variants.some(
+					variant => variant.stock_qty - variant.keep_stock_qty > 0
+				)
+			);
 		},
 		async getMofastProducts() {
 			const formParams = {
@@ -326,7 +277,11 @@ export default {
 				headers: getHeader()
 			});
 
-			this.mofastProductData = [...productRes.data.data.data];
+			this.mofastProductData = productRes.data.data.data.filter(product =>
+				product.product_variants.some(
+					variant => variant.stock_qty - variant.keep_stock_qty > 0
+				)
+			);
 		},
 		getFeaturedProducts() {
 			this.featuredProductData = [];
@@ -337,7 +292,11 @@ export default {
 				})
 				.then(response => {
 					if (response.status === 200) {
-						this.featuredProductData = response.data.data;
+						this.featuredProductData = response.data.data.filter(product =>
+							product.product_variants.some(
+								variant => variant.stock_qty - variant.keep_stock_qty > 0
+							)
+						);
 					}
 				})
 				.catch(error => {
@@ -378,7 +337,11 @@ export default {
 					headers: getHeader(),
 					data: getProductsParams
 				});
-				this.bestSellerProductData = catalogRes.data.data.data;
+				this.bestSellerProductData = catalogRes.data.data.data.filter(product =>
+					product.product_variants.some(
+						variant => variant.stock_qty - variant.keep_stock_qty > 0
+					)
+				);
 			} catch (error) {
 				console.log("error products");
 				console.log(error.message);
