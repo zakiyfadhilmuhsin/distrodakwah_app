@@ -14,11 +14,12 @@
 		<q-footer
 			class="bg-white text-black mobile-layout-on-desktop"
 			style="border-top: 2px solid #eee"
-			v-if="this.dataOrder.status === 'waiting_payment'"
+			v-if="this.dataOrder && this.dataOrder.status === 'waiting_payment'"
 		>
 			<q-toolbar class="bg-white text-black">
 				<q-space />
 				<q-btn
+					v-if="paymentConfirmationDialogReady"
 					flat
 					class="bg-orange-8 text-white full-width"
 					@click="$refs.PaymentConfirmationDialog.toggle"
@@ -30,7 +31,18 @@
 		<q-page-container class="mobile-layout-on-desktop">
 			<q-page class="bg-white">
 				<div class="bg-grey-3" style="height: 100%">
-					<div style="background-color: white;; padding: 13px 0 10px 0">
+					<div style="background-color: white; padding: 13px 0 10px 0">
+						<div class="row q-pb-sm q-px-md" v-if="customDesign">
+							<q-banner
+								block
+								rounded
+								dense
+								class="bg-primary text-white"
+								style="width: 100%"
+							>
+								Kirimkan Custom Desain Via E-mail: custom@distrodakwah.id
+							</q-banner>
+						</div>
 						<div class="row q-px-md q-py-xs">
 							<div class="col">
 								<h5 class="title-text" style="padding-left: 8px">
@@ -40,7 +52,7 @@
 							<div class="col text-right">
 								<router-link
 									:to="'/detailOrder/' + this.$route.query.orderID"
-									style="text-decoration: none;"
+									style="text-decoration: none"
 								>
 									<h5 class="link-text text-red">Lihat Detail</h5>
 								</router-link>
@@ -55,14 +67,24 @@
 						<div class="row q-px-lg">
 							<div class="col">
 								<h5
-									style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold"
+									style="
+										font-size: 21px;
+										margin: 0;
+										font-family: 'Open Sans';
+										font-weight: bold;
+									"
 								>
 									Total
 								</h5>
 							</div>
 							<div class="col text-right">
 								<h5
-									style="font-size: 21px; margin: 0; font-family: 'Open Sans'; font-weight: bold"
+									style="
+										font-size: 21px;
+										margin: 0;
+										font-family: 'Open Sans';
+										font-weight: bold;
+									"
 								>
 									Rp{{
 										formatPrice(dataOrder.grand_total + dataOrder.code_unique)
@@ -73,7 +95,12 @@
 						<div class="row q-px-lg items-center">
 							<div class="col-xs-8">
 								<h6
-									style="font-size: 12px; margin: 0; font-family: 'Open Sans'; line-height: 18px"
+									style="
+										font-size: 12px;
+										margin: 0;
+										font-family: 'Open Sans';
+										line-height: 18px;
+									"
 								>
 									Kode Unik
 								</h6>
@@ -91,12 +118,23 @@
 						<div class="row q-px-lg">
 							<div class="col">
 								<h6
-									style="font-size: 14px; margin: 10px 0; font-family: 'Open Sans'; text-align: center;"
+									style="
+										font-size: 14px;
+										margin: 10px 0;
+										font-family: 'Open Sans';
+										text-align: center;
+									"
 								>
 									Total Yang Harus Kamu Transfer
 								</h6>
 								<h6
-									style="font-size: 36px; margin: 0 0 18px 0; font-family: 'Open Sans'; text-align: center; font-weight: bold"
+									style="
+										font-size: 36px;
+										margin: 0 0 18px 0;
+										font-family: 'Open Sans';
+										text-align: center;
+										font-weight: bold;
+									"
 								>
 									Rp{{ formatPrice(dataOrder.grand_total) }}
 									<q-btn
@@ -108,7 +146,13 @@
 									>
 								</h6>
 								<h6
-									style="font-size: 12px; margin: 10px 0; font-family: 'Open Sans'; text-align: center; line-height: 16px"
+									style="
+										font-size: 12px;
+										margin: 10px 0;
+										font-family: 'Open Sans';
+										text-align: center;
+										line-height: 16px;
+									"
 								>
 									Silahkan lakukan pembayaran melalui transfer bank ke salah
 									satu rekening dibawah ini sebelum :
@@ -123,7 +167,7 @@
 													"id-ID",
 													{
 														dateStyle: "full",
-														timeZone: "Asia/Jakarta"
+														timeZone: "Asia/Jakarta",
 													}
 											  )
 											: ""
@@ -139,7 +183,13 @@
 									WIB (1x24 jam)
 								</h6>
 								<h6
-									style="font-size: 12px; margin: 10px 0; font-family: 'Open Sans'; text-align: center; line-height: 16px"
+									style="
+										font-size: 12px;
+										margin: 10px 0;
+										font-family: 'Open Sans';
+										text-align: center;
+										line-height: 16px;
+									"
 								>
 									Pembayaran di luar jam kerja (08:00 - 15:00) insya Allah akan
 									diproses keesokan harinya.
@@ -147,7 +197,7 @@
 							</div>
 						</div>
 					</div>
-					<div style="background-color: white;; padding: 13px 0 10px 0">
+					<div style="background-color: white; padding: 13px 0 10px 0">
 						<div class="row q-px-lg">
 							<div class="col">
 								<div class="row-accordion">
@@ -166,7 +216,7 @@
 													<q-list>
 														<q-item
 															v-for="(bank, index) in dataBank.filter(
-																bank => bank.account_category == 1
+																(bank) => bank.account_category == 1
 															)"
 															:key="index"
 														>
@@ -192,7 +242,7 @@
 																	flat
 																	size="xs"
 																	class="bg-red text-white"
-																	style="width: 60px;"
+																	style="width: 60px"
 																	>Salin</q-btn
 																>
 															</q-item-section>
@@ -213,7 +263,7 @@
 													<q-list>
 														<q-item
 															v-for="(bank, index) in dataBank.filter(
-																bank => bank.account_category == 2
+																(bank) => bank.account_category == 2
 															)"
 															:key="index"
 														>
@@ -239,7 +289,7 @@
 																	flat
 																	size="xs"
 																	class="bg-red text-white"
-																	style="width: 60px;"
+																	style="width: 60px"
 																	>Salin</q-btn
 																>
 															</q-item-section>
@@ -251,7 +301,7 @@
 												target="_blank"
 												href="https://bit.ly/VADistroDakwah"
 												class="tab"
-												style="text-decoration:none;"
+												style="text-decoration: none"
 											>
 												<input type="checkbox" class="accordion-input" />
 												<label class="tab-label"
@@ -272,6 +322,7 @@
 				:order="dataOrder"
 				:bankData="dataBank"
 				@payment-confirm-succeed="PaymentConfirmSucceed"
+				@hook:mounted="paymentConfirmationDialogReady=true"
 			/>
 		</q-page-container>
 	</q-layout>
@@ -284,7 +335,7 @@ import {
 	identityBankUrl,
 	paymentConfirmationUrl,
 	paymentConfirmOrderUrl,
-	getHeader
+	getHeader,
 } from "src/config";
 import VueClipboard from "vue-clipboard2";
 import { openURL } from "quasar";
@@ -296,10 +347,11 @@ import VoucherDetails from "../components/Voucher/VoucherDetails.vue";
 Vue.use(VueClipboard);
 
 export default {
+	name: "Invoice Page",
 	components: {
 		PaymentConfirmation,
 		PriceDetails,
-		VoucherDetails
+		VoucherDetails,
 	},
 	data() {
 		return {
@@ -310,10 +362,22 @@ export default {
 			bankSender: "",
 			senderName: "",
 			totalTransfer: 0,
-			transferDate: ""
+			transferDate: "",
 			// Toggle
+					paymentConfirmationDialogReady: false,
 		};
 	},
+	computed: {
+		customDesign() {
+			if (this.dataOrder) {
+				return this.dataOrder.order_detail.some(
+					(e) => [409, 410, 411, 412].indexOf(e.product_id) != -1
+				);
+			}
+			return false;
+		},
+	},
+
 	created() {
 		this.getDataBank();
 		this.getOrder();
@@ -322,16 +386,16 @@ export default {
 		getOrder() {
 			this.$axios
 				.get(showOrderUrl + "/" + this.$route.query.orderID, {
-					headers: getHeader()
+					headers: getHeader(),
 				})
-				.then(response => {
+				.then((response) => {
 					console.log(response);
 
 					if (response.status === 200) {
 						this.dataOrder = response.data.data;
 					}
 				})
-				.catch(error => {
+				.catch((error) => {
 					if (error.response) {
 						console.log(error.response);
 					}
@@ -340,11 +404,11 @@ export default {
 		getDataBank() {
 			this.$axios
 				.get(identityBankUrl, { headers: getHeader() })
-				.then(response => {
+				.then((response) => {
 					console.log(response);
 
 					if (response.status === 200) {
-						this.dataBank = response.data.data.map(bank => {
+						this.dataBank = response.data.data.map((bank) => {
 							if (bank.account_category == 2)
 								bank.bank_name_tmp = bank.bank_name + "~Virtual Account";
 							else bank.bank_name_tmp = bank.bank_name;
@@ -352,7 +416,7 @@ export default {
 						});
 					}
 				})
-				.catch(error => {
+				.catch((error) => {
 					if (error.response) {
 						console.log(error.response);
 					}
@@ -366,31 +430,31 @@ export default {
 			let val = (value / 1).toFixed(0).replace(".", ",");
 			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 		},
-		copyTotalTransfer: function() {
+		copyTotalTransfer: function () {
 			this.$copyText(this.dataOrder.grand_total).then(
-				function(e) {
+				function (e) {
 					alert("Berhasil Disalin!");
 					console.log(e);
 				},
-				function(e) {
+				function (e) {
 					alert("Gagal Disalin!");
 					console.log(e);
 				}
 			);
 		},
-		copyAccountNumber: function(accountNumber) {
+		copyAccountNumber: function (accountNumber) {
 			this.$copyText(accountNumber).then(
-				function(e) {
+				function (e) {
 					alert("Berhasil Disalin!");
 					console.log(e);
 				},
-				function(e) {
+				function (e) {
 					alert("Gagal Disalin!");
 					console.log(e);
 				}
 			);
-		}
-	}
+		},
+	},
 };
 </script>
 

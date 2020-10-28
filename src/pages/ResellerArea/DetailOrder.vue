@@ -612,7 +612,7 @@ export default {
 	},
 	computed: {
 		customDesign() {
-			return this.items.some(
+			return this.dataOrder.order_detail.some(
 				e => [409, 410, 411, 412].indexOf(e.product_id) != -1
 			);
 		}

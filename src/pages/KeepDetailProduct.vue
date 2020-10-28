@@ -83,25 +83,7 @@
 				<q-btn
 					flat
 					class="bg-orange-8 text-white"
-					@click="openURL('https://distrodakwah.id/custom-eks')"
-					v-if="IsCustomDesign && IsExclusive"
-				>
-					Buat Design Sekarang
-				</q-btn>
-				<q-btn
-					flat
-					class="bg-orange-8 text-white"
-					@click="openURL('https://distrodakwah.id/custom-pro')"
-					v-if="IsCustomDesign && IsPro"
-				>
-					Buat Design Sekarang
-				</q-btn>
-
-				<q-btn
-					flat
-					class="bg-orange-8 text-white"
 					@click="addToCart"
-					v-if="!IsCustomDesign"
 				>
 					Beli Sekarang
 				</q-btn>

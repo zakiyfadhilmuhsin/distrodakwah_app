@@ -126,13 +126,14 @@ export default {
 			if (this.isFree && this.IsCustomDesign) {
 				openURL("https://kayaberkah.orderonline.id/upgrade-Reseller");
 				return;
-			} else if (this.IsCustomDesign && this.IsPro) {
-				openURL("https://distrodakwah.id/custom-pro");
-				return;
-			} else if (this.IsCustomDesign && this.IsExclusive) {
-				openURL("https://distrodakwah.id/custom-eks");
-				return;
 			}
+			//  else if (this.IsCustomDesign && this.IsPro) {
+			// 	openURL("https://distrodakwah.id/custom-pro");
+			// 	return;
+			// } else if (this.IsCustomDesign && this.IsExclusive) {
+			// 	openURL("https://distrodakwah.id/custom-eks");
+			// 	return;
+			// }
 			this.$router.push(`/detail/keep/${this.product.id}`);
 		},
 		productNameFormat(str) {
