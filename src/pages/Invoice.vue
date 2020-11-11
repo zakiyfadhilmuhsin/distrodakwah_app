@@ -423,7 +423,31 @@ export default {
 				});
 		},
 		PaymentConfirmSucceed() {
-			this.getOrder();
+						this.getDataBank();
+						this.getOrder();
+
+						openURL(
+							"https://wa.me/628170090597?text=Konfirmasi%20Pembayaran%0A" +
+								"%0ANo%20Invoice:%20" +
+								this.dataOrder.invoice +
+								"%0ABank%20Penerima:%20" +
+								this.bankReceiver +
+								"%0ABank%20Pengirim:%20" +
+								this.bankSender +
+								"%0ANama%20Pengirim:%20" +
+								this.senderName +
+								"%0ATotal%20Transfer:%20" +
+								this.totalTransfer +
+								"%0ATanggal%20Transfer:%20" +
+								this.transferDate +
+								"%0A%0A*Jangan%20Lupa%20Kirim%20Bukti%20Pembayaran*"
+						);
+
+						this.bankReceiver = "";
+						this.bankSender = "";
+						this.senderName = "";
+						this.totalTransfer = "";
+						this.transferDate = "";
 		},
 
 		formatPrice(value) {
