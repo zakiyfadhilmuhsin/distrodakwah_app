@@ -271,17 +271,25 @@
 													label="No Resi Otomatis"
 													:disable="disableResiInput"
 												/>
-												<q-input
-													v-model="shipment.autoReceiptCourier"
-													color="orange-8"
-													type="text"
+
+
+											<div class="col-12">
+												<q-select
 													dense
-													class="bg-grey-2 q-mb-sm"
 													outlined
-													placeholder="Silahkan Masukkan Nama Ekpedisi Disini.."
-													label="Nama Ekspedisi"
-													:disable="disableResiInput"
+													color="orange-8"
+													options-dense
+													v-model="shipment.autoReceiptCourier"
+													:options="courierOptions"
+													option-value="value"
+													option-label="label"
+													emit-value
+													map-options
+													label="Pilihan Ekspedisi"
+																										:disable="disableResiInput"
+
 												/>
+											</div>
 											</div>
 										</div>
 									</template>
