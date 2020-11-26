@@ -51,7 +51,7 @@ const routes = [
 		component: StorefrontPage
 	},
 	{
-		path: "/productReview",
+		path: "/product-review",
 		meta: {
 			requiresAuth: true
 		},
@@ -100,7 +100,7 @@ const routes = [
 		}
 	},
 	{
-		path: "/prodouctReviewDetails/:product_id",
+		path: "/product-review-details/:product_id",
 		component: ProductReviewDetailPage,
 		meta: {
 			requiresAuth: true

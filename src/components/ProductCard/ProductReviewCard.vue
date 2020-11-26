@@ -104,7 +104,7 @@ export default {
 	},
 	methods: {
 		onCardClick() {
-				this.$router.push(`/prodouctReviewDetails/${this.product.id}`);
+				this.$router.push(`/product-review-details/${this.product.id}`);
 		},
 		productNameFormat(str) {
 			if (str.length >= 30) {
