@@ -84,64 +84,6 @@
 						</q-card-actions>
 					</q-card>
 				</div>
-				<!--  -->
-				<div class="q-pa-md">
-					<q-card class="my-card">
-						<q-img src="https://imgur.com/afipahQ.jpg" />
-
-						<q-card-section>
-							<div class="row no-wrap items-center">
-								<!-- <div class="col text-h6 ellipsis">
-										Cafe Basilico
-									</div> -->
-							</div>
-							<q-rating v-model="stars" :max="5" size="32px" />
-						</q-card-section>
-
-						<q-card-section class="q-pt-none">
-							<!-- <div class="text-caption text-grey">
-								Small plates, salads & sandwiches in an intimate setting.
-								</div> -->
-						</q-card-section>
-
-						<q-separator />
-
-						<q-card-actions>
-							<!-- <q-btn class="full-width" style="background: orange;"  flat color="white">
-									Lihat Detail
-								</q-btn> -->
-						</q-card-actions>
-					</q-card>
-				</div>
-				<!--  -->
-				<div class="q-pa-md">
-					<q-card class="my-card">
-						<q-img src="https://imgur.com/d87VviF.jpg" />
-
-						<q-card-section>
-							<div class="row no-wrap items-center">
-								<!-- <div class="col text-h6 ellipsis">
-										Cafe Basilico
-									</div> -->
-							</div>
-							<q-rating v-model="stars" :max="5" size="32px" />
-						</q-card-section>
-
-						<q-card-section class="q-pt-none">
-							<!-- <div class="text-caption text-grey">
-								Small plates, salads & sandwiches in an intimate setting.
-								</div> -->
-						</q-card-section>
-
-						<q-separator />
-
-						<q-card-actions>
-							<!-- <q-btn class="full-width" style="background: orange;"  flat color="white">
-									Lihat Detail
-								</q-btn> -->
-						</q-card-actions>
-					</q-card>
-				</div>
 			</q-page>
 		</q-page-container>
 	</q-layout>
