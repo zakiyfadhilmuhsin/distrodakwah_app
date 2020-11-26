@@ -28,6 +28,9 @@ import DownloadCatalogPage from "pages/ResellerArea/DownloadCatalog";
 import ResetPassword from "pages/Auth/ResetPassword";
 import UpdatePassword from "pages/Auth/UpdatePassword";
 import UpdatePasswordHasToken from "pages/Auth/UpdatePasswordHasToken";
+
+import Promo from "pages/Promo";
+
 // import MaintenancePage from "pages/Maintenance";
 
 // import LoginTesting from "pages/Auth/LoginTesting";
@@ -201,6 +204,13 @@ const routes = [
 	{
 		path: "/downloadCatalog",
 		component: DownloadCatalogPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/promo",
+		component: Promo,
 		meta: {
 			requiresAuth: true
 		}
