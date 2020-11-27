@@ -80,11 +80,7 @@
 					</h4>
 				</span>
 				<q-space />
-				<q-btn
-					flat
-					class="bg-orange-8 text-white"
-					@click="addToCart"
-				>
+				<q-btn flat class="bg-orange-8 text-white" @click="addToCart">
 					Beli Sekarang
 				</q-btn>
 			</q-toolbar>
@@ -655,31 +651,30 @@ export default {
 				);
 				return 0;
 			} else {
-				for (
-					let compareIndex = 1;
-					compareIndex < allSkuLength;
-					compareIndex++
-				) {
-					let totalFound = 0;
+				let isAvailable = [];
+				for (let index = 0; index < allSku[0].length; index++) {
+					allSku.forEach(skuIDArr => {
+						isAvailable.push(skuIDArr.some(skuID => skuID == allSku[0][index]));
+						// console.log(skuIDCompare, "compare");
+						// console.log(skuIDArr, "with");
+						// console.log(skuIDArr.some(skuID => skuID == skuIDCompare));
+						// console.log(allSku, "sku");
+					});
 
-					for (let sourceIndex = 0; sourceIndex < firstLength; sourceIndex++) {
-						const found = allSku[compareIndex].indexOf(allSku[0][sourceIndex]);
+					const allTrue = isAvailable.every(elem => {
+						return elem == true;
+					});
 
-						if (found !== -1) {
-							totalFound++;
-
-							if (totalFound === allSkuLength - 1) {
-								//success
-								this.selectedSkuId = parseInt(allSku[0][sourceIndex]);
-								this.selectedVariant = this.productData.product_variants.find(
-									e => e.id == this.selectedSkuId
-								);
-								return 0;
-							}
-
-							break;
-						}
+					if (allTrue) {
+						this.selectedSkuId = parseInt(allSku[0][index]);
+						this.selectedVariant = this.productData.product_variants.find(
+							e => e.id == this.selectedSkuId
+						);
+						return 0;
+						break;
 					}
+
+					isAvailable = [];
 				}
 
 				this.selectedSkuId = null;
@@ -764,7 +759,7 @@ export default {
 			return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 		},
 		doCopy: function() {
-			this.$copyText(h2p(this.productData.product_description))
+			this.$copyText(h2p(this.productData.product_description));
 		},
 		upgrade() {
 			openURL("https://kayaberkah.orderonline.id/upgrade-Reseller");
