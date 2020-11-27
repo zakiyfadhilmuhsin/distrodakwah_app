@@ -34,9 +34,27 @@
 								v-for="(product, index) in newProduct"
 								:key="index"
 							>
-								<template v-if="product.brand_id === 7 && product.id !== 412">
+								<template
+									v-if="
+										product.brand_id === 7 &&
+											product.id !== 412 &&
+											product.id !== 519 &&
+											product.id !== 520 &&
+											product.id !== 521
+									"
+								>
 									<KeepProductCard :product="product" :user="user" />
 								</template>
+								<template
+									v-else-if="
+										product.id === 519 ||
+											product.id === 520 ||
+											product.id === 521
+									"
+								>
+									<PromotionProductCard :product="product" :user="user" />
+								</template>
+
 								<template v-else>
 									<VendorProductCard :product="product" :user="user" />
 								</template>
@@ -70,12 +88,14 @@ import Vue from "vue";
 //components
 import VendorProductCard from "../components/ProductCard/vendorProductCard.vue";
 import KeepProductCard from "../components/ProductCard/keepProductCard.vue";
+import PromotionProductCard from "../components/ProductCard/promotionProductCard.vue";
 
 export default {
 	name: "ProductsByCategory",
 	components: {
 		VendorProductCard,
-		KeepProductCard
+		KeepProductCard,
+		PromotionProductCard
 	},
 	data() {
 		return {

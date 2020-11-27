@@ -46,7 +46,7 @@
 						<q-separator />
 
 						<q-card-actions>
-							<router-link to="/detail/516/" class="full-width">
+							<router-link to="/detail/516" class="full-width">
 								<q-btn
 									class="full-width"
 									style="background: orange"
@@ -59,7 +59,7 @@
 						</q-card-actions>
 
 						<q-card-actions>
-							<router-link to="/detail/517/" class="full-width">
+							<router-link to="/detail/517" class="full-width">
 								<q-btn
 									class="full-width"
 									style="background: orange"
@@ -71,7 +71,7 @@
 							</router-link>
 						</q-card-actions>
 						<q-card-actions>
-							<router-link to="/detail/518/" class="full-width">
+							<router-link to="/detail/518" class="full-width">
 								<q-btn
 									class="full-width"
 									style="background: orange"
@@ -108,7 +108,7 @@
 						<q-separator />
 
 						<q-card-actions>
-							<router-link to="/detail/keep/519/" class="full-width">
+							<router-link to="/promotions/detail/519" class="full-width">
 								<q-btn
 									class="full-width"
 									style="background: orange"
@@ -121,7 +121,7 @@
 						</q-card-actions>
 
 						<q-card-actions>
-							<router-link to="/detail/keep/520/" class="full-width">
+							<router-link to="/promotions/detail/520" class="full-width">
 								<q-btn
 									class="full-width"
 									style="background: orange"
@@ -133,7 +133,7 @@
 							</router-link>
 						</q-card-actions>
 						<q-card-actions>
-							<router-link to="/detail/keep/521/" class="full-width">
+							<router-link to="/promotions/detail/521" class="full-width">
 								<q-btn
 									class="full-width"
 									style="background: orange"

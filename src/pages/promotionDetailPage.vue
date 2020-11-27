@@ -271,7 +271,7 @@
 						<hr style="margin: 15px 0" />
 						<div class="row">
 							<h4 class="price-title-small-text">
-								Stok bahan baku:
+								Stok Ready:
 								<span v-if="yaumeeSpreadsheetsTable.rows.length == 0"
 									>Sedang Memuat</span
 								>

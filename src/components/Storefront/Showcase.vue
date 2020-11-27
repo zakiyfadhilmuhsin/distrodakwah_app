@@ -24,9 +24,18 @@
 		<div class="row q-px-md swiper-content">
 			<swiper :options="swiperProductListOption">
 				<swiper-slide v-for="(product, index) in productArr" :key="index">
-					<template v-if="product.brand_id === 7 && product.id !== 412">
+					<template v-if="product.brand_id === 7 && product.id !== 412
+					&& product.id !== 519 && product.id !== 520 && product.id !== 521">
 						<KeepProductCard :product="product" :user="user" />
 					</template>
+					<template
+						v-else-if="
+							product.id === 519 || product.id === 520 || product.id === 521
+						"
+					>
+						<PromotionProductCard :product="product" :user="user" />
+					</template>
+
 					<template v-else>
 						<VendorProductCard :product="product" :user="user" />
 					</template>
@@ -45,6 +54,7 @@ import { swiper, swiperSlide } from "vue-awesome-swiper";
 //components
 import VendorProductCard from "../ProductCard/vendorProductCard.vue";
 import KeepProductCard from "../ProductCard/keepProductCard";
+import PromotionProductCard from "../ProductCard/promotionProductCard.vue";
 
 export default {
 	name: "Showcase",
@@ -52,7 +62,8 @@ export default {
 		swiper,
 		swiperSlide,
 		KeepProductCard,
-		VendorProductCard
+		VendorProductCard,
+		PromotionProductCard
 	},
 	props: {
 		productArr: Array,
@@ -84,7 +95,6 @@ export default {
 				? { "promo-text": true, "text-white": true }
 				: { "promo-text": true, "text-black-8": true };
 		}
-
 	}
 };
 </script>
@@ -104,7 +114,7 @@ export default {
 	margin-bottom: 5px;
 }
 
-.swiper-container{
+.swiper-container {
 	display: flex;
 	flex-direction: column;
 }

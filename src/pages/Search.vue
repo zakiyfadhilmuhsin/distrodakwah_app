@@ -37,17 +37,29 @@
 								v-for="(product, index) in newProduct"
 								:key="index"
 							>
-								<template v-if="product.brand_id === 7 && product.id !== 412">
-									<KeepProductCard
-										:product="product"
-										:user="globalState.userProfile"
-									/>
+								<template
+									v-if="
+										product.brand_id === 7 &&
+											product.id !== 412 &&
+											product.id !== 519 &&
+											product.id !== 520 &&
+											product.id !== 521
+									"
+								>
+									<KeepProductCard :product="product" :user="user" />
 								</template>
+								<template
+									v-else-if="
+										product.id === 519 ||
+											product.id === 520 ||
+											product.id === 521
+									"
+								>
+									<PromotionProductCard :product="product" :user="user" />
+								</template>
+
 								<template v-else>
-									<VendorProductCard
-										:product="product"
-										:user="globalState.userProfile"
-									/>
+									<VendorProductCard :product="product" :user="user" />
 								</template>
 							</div>
 						</div>
@@ -71,11 +83,13 @@ import { QSpinnerPuff } from "quasar";
 //components
 import VendorProductCard from "../components/ProductCard/vendorProductCard.vue";
 import KeepProductCard from "../components/ProductCard/keepProductCard.vue";
+import PromotionProductCard from "../components/ProductCard/promotionProductCard.vue";
 
 export default {
 	components: {
 		VendorProductCard,
-		KeepProductCard
+		KeepProductCard,
+		PromotionProductCard
 	},
 	data() {
 		return {
