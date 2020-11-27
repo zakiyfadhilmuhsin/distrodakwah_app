@@ -267,7 +267,7 @@
 								>
 							</h4>
 							<table
-								v-if="yaumeeSpreadsheetsTable.rows.length > 0"
+								v-if="yaumeeSpreadsheetsTable.rows.length > 0 && !isHalvesPromo"
 								class="stocking-table"
 							>
 								<thead>
@@ -287,6 +287,31 @@
 										<td>{{ row.L }}</td>
 										<td>{{ row.XL }}</td>
 										<td>{{ row.XXL }}</td>
+									</tr>
+								</tbody>
+							</table>
+	<!-- 50%promo -->
+							<table
+								v-if="yaumeeSpreadsheetsTable.rows.length > 0 && isHalvesPromo"
+								class="stocking-table"
+							>
+								<thead>
+									<tr>
+										<th
+											v-for="(header, i) in yaumeeSpreadsheetsTable.headers"
+											:key="i"
+										>
+											{{ header }}
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="(row, i) in yaumeeSpreadsheetsTable.rows" :key="i">
+										<td>{{ row.Kode }}</td>
+										<td>{{ row.Warna }}</td>
+										<td>{{ row.Design }}</td>
+										<td>{{ row.Ukuran }}</td>
+										<td>{{ row.Ready }}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -503,6 +528,9 @@ export default {
 		isOptionsAllowed: function() {
 			return this.inputOptions.length > 0;
 			// return !isEmpty(this.inputOptions) ? true: false;
+		},
+		isHalvesPromo: function() {
+			return this.productData.id == 519 || this.productData.id == 520 ||this.productData.id === 521
 		}
 	},
 	async created() {
@@ -526,8 +554,14 @@ export default {
 			this.productData.sku == "OU"
 		) {
 			sheet = await doc.sheetsByIndex[2];
+		} else if (this.productData.id == 519) {
+			sheet = await doc.sheetsByIndex[3];
+		} else if (this.productData.id == 520) {
+			sheet = await doc.sheetsByIndex[4];
+		} else if (this.productData.id == 521) {
+			sheet = await doc.sheetsByIndex[5];
 		}
-		if (sheet) {
+		if (sheet && !this.isHalvesPromo) {
 			await sheet.loadHeaderRow();
 			const rows = await sheet.getRows();
 			const rowsMapSpreadsheet = [];
@@ -538,6 +572,22 @@ export default {
 					L: row.L,
 					XL: row.XL,
 					XXL: row.XXL
+				});
+			}
+
+			this.yaumeeSpreadsheetsTable.headers = sheet.headerValues;
+			this.yaumeeSpreadsheetsTable.rows = rowsMapSpreadsheet;
+		} else if (sheet && this.isHalvesPromo) {
+				await sheet.loadHeaderRow();
+			const rows = await sheet.getRows();
+			const rowsMapSpreadsheet = [];
+			for await (const row of rows) {
+				rowsMapSpreadsheet.push({
+					Kode: row["Kode"],
+					Warna: row.Warna,
+					Design: row.Design,
+					Ukuran: row.Ukuran,
+					Ready: row.Ready
 				});
 			}
 
