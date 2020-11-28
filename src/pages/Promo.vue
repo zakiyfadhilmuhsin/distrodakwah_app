@@ -27,6 +27,12 @@
           <q-card class="my-card">
             <q-img src="https://imgur.com/igTcSci.jpg" />
             <!--  -->
+            <q-card dark bordered class="bg-red-9 my-card">
+              <q-card-section>
+                <div class="text-h10">Mohon maaf untuk promo ini sedang ada perbaikan</div>
+              </q-card-section>
+            </q-card>
+            <!--  -->
               <q-card-section>
                 <div class="row no-wrap items-center">
                   <div class="col ellipsis" style="font-size: 16px">
@@ -63,7 +69,7 @@
               
             <q-separator />
 
-            <q-card-actions>
+            <!-- <q-card-actions>
               <router-link to="/detail/516/" class="full-width">
                 <q-btn
                   class="full-width"
@@ -99,7 +105,7 @@
                   Lihat Paket Brader Hemat 3
                 </q-btn>
               </router-link>
-            </q-card-actions>
+            </q-card-actions> -->
           </q-card>
         </div>
         <!--  -->
