@@ -137,7 +137,17 @@
 						<div
 							style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold"
 						>
-							<span class="text">Stok Tersedia</span>
+							<span class="text-red" v-if="stockReady == null"
+								>Pilih Varian Untuk Melihat Jumlah Stok</span
+							>
+							<span v-else
+								>Stok Tersedia:
+								{{
+									stockReady === "not_available"
+										? "Varian Tidak ada"
+										: stockReady
+								}}</span
+							>
 						</div>
 
 						<hr style="margin: 15px 0" />
@@ -261,7 +271,7 @@
 						<hr style="margin: 15px 0" />
 						<div class="row">
 							<h4 class="price-title-small-text">
-								Stok bahan baku:
+								Stok Ready:
 								<span v-if="yaumeeSpreadsheetsTable.rows.length == 0"
 									>Sedang Memuat</span
 								>
@@ -290,7 +300,7 @@
 									</tr>
 								</tbody>
 							</table>
-	<!-- 50%promo -->
+							<!-- 50%promo -->
 							<table
 								v-if="yaumeeSpreadsheetsTable.rows.length > 0 && isHalvesPromo"
 								class="stocking-table"
@@ -530,7 +540,11 @@ export default {
 			// return !isEmpty(this.inputOptions) ? true: false;
 		},
 		isHalvesPromo: function() {
-			return this.productData.id == 519 || this.productData.id == 520 ||this.productData.id === 521
+			return (
+				this.productData.id == 519 ||
+				this.productData.id == 520 ||
+				this.productData.id === 521
+			);
 		}
 	},
 	async created() {
@@ -542,43 +556,15 @@ export default {
 
 		const doc = await googleSpreadsheetDoc();
 		let sheet;
-		if (this.productData.category_id == 7 || this.productData.sku == "OS") {
-			sheet = await doc.sheetsByIndex[0];
-		} else if (
-			this.productData.category_id == 8 ||
-			this.productData.sku == "OT"
-		) {
-			sheet = await doc.sheetsByIndex[1];
-		} else if (
-			this.productData.category_id == 9 ||
-			this.productData.sku == "OU"
-		) {
-			sheet = await doc.sheetsByIndex[2];
-		} else if (this.productData.id == 519) {
+		if (this.productData.id == 519) {
 			sheet = await doc.sheetsByIndex[3];
 		} else if (this.productData.id == 520) {
 			sheet = await doc.sheetsByIndex[4];
 		} else if (this.productData.id == 521) {
 			sheet = await doc.sheetsByIndex[5];
 		}
-		if (sheet && !this.isHalvesPromo) {
+		if (sheet && this.isHalvesPromo) {
 			await sheet.loadHeaderRow();
-			const rows = await sheet.getRows();
-			const rowsMapSpreadsheet = [];
-			for await (const row of rows) {
-				rowsMapSpreadsheet.push({
-					Warna: row["Varian"],
-					M: row.M,
-					L: row.L,
-					XL: row.XL,
-					XXL: row.XXL
-				});
-			}
-
-			this.yaumeeSpreadsheetsTable.headers = sheet.headerValues;
-			this.yaumeeSpreadsheetsTable.rows = rowsMapSpreadsheet;
-		} else if (sheet && this.isHalvesPromo) {
-				await sheet.loadHeaderRow();
 			const rows = await sheet.getRows();
 			const rowsMapSpreadsheet = [];
 			for await (const row of rows) {
@@ -665,10 +651,12 @@ export default {
 		},
 
 		constructSKU(event) {
-			this.selectedOption = {
-				...this.selectedOption,
-				[event.target.name]: event.target.value
-			};
+			(this.selectedSkuId = null),
+				(this.selectedVariant = null),
+				(this.selectedOption = {
+					...this.selectedOption,
+					[event.target.name]: event.target.value
+				});
 			let allOptionSelected = true;
 			const allSku = [];
 
@@ -691,7 +679,12 @@ export default {
 			});
 
 			const allSkuLength = allSku.length;
-			const firstLength = allSku[0].length;
+			let firstLength = 0;
+			allSku.forEach(
+				arrays =>
+					(firstLength =
+						arrays.length > firstLength ? arrays.length : firstLength)
+			);
 
 			if (allSku.length === 1) {
 				// success

@@ -8,6 +8,8 @@ import StorefrontPage from "pages/Storefront";
 import ProductReviewDetailPage from '../pages/Products/ProductReviewDetail.vue';
 import DetailProductPage from "pages/DetailProduct";
 import KeepDetailProductPage from "pages/KeepDetailProduct";
+import PromotionDetailProductPage from "pages/promotionDetailPage";
+
 import ProductReviewPage from '../pages/Products/ProductReview.vue';
 
 import DashboardPage from "pages/ResellerArea/DashboardNew";
@@ -88,6 +90,13 @@ const routes = [
 	{
 		path: "/detail/:product_id",
 		component: DetailProductPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/promotions/detail/:product_id",
+		component: PromotionDetailProductPage,
 		meta: {
 			requiresAuth: true
 		}
