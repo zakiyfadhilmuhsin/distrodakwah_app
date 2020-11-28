@@ -474,7 +474,7 @@
 import { mapState } from "vuex";
 import Vue from "vue";
 import carousel from "vue-owl-carousel";
-import { cloneDeep, isEmpty } from "lodash";
+import { cloneDeep, isEmpty, mapValues, method } from "lodash";
 import h2p from "html2plaintext";
 import {
 	apiDomain,
@@ -651,12 +651,12 @@ export default {
 		},
 
 		constructSKU(event) {
-			(this.selectedSkuId = null),
-				(this.selectedVariant = null),
-				(this.selectedOption = {
-					...this.selectedOption,
-					[event.target.name]: event.target.value
-				});
+			this.selectedSkuId = null;
+			this.selectedVariant = null;
+			this.selectedOption = {
+				...this.selectedOption,
+				[event.target.name]: event.target.value
+			};
 			let allOptionSelected = true;
 			const allSku = [];
 
@@ -672,7 +672,7 @@ export default {
 					opt.sku_values
 						.filter(
 							sku_value =>
-								sku_value.value === this.selectedOption[opt.option_name]
+								sku_value.value.toLowerCase() === this.selectedOption[opt.option_name].toLowerCase()
 						)
 						.map(sku_value => sku_value.product_sku_id)
 				);

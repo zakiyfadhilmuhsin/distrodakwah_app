@@ -684,7 +684,7 @@ export default {
 					opt.sku_values
 						.filter(
 							sku_value =>
-								sku_value.value === this.selectedOption[opt.option_name]
+								sku_value.value.toLowerCase() === this.selectedOption[opt.option_name].toLowerCase()
 						)
 						.map(sku_value => sku_value.product_sku_id)
 				);
