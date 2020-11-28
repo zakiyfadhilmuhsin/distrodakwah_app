@@ -1,241 +1,201 @@
 <template>
-	<q-layout view="lHh Lpr lFf">
-		<q-header
-			class="mobile-layout-on-desktop"
-			style="box-shadow: none !important"
-		>
-			<q-toolbar class="bg-distrodakwah text-white">
-				<!-- <q-space /> -->
-				<center>
-					<img
-						src="~/assets/images/components/logo-distrodakwah.png"
-						width="45%"
-						class="q-ml-xs"
-						style="padding-top: 8px"
-					/>
-				</center>
-			</q-toolbar>
-		</q-header>
-		<q-page-container
-			class="mobile-layout-on-desktop"
-			style="background: #f5f6fa"
-		>
-			<q-page>
-				<img class="full-width" src="https://imgur.com/24r3u20.jpg" alt="" />
-				<!-- promo brader fillah -->
-				<div class="q-pa-md">
-					<q-card class="my-card">
-						<q-img src="https://imgur.com/igTcSci.jpg" />
+  <q-layout view="lHh Lpr lFf">
+    <q-header
+      class="mobile-layout-on-desktop"
+      style="box-shadow: none !important"
+    >
+      <q-toolbar class="bg-distrodakwah text-white">
+        <!-- <q-space /> -->
+        <center>
+          <img
+            src="~/assets/images/components/logo-distrodakwah.png"
+            width="45%"
+            class="q-ml-xs"
+            style="padding-top: 8px"
+          />
+        </center>
+      </q-toolbar>
+    </q-header>
+    <q-page-container
+      class="mobile-layout-on-desktop"
+      style="background: #f5f6fa"
+    >
+      <q-page>
+        <img class="full-width" src="https://imgur.com/24r3u20.jpg" alt="" />
+        <!-- promo brader fillah -->
+        <div class="q-pa-md">
+          <q-card class="my-card">
+            <q-img src="https://imgur.com/igTcSci.jpg" />
 
-						<q-card-section>
-							<div class="row no-wrap items-center">
-								<div class="col ellipsis" style="font-size: 16px">
-									Ada promo spesial buat Brader fillah
-								</div>
-							</div>
-							<q-rating v-model="stars" :max="5" size="32px" />
-						</q-card-section>
+            <q-card-section>
+              <div class="row no-wrap items-center">
+                <div class="col ellipsis" style="font-size: 16px">
+                  Ada promo spesial buat Brader fillah
+                </div>
+              </div>
+              <q-rating v-model="stars" :max="5" size="32px" />
+            </q-card-section>
 
-						<q-card-section class="q-pt-none">
-							<p
-								class="text-caption text-grey"
-								v-html="hardCodedDescription"
-							></p>
-						</q-card-section>
+            <q-card-section class="q-pt-none">
+              <p
+                class="text-caption text-grey"
+                v-html="hardCodedDescription"
+              ></p>
+            </q-card-section>
 
-						<q-separator />
+            <q-separator />
 
-						<q-card-actions>
-							<router-link to="/detail/516" class="full-width">
-								<q-btn
-									class="full-width"
-									style="background: orange"
-									flat
-									color="white"
-								>
-									Lihat Paket Brader Hemat 1
-								</q-btn>
-							</router-link>
-						</q-card-actions>
+            <q-card-actions>
+              <router-link to="/detail/516/" class="full-width">
+                <q-btn
+                  class="full-width"
+                  style="background: orange"
+                  flat
+                  color="white"
+                >
+                  Lihat Paket Brader Hemat 1
+                </q-btn>
+              </router-link>
+            </q-card-actions>
 
-						<q-card-actions>
-							<router-link to="/detail/517" class="full-width">
-								<q-btn
-									class="full-width"
-									style="background: orange"
-									flat
-									color="white"
-								>
-									Lihat Paket Brader Hemat 2
-								</q-btn>
-							</router-link>
-						</q-card-actions>
-						<q-card-actions>
-							<router-link to="/detail/518" class="full-width">
-								<q-btn
-									class="full-width"
-									style="background: orange"
-									flat
-									color="white"
-								>
-									Lihat Paket Brader Hemat 3
-								</q-btn>
-							</router-link>
-						</q-card-actions>
-					</q-card>
-				</div>
-<<<<<<< HEAD
+            <q-card-actions>
+              <router-link to="/detail/517/" class="full-width">
+                <q-btn
+                  class="full-width"
+                  style="background: orange"
+                  flat
+                  color="white"
+                >
+                  Lihat Paket Brader Hemat 2
+                </q-btn>
+              </router-link>
+            </q-card-actions>
+            <q-card-actions>
+              <router-link to="/detail/518/" class="full-width">
+                <q-btn
+                  class="full-width"
+                  style="background: orange"
+                  flat
+                  color="white"
+                >
+                  Lihat Paket Brader Hemat 3
+                </q-btn>
+              </router-link>
+            </q-card-actions>
+          </q-card>
+        </div>
         <!--  -->
         <div class="q-pa-md">
-=======
-				<!--  -->
-				<div class="q-pa-md">
->>>>>>> 3823df1bad75b9a32284135e3d343600e51f4d8e
-					<q-card class="my-card">
-						<q-img src="https://imgur.com/hemmr6q.jpg" />
+          <q-card class="my-card">
+            <q-img src="https://imgur.com/hemmr6q.jpg" />
 
-						<q-card-section>
-							<div class="row no-wrap items-center">
-								<div class="" style="font-size: 16px">
-									Diskon 50% untuk Produk Yaumee, Belanja lebih Hemat
-								</div>
-							</div>
-							<q-rating v-model="stars" :max="5" size="32px" />
-						</q-card-section>
+            <q-card-section>
+              <div class="row no-wrap items-center">
+                <div class="" style="font-size: 16px">
+                  Diskon 50% untuk Produk Yaumee, Belanja lebih Hemat
+                </div>
+              </div>
+              <q-rating v-model="stars" :max="5" size="32px" />
+            </q-card-section>
 
-						<q-card-section class="q-pt-none">
-							<p
-								class="text-caption text-grey"
-<<<<<<< HEAD
-								v-html="hardCodedDescription3"
-=======
-								v-html="hardCodedDescription2"
->>>>>>> 3823df1bad75b9a32284135e3d343600e51f4d8e
-							></p>
-						</q-card-section>
+            <q-card-section class="q-pt-none">
+              <p
+                class="text-caption text-grey"
+                v-html="hardCodedDescription2"
+              ></p>
+            </q-card-section>
 
-						<q-separator />
+            <q-separator />
 
-						<q-card-actions>
-<<<<<<< HEAD
-							<router-link to="/detail/keep/519/" class="full-width">
-=======
-							<router-link to="/promotions/detail/519" class="full-width">
->>>>>>> 3823df1bad75b9a32284135e3d343600e51f4d8e
-								<q-btn
-									class="full-width"
-									style="background: orange"
-									flat
-									color="white"
-								>
-									Lihat Yaumee Hodie
-								</q-btn>
-							</router-link>
-						</q-card-actions>
+            <q-card-actions>
+              <router-link to="/detail/keep/519/" class="full-width">
+                <q-btn
+                  class="full-width"
+                  style="background: orange"
+                  flat
+                  color="white"
+                >
+                  Lihat Yaumee Hodie
+                </q-btn>
+              </router-link>
+            </q-card-actions>
 
-						<q-card-actions>
-<<<<<<< HEAD
-							<router-link to="/detail/keep/520/" class="full-width">
-=======
-							<router-link to="/promotions/detail/520" class="full-width">
->>>>>>> 3823df1bad75b9a32284135e3d343600e51f4d8e
-								<q-btn
-									class="full-width"
-									style="background: orange"
-									flat
-									color="white"
-								>
-									Lihat Yaumee Panjang
-								</q-btn>
-							</router-link>
-						</q-card-actions>
-						<q-card-actions>
-<<<<<<< HEAD
-							<router-link to="/detail/keep/521/" class="full-width">
-=======
-							<router-link to="/promotions/detail/521" class="full-width">
->>>>>>> 3823df1bad75b9a32284135e3d343600e51f4d8e
-								<q-btn
-									class="full-width"
-									style="background: orange"
-									flat
-									color="white"
-								>
-									Lihat Yaumee Pendek
-								</q-btn>
-							</router-link>
-						</q-card-actions>
-					</q-card>
-				</div>
-<<<<<<< HEAD
+            <q-card-actions>
+              <router-link to="/detail/keep/520/" class="full-width">
+                <q-btn
+                  class="full-width"
+                  style="background: orange"
+                  flat
+                  color="white"
+                >
+                  Lihat Yaumee Panjang
+                </q-btn>
+              </router-link>
+            </q-card-actions>
+            <q-card-actions>
+              <router-link to="/detail/keep/521/" class="full-width">
+                <q-btn
+                  class="full-width"
+                  style="background: orange"
+                  flat
+                  color="white"
+                >
+                  Lihat Yaumee Pendek
+                </q-btn>
+              </router-link>
+            </q-card-actions>
+          </q-card>
+        </div>
         <!--  -->
         <div class="q-pa-md">
-=======
-				<!--  -->
-				<!-- <div class="q-pa-md">
->>>>>>> 3823df1bad75b9a32284135e3d343600e51f4d8e
-					<q-card class="my-card">
-						<q-img src="https://imgur.com/0TcX4GG.jpg" />
+          <q-card class="my-card">
+            <q-img src="https://imgur.com/0TcX4GG.jpg" />
 
-						<q-card-section>
-							<div class="row no-wrap items-center">
-								<div class="" style="font-size: 16px">
-									Wujudkan Mimpi Berangkat Umroh, Bersama Distrodakwah.id
-								</div>
-							</div>
-							<q-rating v-model="stars" :max="5" size="32px" />
-						</q-card-section>
+            <q-card-section>
+              <div class="row no-wrap items-center">
+                <div class="" style="font-size: 16px">
+                  Wujudkan Mimpi Berangkat Umroh, Bersama Distrodakwah.id
+                </div>
+              </div>
+              <q-rating v-model="stars" :max="5" size="32px" />
+            </q-card-section>
 
-						<q-card-section class="q-pt-none">
-							<p
-								class="text-caption text-grey"
-<<<<<<< HEAD
-								v-html="hardCodedDescription2"
-=======
-								v-html="hardCodedDescription3"
->>>>>>> 3823df1bad75b9a32284135e3d343600e51f4d8e
-							></p>
-						</q-card-section>
+            <q-card-section class="q-pt-none">
+              <p
+                class="text-caption text-grey"
+                v-html="hardCodedDescription3"
+              ></p>
+            </q-card-section>
 
-						<q-separator />
+            <q-separator />
 
-						<q-card-actions>
-							<router-link to="/detail/521/" class="full-width">
-								<q-btn
-									class="full-width"
-									style="background: orange"
-									flat
-									color="white"
-								>
-									Lihat Promo
-								</q-btn>
-							</router-link>
-						</q-card-actions>
-
-					</q-card>
-<<<<<<< HEAD
-				</div>
+            <q-card-actions>
+              <q-btn
+                @click="onClickHandler"
+                class="full-width"
+                style="background: orange"
+                flat
+                color="white"
+              >
+                Join Group
+              </q-btn>
+            </q-card-actions>
+          </q-card>
+        </div>
         <!--  -->
-=======
-				</div> -->
-				<!--  -->
->>>>>>> 3823df1bad75b9a32284135e3d343600e51f4d8e
-			</q-page>
-		</q-page-container>
-	</q-layout>
+      </q-page>
+    </q-page-container>
+  </q-layout>
 </template>
 
 <script>
+import { openURL } from "quasar";
+
 export default {
-	data() {
-		return {
-<<<<<<< HEAD
-			hardCodedDescription:   `<p><span style="font-weight: 400;">Deskripsi</span></p>
-                              <p><span style="font-weight: 400;">Beli 1 Produk Distrodakwah.id selama Bulan Desember, ada Voucher Umroh senilai 1 jt.</span></p>
-=======
-			hardCodedDescription: `<p><span style="font-weight: 400;">Deskripsi</span></p>
+  data() {
+    return {
+      hardCodedDescription: `<p><span style="font-weight: 400;">Deskripsi</span></p>
                               <p><span style="font-weight: 400;">Spesial untukmu! Nikmati diskon 70% untuk pembelian Paket Brader Hemat di Distrodakwah.id</span></p>
->>>>>>> 3823df1bad75b9a32284135e3d343600e51f4d8e
                               <p><span style="font-weight: 400;">SYARAT DAN KETENTUAN</span></p>
                               <ol>
                               <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian Produk Yaumee Custom + Mikihat</span></li>
@@ -253,13 +213,8 @@ export default {
                               <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
                               <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, pengguna dianggap mengerti dan menyetujui semua syarat &amp; ketentuan berlaku.</span></li>
                               </ol>`,
-<<<<<<< HEAD
-  
-      hardCodedDescription2: `<p><span style="font-weight: 400;">Deskripsi</span></p>
-=======
 
-			hardCodedDescription2: `<p><span style="font-weight: 400;">Deskripsi</span></p>
->>>>>>> 3823df1bad75b9a32284135e3d343600e51f4d8e
+      hardCodedDescription2: `<p><span style="font-weight: 400;">Deskripsi</span></p>
                               <p><span style="font-weight: 400;">Beli produk Yaumee Disc 50% di Distrodakwah.id. Brader, cek sekarang!</span></p>
                               <p><span style="font-weight: 400;">SYARAT DAN KETENTUAN</span></p>
                               <ol>
@@ -276,11 +231,7 @@ export default {
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
                               </ol>`,
-<<<<<<< HEAD
       hardCodedDescription3: `<p><span style="font-weight: 400;">Deskripsi</span></p>
-=======
-			hardCodedDescription3: `<p><span style="font-weight: 400;">Deskripsi</span></p>
->>>>>>> 3823df1bad75b9a32284135e3d343600e51f4d8e
                               <p><span style="font-weight: 400;">Beli 1 Produk Distrodakwah.id selama Bulan Desember, ada Voucher Umroh senilai 1 jt.</span></p>
                               <p><span style="font-weight: 400;">SYARAT DAN KETENTUAN</span></p>
                               <ol>
@@ -297,9 +248,15 @@ export default {
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller yang beruntung  bisa mendapatkan 1 Voucher Umroh saja.</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
-                              </ol>`
-		};
-	}
+                              </ol>`,
+    };
+  },
+  methods: {
+  onClickHandler(){
+	  openURL('https://t.me/joinchat/N8T-JkTxgPIGaxbkvbks2w')
+  }
+  }
+ 
 };
 </script>
 
