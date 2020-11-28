@@ -26,26 +26,50 @@
         <div class="q-pa-md">
           <q-card class="my-card">
             <q-img src="https://imgur.com/igTcSci.jpg" />
-
-            <q-card-section>
-              <div class="row no-wrap items-center">
-                <div class="col ellipsis" style="font-size: 16px">
-                  Ada promo spesial buat Brader fillah
+            <!--  -->
+            <q-card dark bordered class="bg-red-9 my-card">
+              <q-card-section>
+                <div class="text-h10">Mohon maaf untuk promo ini sedang ada perbaikan</div>
+              </q-card-section>
+            </q-card>
+            <!--  -->
+              <q-card-section>
+                <div class="row no-wrap items-center">
+                  <div class="col ellipsis" style="font-size: 16px">
+                    Ada promo spesial buat Brader fillah
+                  </div>
                 </div>
-              </div>
-              <q-rating v-model="stars" :max="5" size="32px" />
+                <q-rating v-model="stars" :max="5" size="32px" />
+              </q-card-section>
+              <!--  -->
+              <q-card-section class="q-pt-none">
+                <p
+                  class="text-caption text-grey"
+                >
+                  Deskripsi <br/><br/>
+                  Spesial untukmu! Nikmati diskon 70% untuk pembelian Paket Brader Hemat di Distrodakwah.id
+                </p>
+                <q-expansion-item
+                  dense
+                  dense-toggle
+                  expand-separator
+                  class="text-caption text-grey"
+                  style="margin-left: -16px; margin-right: -16px;"
+                  label="SYARAT DAN KETENTUAN"
+                >
+                  <q-card>
+                    <q-card-section
+                      class="text-caption text-grey"
+                      v-html="hardCodedDescription"
+                    >
+                    </q-card-section>
+                  </q-card>
+                </q-expansion-item>
             </q-card-section>
-
-            <q-card-section class="q-pt-none">
-              <p
-                class="text-caption text-grey"
-                v-html="hardCodedDescription"
-              ></p>
-            </q-card-section>
-
+              
             <q-separator />
 
-            <q-card-actions>
+            <!-- <q-card-actions>
               <router-link to="/detail/516/" class="full-width">
                 <q-btn
                   class="full-width"
@@ -81,14 +105,14 @@
                   Lihat Paket Brader Hemat 3
                 </q-btn>
               </router-link>
-            </q-card-actions>
+            </q-card-actions> -->
           </q-card>
         </div>
         <!--  -->
         <div class="q-pa-md">
           <q-card class="my-card">
             <q-img src="https://imgur.com/hemmr6q.jpg" />
-
+            <!--  -->
             <q-card-section>
               <div class="row no-wrap items-center">
                 <div class="" style="font-size: 16px">
@@ -97,12 +121,30 @@
               </div>
               <q-rating v-model="stars" :max="5" size="32px" />
             </q-card-section>
-
-            <q-card-section class="q-pt-none">
-              <p
-                class="text-caption text-grey"
-                v-html="hardCodedDescription2"
-              ></p>
+            <!--  -->
+              <q-card-section class="q-pt-none">
+                <p
+                  class="text-caption text-grey"
+                >
+                  Deskripsi <br/><br/>
+                  Beli produk Yaumee Disc 50% di Distrodakwah.id. Brader, cek sekarang!
+                </p>
+                <q-expansion-item
+                  dense
+                  dense-toggle
+                  expand-separator
+                  class="text-caption text-grey"
+                  style="margin-left: -16px; margin-right: -16px;"
+                  label="SYARAT DAN KETENTUAN"
+                >
+                  <q-card>
+                    <q-card-section
+                      class="text-caption text-grey"
+                      v-html="hardCodedDescription2"
+                    >
+                    </q-card-section>
+                  </q-card>
+                </q-expansion-item>
             </q-card-section>
 
             <q-separator />
@@ -150,7 +192,7 @@
         <div class="q-pa-md">
           <q-card class="my-card">
             <q-img src="https://imgur.com/0TcX4GG.jpg" />
-
+            <!--  -->
             <q-card-section>
               <div class="row no-wrap items-center">
                 <div class="" style="font-size: 16px">
@@ -159,12 +201,30 @@
               </div>
               <q-rating v-model="stars" :max="5" size="32px" />
             </q-card-section>
-
-            <q-card-section class="q-pt-none">
-              <p
-                class="text-caption text-grey"
-                v-html="hardCodedDescription3"
-              ></p>
+            <!--  -->
+              <q-card-section class="q-pt-none">
+                <p
+                  class="text-caption text-grey"
+                >
+                  Deskripsi <br/><br/>
+                  Beli 1 Produk Distrodakwah.id selama Bulan Desember, ada Voucher Umroh senilai 1 jt.
+                </p>
+                <q-expansion-item
+                  dense
+                  dense-toggle
+                  expand-separator
+                  class="text-caption text-grey"
+                  style="margin-left: -16px; margin-right: -16px;"
+                  label="SYARAT DAN KETENTUAN"
+                >
+                  <q-card>
+                    <q-card-section
+                      class="text-caption text-grey"
+                      v-html="hardCodedDescription3"
+                    >
+                    </q-card-section>
+                  </q-card>
+                </q-expansion-item>
             </q-card-section>
 
             <q-separator />
@@ -194,10 +254,7 @@ import { openURL } from "quasar";
 export default {
   data() {
     return {
-      hardCodedDescription: `<p><span style="font-weight: 400;">Deskripsi</span></p>
-                              <p><span style="font-weight: 400;">Spesial untukmu! Nikmati diskon 70% untuk pembelian Paket Brader Hemat di Distrodakwah.id</span></p>
-                              <p><span style="font-weight: 400;">SYARAT DAN KETENTUAN</span></p>
-                              <ol>
+      hardCodedDescription: ` <ol>
                               <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian Produk Yaumee Custom + Mikihat</span></li>
                               <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon 70% hanya berlaku untuk produk Mikihat</span></li>
                               <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon Produk Yaumee sesuai dengan Kategori Reseller (Pro/Ekslusif)</span></li>
@@ -214,10 +271,7 @@ export default {
                               <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, pengguna dianggap mengerti dan menyetujui semua syarat &amp; ketentuan berlaku.</span></li>
                               </ol>`,
 
-      hardCodedDescription2: `<p><span style="font-weight: 400;">Deskripsi</span></p>
-                              <p><span style="font-weight: 400;">Beli produk Yaumee Disc 50% di Distrodakwah.id. Brader, cek sekarang!</span></p>
-                              <p><span style="font-weight: 400;">SYARAT DAN KETENTUAN</span></p>
-                              <ol>
+      hardCodedDescription2: `<ol>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian Produk Yaumee Ready Stok</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon 50% dari Harga Jual berlaku untuk Reseller Pro / Ekslusif</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai produk promo yang tertampil di web Distrodakwah.id</span></li>
@@ -231,10 +285,7 @@ export default {
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
                               </ol>`,
-      hardCodedDescription3: `<p><span style="font-weight: 400;">Deskripsi</span></p>
-                              <p><span style="font-weight: 400;">Beli 1 Produk Distrodakwah.id selama Bulan Desember, ada Voucher Umroh senilai 1 jt.</span></p>
-                              <p><span style="font-weight: 400;">SYARAT DAN KETENTUAN</span></p>
-                              <ol>
+      hardCodedDescription3: `<ol>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Voucher berlaku untuk keberangkatan Umroh melalui Distrodakwah.id</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan Voucher ini, Reseller hanya perlu membeli 1 pcs produk Yaumee/Asshaf/Al-Ayubi/Al Dzumar khusus Bulan Desember</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller dapat memilih produk yang tersedia di Distrodakwah.id</span></li>
