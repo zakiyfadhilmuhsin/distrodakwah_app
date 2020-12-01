@@ -140,13 +140,16 @@
 							<span class="text-red" v-if="stockReady == null"
 								>Pilih Varian Untuk Melihat Jumlah Stok</span
 							>
-							<span v-else
+							<span v-else-if ="![525,526,527].includes(productData.id)"
 								>Stok Tersedia:
 								{{
 									stockReady === "not_available"
 										? "Varian Tidak ada"
 										: stockReady
 								}}</span
+							>
+								<span v-else
+								>Stok Ada</span
 							>
 						</div>
 
@@ -269,15 +272,15 @@
 						</div>
 
 						<hr style="margin: 15px 0" />
-						<div class="row">
+						<div class="row" v-if="[525,526,527].includes(productData.id)">
 							<h4 class="price-title-small-text">
-								Stok Ready:
+								Stok Bahan Baku Yaumee:
 								<span v-if="yaumeeSpreadsheetsTable.rows.length == 0"
 									>Sedang Memuat</span
 								>
 							</h4>
 							<table
-								v-if="yaumeeSpreadsheetsTable.rows.length > 0 && !isHalvesPromo"
+								v-if="yaumeeSpreadsheetsTable.rows.length > 0 "
 								class="stocking-table"
 							>
 								<thead>
@@ -300,31 +303,6 @@
 									</tr>
 								</tbody>
 							</table>
-							<!-- 50%promo -->
-							<table
-								v-if="yaumeeSpreadsheetsTable.rows.length > 0 && isHalvesPromo"
-								class="stocking-table"
-							>
-								<thead>
-									<tr>
-										<th
-											v-for="(header, i) in yaumeeSpreadsheetsTable.headers"
-											:key="i"
-										>
-											{{ header }}
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr v-for="(row, i) in yaumeeSpreadsheetsTable.rows" :key="i">
-										<td>{{ row.Kode }}</td>
-										<td>{{ row.Warna }}</td>
-										<td>{{ row.Design }}</td>
-										<td>{{ row.Ukuran }}</td>
-										<td>{{ row.Ready }}</td>
-									</tr>
-								</tbody>
-							</table>
 						</div>
 						<hr style="margin: 15px 0" />
 						<div class="row" style="margin-bottom: 5px">
@@ -341,7 +319,22 @@
 								/>
 							</div>
 						</div>
-						<p v-html="productData.product_description"></p>
+						<p>
+							Produk ini harus dibeli dengan pasangan produk agar bisa checkout, berikut ketentuannya:
+							<ol>
+								<li>
+
+ 							 Produk Brader 1 Hoodie, Harus dibeli bersama Produk Brader 1 Mikihat.
+								</li>
+								<li>
+							 Produk Brader 2 Lengan Pendek, harus dibeli bersama Produk Brader 2 Mikihat
+								</li>
+																<li>
+							 Produk Brader 3 Lengan Pendek, harus dibeli bersama Produk Brader 3 Mikihat
+								</li>
+							</ol>
+							Jangan lupa untuk konfirmasi pilihan desain ke admin!.
+						</p>
 					</div>
 				</div>
 			</q-page>
@@ -488,7 +481,7 @@ import {
 } from "src/config";
 import VueClipboard from "vue-clipboard2";
 import { openURL } from "quasar";
-import { googleSpreadsheetDoc } from "../../config/googleSpreadsheets";
+import { googleSpreadsheetDoc } from "../../../config/googleSpreadsheets";
 //vanilla.js
 
 Vue.use(VueClipboard);
@@ -526,15 +519,6 @@ export default {
 				);
 			return null;
 		},
-		IsCustomDesign: function() {
-			return [409, 410, 411, 412].indexOf(this.productData.id) !== -1;
-		},
-		IsPro: function() {
-			return this.globalState.userProfile.role_id === 8;
-		},
-		IsExclusive: function() {
-			return this.globalState.userProfile.role_id === 9;
-		},
 		isOptionsAllowed: function() {
 			return this.inputOptions.length > 0;
 			// return !isEmpty(this.inputOptions) ? true: false;
@@ -556,15 +540,35 @@ export default {
 
 		const doc = await googleSpreadsheetDoc();
 		let sheet;
-		if (this.productData.id == 519) {
-			sheet = await doc.sheetsByIndex[3];
-		} else if (this.productData.id == 520) {
-			sheet = await doc.sheetsByIndex[4];
-		} else if (this.productData.id == 521) {
-			sheet = await doc.sheetsByIndex[5];
+		if ([525,528].includes(this.productData.id)) {
+			sheet = await doc.sheetsByIndex[0];
+		} else if (
+			[526,529].includes(this.productData.id)
+		) {
+			sheet = await doc.sheetsByIndex[1];
+		} else if (
+				[527,530].includes(this.productData.id)
+		) {
+			sheet = await doc.sheetsByIndex[2];
 		}
-		if (sheet && this.isHalvesPromo) {
+		if (sheet && !this.isHalvesPromo) {
 			await sheet.loadHeaderRow();
+			const rows = await sheet.getRows();
+			const rowsMapSpreadsheet = [];
+			for await (const row of rows) {
+				rowsMapSpreadsheet.push({
+					Warna: row["Varian"],
+					M: row.M,
+					L: row.L,
+					XL: row.XL,
+					XXL: row.XXL
+				});
+			}
+
+			this.yaumeeSpreadsheetsTable.headers = sheet.headerValues;
+			this.yaumeeSpreadsheetsTable.rows = rowsMapSpreadsheet;
+		} else if (sheet && this.isHalvesPromo) {
+				await sheet.loadHeaderRow();
 			const rows = await sheet.getRows();
 			const rowsMapSpreadsheet = [];
 			for await (const row of rows) {

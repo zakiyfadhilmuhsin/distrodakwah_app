@@ -24,8 +24,15 @@
 		<div class="row q-px-md swiper-content">
 			<swiper :options="swiperProductListOption">
 				<swiper-slide v-for="(product, index) in productArr" :key="index">
-					<template v-if="product.brand_id === 7 && product.id !== 412
-					&& product.id !== 519 && product.id !== 520 && product.id !== 521">
+					<template
+						v-if="
+							product.brand_id === 7 &&
+								product.id !== 412 &&
+								product.id !== 519 &&
+								product.id !== 520 &&
+								product.id !== 521
+						"
+					>
 						<KeepProductCard :product="product" :user="user" />
 					</template>
 					<template
@@ -34,6 +41,13 @@
 						"
 					>
 						<PromotionProductCard :product="product" :user="user" />
+					</template>
+
+					<!-- brader -->
+					<template
+						v-else-if="[525, 526, 527, 528, 529, 530].includes(product.id)"
+					>
+						<produk-brader-card :product="product" :user="user" />
 					</template>
 
 					<template v-else>
@@ -55,6 +69,7 @@ import { swiper, swiperSlide } from "vue-awesome-swiper";
 import VendorProductCard from "../ProductCard/vendorProductCard.vue";
 import KeepProductCard from "../ProductCard/keepProductCard";
 import PromotionProductCard from "../ProductCard/promotionProductCard.vue";
+import ProdukBraderCard from "../ProductCard/produkBraderCard.vue";
 
 export default {
 	name: "Showcase",
@@ -63,7 +78,8 @@ export default {
 		swiperSlide,
 		KeepProductCard,
 		VendorProductCard,
-		PromotionProductCard
+		PromotionProductCard,
+		ProdukBraderCard
 	},
 	props: {
 		productArr: Array,
