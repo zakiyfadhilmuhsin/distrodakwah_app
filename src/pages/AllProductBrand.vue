@@ -54,7 +54,13 @@
 								>
 									<PromotionProductCard :product="product" :user="user" />
 								</template>
-
+								<template
+									v-else-if="
+										[525, 526, 527, 528, 529, 530].includes(product.id)
+									"
+								>
+									<produk-brader-card :product="product" :user="user" />
+								</template>
 								<template v-else>
 									<VendorProductCard :product="product" :user="user" />
 								</template>
@@ -89,13 +95,15 @@ import Vue from "vue";
 import VendorProductCard from "../components/ProductCard/vendorProductCard.vue";
 import KeepProductCard from "../components/ProductCard/keepProductCard.vue";
 import PromotionProductCard from "../components/ProductCard/promotionProductCard.vue";
+import ProdukBraderCard from "../components/ProductCard/produkBraderCard.vue";
 
 export default {
 	name: "ProductsByCategory",
 	components: {
 		VendorProductCard,
 		KeepProductCard,
-		PromotionProductCard
+		PromotionProductCard,
+		ProdukBraderCard
 	},
 	data() {
 		return {

@@ -46,7 +46,7 @@
 											product.id !== 521
 									"
 								>
-									<KeepProductCard :product="product" :user="user" />
+									<KeepProductCard :product="product" :user="globalState.userProfile" />
 								</template>
 								<template
 									v-else-if="
@@ -55,11 +55,17 @@
 											product.id === 521
 									"
 								>
-									<PromotionProductCard :product="product" :user="user" />
+									<PromotionProductCard :product="product" :user="globalState.userProfile" />
 								</template>
-
+								<template
+									v-else-if="
+										[525, 526, 527, 528, 529, 530].includes(product.id)
+									"
+								>
+									<produk-brader-card :product="product" :user="globalState.userProfile" />
+								</template>
 								<template v-else>
-									<VendorProductCard :product="product" :user="user" />
+									<VendorProductCard :product="product" :user="globalState.userProfile" />
 								</template>
 							</div>
 						</div>
@@ -84,12 +90,14 @@ import { QSpinnerPuff } from "quasar";
 import VendorProductCard from "../components/ProductCard/vendorProductCard.vue";
 import KeepProductCard from "../components/ProductCard/keepProductCard.vue";
 import PromotionProductCard from "../components/ProductCard/promotionProductCard.vue";
+import ProdukBraderCard from "../components/ProductCard/produkBraderCard.vue";
 
 export default {
 	components: {
 		VendorProductCard,
 		KeepProductCard,
-		PromotionProductCard
+		PromotionProductCard,
+		ProdukBraderCard
 	},
 	data() {
 		return {

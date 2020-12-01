@@ -9,6 +9,7 @@ import ProductReviewDetailPage from '../pages/Products/ProductReviewDetail.vue';
 import DetailProductPage from "pages/DetailProduct";
 import KeepDetailProductPage from "pages/KeepDetailProduct";
 import PromotionDetailProductPage from "pages/promotionDetailPage";
+import BraderProductPage from '../pages/ProductDetailPages/BraderDetailPages.vue'
 
 import ProductReviewPage from '../pages/Products/ProductReview.vue';
 
@@ -97,6 +98,13 @@ const routes = [
 	{
 		path: "/promotions/detail/:product_id",
 		component: PromotionDetailProductPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/promotions/brader/detail/:product_id",
+		component: BraderProductPage,
 		meta: {
 			requiresAuth: true
 		}
