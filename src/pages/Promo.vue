@@ -27,11 +27,11 @@
           <q-card class="my-card">
             <q-img src="https://imgur.com/igTcSci.jpg" />
             <!--  -->
-            <q-card dark bordered class="bg-red-9 my-card">
+            <!-- <q-card dark bordered class="bg-red-9 my-card">
               <q-card-section>
                 <div class="text-h10">Mohon maaf untuk promo ini sedang ada perbaikan</div>
               </q-card-section>
-            </q-card>
+            </q-card> -->
             <!--  -->
               <q-card-section>
                 <div class="row no-wrap items-center">
@@ -69,43 +69,18 @@
 
             <q-separator />
 
-            <!-- <q-card-actions>
-              <router-link to="/detail/516/" class="full-width">
+            <q-card-actions>
+              <router-link to="/search" class="full-width">
                 <q-btn
                   class="full-width"
                   style="background: orange"
                   flat
                   color="white"
                 >
-                  Lihat Paket Brader Hemat 1
+                  Search Promo Brader
                 </q-btn>
               </router-link>
             </q-card-actions>
-
-            <q-card-actions>
-              <router-link to="/detail/517/" class="full-width">
-                <q-btn
-                  class="full-width"
-                  style="background: orange"
-                  flat
-                  color="white"
-                >
-                  Lihat Paket Brader Hemat 2
-                </q-btn>
-              </router-link>
-            </q-card-actions>
-            <q-card-actions>
-              <router-link to="/detail/518/" class="full-width">
-                <q-btn
-                  class="full-width"
-                  style="background: orange"
-                  flat
-                  color="white"
-                >
-                  Lihat Paket Brader Hemat 3
-                </q-btn>
-              </router-link>
-            </q-card-actions> -->
           </q-card>
         </div>
         <!--  -->
