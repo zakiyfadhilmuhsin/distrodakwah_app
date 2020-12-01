@@ -218,6 +218,60 @@
           </q-card>
         </div>
         <!--  -->
+        <div class="q-pa-md">
+          <q-card class="my-card">
+            <q-img src="https://imgur.com/AV2k68G.jpg" />
+            <!--  -->
+            <q-card-section>
+              <div class="row no-wrap items-center">
+                <div class="" style="font-size: 16px">
+                  Promo Yaumee Day, Nikmati Promo sampai Akhir Tahun
+                </div>
+              </div>
+              <q-rating v-model="stars" :max="5" size="32px" />
+            </q-card-section>
+            <!--  -->
+              <q-card-section class="q-pt-none">
+                <!-- <p
+                  class="text-caption text-grey"
+                >
+                  Deskripsi <br/><br/>
+                  Beli 1 Produk Distrodakwah.id selama Bulan Desember, ada Voucher Umroh senilai 1 jt.
+                </p>
+                <q-expansion-item
+                  dense
+                  dense-toggle
+                  expand-separator
+                  class="text-caption text-grey"
+                  style="margin-left: -16px; margin-right: -16px;"
+                  label="SYARAT DAN KETENTUAN"
+                >
+                  <q-card>
+                    <q-card-section
+                      class="text-caption text-grey"
+                      v-html="hardCodedDescription3"
+                    > -->
+                    </q-card-section>
+                  </q-card>
+                </q-expansion-item>
+            </q-card-section>
+
+            <q-separator />
+
+            <q-card-actions>
+              <!-- <q-btn
+                @click="onClickHandler"
+                class="full-width"
+                style="background: orange"
+                flat
+                color="white"
+              >
+                Join Group
+              </q-btn> -->
+            </q-card-actions>
+          </q-card>
+        </div>
+        <!--  -->
       </q-page>
     </q-page-container>
   </q-layout>
