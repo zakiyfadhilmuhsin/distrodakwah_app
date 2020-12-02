@@ -21,7 +21,7 @@
       style="background: #f5f6fa"
     >
       <q-page>
-        <img class="full-width" src="https://imgur.com/24r3u20.jpg" alt="" />
+        <img class="full-width" src="https://imgur.com/pNya0qj.jpg" alt="" />
         <!-- promo brader fillah -->
         <div class="q-pa-md">
           <q-card class="my-card">
@@ -282,15 +282,16 @@
             <q-separator />
 
             <q-card-actions>
-              <q-btn
-                @click="onClickHandler"
-                class="full-width"
-                style="background: orange"
-                flat
-                color="white"
-              >
-                Join Group
-              </q-btn>
+              <router-link to="/search" class="full-width">
+                <q-btn
+                  class="full-width"
+                  style="background: orange"
+                  flat
+                  color="white"
+                >
+                  Search Promo Produk
+                </q-btn>
+              </router-link>
             </q-card-actions>
           </q-card>
         </div>
