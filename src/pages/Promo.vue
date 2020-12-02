@@ -220,7 +220,7 @@
         <!--  -->
         <div class="q-pa-md">
           <q-card class="my-card">
-            <q-img src="https://imgur.com/AV2k68G.jpg" />
+            <q-img src="https://imgur.com/dQUy0LV.jpg" />
             <!--  -->
             <q-card-section>
               <div class="row no-wrap items-center">
@@ -231,12 +231,35 @@
               <q-rating v-model="stars" :max="5" size="32px" />
             </q-card-section>
             <!--  -->
-              <q-card-section class="q-pt-none">
-                <!-- <p
+            <q-card-actions style="padding-left: 16px; margin-top: -10px;">
+              <p 
+                class="text-red"
+              >
+                Kode Promo : 
+              </p>
+              <p 
+                class="text-caption text-grey" 
+                style="margin-left: 5px;"
+                v-html="codepromo"
+              >
+              </p>
+              <q-btn
+                flat
+                class="bg-red text-white"
+                size="sm"
+                label="Salin"
+                @click="doCopy"
+                style="margin-top: -18px; margin-left: 85px;"
+							/>
+            </q-card-actions>
+
+              <q-card-section class="q-pt-none" style="margin-top: -10px;">
+                
+                <p
                   class="text-caption text-grey"
                 >
                   Deskripsi <br/><br/>
-                  Beli 1 Produk Distrodakwah.id selama Bulan Desember, ada Voucher Umroh senilai 1 jt.
+                  Pasti Promo buat Brader, nikmati keuntungan Brader sebagai Reseller.
                 </p>
                 <q-expansion-item
                   dense
@@ -249,8 +272,8 @@
                   <q-card>
                     <q-card-section
                       class="text-caption text-grey"
-                      v-html="hardCodedDescription3"
-                    > -->
+                      v-html="hardCodedDescription4"
+                    >
                     </q-card-section>
                   </q-card>
                 </q-expansion-item>
@@ -259,7 +282,7 @@
             <q-separator />
 
             <q-card-actions>
-              <!-- <q-btn
+              <q-btn
                 @click="onClickHandler"
                 class="full-width"
                 style="background: orange"
@@ -267,7 +290,7 @@
                 color="white"
               >
                 Join Group
-              </q-btn> -->
+              </q-btn>
             </q-card-actions>
           </q-card>
         </div>
@@ -329,14 +352,37 @@ export default {
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
                               </ol>`,
+      codepromo: 'PASTIPROMO',
+      hardCodedDescription4: `<ol>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian All Produk Yaumee</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon +15% berlaku untuk Reseller Pro / Ekslusif</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Penambahan potongan diskon untuk Reseller Pro sebesar 20% + 15%</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Penambahan potongan diskon untuk Reseller Ekslusif sebesar 35% + 15%</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Design Custom hanya berlaku untuk Reseller Ekslusif</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai dengan stok yang tertampil d web Distrodakwah.id</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo tambahan Disc 15% brader harus :</span></li>
+                                  <ul>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id &amp; klik Voucher</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Pilih produk Yaumee kemudian masuk ke keranjang belanja</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Masukan kode voucer "PASTIPROMO" untuk mendapatkan potongan</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Wa Admin Produksi untuk pilihan produk Yaumee Custom (khusus Eklusif)</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan disc berlaku jika transaksi (invoice) berisi Produk Yaumee saja</span></li>
+                                  </ul>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
+                              </ol>`,
     };
   },
   methods: {
   onClickHandler(){
 	  openURL('https://t.me/joinchat/N8T-JkTxgPIGaxbkvbks2w')
   }
-  }
-
+  },
+  doCopy: function() {
+			this.$copyText(h2p(this.codepromo));
+		},
 };
 </script>
 
