@@ -22,6 +22,147 @@
 		>
 			<q-page>
 				<img class="full-width" src="https://imgur.com/pNya0qj.jpg" alt="" />
+				<!-- Yaumee Day  -->
+				<div class="q-pa-md">
+					<q-card class="my-card">
+						<q-img src="https://imgur.com/dQUy0LV.jpg" />
+						<!--  -->
+						<q-card-section>
+							<div class="row no-wrap items-center">
+								<div class="" style="font-size: 16px">
+									Promo Yaumee Day, Nikmati Promo sampai Akhir Tahun
+								</div>
+							</div>
+							<q-rating v-model="stars" :max="5" size="32px" />
+						</q-card-section>
+						<!--  -->
+						<q-card-actions style="padding-left: 16px; margin-top: -10px;">
+							<p class="text-red">
+								Kode Promo :
+							</p>
+							<p class="text-caption text-grey" style="margin-left: 5px;">
+								{{ yaumee15PromoCode }}
+							</p>
+							<q-btn
+								flat
+								class="bg-red text-white"
+								size="sm"
+								label="Salin"
+								@click="doCopy"
+								style="margin-top: -18px; margin-left: 85px;"
+							/>
+						</q-card-actions>
+
+						<q-card-section class="q-pt-none" style="margin-top: -10px;">
+							<p class="text-caption text-grey">
+								Deskripsi <br /><br />
+								Pasti Promo buat Brader, nikmati keuntungan Brader sebagai
+								Reseller.
+							</p>
+							<q-expansion-item
+								dense
+								dense-toggle
+								expand-separator
+								class="text-caption text-grey"
+								style="margin-left: -16px; margin-right: -16px;"
+								label="SYARAT DAN KETENTUAN"
+							>
+								<q-card>
+									<q-card-section
+										class="text-caption text-grey"
+										v-html="hardCodedDescription4"
+									>
+									</q-card-section>
+								</q-card>
+							</q-expansion-item>
+						</q-card-section>
+
+						<q-separator />
+
+						<q-card-actions>
+							<router-link to="/search" class="full-width">
+								<q-btn
+									class="full-width"
+									style="background: orange"
+									flat
+									color="white"
+								>
+									Search Promo Produk
+								</q-btn>
+							</router-link>
+						</q-card-actions>
+					</q-card>
+				</div>
+				<!-- Promo Asshaf -->
+				<div class="q-pa-md">
+					<q-card class="my-card">
+						<q-img src="https://imgur.com/6ci6Emr.jpg" />
+						<!--  -->
+						<q-card-section>
+							<div class="row no-wrap items-center">
+								<div class="" style="font-size: 16px">
+									Promo Asshaf Day - Diskon 40% | Distrodakwah.id
+								</div>
+							</div>
+							<q-rating v-model="stars" :max="5" size="32px" />
+						</q-card-section>
+						<!--  -->
+						<q-card-actions style="padding-left: 16px; margin-top: -10px;">
+							<p class="text-red">
+								Kode Promo :
+							</p>
+							<p class="text-caption text-grey" style="margin-left: 5px;">
+								{{ asshafdaypromocode }}
+							</p>
+							<q-btn
+								flat
+								class="bg-red text-white"
+								size="sm"
+								label="Salin"
+								@click="doCopy2"
+								style="margin-top: -18px; margin-left: 85px;"
+							/>
+						</q-card-actions>
+
+						<q-card-section class="q-pt-none" style="margin-top: -10px;">
+							<p class="text-caption text-grey">
+								Deskripsi <br /><br />
+								Nikmati Promo Asshaf selama bulan Desember. Makin Kece dengan Produk Asshaf!
+							</p>
+							<q-expansion-item
+								dense
+								dense-toggle
+								expand-separator
+								class="text-caption text-grey"
+								style="margin-left: -16px; margin-right: -16px;"
+								label="SYARAT DAN KETENTUAN"
+							>
+								<q-card>
+									<q-card-section
+										class="text-caption text-grey"
+										v-html="hardCodedDescription5"
+									>
+									</q-card-section>
+								</q-card>
+							</q-expansion-item>
+						</q-card-section>
+
+						<q-separator />
+
+						<q-card-actions>
+							<router-link to="/search" class="full-width">
+								<q-btn
+									class="full-width"
+									style="background: orange"
+									flat
+									color="white"
+								>
+									Search Promo Produk
+								</q-btn>
+							</router-link>
+						</q-card-actions>
+					</q-card>
+				</div>
 				<!-- promo brader fillah -->
 				<div class="q-pa-md">
 					<q-card class="my-card">
@@ -215,77 +356,6 @@
 					</q-card>
 				</div>
 				<!--  -->
-				<div class="q-pa-md">
-					<q-card class="my-card">
-						<q-img src="https://imgur.com/dQUy0LV.jpg" />
-						<!--  -->
-						<q-card-section>
-							<div class="row no-wrap items-center">
-								<div class="" style="font-size: 16px">
-									Promo Yaumee Day, Nikmati Promo sampai Akhir Tahun
-								</div>
-							</div>
-							<q-rating v-model="stars" :max="5" size="32px" />
-						</q-card-section>
-						<!--  -->
-						<q-card-actions style="padding-left: 16px; margin-top: -10px;">
-							<p class="text-red">
-								Kode Promo :
-							</p>
-							<p class="text-caption text-grey" style="margin-left: 5px;">
-								{{ yaumee15PromoCode }}
-							</p>
-							<q-btn
-								flat
-								class="bg-red text-white"
-								size="sm"
-								label="Salin"
-								@click="doCopy"
-								style="margin-top: -18px; margin-left: 85px;"
-							/>
-						</q-card-actions>
-
-						<q-card-section class="q-pt-none" style="margin-top: -10px;">
-							<p class="text-caption text-grey">
-								Deskripsi <br /><br />
-								Pasti Promo buat Brader, nikmati keuntungan Brader sebagai
-								Reseller.
-							</p>
-							<q-expansion-item
-								dense
-								dense-toggle
-								expand-separator
-								class="text-caption text-grey"
-								style="margin-left: -16px; margin-right: -16px;"
-								label="SYARAT DAN KETENTUAN"
-							>
-								<q-card>
-									<q-card-section
-										class="text-caption text-grey"
-										v-html="hardCodedDescription4"
-									>
-									</q-card-section>
-								</q-card>
-							</q-expansion-item>
-						</q-card-section>
-
-						<q-separator />
-
-						<q-card-actions>
-							<router-link to="/search" class="full-width">
-								<q-btn
-									class="full-width"
-									style="background: orange"
-									flat
-									color="white"
-								>
-									Search Promo Produk
-								</q-btn>
-							</router-link>
-						</q-card-actions>
-					</q-card>
-				</div>
-				<!--  -->
 			</q-page>
 		</q-page-container>
 	</q-layout>
@@ -364,6 +434,22 @@ export default {
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
+                              </ol>`,
+			asshafdaypromocode: "promoasik",
+			hardCodedDescription5: `<ol>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian All Produk Asshaf</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon 40% berlaku untuk Reseller Pro/Ekslusif</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo 40% brader harus :</span></li>
+                                  <ul>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id &amp; klik Voucher</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Pilih Produk Asshaf kemudian masuk ke keranjang belanja</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Masukan kode voucher "promoasik" untuk mendapatkan promo</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon berlaku jika transaksi (invoice) berisi produk Asshaf saja</span></li>
+                                  </ul>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
                               </ol>`
 		};
 	},
@@ -378,7 +464,15 @@ export default {
 		tempInput.select();
 		document.execCommand("copy");
 		document.body.removeChild(tempInput);
-	}
+	},
+	doCopy2() {
+		const tempInput = document.createElement("input");
+		tempInput.value = this.asshafdaypromocode;
+		document.body.appendChild(tempInput);
+		tempInput.select();
+		document.execCommand("copy");
+		document.body.removeChild(tempInput);
+	},
 	},
 
 };
