@@ -2,26 +2,26 @@
 	<div>
 		<span v-if="SelectedVariant">
 			<h4
-				style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
+				style="font-size: 18px; margin-left: 5px; margin-bottom: 3px; margin-top:5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
 				v-if="RoleId === 9"
 			>
 				KAMU UNTUNG
-				<span class="text-green">{{ resellerExclusiveProfit }}</span>
+				<span style="padding-left: 10px;" class="text-green">{{ resellerExclusiveProfit }}</span>
 			</h4>
 
 			<h4
-				style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
+				style="font-size: 18px; margin-left: 5px; margin-bottom: 3px; margin-top:5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
 				v-else-if="RoleId === 8"
 			>
 				KAMU UNTUNG
-				<span class="text-green">{{ resellerProProfit }}</span>
+				<span style="padding-left: 10px;" class="text-green">{{ resellerProProfit }}</span>
 			</h4>
 			<h4
-				style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
+				style="font-size: 18px; margin-left: 5px; margin-bottom: 3px; margin-top:5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
 				v-else-if="RoleId === 10"
 			>
 				KAMU UNTUNG
-				<span class="text-green">{{ resellerFreeProfit }}</span>
+				<span style="padding-left: 10px;" class="text-green">{{ resellerFreeProfit }}</span>
 			</h4>
 			<harbolnas-additional-profit
 				v-if="
