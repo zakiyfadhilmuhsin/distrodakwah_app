@@ -71,6 +71,7 @@
 					<VoucherInputCard
 						:voucherDataResult.sync="voucherDataResult"
 						:cartData="cartData"
+						:shipment="$attrs.shipment"
 					/>
 
 					<div
@@ -456,7 +457,7 @@ export default {
 					postToOrder = await this.$axios.post(postToOrderUrl, postOrder, {
 						headers: getHeader()
 					});
-					 await this.$axios.delete(destroyCart + "/" + this.cartData.id, {
+					await this.$axios.delete(destroyCart + "/" + this.cartData.id, {
 						headers: getHeader()
 					});
 				} catch (error) {
@@ -466,7 +467,6 @@ export default {
 						position: "top"
 					});
 				}
-
 
 				this.$q.loading.hide();
 				this.$router.push({
