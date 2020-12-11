@@ -6,6 +6,10 @@
 		>
 			Tambahan Keuntungan Harbolnas
 			<span class="text-green">{{ harbolnasResellerExclusiveProfit }}</span>
+<<<<<<< HEAD
+=======
+			<span class="text-green"> {{ resellerExclusiveProfit }}</span>
+>>>>>>> production
 		</h4>
 
 		<h4
@@ -14,6 +18,10 @@
 		>
 			Tambahan Keuntungan Harbolnas
 			<span class="text-green">{{ harbolnasResellerProProfit }}</span>
+<<<<<<< HEAD
+=======
+			<span class="text-green"> {{ resellerProProfit }}</span>
+>>>>>>> production
 		</h4>
 		<h4
 			style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
@@ -34,6 +42,25 @@ export default {
 	name: "HarbolnasAdditionalPrice",
 	props: ["RoleId", "SelectedVariant", "Qty"],
 	computed: {
+<<<<<<< HEAD
+=======
+		resellerProProfit: function() {
+			return `Rp${currencyFormat(
+				Number(this.SelectedVariant.price) -
+					Number(this.SelectedVariant.reseller_pro_price) -
+					Number(this.SelectedVariant.pro_harbolnas_additional_price) *
+						Number(this.Qty)
+			)}`;
+		},
+		resellerExclusiveProfit: function() {
+			return `Rp${currencyFormat(
+				Number(this.SelectedVariant.price) -
+					Number(this.SelectedVariant.reseller_exclusive_price) -
+					Number(this.SelectedVariant.exclusive_harbolnas_additional_price) *
+						Number(this.Qty)
+			)}`;
+		},
+>>>>>>> production
 		harbolnasResellerProProfit: function() {
 			return `Rp${currencyFormat(
 				Number(this.SelectedVariant.pro_harbolnas_additional_price) *
