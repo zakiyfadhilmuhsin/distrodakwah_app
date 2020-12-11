@@ -1,34 +1,57 @@
 <template>
-	<div class="">
-		<h4
-			style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
-			class="harbolnas-grid-container"
-			v-if="RoleId === 9"
-		>
-			<span class="harbolnas-profit-label">Rincian Disc</span>
-			<span class="text-green harbolnas-profit-value"
-				>Harbolnas <br />
-				{{ harbolnasResellerExclusiveProfit }}</span
-			>
-			<span class="text-green profit-value"
-				>Reseller <br />
-				{{ resellerExclusiveProfit }}</span
-			>
-		</h4>
-
-		<h4
-			style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
-			v-else-if="RoleId === 8"
-		>
-			<span class="harbolnas-profit-label">Rincian Disc</span>
-			<span class="text-green harbolnas-profit-value"
-				>Harbolnas <br />
-				{{ harbolnasResellerProProfit }}</span
-			>
-			<span class="text-green profit-value"
-				>Reseller <br />{{ resellerProProfit }}</span
-			>
-		</h4>
+	<div>
+		<div class="q-pa-md bg-grey-3" v-if="RoleId === 9">
+			<div style="font-size: 18px; margin-top: -5px; margin-bottom:-10px; font-family: 'Teko'; font-weight: bold" class="row harbolnas-profit-label">Rincian Disc : </div> <br />
+			<div style="margin-top: -13px; " class="row">
+				<div class="col-xs-6">
+					<h5 class="price-title-small-text">Harbolnas</h5>
+				</div>
+				<div class="col-xs-6">
+					<h5 class="price-title-small-text">Reseller </h5>
+				</div>
+			</div>
+			<div style="margin-bottom: -15px;" class="row">
+				<div class="col-xs-6">
+					<h5 class="price-detail-text text-green">
+						{{ harbolnasResellerExclusiveProfit }}
+					</h5>
+				</div>
+				<div
+					class="col-xs-6"
+					
+				>
+					<h5 class="price-detail-text text-green">
+						{{ resellerExclusiveProfit }}
+					</h5>
+				</div>
+			</div>
+		</div>
+		<div class="q-pa-md bg-grey-3" v-else-if="RoleId === 8">
+			<div style="font-size: 18px; margin-top: -5px; margin-bottom:-10px; font-family: 'Teko'; font-weight: bold" class="row harbolnas-profit-label">Rincian Disc : </div> <br />
+			<div style="margin-top: -13px; " class="row">
+				<div class="col-xs-6">
+					<h5 class="price-title-small-text">Harbolnas</h5>
+				</div>
+				<div class="col-xs-6">
+					<h5 class="price-title-small-text">Reseller </h5>
+				</div>
+			</div>
+			<div style="margin-bottom: -15px;" class="row">
+				<div class="col-xs-6">
+					<h5 class="price-detail-text text-green">
+						{{ harbolnasResellerExclusiveProfit }}
+					</h5>
+				</div>
+				<div
+					class="col-xs-6"
+					
+				>
+					<h5 class="price-detail-text text-green">
+						{{ resellerExclusiveProfit }}
+					</h5>
+				</div>
+			</div>
+		</div>
 		<h4
 			style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
 			v-else-if="RoleId === 10"

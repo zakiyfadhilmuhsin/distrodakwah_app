@@ -34,17 +34,21 @@
 			class="bg-white text-black mobile-layout-on-desktop"
 			style="border-top: 2px solid #eee"
 		>
-			<q-toolbar class="bg-white text-black">
-				<ProfitText
+			<q-toolbar class="bg-white text-black" style="display:block !important;">
+				<div class="q-pa-md">
+					<ProfitText
 					:RoleId="globalState.userProfile.role.id"
 					:SelectedVariant="selectedVariant"
 					:ProductData="productData"
 					:Qty="qty"
-				/>
-					<q-space />
-				<q-btn flat class="bg-orange-8 text-white" @click="addToCart"
+				/> 
+				</div>
+				
+				<div class="q-pa-md full-width">
+				<q-btn flat class="bg-orange-8 text-white full-width" @click="addToCart"
 					>Beli Sekarang</q-btn
 				>
+				</div>
 			</q-toolbar>
 		</q-footer>
 
