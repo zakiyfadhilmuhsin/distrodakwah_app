@@ -21,7 +21,77 @@
 			style="background: #f5f6fa"
 		>
 			<q-page>
-				<img class="full-width" src="https://imgur.com/pNya0qj.jpg" alt="" />
+				<img class="full-width" src="https://imgur.com/ZD3J4rx.jpg" alt="" />
+				<!-- promo 12 12  -->
+				<div class="q-pa-md">
+					<q-card class="my-card">
+						<q-img src="https://imgur.com/6nd2Rsj.jpg" />
+						<!--  -->
+						<q-card-section>
+							<div class="row no-wrap items-center">
+								<div class="" style="font-size: 16px">
+									Ceria 12.12 - Pesta Belanja dari Distodakwah.id
+								</div>
+							</div>
+							<q-rating v-model="stars" :max="5" size="32px" />
+						</q-card-section>
+						<!--  -->
+						<q-card-actions style="padding-left: 16px; margin-top: -10px;">
+							<p class="text-red">
+								Kode Promo :
+							</p>
+							<p class="text-caption text-grey" style="margin-left: 5px;">
+								{{ ceria12promocode }}
+							</p>
+							<q-btn
+								flat
+								class="bg-red text-white"
+								size="sm"
+								label="Salin"
+								@click="doCopy3"
+								style="margin-top: -18px; margin-left: 85px;"
+							/>
+						</q-card-actions>
+
+						<q-card-section class="q-pt-none" style="margin-top: -10px;">
+							<p class="text-caption text-grey">
+								Deskripsi <br /><br />
+								Dist12o Desembe12, Dapatkan Diskon Bombastis All Item & Gratis Ongkir. Cek Sekarang juga!
+							</p>
+							<q-expansion-item
+								dense
+								dense-toggle
+								expand-separator
+								class="text-caption text-grey"
+								style="margin-left: -16px; margin-right: -16px;"
+								label="SYARAT DAN KETENTUAN"
+							>
+								<q-card>
+									<q-card-section
+										class="text-caption text-grey"
+										v-html="hardCodedDescription6"
+									>
+									</q-card-section>
+								</q-card>
+							</q-expansion-item>
+						</q-card-section>
+
+						<q-separator />
+
+						<q-card-actions>
+							<router-link to="/search" class="full-width">
+								<q-btn
+									class="full-width"
+									style="background: orange"
+									flat
+									color="white"
+								>
+									Search Promo Produk
+								</q-btn>
+							</router-link>
+						</q-card-actions>
+					</q-card>
+				</div>
 				<!-- Yaumee Day  -->
 				<div class="q-pa-md">
 					<q-card class="my-card">
@@ -450,7 +520,26 @@ export default {
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
-                              </ol>`
+							  </ol>`,
+			ceria12promocode: "ceria1212",
+			hardCodedDescription6: `<ol>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan Diskon berlaku untuk All Item</span></li>
+								<li style="font-weight: 400;"><span style="font-weight: 400;">Potongan Diskon Produk masing" berbeda, up to 40%</span></li>
+								<li style="font-weight: 400;"><span style="font-weight: 400;">Gratis Ongkir senilai maks 12.000, berlaku untuk semua produk kecuali produk yang sudah promo (Yaumee +15%/Asshaf 40%)</span></li>
+								<li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai dengan stok yang tertampil di web Distrodakwah.id</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo Brader harus :</span></li>
+                                  <ul>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id, cari produk yang Brader inginkan</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Tambahan diskon 12.12 akan muncul di Keuntungan yang didapatkan</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Checkout, isi pengiriman kemudia masukan Voucher "ceria1212" untuk mendapatkan keuntungan Gratis Ongkir </span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Jika terdapat produk custom (maka konfirmasi ke Admin Produksi)</span></li>
+                                  </ul>
+								<li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
+								<li style="font-weight: 400;"><span style="font-weight: 400;">Promo 12.12 berlangsung mulai pukul 08.00 - 24.00 WIB</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
+							  </ol>`
 		};
 	},
 	methods: {
@@ -468,6 +557,14 @@ export default {
 	doCopy2() {
 		const tempInput = document.createElement("input");
 		tempInput.value = this.asshafdaypromocode;
+		document.body.appendChild(tempInput);
+		tempInput.select();
+		document.execCommand("copy");
+		document.body.removeChild(tempInput);
+	},
+	doCopy3() {
+		const tempInput = document.createElement("input");
+		tempInput.value = this.ceria12promocode;
 		document.body.appendChild(tempInput);
 		tempInput.select();
 		document.execCommand("copy");
