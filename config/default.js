@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 const API = 'https://phpstack-372088-1163655.cloudwaysapps.com';
-=======
-const API = 'https://phpstack-372087-1163645.cloudwaysapps.com';
->>>>>>> production
 const API_DEV = 'http://apigateway.test';
 const WEBREPLICA_DOMAIN = 'https://prodakwah.com';
 const WEBREPLICA_DOMAIN_DEV = 'http://localhost:8082';
