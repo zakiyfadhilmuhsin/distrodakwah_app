@@ -1,21 +1,33 @@
 <template>
-	<div>
+	<div class="">
 		<h4
 			style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
+			class="harbolnas-grid-container"
 			v-if="RoleId === 9"
 		>
-			Tambahan Keuntungan Harbolnas
-			<span class="text-green">{{ harbolnasResellerExclusiveProfit }}</span>
-			<span class="text-green"> {{ resellerExclusiveProfit }}</span>
+			<span class="harbolnas-profit-label">Rincian Disc</span>
+			<span class="text-green harbolnas-profit-value"
+				>Harbolnas <br />
+				{{ harbolnasResellerExclusiveProfit }}</span
+			>
+			<span class="text-green profit-value"
+				>Reseller <br />
+				{{ resellerExclusiveProfit }}</span
+			>
 		</h4>
 
 		<h4
 			style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
 			v-else-if="RoleId === 8"
 		>
-			Tambahan Keuntungan Harbolnas
-			<span class="text-green">{{ harbolnasResellerProProfit }}</span>
-			<span class="text-green"> {{ resellerProProfit }}</span>
+			<span class="harbolnas-profit-label">Rincian Disc</span>
+			<span class="text-green harbolnas-profit-value"
+				>Harbolnas <br />
+				{{ harbolnasResellerProProfit }}</span
+			>
+			<span class="text-green profit-value"
+				>Reseller <br />{{ resellerProProfit }}</span
+			>
 		</h4>
 		<h4
 			style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
@@ -68,4 +80,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.harbolnas-grid-container {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	background: yellow;
+}
+
+.harbolnas-profit-label {
+	grid-column: 1 / span 2;
+}
+</style>
