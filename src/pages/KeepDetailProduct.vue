@@ -573,7 +573,8 @@ export default {
 					"product_description",
 					"brand_id",
 					"category_id",
-					"featured_image"
+					"featured_image",
+					"sku"
 				],
 				eagerLoad: {
 					brand: ["id", "brand_name"],
