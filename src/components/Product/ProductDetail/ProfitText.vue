@@ -29,13 +29,9 @@
 
 <script>
 import { currencyFormat } from "../../../libraries/stringManipulation";
-import HarbolnasAdditionalProfit from "./Harbolnas.vue";
 export default {
 	name: "ProfitText",
 	props: ["RoleId", "SelectedVariant", "ProductData", "Qty"],
-	components: {
-		HarbolnasAdditionalProfit
-	},
 	computed: {
 		isFreeNotReady: function() {
 			return cloneDeep(this.ProductData.product_variants)

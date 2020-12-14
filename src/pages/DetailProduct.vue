@@ -397,7 +397,8 @@ import { openURL } from "quasar";
 import carousel from "vue-owl-carousel";
 //vanilla.js
 import { currencyFormat } from "../libraries/stringManipulation";
-
+//components
+import ProfitText from '../components/Product/ProductDetail/ProfitText.vue'
 Vue.use(VueClipboard);
 
 export default {
@@ -710,6 +711,6 @@ export default {
 		},
 		isEmpty
 	},
-	components: { carousel, openURL }
+	components: { carousel, openURL, ProfitText }
 };
 </script>
