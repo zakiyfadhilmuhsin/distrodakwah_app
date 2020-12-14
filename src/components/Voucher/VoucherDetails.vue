@@ -10,6 +10,7 @@
 		</span>
 		<span class="result">Rp{{ currencyFormat(voucherResult) }}</span>
 	</div>
+
 </template>
 
 <script>
@@ -21,18 +22,12 @@ export default {
 		voucherValue: function() {
 			if (this.orderData.voucher_type_id == 1) {
 				return `Diskon produk ${this.orderData.voucher_value}%`;
-			} else if (this.orderData.voucher_type_id == 2) {
-				return `Diskon ongkir`;
 			}
 		},
 		voucherResult: function() {
 			if (this.orderData.voucher_type_id == 1) {
 				return (
 					-(this.orderData.total_amount * this.orderData.voucher_value) / 100
-				);
-			} else if (this.orderData.voucher_type_id == 2) {
-				return (
-					-this.orderData.voucher_value
 				);
 			}
 		}

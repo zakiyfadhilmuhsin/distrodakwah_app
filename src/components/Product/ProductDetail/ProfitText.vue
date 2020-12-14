@@ -23,15 +23,6 @@
 				KAMU UNTUNG
 				<span style="padding-left: 10px;" class="text-green">{{ resellerFreeProfit }}</span>
 			</h4>
-			<harbolnas-additional-profit
-				v-if="
-					SelectedVariant.exclusive_harbolnas_additional_price &&
-						SelectedVariant.pro_harbolnas_additional_price
-				"
-				:SelectedVariant="SelectedVariant"
-				:RoleId="RoleId"
-				:Qty="Qty"
-			/>
 		</span>
 	</div>
 </template>

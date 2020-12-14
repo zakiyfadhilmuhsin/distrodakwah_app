@@ -41,9 +41,9 @@
 					:SelectedVariant="selectedVariant"
 					:ProductData="productData"
 					:Qty="qty"
-				/> 
+				/>
 				</div>
-				
+
 				<div class="q-pa-md full-width">
 				<q-btn flat class="bg-orange-8 text-white full-width" @click="addToCart"
 					>Beli Sekarang</q-btn
@@ -397,13 +397,11 @@ import { openURL } from "quasar";
 import carousel from "vue-owl-carousel";
 //vanilla.js
 import { currencyFormat } from "../libraries/stringManipulation";
-//components
-import ProfitText from "../components/Product/ProductDetail/ProfitText.vue";
+
 Vue.use(VueClipboard);
 
 export default {
 	name: "DetailProduct",
-	components: { carousel, openURL, ProfitText },
 	data() {
 		return {
 			productData: {},
@@ -482,7 +480,18 @@ export default {
 				eagerLoad: {
 					brand: ["id", "brand_name"],
 					category_detail: ["id", "category_name"],
-					product_sku: ["*"],
+					product_sku: [
+						"id",
+						"product_id",
+						"sku",
+						"stock_qty",
+						"keep_stock_qty",
+						"price",
+						"cogs",
+						"reseller_pro_price",
+						"reseller_exclusive_price",
+						"reseller_free_price"
+					],
 					image_gallery: ["id", "image", "product_id"]
 				}
 			};
@@ -547,8 +556,7 @@ export default {
 					opt.sku_values
 						.filter(
 							sku_value =>
-								sku_value.value.toLowerCase() ===
-								this.selectedOption[opt.option_name].toLowerCase()
+								sku_value.value.toLowerCase() === this.selectedOption[opt.option_name].toLowerCase()
 						)
 						.map(sku_value => sku_value.product_sku_id)
 				);
@@ -701,6 +709,7 @@ export default {
 			openURL("https://kayaberkah.orderonline.id/upgrade-Reseller");
 		},
 		isEmpty
-	}
+	},
+	components: { carousel, openURL }
 };
 </script>

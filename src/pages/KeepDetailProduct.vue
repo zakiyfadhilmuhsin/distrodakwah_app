@@ -35,12 +35,50 @@
 			style="border-top: 2px solid #eee"
 		>
 			<q-toolbar class="bg-white text-black">
-				<ProfitText
-					:RoleId="globalState.userProfile.role.id"
-					:SelectedVariant="selectedVariant"
-					:ProductData="productData"
-					:Qty="qty"
-				/>
+				<span v-if="selectedVariant">
+					<h4
+						style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
+						v-if="globalState.userProfile.role.id === 9"
+					>
+						KAMU UNTUNG
+						<span class="text-green">{{
+							"Rp" +
+								formatPrice(
+									Number(
+										selectedVariant.price -
+											selectedVariant.reseller_exclusive_price
+									) * Number(this.qty)
+								)
+						}}</span>
+					</h4>
+					<h4
+						style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
+						v-else-if="globalState.userProfile.role.id === 8"
+					>
+						KAMU UNTUNG
+						<span class="text-green">{{
+							"Rp" +
+								formatPrice(
+									Number(
+										selectedVariant.price - selectedVariant.reseller_pro_price
+									) * Number(this.qty)
+								)
+						}}</span>
+					</h4>
+					<h4
+						style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
+						v-else-if="globalState.userProfile.role.id === 10"
+					>
+						KAMU UNTUNG
+						<span class="text-green">{{
+							`Rp${formatPrice(
+								Number(
+									selectedVariant.price - selectedVariant.reseller_free_price
+								) * Number(this.qty)
+							)}`
+						}}</span>
+					</h4>
+				</span>
 				<q-space />
 				<q-btn flat class="bg-orange-8 text-white" @click="addToCart">
 					Beli Sekarang
@@ -252,7 +290,7 @@
 									</tr>
 								</tbody>
 							</table>
-							<!-- 50%promo -->
+	<!-- 50%promo -->
 							<table
 								v-if="yaumeeSpreadsheetsTable.rows.length > 0 && isHalvesPromo"
 								class="stocking-table"
@@ -441,14 +479,12 @@ import {
 import VueClipboard from "vue-clipboard2";
 import { openURL } from "quasar";
 import { googleSpreadsheetDoc } from "../../config/googleSpreadsheets";
-import ProfitText from "../components/Product/ProductDetail/ProfitText.vue";
 //vanilla.js
 
 Vue.use(VueClipboard);
 
 export default {
 	name: "KeepDetailProduct",
-	components: { ProfitText },
 	data() {
 		return {
 			productData: {},
@@ -494,11 +530,7 @@ export default {
 			// return !isEmpty(this.inputOptions) ? true: false;
 		},
 		isHalvesPromo: function() {
-			return (
-				this.productData.id == 519 ||
-				this.productData.id == 520 ||
-				this.productData.id === 521
-			);
+			return this.productData.id == 519 || this.productData.id == 520 ||this.productData.id === 521
 		}
 	},
 	async created() {
@@ -546,7 +578,7 @@ export default {
 			this.yaumeeSpreadsheetsTable.headers = sheet.headerValues;
 			this.yaumeeSpreadsheetsTable.rows = rowsMapSpreadsheet;
 		} else if (sheet && this.isHalvesPromo) {
-			await sheet.loadHeaderRow();
+				await sheet.loadHeaderRow();
 			const rows = await sheet.getRows();
 			const rowsMapSpreadsheet = [];
 			for await (const row of rows) {
@@ -579,7 +611,18 @@ export default {
 				eagerLoad: {
 					brand: ["id", "brand_name"],
 					category_detail: ["id", "category_name"],
-					product_sku: ["*"],
+					product_sku: [
+						"id",
+						"product_id",
+						"sku",
+						"stock_qty",
+						"keep_stock_qty",
+						"price",
+						"cogs",
+						"reseller_pro_price",
+						"reseller_exclusive_price",
+						"reseller_free_price"
+					],
 					image_gallery: ["id", "image", "product_id"]
 				}
 			};
@@ -642,8 +685,7 @@ export default {
 					opt.sku_values
 						.filter(
 							sku_value =>
-								sku_value.value.toLowerCase() ===
-								this.selectedOption[opt.option_name].toLowerCase()
+								sku_value.value.toLowerCase() === this.selectedOption[opt.option_name].toLowerCase()
 						)
 						.map(sku_value => sku_value.product_sku_id)
 				);
