@@ -62,7 +62,6 @@
 											</q-item-section>
 										</q-item>
 
-										<q-separator />
 									</template>
 									<q-separator />
 									<q-item dense clickable v-ripple @click="onCustomDesign">
@@ -82,7 +81,8 @@
 											<q-icon name="keyboard_arrow_right" />
 										</q-item-section>
 									</q-item>
-									<q-item dense clickable v-ripple>
+									<q-separator />
+									<q-item dense clickable v-ripple to="/promo">
 										<q-item-section avatar>
 											<q-icon name="local_activity" />
 										</q-item-section>
@@ -92,11 +92,11 @@
 												style="font-size: 12px; color: black; line-height: 15px"
 											>
 												Promo & Voucher Saya
-												<span
+												<!-- <span
 													class="bg-yellow-8 text-black"
 													style="padding: 3px 5px; border-radius: 5px; font-size: 10px"
 													>soon</span
-												>
+												> -->
 											</span>
 										</q-item-section>
 
