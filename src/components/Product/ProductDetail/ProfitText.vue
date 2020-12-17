@@ -6,7 +6,9 @@
 				v-if="RoleId === 9"
 			>
 				KAMU UNTUNG
-				<span style="padding-left: 10px;" class="text-green">{{ resellerExclusiveProfit }}</span>
+				<span style="padding-left: 10px;" class="text-green">{{
+					resellerExclusiveProfit
+				}}</span>
 			</h4>
 
 			<h4
@@ -14,24 +16,36 @@
 				v-else-if="RoleId === 8"
 			>
 				KAMU UNTUNG
-				<span style="padding-left: 10px;" class="text-green">{{ resellerProProfit }}</span>
+				<span style="padding-left: 10px;" class="text-green">{{
+					resellerProProfit
+				}}</span>
 			</h4>
 			<h4
 				style="font-size: 18px; margin-left: 5px; margin-bottom: 3px; margin-top:5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
 				v-else-if="RoleId === 10"
 			>
 				KAMU UNTUNG
-				<span style="padding-left: 10px;" class="text-green">{{ resellerFreeProfit }}</span>
+				<span style="padding-left: 10px;" class="text-green">{{
+					resellerFreeProfit
+				}}</span>
 			</h4>
+			<ProfitDetail
+				v-if="ProductData.brand_id === 13"
+				:SelectedVariant="SelectedVariant"
+				:RoleId="RoleId"
+				:Qty="Qty"
+			/>
 		</span>
 	</div>
 </template>
 
 <script>
 import { currencyFormat } from "../../../libraries/stringManipulation";
+import ProfitDetail from './ProfitDetail.vue'
 export default {
 	name: "ProfitText",
 	props: ["RoleId", "SelectedVariant", "ProductData", "Qty"],
+	components:{ProfitDetail},
 	computed: {
 		isFreeNotReady: function() {
 			return cloneDeep(this.ProductData.product_variants)
