@@ -108,7 +108,7 @@
 							<q-rating v-model="stars" :max="5" size="32px" />
 						</q-card-section>
 						<!--  -->
-						<q-card-actions style="padding-left: 16px; margin-top: -10px;">
+						<!-- <q-card-actions style="padding-left: 16px; margin-top: -10px;">
 							<p class="text-red">
 								Kode Promo :
 							</p>
@@ -123,7 +123,7 @@
 								@click="doCopy2"
 								style="margin-top: -18px; margin-left: 85px;"
 							/>
-						</q-card-actions>
+						</q-card-actions> -->
 
 						<q-card-section class="q-pt-none" style="margin-top: -10px;">
 							<p class="text-caption text-grey">
@@ -519,9 +519,8 @@ export default {
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo 40% brader harus :</span></li>
                                   <ul>
                                     <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id &amp; klik Voucher</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id</span></li>
                                     <li style="font-weight: 400;"><span style="font-weight: 400;">Pilih Produk Asshaf kemudian masuk ke keranjang belanja</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Masukan kode voucher "promoasik" untuk mendapatkan promo</span></li>
                                     <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon berlaku jika transaksi (invoice) berisi produk Asshaf saja</span></li>
                                   </ul>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
