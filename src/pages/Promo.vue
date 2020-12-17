@@ -22,76 +22,7 @@
 		>
 			<q-page>
 				<img class="full-width" src="https://imgur.com/ZD3J4rx.jpg" alt="" />
-				<!-- promo 12 12  -->
-				<div class="q-pa-md">
-					<q-card class="my-card">
-						<q-img src="https://imgur.com/6nd2Rsj.jpg" />
-						<!--  -->
-						<q-card-section>
-							<div class="row no-wrap items-center">
-								<div class="" style="font-size: 16px">
-									Ceria 12.12 - Pesta Belanja dari Distodakwah.id
-								</div>
-							</div>
-							<q-rating v-model="stars" :max="5" size="32px" />
-						</q-card-section>
-						<!--  -->
-						<q-card-actions style="padding-left: 16px; margin-top: -10px;">
-							<p class="text-red">
-								Kode Promo :
-							</p>
-							<p class="text-caption text-grey" style="margin-left: 5px;">
-								{{ ceria12promocode }}
-							</p>
-							<q-btn
-								flat
-								class="bg-red text-white"
-								size="sm"
-								label="Salin"
-								@click="doCopy3"
-								style="margin-top: -18px; margin-left: 85px;"
-							/>
-						</q-card-actions>
-
-						<q-card-section class="q-pt-none" style="margin-top: -10px;">
-							<p class="text-caption text-grey">
-								Deskripsi <br /><br />
-								Dist12o Desembe12, Dapatkan Diskon Bombastis All Item & Gratis Ongkir. Cek Sekarang juga!
-							</p>
-							<q-expansion-item
-								dense
-								dense-toggle
-								expand-separator
-								class="text-caption text-grey"
-								style="margin-left: -16px; margin-right: -16px;"
-								label="SYARAT DAN KETENTUAN"
-							>
-								<q-card>
-									<q-card-section
-										class="text-caption text-grey"
-										v-html="hardCodedDescription6"
-									>
-									</q-card-section>
-								</q-card>
-							</q-expansion-item>
-						</q-card-section>
-
-						<q-separator />
-
-						<q-card-actions>
-							<router-link to="/search" class="full-width">
-								<q-btn
-									class="full-width"
-									style="background: orange"
-									flat
-									color="white"
-								>
-									Search Promo Produk
-								</q-btn>
-							</router-link>
-						</q-card-actions>
-					</q-card>
-				</div>
+				
 				<!-- Yaumee Day  -->
 				<div class="q-pa-md">
 					<q-card class="my-card">
@@ -422,6 +353,82 @@
 							>
 								Join Group
 							</q-btn>
+						</q-card-actions>
+					</q-card>
+				</div>
+				<!-- promo 12 12  -->
+				<div class="q-pa-md">
+					<q-card class="my-card">
+						<q-img src="https://imgur.com/6nd2Rsj.jpg" />
+						<!--  -->
+						<q-card-section>
+							<div class="row no-wrap items-center">
+								<div class="" style="font-size: 16px">
+									Ceria 12.12 - Pesta Belanja dari Distodakwah.id
+								</div>
+							</div>
+							<q-rating v-model="stars" :max="5" size="32px" />
+						</q-card-section>
+						<!--  -->
+						<q-card-actions style="padding-left: 16px; margin-top: -10px;">
+							<p class="text-grey">
+								Kode Promo :
+							</p>
+							<p class="text-caption text-grey" style="margin-left: 5px;">
+								{{ ceria12promocode }}
+							</p>
+							<q-btn
+								flat
+								class="bg-red text-white"
+								size="sm"
+								label="Salin"
+								@click="doCopy3"
+								style="margin-top: -18px; margin-left: 85px;"
+							/>
+						</q-card-actions>
+						<q-card-actions style="padding-left: 16px; margin-top: -25px;">
+							<p class="text-red">
+								Promo Telah Berakhir
+							</p>
+							
+						</q-card-actions>
+
+						<q-card-section class="q-pt-none" style="margin-top: -10px;">
+							<p class="text-caption text-grey">
+								Deskripsi <br /><br />
+								Dist12o Desembe12, Dapatkan Diskon Bombastis All Item & Gratis Ongkir. Cek Sekarang juga!
+							</p>
+							<q-expansion-item
+								dense
+								dense-toggle
+								expand-separator
+								class="text-caption text-grey"
+								style="margin-left: -16px; margin-right: -16px;"
+								label="SYARAT DAN KETENTUAN"
+							>
+								<q-card>
+									<q-card-section
+										class="text-caption text-grey"
+										v-html="hardCodedDescription6"
+									>
+									</q-card-section>
+								</q-card>
+							</q-expansion-item>
+						</q-card-section>
+
+						<q-separator />
+
+						<q-card-actions>
+							<router-link to="" class="full-width">
+								<q-btn
+									class="full-width"
+									style="background: orange"
+									flat
+									color="white"
+								>
+									Search Promo Produk
+								</q-btn>
+							</router-link>
 						</q-card-actions>
 					</q-card>
 				</div>
