@@ -41,7 +41,7 @@
                         style="width: 100%"
                      >
                         Kirimkan Custom Desain Via Whatsapp:
-                        <a href="https://wa.me/+6289638378811" style="color:white">
+                        <a href="https://wa.me/+6289638378811" style="color:white; ">
                            +6289638378811
                         </a>
                      </q-banner>
