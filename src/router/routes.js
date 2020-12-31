@@ -8,6 +8,7 @@ import StorefrontPage from "pages/Storefront";
 import ProductReviewDetailPage from '../pages/Products/ProductReviewDetail.vue';
 import DetailProductPage from "pages/DetailProduct";
 import KeepDetailProductPage from "pages/KeepDetailProduct";
+import KeepDetailWithStock from '../pages/KeepDetailProductWithStock.vue'
 import PromotionDetailProductPage from "pages/promotionDetailPage";
 import BraderProductPage from '../pages/ProductDetailPages/BraderDetailPages.vue'
 
@@ -112,6 +113,13 @@ const routes = [
 	{
 		path: "/detail/keep/:product_id",
 		component: KeepDetailProductPage,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: "/detail/keep/with-stock/:product_id",
+		component: KeepDetailWithStock,
 		meta: {
 			requiresAuth: true
 		}
