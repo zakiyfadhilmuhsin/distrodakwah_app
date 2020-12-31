@@ -460,11 +460,20 @@ export default {
 						headers: getHeader()
 					});
 				} catch (error) {
-					this.$q.notify({
-						message: "voucher tidak bisa digunakan",
-						color: "red",
-						position: "top"
-					});
+					if (error.response.data.error ==="req_promo11_not_fulfilled") {
+
+						this.$q.notify({
+							message: "beli 2 gratis 1 (berlaku kelipatan)",
+							color: "red",
+							position: "top"
+						});
+					} else {
+						this.$q.notify({
+							message: "beli 2 gratis 1 (berlaku kelipatan)",
+							color: "red",
+							position: "top"
+						});
+					}
 				}
 
 
