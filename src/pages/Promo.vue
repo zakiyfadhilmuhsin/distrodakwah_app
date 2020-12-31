@@ -22,7 +22,7 @@
 		>
 			<q-page>
 				<img class="full-width" src="https://imgur.com/mLzeyrP.jpg" alt="" />
-				
+
 				<!-- Promo buy 2 get 1 -->
 				<div class="q-pa-md">
 					<q-card class="my-card">
@@ -77,7 +77,7 @@
 						<!--  -->
 						<q-separator />
 							<q-card-actions>
-								<router-link to="/search" class="full-width">
+								<router-link to="/detail/keep/with-stock/574" class="full-width">
 									<q-btn
 										class="full-width"
 										style="background: orange"
@@ -148,7 +148,7 @@
 				<!-- <div class="q-pa-md">
 					<q-card class="my-card">
 						<q-img src="https://imgur.com/dQUy0LV.jpg" />
-						
+
 						<q-card-section>
 							<div class="row no-wrap items-center">
 								<div class="" style="font-size: 16px">
@@ -157,7 +157,7 @@
 							</div>
 							<q-rating v-model="stars" :max="5" size="32px" />
 						</q-card-section>
-						
+
 						<q-card-actions style="padding-left: 16px; margin-top: -10px;">
 							<p class="text-red">
 								Kode Promo :
@@ -219,7 +219,7 @@
 				<!-- <div class="q-pa-md">
 					<q-card class="my-card">
 						<q-img src="https://imgur.com/6ci6Emr.jpg" />
-						
+
 						<q-card-section>
 							<div class="row no-wrap items-center">
 								<div class="" style="font-size: 16px">
@@ -287,7 +287,7 @@
 							</div>
 							<q-rating v-model="stars" :max="5" size="32px" />
 						</q-card-section>
-						
+
 						<q-card-section class="q-pt-none">
 							<p class="text-caption text-grey">
 								Deskripsi <br /><br />
@@ -332,7 +332,7 @@
 				<!-- <div class="q-pa-md">
 					<q-card class="my-card">
 						<q-img src="https://imgur.com/hemmr6q.jpg" />
-						
+
 						<q-card-section>
 							<div class="row no-wrap items-center">
 								<div class="" style="font-size: 16px">
@@ -341,7 +341,7 @@
 							</div>
 							<q-rating v-model="stars" :max="5" size="32px" />
 						</q-card-section>
-						
+
 						<q-card-section class="q-pt-none">
 							<p class="text-caption text-grey">
 								Deskripsi <br /><br />
@@ -407,12 +407,12 @@
 						</q-card-actions>
 					</q-card>
 				</div> -->
-				
+
 				<!-- promo 12 12  -->
 				<!-- <div class="q-pa-md">
 					<q-card class="my-card">
 						<q-img src="https://imgur.com/6nd2Rsj.jpg" />
-						
+
 						<q-card-section>
 							<div class="row no-wrap items-center">
 								<div class="" style="font-size: 16px">
@@ -421,7 +421,7 @@
 							</div>
 							<q-rating v-model="stars" :max="5" size="32px" />
 						</q-card-section>
-					
+
 						<q-card-actions style="padding-left: 16px; margin-top: -10px;">
 							<p class="text-grey">
 								Kode Promo :
@@ -442,7 +442,7 @@
 							<p class="text-red">
 								Promo Telah Berakhir
 							</p>
-							
+
 						</q-card-actions>
 
 						<q-card-section class="q-pt-none" style="margin-top: -10px;">
