@@ -21,13 +21,134 @@
 			style="background: #f5f6fa"
 		>
 			<q-page>
-				<img class="full-width" src="https://imgur.com/ZD3J4rx.jpg" alt="" />
+				<img class="full-width" src="https://imgur.com/mLzeyrP.jpg" alt="" />
 				
-				<!-- Yaumee Day  -->
+				<!-- Promo buy 2 get 1 -->
 				<div class="q-pa-md">
 					<q-card class="my-card">
-						<q-img src="https://imgur.com/dQUy0LV.jpg" />
+						<q-img src="https://imgur.com/PnHB4Ti.jpg" />
 						<!--  -->
+						<div class="q-pa-md">
+								<div class="row items-start">
+									<div class="col" style="margin-right: 5px;">
+										<q-img src="https://imgur.com/CDyv57M.jpg" />
+									</div>
+									<div class="col" style="margin-right: 5px;">
+										<q-img src="https://imgur.com/o6EVDae.jpg" />
+									</div>
+									<div class="col">
+										<q-img src="https://imgur.com/tbmdT5i.jpg" />
+									</div>
+								</div>
+							</div>
+						<q-separator />
+						<!--  -->
+						<q-card-section>
+							<div class="row no-wrap items-center">
+								<div class="" style="font-size: 16px">
+									Promo Januari Hepi, 1 + 1 = 3!
+								</div>
+							</div>
+							<q-rating v-model="stars" :max="5" size="32px" />
+						</q-card-section>
+						<!--  -->
+						<q-card-section class="q-pt-none">
+							<p class="text-caption text-grey">
+								Deskripsi <br /><br />
+								Belanja 2 Produk Yaumee Apapun Bonus 1 Produk Yaumee
+							</p>
+							<q-expansion-item
+								dense
+								dense-toggle
+								expand-separator
+								class="text-caption text-grey"
+								style="margin-left: -16px; margin-right: -16px;"
+								label="SYARAT DAN KETENTUAN"
+							>
+								<q-card>
+									<q-card-section
+										class="text-caption text-grey"
+										v-html="hardCodedDescription7"
+									>
+									</q-card-section>
+								</q-card>
+							</q-expansion-item>
+						</q-card-section>
+						<!--  -->
+						<q-separator />
+							<q-card-actions>
+								<router-link to="/search" class="full-width">
+									<q-btn
+										class="full-width"
+										style="background: orange"
+										flat
+										color="white"
+									>
+										Ambil Bonusnya
+									</q-btn>
+								</router-link>
+							</q-card-actions>
+					</q-card>
+				</div>
+
+				<!-- promo Umrah  -->
+				<div class="q-pa-md">
+					<q-card class="my-card">
+						<q-img src="https://imgur.com/0TcX4GG.jpg" />
+						<!--  -->
+						<q-card-section>
+							<div class="row no-wrap items-center">
+								<div class="" style="font-size: 16px">
+									Wujudkan Mimpi Berangkat Umroh, Bersama Distrodakwah.id
+								</div>
+							</div>
+							<q-rating v-model="stars" :max="5" size="32px" />
+						</q-card-section>
+						<!--  -->
+						<q-card-section class="q-pt-none">
+							<p class="text-caption text-grey">
+								Deskripsi <br /><br />
+								Beli 1 Produk Distrodakwah.id selama Bulan Desember, ada Voucher
+								Umroh senilai 1 jt.
+							</p>
+							<q-expansion-item
+								dense
+								dense-toggle
+								expand-separator
+								class="text-caption text-grey"
+								style="margin-left: -16px; margin-right: -16px;"
+								label="SYARAT DAN KETENTUAN"
+							>
+								<q-card>
+									<q-card-section
+										class="text-caption text-grey"
+										v-html="hardCodedDescription3"
+									>
+									</q-card-section>
+								</q-card>
+							</q-expansion-item>
+						</q-card-section>
+
+						<q-separator />
+
+						<q-card-actions>
+							<q-btn
+								@click="onClickHandler"
+								class="full-width"
+								style="background: orange"
+								flat
+								color="white"
+							>
+								Join Group
+							</q-btn>
+						</q-card-actions>
+					</q-card>
+				</div>
+				<!-- Yaumee Day  -->
+				<!-- <div class="q-pa-md">
+					<q-card class="my-card">
+						<q-img src="https://imgur.com/dQUy0LV.jpg" />
+						
 						<q-card-section>
 							<div class="row no-wrap items-center">
 								<div class="" style="font-size: 16px">
@@ -36,7 +157,7 @@
 							</div>
 							<q-rating v-model="stars" :max="5" size="32px" />
 						</q-card-section>
-						<!--  -->
+						
 						<q-card-actions style="padding-left: 16px; margin-top: -10px;">
 							<p class="text-red">
 								Kode Promo :
@@ -93,12 +214,12 @@
 							</router-link>
 						</q-card-actions>
 					</q-card>
-				</div>
+				</div> -->
 				<!-- Promo Asshaf -->
-				<div class="q-pa-md">
+				<!-- <div class="q-pa-md">
 					<q-card class="my-card">
 						<q-img src="https://imgur.com/6ci6Emr.jpg" />
-						<!--  -->
+						
 						<q-card-section>
 							<div class="row no-wrap items-center">
 								<div class="" style="font-size: 16px">
@@ -107,23 +228,6 @@
 							</div>
 							<q-rating v-model="stars" :max="5" size="32px" />
 						</q-card-section>
-						<!--  -->
-						<!-- <q-card-actions style="padding-left: 16px; margin-top: -10px;">
-							<p class="text-red">
-								Kode Promo :
-							</p>
-							<p class="text-caption text-grey" style="margin-left: 5px;">
-								{{ asshafdaypromocode }}
-							</p>
-							<q-btn
-								flat
-								class="bg-red text-white"
-								size="sm"
-								label="Salin"
-								@click="doCopy2"
-								style="margin-top: -18px; margin-left: 85px;"
-							/>
-						</q-card-actions> -->
 
 						<q-card-section class="q-pt-none" style="margin-top: -10px;">
 							<p class="text-caption text-grey">
@@ -163,11 +267,11 @@
 							</router-link>
 						</q-card-actions>
 					</q-card>
-				</div>
+				</div> -->
 				<!-- promo brader fillah -->
-				<div class="q-pa-md">
+				<!-- <div class="q-pa-md">
 					<q-card class="my-card">
-						<q-img src="https://imgur.com/igTcSci.jpg" />
+						<q-img src="https://imgur.com/igTcSci.jpg" /> -->
 						<!--  -->
 						<!-- <q-card dark bordered class="bg-red-9 my-card">
               <q-card-section>
@@ -175,7 +279,7 @@
               </q-card-section>
             </q-card> -->
 						<!--  -->
-						<q-card-section>
+						<!-- <q-card-section>
 							<div class="row no-wrap items-center">
 								<div class="col ellipsis" style="font-size: 16px">
 									Ada promo spesial buat Brader fillah
@@ -183,7 +287,7 @@
 							</div>
 							<q-rating v-model="stars" :max="5" size="32px" />
 						</q-card-section>
-						<!--  -->
+						
 						<q-card-section class="q-pt-none">
 							<p class="text-caption text-grey">
 								Deskripsi <br /><br />
@@ -223,12 +327,12 @@
 							</router-link>
 						</q-card-actions>
 					</q-card>
-				</div>
+				</div> -->
 				<!--  -->
-				<div class="q-pa-md">
+				<!-- <div class="q-pa-md">
 					<q-card class="my-card">
 						<q-img src="https://imgur.com/hemmr6q.jpg" />
-						<!--  -->
+						
 						<q-card-section>
 							<div class="row no-wrap items-center">
 								<div class="" style="font-size: 16px">
@@ -237,7 +341,7 @@
 							</div>
 							<q-rating v-model="stars" :max="5" size="32px" />
 						</q-card-section>
-						<!--  -->
+						
 						<q-card-section class="q-pt-none">
 							<p class="text-caption text-grey">
 								Deskripsi <br /><br />
@@ -302,65 +406,13 @@
 							</router-link>
 						</q-card-actions>
 					</q-card>
-				</div>
-				<!--  -->
-				<div class="q-pa-md">
-					<q-card class="my-card">
-						<q-img src="https://imgur.com/0TcX4GG.jpg" />
-						<!--  -->
-						<q-card-section>
-							<div class="row no-wrap items-center">
-								<div class="" style="font-size: 16px">
-									Wujudkan Mimpi Berangkat Umroh, Bersama Distrodakwah.id
-								</div>
-							</div>
-							<q-rating v-model="stars" :max="5" size="32px" />
-						</q-card-section>
-						<!--  -->
-						<q-card-section class="q-pt-none">
-							<p class="text-caption text-grey">
-								Deskripsi <br /><br />
-								Beli 1 Produk Distrodakwah.id selama Bulan Desember, ada Voucher
-								Umroh senilai 1 jt.
-							</p>
-							<q-expansion-item
-								dense
-								dense-toggle
-								expand-separator
-								class="text-caption text-grey"
-								style="margin-left: -16px; margin-right: -16px;"
-								label="SYARAT DAN KETENTUAN"
-							>
-								<q-card>
-									<q-card-section
-										class="text-caption text-grey"
-										v-html="hardCodedDescription3"
-									>
-									</q-card-section>
-								</q-card>
-							</q-expansion-item>
-						</q-card-section>
-
-						<q-separator />
-
-						<q-card-actions>
-							<q-btn
-								@click="onClickHandler"
-								class="full-width"
-								style="background: orange"
-								flat
-								color="white"
-							>
-								Join Group
-							</q-btn>
-						</q-card-actions>
-					</q-card>
-				</div>
+				</div> -->
+				
 				<!-- promo 12 12  -->
-				<div class="q-pa-md">
+				<!-- <div class="q-pa-md">
 					<q-card class="my-card">
 						<q-img src="https://imgur.com/6nd2Rsj.jpg" />
-						<!--  -->
+						
 						<q-card-section>
 							<div class="row no-wrap items-center">
 								<div class="" style="font-size: 16px">
@@ -369,7 +421,7 @@
 							</div>
 							<q-rating v-model="stars" :max="5" size="32px" />
 						</q-card-section>
-						<!--  -->
+					
 						<q-card-actions style="padding-left: 16px; margin-top: -10px;">
 							<p class="text-grey">
 								Kode Promo :
@@ -431,7 +483,7 @@
 							</router-link>
 						</q-card-actions>
 					</q-card>
-				</div>
+				</div> -->
 				<!--  -->
 			</q-page>
 		</q-page-container>
@@ -445,37 +497,6 @@ import h2p from "html2plaintext";
 export default {
 	data() {
 		return {
-			hardCodedDescription: ` <ol>
-                              <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian Produk Yaumee Custom + Mikihat</span></li>
-                              <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon 70% hanya berlaku untuk produk Mikihat</span></li>
-                              <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon Produk Yaumee sesuai dengan Kategori Reseller (Pro/Ekslusif)</span></li>
-                              <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai dengan stok yang tertampil d web Distrodakwah.id</span></li>
-                              <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo Paket Brader Hemat, brader harus :</span></li>
-                              <ul>
-                              <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
-                              <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id &amp; klik promo</span></li>
-                              <li style="font-weight: 400;"><span style="font-weight: 400;">Dapatkan promo Paket Brader Hemat &amp; lakukan pembayaran</span></li>
-                              <li style="font-weight: 400;"><span style="font-weight: 400;">Produk yaumee (desain Distrodakwah) sesuai keinginan brader</span></li>
-                              </ul>
-                              <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo Paket Brader Hemat sepuasanya selama persediaan masih ada.</span></li>
-                              <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
-                              <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, pengguna dianggap mengerti dan menyetujui semua syarat &amp; ketentuan berlaku.</span></li>
-                              </ol>`,
-
-			hardCodedDescription2: `<ol>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian Produk Yaumee Ready Stok</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon 50% dari Harga Jual berlaku untuk Reseller Pro / Ekslusif</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai produk promo yang tertampil di web Distrodakwah.id</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo Yaumee Disc 50%, brader harus :</span></li>
-                                  <ul>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id &amp; klik promo</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;"> Dapatkan promo Disc 50% &amp; lakukan pembayaran</span></li>
-                                  </ul>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo Disc 50% sepuasanya selama persediaan masih ada.</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
-                              </ol>`,
 			hardCodedDescription3: `<ol>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Voucher berlaku untuk keberangkatan Umroh melalui Distrodakwah.id</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan Voucher ini, Reseller hanya perlu membeli 1 pcs produk Yaumee/Asshaf/Al-Ayubi/Al Dzumar khusus Bulan Desember</span></li>
@@ -491,61 +512,115 @@ export default {
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
                               </ol>`,
-			yaumee15PromoCode: "pastipromo",
-			hardCodedDescription4: `<ol>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian All Produk Yaumee</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon +15% berlaku untuk Reseller Pro / Ekslusif</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Penambahan potongan diskon untuk Reseller Pro sebesar 20% + 15%</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Penambahan potongan diskon untuk Reseller Ekslusif sebesar 35% + 15%</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Design Custom hanya berlaku untuk Reseller Ekslusif</span></li>
+			hardCodedDescription7: `<ol>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Promo Beli 2 Gratis 1 hanya berlaku untuk Produk Yaumee</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Bonus yang diberikan yaitu Yaumee Kaos Dakwah Lengan Pendek, sesuai dengan Varian yang tersedia</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk Reseller Pro/Ekslusif</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai dengan stok yang tertampil d web Distrodakwah.id</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo tambahan Disc 15% brader harus :</span></li>
+								<li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan Promo Beli 2 Gratis 1 Yaumee Kaos Dakwah Lengan Pendek brader harus :</span></li>
                                   <ul>
                                     <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id &amp; klik Voucher</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Pilih produk Yaumee kemudian masuk ke keranjang belanja</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Masukan kode voucer "PASTIPROMO" untuk mendapatkan potongan</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Wa Admin Produksi untuk pilihan produk Yaumee Custom (khusus Eklusif)</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan disc berlaku jika transaksi (invoice) berisi Produk Yaumee saja</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id, pilih Profil kemudian klik "Promo dan Voucher Saya"</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Baca S&K Promo, kemudian klik "Ambil Bonusnya Sekarang"</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Pilih Bonus Yaumee Kaos Dakwah Lengan Pendek yang Brader inginkan (sesuai dengan stok dan varian yang tersedia)</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Masukan ke Keranjang Belanja dan lanjutkan Belanja Produk Yaumee apa saja yaitu 2 PCS</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Cek Keranjang belanja, Bonus Yaumee Kaos Dakwah Lengan Pendek bernilai Rp. 0,.</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Bonus berlaku kelipatan Beli 2 Gratis 1, Beli 4 Gratis 2,..... Beli 10 Gratis 5, dst</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Bonus Yaumee Kaos Dakwah Lengan Pendek, sudah di tentukan sesuai yang tertera diweb.</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Jika pilihan Brader terdapat Yaumee Custom, maka jangan lupa konfirmasi Design yang Brader inginkan (khusus Ekslusif) ke Admin Produksi</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Lakukan transaksi pembayaran sesuai nominal yang tertera dan konfirmasi pembayaran ke Admin</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Tunggu orderan Brader pasti akan kami proses</span></li>
                                   </ul>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
                               </ol>`,
-			asshafdaypromocode: "promoasik",
-			hardCodedDescription5: `<ol>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian All Produk Asshaf</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon 40% berlaku untuk Reseller Pro/Ekslusif</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo 40% brader harus :</span></li>
-                                  <ul>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Pilih Produk Asshaf kemudian masuk ke keranjang belanja</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon berlaku jika transaksi (invoice) berisi produk Asshaf saja</span></li>
-                                  </ul>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
-							  </ol>`,
-			ceria12promocode: "ceria1212",
-			hardCodedDescription6: `<ol>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan Diskon berlaku untuk All Item</span></li>
-								<li style="font-weight: 400;"><span style="font-weight: 400;">Potongan Diskon Produk masing" berbeda, up to 40%</span></li>
-								<li style="font-weight: 400;"><span style="font-weight: 400;">Gratis Ongkir senilai maks 12.000, berlaku untuk semua produk kecuali produk yang sudah promo (Yaumee +15%/Asshaf 40%)</span></li>
-								<li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai dengan stok yang tertampil di web Distrodakwah.id</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo Brader harus :</span></li>
-                                  <ul>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id, cari produk yang Brader inginkan</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Tambahan diskon 12.12 akan muncul di Keuntungan yang didapatkan</span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Checkout, isi pengiriman kemudia masukan Voucher "ceria1212" untuk mendapatkan keuntungan Gratis Ongkir </span></li>
-                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Jika terdapat produk custom (maka konfirmasi ke Admin Produksi)</span></li>
-                                  </ul>
-								<li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
-								<li style="font-weight: 400;"><span style="font-weight: 400;">Promo 12.12 berlangsung mulai pukul 08.00 - 24.00 WIB</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
-                                <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
-							  </ol>`
+			// hardCodedDescription: ` <ol>
+            //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian Produk Yaumee Custom + Mikihat</span></li>
+            //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon 70% hanya berlaku untuk produk Mikihat</span></li>
+            //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon Produk Yaumee sesuai dengan Kategori Reseller (Pro/Ekslusif)</span></li>
+            //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai dengan stok yang tertampil d web Distrodakwah.id</span></li>
+            //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo Paket Brader Hemat, brader harus :</span></li>
+            //                   <ul>
+            //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
+            //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id &amp; klik promo</span></li>
+            //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Dapatkan promo Paket Brader Hemat &amp; lakukan pembayaran</span></li>
+            //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Produk yaumee (desain Distrodakwah) sesuai keinginan brader</span></li>
+            //                   </ul>
+            //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo Paket Brader Hemat sepuasanya selama persediaan masih ada.</span></li>
+            //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
+            //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, pengguna dianggap mengerti dan menyetujui semua syarat &amp; ketentuan berlaku.</span></li>
+            //                   </ol>`,
+
+			// hardCodedDescription2: `<ol>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian Produk Yaumee Ready Stok</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon 50% dari Harga Jual berlaku untuk Reseller Pro / Ekslusif</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai produk promo yang tertampil di web Distrodakwah.id</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo Yaumee Disc 50%, brader harus :</span></li>
+            //                       <ul>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id &amp; klik promo</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;"> Dapatkan promo Disc 50% &amp; lakukan pembayaran</span></li>
+            //                       </ul>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo Disc 50% sepuasanya selama persediaan masih ada.</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
+            //                   </ol>`,
+			// yaumee15PromoCode: "pastipromo",
+			// hardCodedDescription4: `<ol>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian All Produk Yaumee</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon +15% berlaku untuk Reseller Pro / Ekslusif</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Penambahan potongan diskon untuk Reseller Pro sebesar 20% + 15%</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Penambahan potongan diskon untuk Reseller Ekslusif sebesar 35% + 15%</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Design Custom hanya berlaku untuk Reseller Ekslusif</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai dengan stok yang tertampil d web Distrodakwah.id</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo tambahan Disc 15% brader harus :</span></li>
+            //                       <ul>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id &amp; klik Voucher</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Pilih produk Yaumee kemudian masuk ke keranjang belanja</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Masukan kode voucer "PASTIPROMO" untuk mendapatkan potongan</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Wa Admin Produksi untuk pilihan produk Yaumee Custom (khusus Eklusif)</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan disc berlaku jika transaksi (invoice) berisi Produk Yaumee saja</span></li>
+            //                       </ul>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
+            //                   </ol>`,
+			// asshafdaypromocode: "promoasik",
+			// hardCodedDescription5: `<ol>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian All Produk Asshaf</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon 40% berlaku untuk Reseller Pro/Ekslusif</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo 40% brader harus :</span></li>
+            //                       <ul>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Pilih Produk Asshaf kemudian masuk ke keranjang belanja</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon berlaku jika transaksi (invoice) berisi produk Asshaf saja</span></li>
+            //                       </ul>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
+			// 				  </ol>`,
+			// ceria12promocode: "ceria1212",
+			// hardCodedDescription6: `<ol>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan Diskon berlaku untuk All Item</span></li>
+			// 					<li style="font-weight: 400;"><span style="font-weight: 400;">Potongan Diskon Produk masing" berbeda, up to 40%</span></li>
+			// 					<li style="font-weight: 400;"><span style="font-weight: 400;">Gratis Ongkir senilai maks 12.000, berlaku untuk semua produk kecuali produk yang sudah promo (Yaumee +15%/Asshaf 40%)</span></li>
+			// 					<li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai dengan stok yang tertampil di web Distrodakwah.id</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan promo Brader harus :</span></li>
+            //                       <ul>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id, cari produk yang Brader inginkan</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Tambahan diskon 12.12 akan muncul di Keuntungan yang didapatkan</span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Checkout, isi pengiriman kemudia masukan Voucher "ceria1212" untuk mendapatkan keuntungan Gratis Ongkir </span></li>
+            //                         <li style="font-weight: 400;"><span style="font-weight: 400;">Jika terdapat produk custom (maka konfirmasi ke Admin Produksi)</span></li>
+            //                       </ul>
+			// 					<li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
+			// 					<li style="font-weight: 400;"><span style="font-weight: 400;">Promo 12.12 berlangsung mulai pukul 08.00 - 24.00 WIB</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
+            //                     <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
+			// 				  </ol>`
 		};
 	},
 	methods: {
