@@ -148,6 +148,11 @@ export default {
 				openURL("https://kayaberkah.orderonline.id/upgrade-Reseller");
 				return;
 			}
+			         if (this.product.id == 574) {
+						this.$router.push(`/detail/keep/with-stock/${this.product.id}`);
+						return
+         }
+
 			this.$router.push(`/detail/${this.product.id}`);
 		},
 		productNameFormat(str) {

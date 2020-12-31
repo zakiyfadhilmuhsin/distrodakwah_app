@@ -4,16 +4,17 @@
 			<div style="font-size: 18px; margin-top: -5px; margin-bottom:-10px; font-family: 'Teko'; font-weight: bold" class="row harbolnas-profit-label">Rincian Disc : </div> <br />
 			<div style="margin-top: -13px; " class="row">
 				<div class="col-xs-6">
-					<h5 class="price-title-small-text">Harbolnas</h5>
+					<h5 class="price-title-small-text">Diskon Reseller</h5>
 				</div>
 				<div class="col-xs-6">
-					<h5 class="price-title-small-text">Reseller </h5>
+					<h5 class="price-title-small-text">Tambahan Diskon</h5>
 				</div>
 			</div>
 			<div style="margin-bottom: -15px;" class="row">
 				<div class="col-xs-6">
 					<h5 class="price-detail-text text-green">
-						{{ harbolnasResellerExclusiveProfit }}
+						<!-- asshaf -->
+						Rp64.750
 					</h5>
 				</div>
 				<div
@@ -21,7 +22,7 @@
 
 				>
 					<h5 class="price-detail-text text-green">
-						{{ resellerExclusiveProfit }}
+						Rp9.250
 					</h5>
 				</div>
 			</div>
@@ -30,16 +31,16 @@
 			<div style="font-size: 18px; margin-top: -5px; margin-bottom:-10px; font-family: 'Teko'; font-weight: bold" class="row harbolnas-profit-label">Rincian Disc : </div> <br />
 			<div style="margin-top: -13px; " class="row">
 				<div class="col-xs-6">
-					<h5 class="price-title-small-text">Harbolnas</h5>
+					<h5 class="price-title-small-text">Diskon Reseller</h5>
 				</div>
 				<div class="col-xs-6">
-					<h5 class="price-title-small-text">Reseller </h5>
+					<h5 class="price-title-small-text">Tambahan Diskon</h5>
 				</div>
 			</div>
 			<div style="margin-bottom: -15px;" class="row">
 				<div class="col-xs-6">
 					<h5 class="price-detail-text text-green">
-						{{ harbolnasResellerExclusiveProfit }}
+						Rp37.000
 					</h5>
 				</div>
 				<div
@@ -47,7 +48,7 @@
 
 				>
 					<h5 class="price-detail-text text-green">
-						{{ resellerExclusiveProfit }}
+						Rp37.000
 					</h5>
 				</div>
 			</div>
@@ -56,7 +57,7 @@
 			style="font-size: 21px; margin: 5px; padding-top: 5px; font-family: 'Teko'; font-weight: bold"
 			v-else-if="RoleId === 10"
 		>
-			Tambahan Keuntungan Harbolnas
+			Tambahan Keuntungan
 			<span class="text-green"
 				>"Silahkan mendaftar jadi reseller distrodakwah"</span
 			>
@@ -68,7 +69,7 @@
 import { currencyFormat } from "../../../libraries/stringManipulation";
 
 export default {
-	name: "HarbolnasAdditionalPrice",
+	name: "ProfitDetail",
 	props: ["RoleId", "SelectedVariant", "Qty"],
 	computed: {
 		resellerProProfit: function() {

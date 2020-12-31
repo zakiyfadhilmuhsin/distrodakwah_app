@@ -135,7 +135,6 @@ export default {
          // 	openURL("https://distrodakwah.id/custom-eks");
          // 	return;
 				 // }
-				 console.log('asd')
          if (this.product.id == 574) {
 						this.$router.push(`/detail/keep/with-stock/${this.product.id}`);
 						return

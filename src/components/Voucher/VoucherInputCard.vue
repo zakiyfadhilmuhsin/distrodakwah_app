@@ -52,25 +52,10 @@
 								/>
 							</q-item-section>
 						</q-item>
-						<div
-							v-if="voucherDataResult.type_id && voucherDataResult.type_id == 1"
-							class="grid-voucher"
-						>
+						<div v-if="voucherDataResult.type_id" class="grid-voucher">
 							<img src="~/assets/images/components/coupon.png" alt="" />
 							<span>
 								Nilai Diskon {{ voucherDataResult.voucher_percentage.value }}%
-							</span>
-							<span class="value"> -Rp.{{ currencyFormat(discount) }}</span>
-						</div>
-						<div
-							v-else-if="
-								voucherDataResult.type_id && voucherDataResult.type_id == 2
-							"
-							class="grid-voucher"
-						>
-							<img src="~/assets/images/components/coupon.png" alt="" />
-							<span>
-								Potongan Ongkos Kirim Hingga
 							</span>
 							<span class="value"> -Rp.{{ currencyFormat(discount) }}</span>
 						</div>
@@ -113,7 +98,7 @@ import { getVoucherByCode } from "../../libraries/vouchers";
 import { currencyFormat } from "../../libraries/stringManipulation";
 export default {
 	name: "VoucherInputCard",
-	props: ["voucherDataResult", "cartData", "shipment"],
+	props: ["voucherDataResult", "cartData"],
 	data() {
 		return {
 			useVoucher: false,
@@ -129,16 +114,6 @@ export default {
 						this.voucherDataResult.voucher_percentage.value) /
 					100
 				);
-			} else if (this.voucherDataResult.type_id === 2) {
-				// if ongkir less than shipment promo
-				if (
-					this.shipment.shippingCost <=
-					this.voucherDataResult.voucher_shipment_fee.value
-				) {
-					return this.shipment.shippingCost;
-				} else {
-					return this.voucherDataResult.voucher_shipment_fee.value;
-				}
 			}
 		}
 	},
