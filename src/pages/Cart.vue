@@ -79,7 +79,7 @@
               <div class="row q-pa-lg">
                 <div class="col">
                   <center>
-                    <img src="http://balitakita.com/packages/yusidabcs/checkout/img/empty-cart-vector.png" width="85" />
+                    <!-- <img src="http://balitakita.com/packages/yusidabcs/checkout/img/empty-cart-vector.png" width="85" /> -->
                     <div>Yah, Keranjang Masih Kosong.. Belanja Yuk!</div>
                   </center>
                 </div>
