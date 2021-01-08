@@ -91,6 +91,132 @@
 					</q-card>
 				</div>
 
+				<!-- Yaumee Day  -->
+				<div class="q-pa-md">
+					<q-card class="my-card">
+						<q-img src="https://imgur.com/eM3Tohu.jpg" />
+
+						<q-card-section>
+							<div class="row no-wrap items-center">
+								<div class="" style="font-size: 16px">
+									Makin Keren dengan Kurta Al Mahabbah, Pakai Promo Diskon 20%
+								</div>
+							</div>
+							<q-rating v-model="stars" :max="5" size="32px" />
+						</q-card-section>
+
+						<q-card-actions style="padding-left: 16px; margin-top: -10px;">
+							<p class="text-red">
+								Kode Promo :
+							</p>
+							<p class="text-caption text-grey" style="margin-left: 5px;">
+								{{ almahabbah20PromoCode }}
+							</p>
+							<q-btn
+								flat
+								class="bg-red text-white"
+								size="sm"
+								label="Salin"
+								@click="doCopy"
+								style="margin-top: -18px; margin-left: 90px;"
+							/>
+						</q-card-actions>
+
+						<q-card-section class="q-pt-none" style="margin-top: -10px;">
+							<p class="text-caption text-grey">
+								Deskripsi <br /><br />
+								Pakai Promo buat Brader, nikmati keuntungan Brader sebagai
+								Reseller.
+							</p>
+							<q-expansion-item
+								dense
+								dense-toggle
+								expand-separator
+								class="text-caption text-grey"
+								style="margin-left: -16px; margin-right: -16px;"
+								label="SYARAT DAN KETENTUAN"
+							>
+								<q-card>
+									<q-card-section
+										class="text-caption text-grey"
+										v-html="hardCodedDescription8"
+									>
+									</q-card-section>
+								</q-card>
+							</q-expansion-item>
+						</q-card-section>
+
+						<q-separator />
+
+						<q-card-actions>
+							<router-link to="/detail/30" class="full-width">
+								<q-btn
+									class="full-width"
+									style="background: orange"
+									flat
+									color="white"
+								>
+									Promo Al Mahabbah 
+								</q-btn>
+							</router-link>
+						</q-card-actions>
+					</q-card>
+				</div>
+
+				<!-- Promo Saffron Buy 2 Get 1  -->
+				<div class="q-pa-md">
+					<q-card class="my-card">
+						<q-img src="https://imgur.com/DOk52TZ.jpg" />
+
+						<q-card-section>
+							<div class="row no-wrap items-center">
+								<div class="" style="font-size: 16px">
+									Jaga Kesehatan dengan Mengkonsumsi Saffron Setiap Hari, Ambil Promonya Buy 2 Get 1
+								</div>
+							</div>
+							<q-rating v-model="stars" :max="5" size="32px" />
+						</q-card-section>
+
+						<q-card-section class="q-pt-none" style="margin-top: -10px;">
+							<p class="text-caption text-grey">
+								Deskripsi <br /><br />
+								Pembelian Dawood Saffron (1gr) sebanyak 2 pcs Gratis (0,5gr) 1 pcs
+							</p>
+							<q-expansion-item
+								dense
+								dense-toggle
+								expand-separator
+								class="text-caption text-grey"
+								style="margin-left: -16px; margin-right: -16px;"
+								label="SYARAT DAN KETENTUAN"
+							>
+								<q-card>
+									<q-card-section
+										class="text-caption text-grey"
+										v-html="hardCodedDescription9"
+									>
+									</q-card-section>
+								</q-card>
+							</q-expansion-item>
+						</q-card-section>
+
+						<q-separator />
+
+						<q-card-actions>
+							<router-link to="/detail/575" class="full-width">
+								<q-btn
+									class="full-width"
+									style="background: orange"
+									flat
+									color="white"
+								>
+									Ambil Bonus
+								</q-btn>
+							</router-link>
+						</q-card-actions>
+					</q-card>
+				</div>
+
 				<!-- promo Umrah  -->
 				<div class="q-pa-md">
 					<q-card class="my-card">
@@ -535,6 +661,48 @@ export default {
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
                                 <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
                               </ol>`,
+			hardCodedDescription8: `<ol>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Promo diskon 20% hanya berlaku untuk Produk Kurta Al Mahabbah</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk Reseller Pro/Ekslusif</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan 20% dari Harga Beli Reseller (Pro/Ekslusif)</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai dengan stok yang tertampil d web Distrodakwah.id</span></li>
+								<li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan Promo AL Mahabbah Diskon 20% brader harus :</span></li>
+                                  <ul>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id, pilih Profil kemudian klik "Promo dan Voucher Saya"</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Baca S&K Promo, kemudian "search/cari produk"</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Pilih Kurta Al Mahabbah sesuai keinginan Brader</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Masukan ke Keranjang Belanja dan lanjutkan pengisian informasi pengiriman</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Masukan kode Voucher "pakaipromo" agar Brader mendapatkan potongan diskon 20%</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Lakukan transaksi pembayaran sesuai nominal yang tertera dan konfirmasi pembayaran ke Admin</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Tunggu orderan Brader pasti akan kami proses</span></li>
+                                  </ul>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
+							  </ol>`,
+			almahabbah20PromoCode: "pakaipromo",
+			hardCodedDescription9: `<ol>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Promo Beli 2 Gratis 1 hanya berlaku untuk Produk Dawood Saffron</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Bonus yang diberikan yaitu Dawood Saffron 0,5gr dengan pembelanjaan Dawood Saffron 1gr sebanyak 2 pcs</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk Reseller Pro/Ekslusif</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller melakukan transaksi sesuai dengan stok yang tertampil d web Distrodakwah.id</span></li>
+								<li style="font-weight: 400;"><span style="font-weight: 400;">Untuk mendapatkan Promo Beli 2 Gratis 1 Dawood Saffron Brader harus :</span></li>
+                                  <ul>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Terdaftar sebagai Reseller Distrodakwah.id</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Buka aplikasi Distrodakwah.id, pilih Profil kemudian klik "Promo dan Voucher Saya"</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Baca S&K Promo, kemudian klik "Ambil Bonusnya Sekarang"</span></li>
+                                    <li style="font-weight: 400;"><span style="font-weight: 400;">Ambil Bonus Dawood Saffron (berlaku kelipatan)</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Masukan ke Keranjang Belanja dan lanjutkan Belanja Produk Dawood Saffron 1gr sebanyak 2 pcs</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Cek Keranjang belanja, Bonus Dawood Saffron 0,5gr bernilai Rp. 0,.</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Bonus berlaku kelipatan Beli 2 Gratis 1, Beli 4 Gratis 2,..... Beli 10 Gratis 5, dst</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Lakukan transaksi pembayaran sesuai nominal yang tertera dan konfirmasi pembayaran ke Admin</span></li>
+									<li style="font-weight: 400;"><span style="font-weight: 400;">Tunggu orderan Brader pasti akan kami proses</span></li>
+                                  </ul>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Reseller bisa mendapatkan promo sepuasanya selama persediaan masih ada.</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Syarat dan Ketentuan promo ini merupakan bagian yang tak terpisahkan dan satu kesatuan dengan S&amp;K sehubungan dengan promo ini</span></li>
+                                <li style="font-weight: 400;"><span style="font-weight: 400;">Dengan mengikuti promo ini, brader dianggap mengerti dan menyetujui semua Syarat &amp; ketentuan berlaku.</span></li>
+                              </ol>`,
 			// hardCodedDescription: ` <ol>
             //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Promo berlaku untuk pembelian Produk Yaumee Custom + Mikihat</span></li>
             //                   <li style="font-weight: 400;"><span style="font-weight: 400;">Potongan diskon 70% hanya berlaku untuk produk Mikihat</span></li>
@@ -629,7 +797,7 @@ export default {
 		},
 		doCopy() {
 		const tempInput = document.createElement("input");
-		tempInput.value = this.yaumee15PromoCode;
+		tempInput.value = this.almahabbah20PromoCode;
 		document.body.appendChild(tempInput);
 		tempInput.select();
 		document.execCommand("copy");
