@@ -146,14 +146,17 @@
                   <div
                      style="font-size: 12px; margin: 0; line-height: 14px; font-weight: bold"
                   >
-                     <span class="text"
+                     <span class="text-red" v-if="stockReady == null"
+                        >Pilih Varian Untuk Melihat Jumlah Stok</span
+                     >
+                     <span v-else
                         >Stok Tersedia:
                         {{
                            stockReady === 'not_available'
                               ? 'Varian Tidak ada'
                               : stockReady
-                        }}</span
-                     >
+                        }}
+                     </span>
                   </div>
 
                   <hr style="margin: 15px 0" />
@@ -309,9 +312,7 @@
                         >
                      </h4>
                      <table
-                        v-if="
-                           yaumeeSpreadsheetsTable.rows.length > 0
-                        "
+                        v-if="yaumeeSpreadsheetsTable.rows.length > 0"
                         class="stocking-table"
                      >
                         <thead>
@@ -338,7 +339,6 @@
                         </tbody>
                      </table>
                      <!-- 50%promo -->
-
                   </div>
                   <hr style="margin: 15px 0" />
                   <div class="row" style="margin-bottom: 5px">
@@ -749,6 +749,7 @@ export default {
             }
 
             this.selectedSkuId = null;
+            this.selectedVariant = null;
          }
       },
 

@@ -720,7 +720,8 @@ export default {
 					isAvailable = [];
 				}
 
-				this.selectedSkuId = null;
+            this.selectedSkuId = null;
+            this.selectedVariant = null;
 			}
 		},
 
