@@ -506,13 +506,14 @@ export default {
 				let emailParam = { email: this.invoice };
 
 				try {
-					userRes = await this.$axios.get(apiDomain + "/auth/searchUser", {
+					userRes = await this.$axios.get(apiDomain + "/auth/findAUser", {
 						headers: getHeader(),
 						params: emailParam
 					});
 				} catch (error) {
 					console.log(error.response.data.error);
 				}
+
 				//registered/exists?
 
 				if (userRes.data !== "does not exist") {
