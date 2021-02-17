@@ -95,7 +95,7 @@
 				<!-- <div class="q-pa-md">
 					<q-card class="my-card">
 						<q-img src="https://imgur.com/eM3Tohu.jpg" />
-
+						
 						<q-card-section>
 							<div class="row no-wrap items-center">
 								<div class="" style="font-size: 16px">
