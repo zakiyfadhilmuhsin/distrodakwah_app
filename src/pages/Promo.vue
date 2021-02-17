@@ -24,11 +24,11 @@
 				<img class="full-width" src="https://imgur.com/mLzeyrP.jpg" alt="" />
 
 				<!-- Promo buy 2 get 1 -->
-				<div class="q-pa-md">
+				<!-- <div class="q-pa-md">
 					<q-card class="my-card">
-						<q-img src="https://imgur.com/PnHB4Ti.jpg" />
+						<q-img src="https://imgur.com/PnHB4Ti.jpg" /> -->
 						<!--  -->
-						<div class="q-pa-md">
+						<!-- <div class="q-pa-md">
 								<div class="row items-start">
 									<div class="col" style="margin-right: 5px;">
 										<q-img src="https://imgur.com/CDyv57M.jpg" />
@@ -41,18 +41,18 @@
 									</div>
 								</div>
 							</div>
-						<q-separator />
+						<q-separator /> -->
 						<!--  -->
-						<q-card-section>
+						<!-- <q-card-section>
 							<div class="row no-wrap items-center">
 								<div class="" style="font-size: 16px">
 									Promo Januari Hepi, 1 + 1 = 3!
 								</div>
 							</div>
 							<q-rating v-model="stars" :max="5" size="32px" />
-						</q-card-section>
+						</q-card-section> -->
 						<!--  -->
-						<q-card-section class="q-pt-none">
+						<!-- <q-card-section class="q-pt-none">
 							<p class="text-caption text-grey">
 								Deskripsi <br /><br />
 								Belanja 2 Produk Yaumee Apapun Bonus 1 Produk Yaumee
@@ -73,9 +73,9 @@
 									</q-card-section>
 								</q-card>
 							</q-expansion-item>
-						</q-card-section>
+						</q-card-section> -->
 						<!--  -->
-						<q-separator />
+						<!-- <q-separator />
 							<q-card-actions>
 								<router-link to="/detail/keep/with-stock/574" class="full-width">
 									<q-btn
@@ -89,10 +89,10 @@
 								</router-link>
 							</q-card-actions>
 					</q-card>
-				</div>
+				</div> -->
 
 				<!-- Yaumee Day  -->
-				<div class="q-pa-md">
+				<!-- <div class="q-pa-md">
 					<q-card class="my-card">
 						<q-img src="https://imgur.com/eM3Tohu.jpg" />
 
@@ -161,10 +161,10 @@
 							</router-link>
 						</q-card-actions>
 					</q-card>
-				</div>
+				</div> -->
 
 				<!-- Promo Saffron Buy 2 Get 1  -->
-				<div class="q-pa-md">
+				<!-- <div class="q-pa-md">
 					<q-card class="my-card">
 						<q-img src="https://imgur.com/DOk52TZ.jpg" />
 
@@ -215,7 +215,7 @@
 							</router-link>
 						</q-card-actions>
 					</q-card>
-				</div>
+				</div> -->
 
 				<!-- promo Umrah  -->
 				<div class="q-pa-md">
@@ -618,7 +618,7 @@
 
 <script>
 import { openURL } from "quasar";
-import h2p from "html2plaintext";
+// import h2p from "html2plaintext";
 
 export default {
 	data() {
