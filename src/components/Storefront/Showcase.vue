@@ -2,6 +2,7 @@
 	<div
 		class="showcase"
 		:style="[showcaseBackground ? { background: showcaseBackground } : {}]"
+		style="z-index: 0 !important"
 	>
 		<div class="bg-grey-3" style="height: 8px"></div>
 		<center>

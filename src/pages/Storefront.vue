@@ -133,6 +133,9 @@
 				:productArr="customProductData"
 				:user="globalState.userProfile"
 			/>
+			<q-page-sticky position="bottom-right" :offset="fabPos">
+				<img src="../assets/images/components/mission.png" width="65" style="z-index: 10" />
+			</q-page-sticky>
 		</div>
 	</HomeLayout>
 </template>
@@ -207,7 +210,8 @@ export default {
 			innerLoading: false,
 			// Total Count Cart Item
 			totalCartItem: null,
-			startProduct: 1
+			startProduct: 1,
+			fabPos: [ 18, 50 ],
 		};
 	},
 	computed: {
@@ -429,7 +433,10 @@ export default {
 				});
 		},
 		currencyFormat,
-		openURL
+		openURL,
+		onClick () {
+		// console.log('Clicked on a fab action')
+		},
 	}
 };
 </script>
